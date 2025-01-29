@@ -92,7 +92,7 @@
                     <div class="message">
                         <div class="avatar bg-success text-white rounded-circle p-2">X</div>
                         <div class="bubble">
-                            <strong>Xavier</strong> <span class="text-muted">14:35</span><br>
+                            <strong>{{$userId->email}}</strong> <span class="text-muted">14:35</span><br>
                             <img src="https://via.placeholder.com/100" alt="image">
                         </div>
                     </div>
