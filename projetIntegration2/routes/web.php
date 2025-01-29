@@ -12,3 +12,5 @@ Route::GET('/yup',
 [UserCommunication::class,'index'])->name('user.index');
 
 
+Route::GET('/connexion',
+[ProfilController::class,'index'])->name('profil.connexion');
