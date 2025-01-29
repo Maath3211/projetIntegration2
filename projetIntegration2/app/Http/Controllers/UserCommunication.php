@@ -12,7 +12,8 @@ class UserCommunication extends Controller
     public function index()
     {
         $userId = DB::table('users')->where('id', '1')->first();
-        //dd($userId->email);
-        return View('Communication.user-ami', compact('userId'));
+        $yup = DB::table('user_ami')->where('id', '1')->first();
+        //dd($message1->message);
+        return View('Communication.user-ami', compact('userId', 'yup'));
     }
 }

@@ -93,7 +93,7 @@
                         <div class="avatar bg-success text-white rounded-circle p-2">X</div>
                         <div class="bubble">
                             <strong>{{$userId->email}}</strong> <span class="text-muted">14:35</span><br>
-                            <img src="https://via.placeholder.com/100" alt="image">
+                            <strong>{{$yup->message}}</strong>
                         </div>
                     </div>
                     <div class="message own-message">
