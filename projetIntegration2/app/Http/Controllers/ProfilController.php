@@ -10,4 +10,9 @@ class ProfilController extends Controller
     {
         return View('profil.connexion');
     }
+
+    public function connexion()
+    {
+        dd('fonction');
+    }
 }
