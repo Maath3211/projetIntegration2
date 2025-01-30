@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+//use Illuminate\Http\Request;
+use App\Http\Requests\ConnexionRequest;
+
+
 
 class ProfilController extends Controller
 {
@@ -11,7 +14,7 @@ class ProfilController extends Controller
         return View('profil.connexion');
     }
 
-    public function connexion()
+    public function connexion(ConnexionRequest $request)
     {
         dd('fonction');
     }
