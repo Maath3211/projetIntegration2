@@ -29,8 +29,8 @@
     </aside>
     
     <!-- Main Content -->
-    <main id="main
-    ">
+     <main class="flex-1 p-6 flex flex-col justify-start  mt-4">
+ 
         <div>
           @yield('contenu')
         </div>
