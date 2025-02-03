@@ -110,8 +110,13 @@
                 <div class="d-flex align-items-center mt-3">
                     <button class="btn btn-secondary me-2">➕</button>
                     <button class="btn btn-secondary me-2">😊</button>
-                    <input type="text" class="message-input" placeholder="Écris un message...">
-                    <button class="btn btn-secondary ms-2">🎤</button>
+                    <form action="" method="post">
+                        @csrf
+                        <div class="form-group d-flex align-items-center">
+                            <input type="text" class="message-input form-control" name="content" placeholder="Écris un message...">
+                            <button class="btn btn-primary ms-2" type="submit">Submit</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

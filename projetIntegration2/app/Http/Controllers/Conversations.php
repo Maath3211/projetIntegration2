@@ -38,4 +38,14 @@ class Conversations extends Controller
             'user' => $user
         ]);
     }
+
+
+    public function store(User $user, Request $request){
+        $this->ConvRepository->createMessage(
+            $request->get('content'),
+            1,
+            $user->id
+        );
+        return redirect()->route('conversations.show', ['id' => $user->id]);
+    }
 }

@@ -18,4 +18,7 @@ Route::GET('/conversations',
 Route::GET('/conversations/{user}',
 [Conversations::class,'show'])->name('conversations.show');
 
+Route::post('/conversations/{user}',
+[Conversations::class,'store']);
+
 
