@@ -84,6 +84,14 @@
             </div>
             <div class="col-md-9">
                 <div class="chat-messages">
+                    @if ($messages->hasMorePages())
+                        <div class="div text-center">
+                            <a href="" class="btn btn-light">
+                                Voir les messages précédent
+                            </a>
+                        </div>
+                        
+                    @endif
                     @foreach ($messages as $message)
                     <div class="message {{ $message->from->id !== $user->id ? 'offset-md-2 text-right' : '' }}">
                         <div class="avatar bg-primary text-white rounded-circle p-2">SS</div>
@@ -92,10 +100,15 @@
                             <span class="text-muted">{{ substr($message->created_at, 11, 5) }}
                             </span>
                             <br>
-                            {{$message->message}}
+                            <p>
+                                {!! nl2br(e($message->message)) !!}
+
+                            </p>
                         </div>
                     </div>
+                    <hr>
                     @endforeach
+                    
                 </div>
 
                 <div class="d-flex align-items-center mt-3">
@@ -104,7 +117,7 @@
                     <form action="" method="post">
                         @csrf
                         <div class="form-group d-flex align-items-center">
-                            <input type="text" class="message-input form-control" name="content" placeholder="Écris un message...">
+                            <input type="textarea" class="message-input form-control" name="content" placeholder="Écris un message...">
                             <button class="btn btn-primary ms-2" type="submit">Submit</button>
                         </div>
                     </form>
