@@ -16,4 +16,6 @@ class UserCommunication extends Controller
         //dd($message1->message);
         return View('Communication.user-ami', compact('userId', 'yup'));
     }
+
+    
 }
