@@ -5,15 +5,29 @@
 
 @section('contenu')
 
-<aside class="w-16 bg-gray-900 text-white h-screen flex flex-col items-center py-4 space-y-4">
-       <a> <div class="w-10 h-10 bg-gray-600 rounded-full"></div>
-       <a> <div class="w-10 h-10 bg-gray-500 rounded-full"></div>
-       <a> <div class="w-10 h-10 bg-red-600 rounded-full"></div>
-       <a> <div class="w-10 h-10 bg-yellow-500 rounded-full"></div>
-       <a><div class="w-10 h-10 bg-blue-700 rounded-full"></div>
-       <a><div class="w-10 h-10 bg-white border border-gray-700 rounded-full"></div>
-       <a> <div class="w-10 h-10 bg-blue-900 rounded-full"></div>
-    </aside> 
-</header>
+<div class="contenuPrincipal flex-1 p-4">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="p-4">
+                    <h3>Column 1</h3>
+                    <p>Content for column 1 goes here.</p>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="p-4">
+                    <h3>Column 2</h3>
+                    <p>Content for column 2 goes here.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="p-4">
+                    <h3>Column 3</h3>
+                    <p>Content for column 3 goes here.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @endsection()
