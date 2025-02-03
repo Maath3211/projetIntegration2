@@ -79,6 +79,8 @@
         <div class="row mt-3">
             <div class="col-md-3 chat-sidebar">
                 <p>Liste des amis / groupes d'amis</p>
+                @include('conversations.utilisateurs',['users'=>$users])
+
             </div>
             <div class="col-md-9">
                 <div class="chat-messages">
@@ -92,8 +94,8 @@
                     <div class="message">
                         <div class="avatar bg-success text-white rounded-circle p-2">X</div>
                         <div class="bubble">
-                            <strong>{{$userId->email}}</strong> <span class="text-muted">14:35</span><br>
-                            <strong>{{$yup->message}}</strong>
+                            <strong></strong> <span class="text-muted">14:35</span><br>
+                            <strong></strong>
                         </div>
                     </div>
                     <div class="message own-message">
