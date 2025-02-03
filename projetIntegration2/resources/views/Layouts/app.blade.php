@@ -16,7 +16,7 @@
 <meta charset="UTF-8">
 </head>
 
-<body>
+<body class="flex h-screen" id="background">
 <!-- Navigation principale -->
 <header>
 <aside class="w-20 bg-gray-400 text-white h-screen flex flex-col items-center py-4 space-y-4">
@@ -30,7 +30,12 @@
 </aside> 
 </header>
 
-@yield("contenu")
+
+<main class="flex-1 p-6 flex flex-col justify-start  mt-4" id="main">
+    <div>
+    @yield('contenu')
+    </div>
+    </main>
 
 
 <!-- Mettre le footer -->
