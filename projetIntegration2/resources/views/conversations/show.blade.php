@@ -85,7 +85,7 @@
             <div class="col-md-9">
                 <div class="chat-messages">
                     @foreach ($messages as $message)
-                    <div class="message">
+                    <div class="message {{ $message->from->id !== $user->id ? 'offset-md-2 text-right' : '' }}">
                         <div class="avatar bg-primary text-white rounded-circle p-2">SS</div>
                         <div class="bubble">
                             <strong>{{$message->from->email}}</strong> 
@@ -108,6 +108,12 @@
                             <button class="btn btn-primary ms-2" type="submit">Submit</button>
                         </div>
                     </form>
+                    <u>
+                        @foreach ($errors->all() as $error)
+                        <li>{{$error}}</li>
+                            
+                        @endforeach
+                    </u>
                 </div>
             </div>
         </div>
