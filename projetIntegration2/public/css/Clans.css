@@ -2,8 +2,9 @@ aside {
     background-color: #303030;
 }
 
-.colonneChannels {
+.colonneCanaux {
     background-color: #3A3A3A;
+    border-color: 2px solid white;
 }
 
 .container {
