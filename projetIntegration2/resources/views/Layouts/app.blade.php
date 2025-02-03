@@ -16,25 +16,23 @@
 <meta charset="UTF-8">
 </head>
 
-<body class=" flex h-screen" id="background">
-    <!-- Sidebar -->
-    <aside class="w-16  text-white h-full flex flex-col items-center py-4 space-y-4" id="sidebar">
-        <div class="w-10 h-10 bg-gray-600 rounded-full"></div>
-        <div class="w-10 h-10 bg-gray-500 rounded-full"></div>
-        <div class="w-10 h-10 bg-red-600 rounded-full"></div>
-        <div class="w-10 h-10 bg-yellow-500 rounded-full"></div>
-        <div class="w-10 h-10 bg-blue-700 rounded-full"></div>
-        <div class="w-10 h-10 bg-white border border-gray-700 rounded-full"></div>
-        <div class="w-10 h-10 bg-blue-900 rounded-full"></div>
-    </aside>
-    
-    <!-- Main Content -->
-     <main class="flex-1 p-6 flex flex-col justify-start  mt-4">
- 
-        <div>
-          @yield('contenu')
-        </div>
-    </main>
+<body>
+<!-- Navigation principale -->
+<header>
+<aside class="w-20 bg-gray-400 text-white h-screen flex flex-col items-center py-4 space-y-4">
+       <a> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
+       <a> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
+       <a> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
+       <a> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
+       <a> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
+       <a> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
+       <a> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
+</aside> 
+</header>
+
+@yield("contenu")
+
+
 <!-- Mettre le footer -->
  <footer>
 </footer>

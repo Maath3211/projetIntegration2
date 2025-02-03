@@ -5,11 +5,15 @@ use App\Http\Controllers\UserCommunication;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\Conversations;
 use App\Http\Controllers\StatistiqueController;
+use App\Http\Controllers\ClanController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
+
+Route::GET('/clan', 
+[ClanController::class, 'index'])->name('clan.montrer');
 
 Route::GET('/yup',
 [UserCommunication::class,'index'])->name('user.index');
