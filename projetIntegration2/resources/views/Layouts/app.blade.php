@@ -10,33 +10,40 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" style="text/css" href="\css\GabaritCss.css">
-        <script src="https://cdn.tailwindcss.com"></script>
+    
         @yield("style")
    
 <meta charset="UTF-8">
 </head>
 
-<body class=" flex h-screen" id="background">
-    <!-- Sidebar -->
-    <aside class="w-16  text-white h-full flex flex-col items-center py-4 space-y-4" id="sidebar">
-        <div class="w-10 h-10 bg-gray-600 rounded-full"></div>
-        <div class="w-10 h-10 bg-gray-500 rounded-full"></div>
-        <div class="w-10 h-10 bg-red-600 rounded-full"></div>
-        <div class="w-10 h-10 bg-yellow-500 rounded-full"></div>
-        <div class="w-10 h-10 bg-blue-700 rounded-full"></div>
-        <div class="w-10 h-10 bg-white border border-gray-700 rounded-full"></div>
-        <div class="w-10 h-10 bg-blue-900 rounded-full"></div>
-    </aside>
-    
-    <!-- Main Content -->
-    <main id="main
-    ">
-        <div>
-          @yield('contenu')
-        </div>
+<body class="flex h-screen" id="background">
+<!-- Navigation principale -->
+<header>
+<aside class="w-20 bg-gray-400 text-white h-screen flex flex-col items-center py-4 space-y-4">
+       <a> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
+       <a> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
+       <a> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
+       <a> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
+       <a> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
+       <a> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
+       <a> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
+</aside> 
+</header>
+
+
+<main class="flex-1 p-6 flex flex-col justify-start  mt-4" id="main">
+    <div>
+    @yield('contenu')
+    </div>
     </main>
+
+
 <!-- Mettre le footer -->
  <footer>
 </footer>
 </body>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </html>
