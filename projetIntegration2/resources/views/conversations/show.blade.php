@@ -84,27 +84,18 @@
             </div>
             <div class="col-md-9">
                 <div class="chat-messages">
+                    @foreach ($messages as $message)
                     <div class="message">
                         <div class="avatar bg-primary text-white rounded-circle p-2">SS</div>
                         <div class="bubble">
-                            <strong>Sam Sulek</strong> <span class="text-muted">14:34</span><br>
-                            🔊 Audio
+                            <strong>{{$message->from->email}}</strong> 
+                            <span class="text-muted">{{ substr($message->created_at, 11, 5) }}
+                            </span>
+                            <br>
+                            {{$message->message}}
                         </div>
                     </div>
-                    <div class="message">
-                        <div class="avatar bg-success text-white rounded-circle p-2">X</div>
-                        <div class="bubble">
-                            <strong></strong> <span class="text-muted">14:35</span><br>
-                            <strong></strong>
-                        </div>
-                    </div>
-                    <div class="message own-message">
-                        <div class="bubble">
-                            <strong>Yoan</strong> <span class="text-muted">14:36</span><br>
-                            Nice body
-                        </div>
-                        <div class="avatar bg-danger text-white rounded-circle p-2">Y</div>
-                    </div>
+                    @endforeach
                 </div>
 
                 <div class="d-flex align-items-center mt-3">

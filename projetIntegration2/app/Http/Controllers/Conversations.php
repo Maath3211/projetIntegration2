@@ -35,7 +35,8 @@ class Conversations extends Controller
         $users = User::select('email','id')->get();
         return view('conversations.show',[
             'users' => $this->ConvRepository->getConversations(),
-            'user' => $user
+            'user' => $user,
+            'messages' => $this->ConvRepository->getMessageFor(1, $user->id)->get()
         ]);
     }
 
@@ -46,6 +47,6 @@ class Conversations extends Controller
             1,
             $user->id
         );
-        return redirect()->route('conversations.show', ['id' => $user->id]);
+        return redirect()->route('conversations.show', [$user->id]);
     }
 }
