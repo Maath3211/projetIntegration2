@@ -23,11 +23,23 @@ class ConversationsRepository{
     }
 
 
+    //TODO: Changer pour la connextion de l'utilisateur
+    //A ajouter where "user_id = auth()->id()"
     public function getConversations(){
-        return $this->user->newQuery()->
+        $conversation =  $this->user->newQuery()->
         select('email','id')
         ->get();
         
+        $unread = $this->unreadCount(1);
+
+        foreach($conversation as $conv){
+            if(isset($unread[$conv->id])){
+                $conv->unread = $unread[$conv->id];
+            }else{ 
+                $conv->unread = 0;
+            }
+        }
+        return $conversation;
     }
 
     public function createMessage(string $content, int $envoyeur, int $receveur){
@@ -44,9 +56,23 @@ class ConversationsRepository{
     public function getMessageFor($envoyeur,$receveur){
         return $this->message->newQuery()
         ->whereRaw("((envoyeur_id = $envoyeur AND receveur_id = $receveur) OR (envoyeur_id = $receveur AND receveur_id = $envoyeur ))")
-        ->orderBy('created_at', 'DESC')
-        ->with('from');
-        
-
+        ->orderBy('created_at', 'ASC')
+        ->with([
+            'from' => function($query){return $query->select('email','id');}
+        ]);
+    }
+/**
+ * 
+ * @params int $UserId
+ * @return \Illuminate\Support\Collection
+ */
+    private function unreadCount(int $UserId){
+        return $this->message->newQuery()
+        ->where('receveur_id', $UserId)
+        ->groupBy('envoyeur_id')
+        ->selectRaw('envoyeur_id, count(id) as count')
+        ->whereRaw('read_at IS NULL')
+        ->get()
+        ->pluck('count','envoyeur_id');
     }
 }
