@@ -38,7 +38,7 @@ class Conversations extends Controller
         return view('conversations.show',[
             'users' => $this->ConvRepository->getConversations(),
             'user' => $user,
-            'messages' => $this->ConvRepository->getMessageFor(1, $user->id)->paginate(2)
+            'messages' => $this->ConvRepository->getMessageFor(1, $user->id)->paginate(50) //Pagination des messages par 2
         ]);
     }
 

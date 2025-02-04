@@ -44,8 +44,9 @@ class ConversationsRepository{
     public function getMessageFor($envoyeur,$receveur){
         return $this->message->newQuery()
         ->whereRaw("((envoyeur_id = $envoyeur AND receveur_id = $receveur) OR (envoyeur_id = $receveur AND receveur_id = $envoyeur ))")
-        ->orderBy('created_at', 'DESC');
-        ;
+        ->orderBy('created_at', 'DESC')
+        ->with('from');
+        
 
     }
 }

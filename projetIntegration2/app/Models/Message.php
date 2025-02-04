@@ -31,5 +31,7 @@ class Message extends Model
         return $this->belongsTo(User::class, 'receveur_id');
     }
 
+    
+
 
 }

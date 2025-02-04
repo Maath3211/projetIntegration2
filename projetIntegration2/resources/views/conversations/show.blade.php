@@ -83,14 +83,13 @@
 
             </div>
             <div class="col-md-9">
-                <div class="chat-messages">
+                <div class="chat-messages" id="chat-messages">
                     @if ($messages->hasMorePages())
                         <div class="div text-center">
-                            <a href="" class="btn btn-light">
+                            <a href="{{$messages->nextPageUrl()}}" class="btn btn-light">
                                 Voir les messages précédent
                             </a>
                         </div>
-                        
                     @endif
                     @foreach ($messages as $message)
                     <div class="message {{ $message->from->id !== $user->id ? 'offset-md-2 text-right' : '' }}">
@@ -102,13 +101,19 @@
                             <br>
                             <p>
                                 {!! nl2br(e($message->message)) !!}
-
                             </p>
                         </div>
                     </div>
                     <hr>
                     @endforeach
-                    
+
+                    @if ($messages->previousPageUrl())
+                    <div class="div text-center">
+                        <a href="{{$messages->previousPageUrl()}}" class="btn btn-light">
+                            Voir les messages suivant
+                        </a>
+                    </div>
+                    @endif
                 </div>
 
                 <div class="d-flex align-items-center mt-3">
@@ -128,6 +133,15 @@
                         @endforeach
                     </u>
                 </div>
+            </div>
+            <script>
+                // Scroll to the bottom of the chat messages
+                document.addEventListener("DOMContentLoaded", function() {
+                    var chatMessages = document.getElementById("chat-messages");
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                });
+            </script>
+
             </div>
         </div>
     </div>
