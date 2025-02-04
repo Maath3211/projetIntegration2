@@ -13,7 +13,6 @@
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://kit.fontawesome.com/55ec8bd5f8.js" crossorigin="anonymous"></script>
         @yield("style")
-   
 <meta charset="UTF-8">
 </head>
 
