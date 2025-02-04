@@ -1,13 +1,13 @@
 @extends('Layouts.app')
 
 @section('contenu')
-<link rel="stylesheet" href="{{ asset('css/connexion.css') }}">
+<link rel="stylesheet" href="{{ asset('css/Profil/connexion.css') }}">
     @if (session('message'))
         <div class="alert alert-success">
             <p class="text-center msgErreur">{{ session('message') }}</p>
         </div>
     @endif
-    <div class="container-fluid bordure">
+    <div class="container-fluid">
         <div class="d-flex row justify-content-center">
             <div class="col-md-6">
 

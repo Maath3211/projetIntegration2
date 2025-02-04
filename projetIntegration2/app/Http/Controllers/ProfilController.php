@@ -18,4 +18,14 @@ class ProfilController extends Controller
     {
         dd('fonction');
     }
+
+    public function profil()
+    {
+        return View('profil.profil');
+    }
+
+    public function pageModification()
+    {
+        return View('profil.modification');
+    }
 }

@@ -34,5 +34,12 @@ Route::GET('/connexion',
 Route::POST('/connexion',
 [ProfilController::class,'connexion'])->name('profil.connexion');
 
+Route::GET('/profil',
+[ProfilController::class,'profil'])->name('profil.profil');
+
+Route::GET('/profil/modification',
+[ProfilController::class,'pageModification'])->name('profil.pageModification');
+
 Route::GET('/stats',
 [StatistiqueController::class,'index'])->name('statistique.index');
+
