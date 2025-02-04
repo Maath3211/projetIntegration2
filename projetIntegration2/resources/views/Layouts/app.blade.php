@@ -19,7 +19,7 @@
 <body class="flex h-screen" id="background">
 <!-- Navigation principale -->
 <header>
-<aside class="w-20 bg-gray-400 text-white h-screen flex flex-col items-center py-4 space-y-4">
+<aside class="w-20 bg-black-400 text-white h-screen flex flex-col items-center py-4 space-y-4">
        <a> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
        <a> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
        <a> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
