@@ -7,6 +7,18 @@
             <p class="text-center msgErreur">{{ session('message') }}</p>
         </div>
     @endif
+    @if (session('errors'))
+    {{-- !! Afficher seulement une erreur !! --}}
+        <div class="alert alert-danger">
+            @foreach ($errors->all() as $error)
+            @if ($error == "Informations invalides")
+            <p>{{ $error }}</p>
+                
+            @endif
+                
+            @endforeach
+        </div>
+    @endif
     <div class="container-fluid">
         <div class="d-flex row justify-content-center">
             <div class="col-md-6">
