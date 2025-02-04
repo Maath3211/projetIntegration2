@@ -11,9 +11,13 @@ class Score extends Model
 
     protected $table = "scores";
     protected $fillable = [
-        'utilisateur',
+        'user_id',
         'date',
         'score'
 
     ];
+
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }
