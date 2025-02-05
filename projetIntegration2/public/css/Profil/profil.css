@@ -1,0 +1,73 @@
+/*  
+bleu pale 86fffd
+bleu 28e6d3
+vert a9fe77
+mauve a650fc
+*/
+
+.profile-container {
+    background-color: #444;
+    padding: 20px;
+    border-radius: 10px;
+    margin: auto;
+    position: relative;
+}
+.profile-container-mod {
+    background-color: #444;
+    padding: 20px;
+    border-radius: 10px;
+    margin: auto;
+    position: relative;
+    justify-content: space-between;
+    height: 100%;
+}
+.profile-pic {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #a9fe77;
+}
+.profile-pic-mod {
+    width: 200px !important;
+    height: 200px !important;
+}
+.group-img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.btn-lightBlue {
+    background-color: #28e6d3;
+}
+.btn-green {
+    background-color: #a9fe77;
+}
+
+.imgGroupe {
+    width: 200px;
+    height: 200px;
+}
+
+.greenText {
+    color: #a9fe77;
+}
+.inputModification {
+    background-color: #707070;
+    color: rgb(255, 255, 255);
+    border: 1px solid #a9fe77;
+    right: 10%;
+    top: 5%;
+}
+input:focus,
+select:focus {
+    background-color: #999999 !important;
+    color: rgb(255, 255, 255) !important;
+}
+
+#engrenage {
+    position: absolute;
+    top: 3%;
+    right: 1%;
+    font-size: xx-large;
+}
