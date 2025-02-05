@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserCommunication;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\ClanController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\GymController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -21,3 +23,6 @@ Route::GET('/connexion',
 
 Route::POST('/connexion',
 [ProfilController::class,'connexion'])->name('profil.connexion');
+
+Route::GET('/localisation', 
+[GymController::class, 'index'])->name('localisation.index');
