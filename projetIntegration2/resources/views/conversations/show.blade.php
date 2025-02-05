@@ -72,13 +72,15 @@
 
     <div class="container chat-container mt-4">
         <div class="chat-header d-flex justify-content-between">
-            <h4>Nom Groupe</h4>
+            <h4>{{$user->email}}</h4>
             <div>1/25</div>
         </div>
 
         <div class="row mt-3">
             <div class="col-md-3 chat-sidebar">
                 <p>Liste des amis / groupes d'amis</p>
+                @include('conversations.utilisateurs',['users'=>$users])
+
             </div>
             <div class="col-md-9">
                 <div class="chat-messages">
@@ -92,8 +94,8 @@
                     <div class="message">
                         <div class="avatar bg-success text-white rounded-circle p-2">X</div>
                         <div class="bubble">
-                            <strong>{{$userId->email}}</strong> <span class="text-muted">14:35</span><br>
-                            <strong>{{$yup->message}}</strong>
+                            <strong></strong> <span class="text-muted">14:35</span><br>
+                            <strong></strong>
                         </div>
                     </div>
                     <div class="message own-message">
@@ -108,8 +110,13 @@
                 <div class="d-flex align-items-center mt-3">
                     <button class="btn btn-secondary me-2">➕</button>
                     <button class="btn btn-secondary me-2">😊</button>
-                    <input type="text" class="message-input" placeholder="Écris un message...">
-                    <button class="btn btn-secondary ms-2">🎤</button>
+                    <form action="" method="post">
+                        @csrf
+                        <div class="form-group d-flex align-items-center">
+                            <input type="text" class="message-input form-control" name="content" placeholder="Écris un message...">
+                            <button class="btn btn-primary ms-2" type="submit">Submit</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
