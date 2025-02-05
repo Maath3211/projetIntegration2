@@ -29,8 +29,8 @@
                             <p class="greenText h5 ">Nom complet</p>
                         </div>
                         <div class="col-md-4 d-flex flex-column align-items-center">
-                            <input type="text" class="profile-field inputModification form-control"
-                                value="Shany-Jonathan Carle">
+                            <input type="text" class="inputModification form-control"
+                                value="Shany-Jonathan Carle" placeholder="Nom complet">
                         </div>
                     </div>
                     <div class="row mb-4">
@@ -38,8 +38,8 @@
                             <p class="greenText h5">Adresse courriel</p>
                         </div>
                         <div class="col-md-4 d-flex flex-column align-items-center">
-                            <input type="email" class="profile-field inputModification form-control"
-                                value="shany.carle@cegeptr.qc.ca">
+                            <input type="email" class="inputModification form-control"
+                                value="shany.carle@cegeptr.qc.ca" placeholder="Adresse courriel">
                         </div>
                     </div>
                     <div class="row mb-4">
@@ -47,7 +47,7 @@
                             <p class="greenText h5">Date de naissance</p>
                         </div>
                         <div class="col-md-4 d-flex flex-column align-items-center">
-                            <input type="date" class="profile-field inputModification  form-control" value="1946-06-14">
+                            <input type="date" class="inputModification  form-control" value="1946-06-14" placeholder="Date de naissance">
                         </div>
                     </div>
                     <div class="row mb-4">
@@ -55,7 +55,7 @@
                             <p class="greenText h5">Pays</p>
                         </div>
                         <div class="col-md-4 d-flex flex-column align-items-center">
-                            <select class="form-select profile-field inputModification form-control"
+                            <select class="form-select inputModification form-control"
                                 aria-label="Default select example">
                                 <option selected>Choisir</option>
                                 @foreach ($countries as $country)
