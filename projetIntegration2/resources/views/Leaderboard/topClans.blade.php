@@ -4,6 +4,21 @@
 @section('style')
 <link rel="stylesheet" style="text/css" href="{{asset('css/Leaderboard.css')}}">
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+    .conteneurImage {
+    background-image: url('{{ asset('images/ui/leaderboard.png') }}');
+    background-size: cover;
+    background-position: center center;
+    width: 100%;
+    height: 150px;
+    opacity: 0.5;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 15px;
+    border-bottom: 2px solid rgba(255, 255, 255, 1);
+}
+</style>
 
 @endsection()
 
