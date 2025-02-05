@@ -21,33 +21,18 @@
             align-items: center;
             margin-bottom: 20px;
         }
-        .back-button {
-            background-color: #a9fe77;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-bottom: 10px;
-            color: black;
-        }
+    
         h1 {
             margin-bottom: 10px;
         }
-        .unit-toggle {
+        .uniteToggle {
             display: flex;
             justify-content: center;
             gap: 10px;
             margin-bottom: 20px;
         }
-        .unit-btn {
-            background-color: #a9fe77;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            font-size: 16px;
-            color: black;
-        }
-        .chart-container {
+    
+        .graphiqueContainer {
             width: 90%;
             max-width: 100%;
             height: 500px;
@@ -66,17 +51,17 @@
     </style>
 
 <div id="main">
-    <button class="back-button">retour</button>
+    <a href="/stats"><button class="bouton">retour</button></a>
     <h1 id="titre">Amélioration de votre poids</h1>
-    <div class="unit-toggle">
-        <button class="unit-btn">Lbs</button>
-        <button class="unit-btn">Kg</button>
+    <div class="uniteToggle">
+        <button class="bouton">Lbs</button>
+        <button class="bouton">Kg</button>
     </div>
-    <div class="chart-container">
-        <canvas id="weightChart"></canvas>
+    <div class="graphiqueContainer">
+        <canvas id="graphique"></canvas>
     </div>
     <script>
-        const ctx = document.getElementById('weightChart').getContext('2d');
+        const ctx = document.getElementById('graphique').getContext('2d');
         new Chart(ctx, {
             type: 'line',
             data: {
