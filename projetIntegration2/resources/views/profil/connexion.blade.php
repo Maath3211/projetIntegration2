@@ -12,7 +12,7 @@
                         @csrf
                         <label for="email" class="titreForm">Adresse courriel</label>
                         <input type="email" class="form-control" id="email" placeholder="Adresse courriel"
-                            name="email" value="test@test.com">{{-- !! enlever value !! --}}
+                            name="email">
                         @error('email')
                             <span class="text-danger">{{ $message }}
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
@@ -26,7 +26,7 @@
                     <div>
                         <label for="password" class="titreForm">Mot de passe</label>
                         <input type="password" class="form-control" id="password" placeholder="Mot de passe"
-                            name="password" value="adminggg">{{-- !! enlever value !! --}}
+                            name="password">
                         @error('password')
                             <span class="text-danger">{{ $message }}
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
