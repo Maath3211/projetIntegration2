@@ -16,25 +16,25 @@
 <meta charset="UTF-8">
 </head>
 
-<body class=" flex h-screen" id="background">
-    <!-- Sidebar -->
-    <header>
-        <aside class="w-20 text-white h-screen flex flex-col items-center py-4 space-y-4 p-5">
-            <a  href="/clan/1"> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
-            <a  href="/clan/2"> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
-            <a  href="/clan/3"> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
-            <a  href="/clan/4"> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
-            <a  href="/clan/5"> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
-            <a  href="/clan/6"> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
-            <a  href="/clan/7"> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
-        </aside>
-    </header>
-    
-    <!-- Main Content -->
-    <main id="main">
-        <div>
-          @yield('contenu')
-        </div>
+<body class="flex h-screen" id="background">
+<!-- Navigation principale -->
+<header>
+<aside class="w-20 bg-black-400 text-white h-screen flex flex-col items-center py-4 space-y-4">
+       <a> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
+       <a> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
+       <a> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
+       <a> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
+       <a> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
+       <a> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
+       <a> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
+</aside> 
+</header>
+
+
+<main class="flex-1 p-6 flex flex-col justify-start  mt-4" id="main">
+    <div>
+    @yield('contenu')
+    </div>
     </main>
 <!-- Mettre le footer -->
  <footer>

@@ -14,6 +14,23 @@ class StatistiqueController extends Controller
         return View("statistique.index");
     }
 
+
+    public function graphique()
+    {
+        return View("statistique.graphique");
+    }
+
+    public function thermique()
+    {
+        $data = [
+            [0, 0, 10], [0, 1, 20], [0, 2, 30],
+            [1, 0, 15], [1, 1, 25], [1, 2, 35],
+            [2, 0, 20], [2, 1, 30], [2, 2, 40],
+        ];
+        return View("statistique.thermique", compact('data'));
+    }
+
+
     /**
      * Show the form for creating a new resource.
      */

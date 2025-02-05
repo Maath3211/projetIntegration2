@@ -49,3 +49,10 @@ Route::GET('/profil/modification',
 Route::GET('/stats',
 [StatistiqueController::class,'index'])->name('statistique.index');
 
+
+Route::GET('/graphique',
+[StatistiqueController::class,'graphique'])->name('statistique.graphique');
+
+
+Route::GET('/thermique',
+[StatistiqueController::class,'thermique'])->name('statistique.thermique');
