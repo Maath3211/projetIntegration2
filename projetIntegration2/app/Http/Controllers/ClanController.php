@@ -6,19 +6,17 @@ use Illuminate\Http\Request;
 
 class ClanController extends Controller
 {
+    // Accueil d'un clan
     public function index($id){
         //$clan = Clan::findOrFail($id);
         return View('Clans.accueilClans'/*, compact('clan')*/);
     }
 
+    // Paramètres d'un clan
     public function parametres($id){
         // $clan = Clan::findOrFail($id);
         return View('Clans.parametresClan'/*, compact('clan')*/);
     }
-    /**
-     * Display a listing of the resource.
-     */
-
 
     /**
      * Show the form for creating a new resource.

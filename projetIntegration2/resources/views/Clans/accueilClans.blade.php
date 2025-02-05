@@ -2,8 +2,10 @@
 @section('titre', 'Clans')
 
 @section('style')
-    <link rel="stylesheet" style="text/css" href="{{asset('css/Clans.css')}}">
+    <link rel="stylesheet" style="text/css" href="{{asset('css/Clans/clans.css')}}">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- Pas le choix de mettre le style de .conteneurImage comme ça vu que l'image du clan change et c'est une image en "background" et non directement <img> -->
     <style>
         .conteneurImage{
             background-image: url('{{ asset('img/workoutMasterLogo.jpg') }}');
@@ -29,7 +31,7 @@
         <div class="row">
             <div class="col-md-2 colonneCanaux">
                 <div class="container">
-                    <div class="column">
+                    <div class="column"> <!-- column est en anglais parce que c'est le nom de la classe bootstrap c'est pas mon choix -->
                         <div class="conteneurImage">
                             <div class="texteSurImage">Workout Master</div>
                             {{-- <div><a href="{{ route('clan.parametres', ['id' => $clan->id]) }}"><i class="fa-solid fa-ellipsis"></i></a></div> --}}
@@ -630,28 +632,9 @@
     </div>
 </div>
 
-<script>
+@endsection()
 
-    // JavaScript qui soit s'exécuter une fois la page chargée
-    document.addEventListener("DOMContentLoaded", function() {
 
-        const canals = document.querySelectorAll('.canal');
-        const divScrollable = document.querySelector(".contenuScrollable");
-
-        // Pour montrer quel canal est actif actuellement
-        canals.forEach(canal => {
-            canal.addEventListener('click', function() {
-                canals.forEach(c => c.classList.remove('active'));
-                canal.classList.add('active');
-
-                // Quand on change de canal de chat, on scroll jusqu'en bas automatiquement
-                divScrollable.scrollTop = divScrollable.scrollHeight;
-            });
-        });
-
-        // Déroulement automatique jusqu'en bas des messages
-        divScrollable.scrollTop = divScrollable.scrollHeight;
-    });
-
-</script>
+@section("scripts")
+<script src="{{ asset('js/Clans/clans.js') }}" crossorigin="anonymous"> </script>
 @endsection()

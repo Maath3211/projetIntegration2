@@ -28,6 +28,7 @@ aside {
     padding-left: 0px !important;
 }
 
+/* .column est en anglais parce que c'est le nom de la classe bootstrap c'est pas mon choix */
 .column {
     width: 100%;
     height: 100vh;
