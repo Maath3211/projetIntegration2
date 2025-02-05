@@ -6,11 +6,12 @@ use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\Conversations;
 use App\Http\Controllers\StatistiqueController;
 use App\Http\Controllers\ClanController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\GymController;
 
 Route::get('/', function () {
     return view('welcome');
 });
-
 
 Route::GET('/clan/{id}', 
 [ClanController::class, 'index'])->name('clan.montrer');
@@ -30,7 +31,6 @@ Route::GET('/conversations/{user}',
 Route::post('/conversations/{user}',
 [Conversations::class,'store']);
 
-
 Route::GET('/connexion',
 [ProfilController::class,'index'])->name('profil.pageConnexion');
 
@@ -49,10 +49,11 @@ Route::GET('/profil/modification',
 Route::GET('/stats',
 [StatistiqueController::class,'index'])->name('statistique.index');
 
-
 Route::GET('/graphique',
 [StatistiqueController::class,'graphique'])->name('statistique.graphique');
 
-
 Route::GET('/thermique',
 [StatistiqueController::class,'thermique'])->name('statistique.thermique');
+
+Route::GET('/localisation', 
+[GymController::class, 'index'])->name('localisation.index');
