@@ -103,6 +103,35 @@
             width: 100%;
             border: 1px solid black; /* Contour noir */
             border-radius: 15px; /* Coins arrondis */
+<<<<<<< Updated upstream
+=======
+        }
+
+        .custom-icon {
+            border: 2px solid black; /* Contour noir */
+            border-radius: 50%; /* Coins arrondis */
+            background-color: #A9FE77; /* Couleur de fond */
+            width: 35px; /* Largeur de l'icône */
+            height: 50px; /* Hauteur de l'icône */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .custom-icon img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%; /* Coins arrondis */
+        }
+
+        .label {
+            background-color: transparent; /* Fond transparent */
+            border: none; /* Pas de contour */
+            padding: 2px 5px;
+            font-size: 12px;
+            color: #000000; /* Couleur du texte */
+            white-space: nowrap;
+>>>>>>> Stashed changes
         }
     </style>
 </head>
@@ -131,11 +160,19 @@
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        // Créer une icône personnalisée
+        // Créer une icône personnalisée sans contour
         var customIcon = L.icon({
             iconUrl: '/img/green-marker-icon.png', // Chemin de votre icône personnalisée
-            iconSize: [45, 50], // Taille de l'icône (ajustée pour être plus large)
+            iconSize: [45, 45], // Taille de l'icône
             iconAnchor: [17, 50], // Point de l'icône qui correspondra à la position du marqueur
+            popupAnchor: [1, -34] // Point depuis lequel la popup doit s'ouvrir par rapport à l'icône
+        });
+
+        // Créer une icône pour la position actuelle
+        var currentLocationIcon = L.icon({
+            iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+            iconSize: [25, 41], // Taille de l'icône
+            iconAnchor: [12, 41], // Point de l'icône qui correspondra à la position du marqueur
             popupAnchor: [1, -34] // Point depuis lequel la popup doit s'ouvrir par rapport à l'icône
         });
 
@@ -153,6 +190,17 @@
                     // Supprimer les marqueurs existants
                     markers.forEach(marker => map.removeLayer(marker));
                     markers = [];
+
+                    // Ajouter un marqueur pour la position actuelle avec un label
+                    var currentLocationMarker = L.marker([lat, lon], { icon: currentLocationIcon }).addTo(map);
+                    var currentLocationLabel = L.divIcon({
+                        className: 'label',
+                        html: 'Vous êtes ici',
+                        iconSize: [100, 20], // Taille du label
+                        iconAnchor: [50, 0] // Point de l'icône qui correspondra à la position du marqueur
+                    });
+                    L.marker([lat, lon], { icon: currentLocationLabel }).addTo(map);
+                    markers.push(currentLocationMarker);
 
                     var gyms = data.elements.filter(element => element.tags.name && element.tags.name.toLowerCase().includes(filter.toLowerCase()));
                     if (gyms.length === 0) {
