@@ -49,3 +49,5 @@ Route::GET('/profil/modification',
 Route::GET('/stats',
 [StatistiqueController::class,'index'])->name('statistique.index');
 
+Route::get('/export/top-users', [ScoresController::class, 'exportTopUsers'])->name('export.topUsers');
+Route::get('/export/top-clans', [ScoresController::class, 'exportTopClans'])->name('export.topClans');
