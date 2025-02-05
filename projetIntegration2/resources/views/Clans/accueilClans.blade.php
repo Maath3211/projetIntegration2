@@ -32,7 +32,8 @@
                     <div class="column">
                         <div class="conteneurImage">
                             <div class="texteSurImage">Workout Master</div>
-                            <div><a href="#"><i class="fa-solid fa-ellipsis"></i></a></div>
+                            {{-- <div><a href="{{ route('clan.parametres', ['id' => $clan->id]) }}"><i class="fa-solid fa-ellipsis"></i></a></div> --}}
+                            <div><a href="{{ route('clan.parametres', ['id' => 1]) }}"><i class="fa-solid fa-ellipsis"></i></a></div>
                         </div>
                         <div class="conteneurCanaux">
                             <div class="categorieCanal">
@@ -290,7 +291,7 @@
             <div class="col-md-8 colonneMessages">
                 <div class="contenuScrollable">
                     <div class="message">
-                        <a href="#"><img src="{{asset('img/Utilisateur/utilisateurParDefaut.jpg')}}" ></a>
+                        <a href="#"><img src="{{asset('img/Utilisateurs/utilisateurParDefaut.jpg')}}" ></a>
                         <div class="contenu">
                             <div class="utilisateur">
                                 <a><strong>Gymcord#654302</strong></a>
@@ -302,7 +303,7 @@
                     </div>
 
                     <div class="message">
-                        <a href="#"><img src="{{asset('img/Utilisateur/coachNoah.jpg')}}" ></a>
+                        <a href="#"><img src="{{asset('img/Utilisateurs/coachNoah.jpg')}}" ></a>
                         <div class="contenu">
                             <div class="utilisateur">
                                 <a href="#"><strong>Coach Noah</strong></a>
@@ -314,7 +315,7 @@
                     </div>
 
                     <div class="message">
-                        <a href="#"><img src="{{asset('img/Utilisateur/utilisateurParDefaut.jpg')}}" ></a>
+                        <a href="#"><img src="{{asset('img/Utilisateurs/utilisateurParDefaut.jpg')}}" ></a>
                         <div class="contenu">
                             <div class="utilisateur">
                                 <a><strong>Gymcord#654302</strong></a>
@@ -326,7 +327,7 @@
                     </div>
 
                     <div class="message">
-                        <a href="#"><img src="{{asset('img/Utilisateur/coachNoah.jpg')}}" ></a>
+                        <a href="#"><img src="{{asset('img/Utilisateurs/coachNoah.jpg')}}" ></a>
                         <div class="contenu">
                             <div class="utilisateur">
                                 <a href="#"><strong>Coach Noah</strong></a>
@@ -339,7 +340,7 @@
                     </div>
 
                     <div class="message">
-                        <a href="#"><img src="{{asset('img/Utilisateur/utilisateurParDefaut.jpg')}}" ></a>
+                        <a href="#"><img src="{{asset('img/Utilisateurs/utilisateurParDefaut.jpg')}}" ></a>
                         <div class="contenu">
                             <div class="utilisateur">
                                 <a><strong>Gymcord#654302</strong></a>
@@ -351,7 +352,7 @@
                     </div>
 
                     <div class="message">
-                        <a href="#"><img src="{{asset('img/Utilisateur/coachNoah.jpg')}}" ></a>
+                        <a href="#"><img src="{{asset('img/Utilisateurs/coachNoah.jpg')}}" ></a>
                         <div class="contenu">
                             <div class="utilisateur">
                                 <a href="#"><strong>Coach Noah</strong></a>
@@ -373,7 +374,7 @@
                     </div>
 
                     <div class="message">
-                        <a href="#"><img src="{{asset('img/Utilisateur/utilisateurParDefaut.jpg')}}" ></a>
+                        <a href="#"><img src="{{asset('img/Utilisateurs/utilisateurParDefaut.jpg')}}" ></a>
                         <div class="contenu">
                             <div class="utilisateur">
                                 <a><strong>Gymcord#654302</strong></a>
@@ -386,7 +387,7 @@
 
                     
                     <div class="message">
-                        <a href="#"><img src="{{asset('img/Utilisateur/coachNoah.jpg')}}" ></a>
+                        <a href="#"><img src="{{asset('img/Utilisateurs/coachNoah.jpg')}}" ></a>
                         <div class="contenu">
                             <div class="utilisateur">
                                 <a href="#"><strong>Coach Noah</strong></a>
@@ -398,7 +399,7 @@
                     </div>
 
                     <div class="message">
-                        <a href="#"><img src="{{asset('img/Utilisateur/coachNoah.jpg')}}" ></a>
+                        <a href="#"><img src="{{asset('img/Utilisateurs/coachNoah.jpg')}}" ></a>
                         <div class="contenu">
                             <div class="utilisateur">
                                 <a href="#"><strong>Coach Noah</strong></a>
@@ -410,7 +411,7 @@
                     </div>
 
                     <div class="message">
-                        <a href="#"><img src="{{asset('img/Utilisateur/utilisateurParDefaut.jpg')}}" ></a>
+                        <a href="#"><img src="{{asset('img/Utilisateurs/utilisateurParDefaut.jpg')}}" ></a>
                         <div class="contenu">
                             <div class="utilisateur">
                                 <a><strong>Gymcord#654302</strong></a>
@@ -422,7 +423,7 @@
                     </div>
 
                     <div class="message">
-                        <a href="#"><img src="{{asset('img/Utilisateur/utilisateurParDefaut.jpg')}}" ></a>
+                        <a href="#"><img src="{{asset('img/Utilisateurs/utilisateurParDefaut.jpg')}}" ></a>
                         <div class="contenu">
                             <div class="utilisateur">
                                 <a><strong>Gymcord#654302</strong></a>
@@ -434,7 +435,7 @@
                     </div>
 
                     <div class="message">
-                        <a href="#"><img src="{{asset('img/Utilisateur/coachNoah.jpg')}}" ></a>
+                        <a href="#"><img src="{{asset('img/Utilisateurs/coachNoah.jpg')}}" ></a>
                         <div class="contenu">
                             <div class="utilisateur">
                                 <a href="#"><strong>Coach Noah</strong></a>
@@ -457,7 +458,7 @@
                 <div class="contenuScrollableMembres">
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateur/utilisateur1.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur1.jpg')}}" > 
                             <div>
                                 <strong>ADMIN</strong> - Tommy Jackson
                             </div>
@@ -465,7 +466,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateur/utilisateur2.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur2.jpg')}}" > 
                             <div>
                                 AverageGymGoer
                             </div>
@@ -473,7 +474,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateur/utilisateur3.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur3.jpg')}}" > 
                             <div>
                                 NotTheAverageGuy
                             </div>
@@ -481,7 +482,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateur/utilisateur4.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur4.jpg')}}" > 
                             <div>
                                 Julie St-Aubin  
                             </div>
@@ -489,7 +490,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateur/utilisateur5.avif')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur5.avif')}}" > 
                             <div>
                                 Gnulons  
                             </div>
@@ -497,7 +498,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateur/utilisateur6.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur6.jpg')}}" > 
                             <div>
                                 Jack Jacked
                             </div>
@@ -505,7 +506,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateur/utilisateur7.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur7.jpg')}}" > 
                             <div>
                                 Sophie  
                             </div>
@@ -513,7 +514,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateur/utilisateur8.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur8.jpg')}}" > 
                             <div>
                                 Lucia Percada
                             </div>
@@ -521,7 +522,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateur/utilisateur9.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur9.jpg')}}" > 
                             <div>
                                 Stevie  
                             </div>
@@ -529,7 +530,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateur/utilisateur11.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur11.jpg')}}" > 
                             <div>
                                 Tom  
                             </div>
@@ -537,7 +538,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateur/utilisateur12.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur12.jpg')}}" > 
                             <div>
                                 Bluestack  
                             </div>
@@ -545,7 +546,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateur/utilisateur13.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur13.jpg')}}" > 
                             <div>
                                 CoolCarl123
                             </div>
@@ -553,7 +554,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateur/utilisateur14.webp')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur14.webp')}}" > 
                             <div>
                                 Sylvain  
                             </div>
@@ -561,7 +562,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateur/utilisateur15.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur15.jpg')}}" > 
                             <div>
                                 Ghost  
                             </div>
@@ -569,7 +570,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateur/utilisateur16.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur16.jpg')}}" > 
                             <div>
                                 Coach Noah  
                             </div>
@@ -577,7 +578,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateur/utilisateur17.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur17.jpg')}}" > 
                             <div>
                                 MotivationGuy  
                             </div>
@@ -585,7 +586,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateur/utilisateur18.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur18.jpg')}}" > 
                             <div>
                                 xXDarkSlayerXx  
                             </div>
@@ -593,7 +594,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateur/utilisateur19.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur19.jpg')}}" > 
                             <div>
                                 CalisthenicGod_1  
                             </div>
@@ -601,7 +602,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateur/utilisateur20.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur20.jpg')}}" > 
                             <div>
                                 Gymcord#654302  
                             </div>
@@ -609,7 +610,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateur/utilisateur4.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur4.jpg')}}" > 
                             <div>
                                 Julia Julia    
                             </div>
@@ -617,7 +618,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateur/utilisateur2.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur2.jpg')}}" > 
                             <div>
                                 Dieu Poulet
                             </div>

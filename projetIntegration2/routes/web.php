@@ -12,8 +12,11 @@ Route::get('/', function () {
 });
 
 
-Route::GET('/clan', 
+Route::GET('/clan/{id}', 
 [ClanController::class, 'index'])->name('clan.montrer');
+
+Route::GET('/clan/{id}/parametres',
+[ClanController::class, 'parametres'])->name('clan.parametres');
 
 Route::GET('/yup',
 [UserCommunication::class,'index'])->name('user.index');
