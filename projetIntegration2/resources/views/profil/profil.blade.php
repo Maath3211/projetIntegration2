@@ -13,6 +13,13 @@
                     <p><strong>Membre depuis:</strong> 25 mai 2022</p>
                 </div>
             </div>
+
+            <form action="{{ route('profil.deconnexion') }}" method="post">
+                @csrf
+                <button type="submit" class="btn btn-green">Déconnexion</button>
+            </form>
+
+
             <span id="engrenage">&#9881;</span> 
             <div class="d-flex justify-content-between mt-3">
                 <button class="btn btn-green">Statistique</button>

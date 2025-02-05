@@ -34,6 +34,12 @@ class ProfilController extends Controller
         return View('profil.profil');
     }
 
+    public function deconnexion()
+    {
+        Auth::guard()->logout();
+        return redirect()->route('profil.pageConnexion');
+    }
+
     public function pageModification()
     {
         // Cache the countries for 1 day

@@ -34,6 +34,9 @@ Route::GET('/connexion',
 Route::POST('/connexion',
 [ProfilController::class,'connexion'])->name('profil.connexion');
 
+Route::POST('/deconnexion',
+[ProfilController::class,'deconnexion'])->name('profil.deconnexion');
+
 Route::GET('/profil',
 [ProfilController::class,'profil'])->name('profil.profil');
 
