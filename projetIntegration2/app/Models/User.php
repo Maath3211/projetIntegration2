@@ -23,6 +23,14 @@ class User extends Authenticatable
         'password',
     ];
 
+    public function clans(){
+        return $this->belongsToMany(Clan::class, 'Clan_user', 'user_id', 'clan_id');
+    }
+
+    public function scores(){
+        return $this->hasMany(Score::class);
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
