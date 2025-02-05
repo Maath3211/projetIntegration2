@@ -3,9 +3,9 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
-use DB;
-use Hash;
+use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 
 class UtilisateurSeeder extends Seeder
@@ -17,7 +17,7 @@ class UtilisateurSeeder extends Seeder
     {
         DB::table('users')->insert([
             'id' => 1,
-            'email'=> 'test',
+            'email'=> 'test@test.com',
             'prenom'=> 'prenom',
             'nom'=> 'nom',
             'imageProfil'=> 'lienImage',

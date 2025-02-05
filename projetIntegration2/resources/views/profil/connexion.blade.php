@@ -1,24 +1,8 @@
 @extends('Layouts.app')
 
 @section('contenu')
-<link rel="stylesheet" href="{{ asset('css/Profil/connexion.css') }}">
-    @if (session('message'))
-        <div class="alert alert-success">
-            <p class="text-center msgErreur">{{ session('message') }}</p>
-        </div>
-    @endif
-    @if (session('errors'))
-    {{-- !! Afficher seulement une erreur !! --}}
-        <div class="alert alert-danger">
-            @foreach ($errors->all() as $error)
-            @if ($error == "Informations invalides")
-            <p>{{ $error }}</p>
-                
-            @endif
-                
-            @endforeach
-        </div>
-    @endif
+    <link rel="stylesheet" href="{{ asset('css/Profil/connexion.css') }}">
+
     <div class="container-fluid">
         <div class="d-flex row justify-content-center">
             <div class="col-md-6">
@@ -28,7 +12,7 @@
                         @csrf
                         <label for="email" class="titreForm">Adresse courriel</label>
                         <input type="email" class="form-control" id="email" placeholder="Adresse courriel"
-                            name="email">
+                            name="email" value="test@test.com">{{-- !! enlever value !! --}}
                         @error('email')
                             <span class="text-danger">{{ $message }}
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
@@ -42,7 +26,7 @@
                     <div>
                         <label for="password" class="titreForm">Mot de passe</label>
                         <input type="password" class="form-control" id="password" placeholder="Mot de passe"
-                            name="password">
+                            name="password" value="adminggg">{{-- !! enlever value !! --}}
                         @error('password')
                             <span class="text-danger">{{ $message }}
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
@@ -53,6 +37,21 @@
                             </span>
                         @enderror
                     </div>
+                    <br>
+                    @if (session('message'))
+                        <div class="alert alert-success">
+                            <p class="text-center msgErreur">{{ session('message') }}</p>
+                        </div>
+                    @endif
+                    @if (session('errors'))
+                        @foreach ($errors->all() as $error)
+                            @if ($error == 'Informations invalides')
+                                <div class="alert alert-danger">
+                                    <p>{{ $error }}</p>
+                                </div>
+                            @endif
+                        @endforeach
+                    @endif
                     <button type="submit" class="btn btn-gymCord">Connexion</button>
                 </form>
 
