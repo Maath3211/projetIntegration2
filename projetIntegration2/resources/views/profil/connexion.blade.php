@@ -24,7 +24,7 @@
                 
                 <form action="{{ route('profil.connexion') }}" method="post" id="form">
                     <h1 class="h1" id="titreConnexion">Connexion ou création de compte Gymcord</h1>
-                    <div>
+                    <div class="conteneurForm">
                         @csrf
                         <label for="email" class="text-vert">Adresse courriel</label>
                         <input type="email" class="form-control inputConnexion" id="email" placeholder="Adresse courriel"
@@ -41,7 +41,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div>
+                    <div class="conteneurForm">
                         <label for="password" class="text-vert">Mot de passe</label>
                         <input type="password" class="form-control inputConnexion" id="password" placeholder="Mot de passe"
                             name="password">
@@ -71,7 +71,7 @@
                             @endif
                         @endforeach
                     @endif
-                    <button type="submit" class="btn back-button">Connexion</button>
+                    <button type="submit" class="btn btn-connexion">Connexion</button>
                 </form>
 
             </div>
