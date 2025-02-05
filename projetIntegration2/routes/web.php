@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserCommunication;
 use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\ScoresController;
 use App\Http\Controllers\Conversations;
 use App\Http\Controllers\StatistiqueController;
 use App\Http\Controllers\ClanController;
@@ -37,6 +38,8 @@ Route::GET('/connexion',
 Route::POST('/connexion',
 [ProfilController::class,'connexion'])->name('profil.connexion');
 
+Route::GET('/meilleursGroupes',
+[ScoresController::class,'meilleursGroupes'])->name('scores.meilleursGroupes');
 Route::POST('/deconnexion',
 [ProfilController::class,'deconnexion'])->name('profil.deconnexion');
 
@@ -57,3 +60,5 @@ Route::GET('/thermique',
 
 Route::GET('/localisation', 
 [GymController::class, 'index'])->name('localisation.index');
+Route::get('/export/top-users', [ScoresController::class, 'exportTopUsers'])->name('export.topUsers');
+Route::get('/export/top-clans', [ScoresController::class, 'exportTopClans'])->name('export.topClans');
