@@ -92,7 +92,7 @@
                         </div>
                     @endif
                     @foreach ($messages as $message)
-                    <div class="message {{ $message->from->id !== $user->id ? 'offset-md-2 text-right' : '' }}">
+                    <div class="message {{ $message->from->id !== $user->id ? 'offset-md-9 text-right' : '' }}">
                         <div class="avatar bg-primary text-white rounded-circle p-2">SS</div>
                         <div class="bubble">
                             <strong>{{$message->from->email}}</strong> 
@@ -119,13 +119,14 @@
                 <div class="d-flex align-items-center mt-3">
                     <button class="btn btn-secondary me-2">➕</button>
                     <button class="btn btn-secondary me-2">😊</button>
-                    <form action="" method="post">
+                    <form action="" method="post" class="d-flex flex-grow-1">
                         @csrf
-                        <div class="form-group d-flex align-items-center">
-                            <input type="textarea" class="message-input form-control" name="content" placeholder="Écris un message...">
+                        <div class="form-group d-flex align-items-center w-100">
+                            <input type="textarea" class="message-input form-control flex-grow-1" name="content" placeholder="Écris un message...">
                             <button class="btn btn-primary ms-2" type="submit">Submit</button>
                         </div>
                     </form>
+                </div>
                     <u>
                         @foreach ($errors->all() as $error)
                         <li>{{$error}}</li>

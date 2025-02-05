@@ -24,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
         
         //Schema::defaultStringLength(191);
     
+        /*
         if ($this->app->environment() === 'local') {
             DB::listen(function (QueryExecuted $query) {
                 file_put_contents(
@@ -31,7 +32,8 @@ class AppServiceProvider extends ServiceProvider
                     "\e[34m{$query->sql}\t\e[37m" . json_encode($query->bindings) . "\t\e[32m{$query->time}ms\e[0m\n"
                 );
             });
-        }
+
+        }*/
     }
     
 }

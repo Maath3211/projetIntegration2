@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Repository\ConversationsRepository;
 use App\Http\Requests\StoreMessage;
+use App\Events\PusherBroadcast;
 
 
 
@@ -51,4 +52,17 @@ class Conversations extends Controller
         );
         return redirect()->route('conversations.show', [$user->id]);
     }
+
+
+
+    public function broadcast(Request $request){
+        broadcast(new PusherBroadcast($request->message))->toOthers();
+        return view('conversations.broadcast', ['messages' => $request->message]);
+    }
+    
+
+    public function receive(Request $request){
+        return view('conversations.receive', ['messages' => $request->message]);
+    }
+    
 }

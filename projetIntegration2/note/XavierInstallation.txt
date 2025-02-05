@@ -1,0 +1,5 @@
+ Installe pour le websocket et pour le pusher
+php artisan install:broadcasting
+
+Installer pusher 
+composer require pusher/pusher-php-server

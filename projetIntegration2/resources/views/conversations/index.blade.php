@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         body {
@@ -83,39 +85,67 @@
 
             </div>
             <div class="col-md-9">
-                <div class="chat-messages">
-                    <div class="message">
-                        <div class="avatar bg-primary text-white rounded-circle p-2">SS</div>
-                        <div class="bubble">
-                            <strong>Sam Sulek</strong> <span class="text-muted">14:34</span><br>
-                            🔊 Audio
-                        </div>
-                    </div>
-                    <div class="message">
-                        <div class="avatar bg-success text-white rounded-circle p-2">X</div>
-                        <div class="bubble">
-                            <strong></strong> <span class="text-muted">14:35</span><br>
-                            <strong></strong>
-                        </div>
-                    </div>
-                    <div class="message own-message">
-                        <div class="bubble">
-                            <strong>Yoan</strong> <span class="text-muted">14:36</span><br>
-                            Nice body
-                        </div>
-                        <div class="avatar bg-danger text-white rounded-circle p-2">Y</div>
-                    </div>
+                <div class="messages">
+                    @include('conversations.receive',['messages'=>"Hey !"])
                 </div>
 
                 <div class="d-flex align-items-center mt-3">
                     <button class="btn btn-secondary me-2">➕</button>
                     <button class="btn btn-secondary me-2">😊</button>
-                    <input type="text" class="message-input" placeholder="Écris un message...">
-                    <button class="btn btn-secondary ms-2">🎤</button>
+                    <form action="">
+                        <input id="message" name="message" type="text" class="message-input" placeholder="Écris un message...">
+                        <button type="submit" class="btn btn-secondary ms-2">Submit</button>
+                    </form>
+
                 </div>
             </div>
         </div>
     </div>
 
 </body>
+
+<script>
+
+console.log("yup" + "Pusher key:", '{{config('broadcasting.connections.pusher.key')}}');
+    
+    const pusher = new Pusher('{{config('broadcasting.connections.pusher.key')}}', {
+        cluster: '{{config('broadcasting.connections.pusher.options.cluster')}}'
+    });
+    const channel = pusher.subscribe('public');
+
+
+
+    //revieve
+    channel.bind('messages', function(data) {
+        $.post("/receive", {
+            _token: "{{ csrf_token() }}",
+            messages: data.message
+        })
+        .done(function(res) {
+            $(".messages").append(res);
+            $(document).scrollTop($(document).height());
+        });
+    });
+
+    $("form").submit(function(e) {
+        e.preventDefault();
+        console.log("Form submitted!"); // Debug
+        $.ajax({
+            type: "POST",
+            url: "/broadcast",
+            headers:{
+                'X-Socket-Id': pusher.connection.socket_id
+            },
+            data: {
+                _token: "{{ csrf_token() }}",
+                message: $("#message").val()
+            }
+        }).done(function(res) {
+            $(".messages").append(res);
+            $("#message").val("");
+            $(document).scrollTop($(document).height());
+        });
+    });
+
+</script> 
 </html>
