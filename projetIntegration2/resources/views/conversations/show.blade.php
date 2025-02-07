@@ -167,6 +167,7 @@
                         messages: data.message
                     })
                     .done(function(res) {
+                        console.log("Message appended:", res); // Debug
                         $("#chat-messages").append(res);
                         $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
                     });
