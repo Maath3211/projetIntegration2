@@ -45,24 +45,35 @@ class Conversations extends Controller
 
 
     public function store(User $user, StoreMessage $request){
-        $this->ConvRepository->createMessage(
+        $message = $this->ConvRepository->createMessage(
             $request->get('content'),
             1,
             $user->id
         );
+        broadcast(new PusherBroadcast($message->content))->toOthers();
+        \Log::info('Message created and broadcasted: ' . $message->content); // Log added
         return redirect()->route('conversations.show', [$user->id]);
     }
 
 
 
     public function broadcast(Request $request){
-        broadcast(new PusherBroadcast($request->message))->toOthers();
-        return view('conversations.broadcast', ['messages' => $request->message]);
+        \Log::info('📡 Tentative de broadcast avec message: ' . $request->message);
+        try {
+            broadcast(new PusherBroadcast($request->message))->toOthers();
+            \Log::info('Broadcasting message to Pusher: ' . $request->message); // Log added for debugging
+            \Log::info('✅ Message broadcasté avec succès');
+        } catch (\Exception $e) {
+            \Log::error('❌ Erreur lors du broadcast: ' . $e->getMessage());
+        }
+        return response()->json(['message' => $request->message]);
     }
     
 
     public function receive(Request $request){
-        return view('conversations.receive', ['messages' => $request->message]);
+        \Log::info('Receive method called with message: ' . $request->message);
+        \Log::info('Message received: ' . $request->message); // Debug
+        return response()->json(['message' => $request->message]);
     }
     
 }

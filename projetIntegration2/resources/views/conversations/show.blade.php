@@ -141,8 +141,58 @@
                     var chatMessages = document.getElementById("chat-messages");
                     chatMessages.scrollTop = chatMessages.scrollHeight;
                 });
-            </script>
 
+                console.log("Pusher key:", '{{config('broadcasting.connections.pusher.key')}}');
+    
+                const pusher = new Pusher('{{config('broadcasting.connections.pusher.key')}}', {
+                    cluster: '{{config('broadcasting.connections.pusher.options.cluster')}}',
+                    encrypted: true
+                });
+
+                pusher.connection.bind('connected', function() {
+                    console.log('Successfully connected to Pusher');
+                });
+
+                pusher.connection.bind('error', function(err) {
+                    console.error('Connection error:', err);
+                });
+
+                const channel = pusher.subscribe('public');
+
+                // Receive
+                channel.bind('chat', function(data) {
+                    console.log("Message received on show page:", data.message); // Debug
+                    $.post("/receive", {
+                        _token: "{{ csrf_token() }}",
+                        messages: data.message
+                    })
+                    .done(function(res) {
+                        $("#chat-messages").append(res);
+                        $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
+                    });
+                });
+
+                $("form").submit(function(e) {
+                    e.preventDefault();
+                    console.log("Form submitted!"); // Debug
+                    $.ajax({
+                        type: "POST",
+                        url: "/broadcast",
+                        headers:{
+                            'X-Socket-Id': pusher.connection.socket_id
+                        },
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            message: $("input[name='content']").val()
+                        }
+                    }).done(function(res) {
+                        console.log("Message sent:", $("input[name='content']").val()); // Debug
+                        $("#chat-messages").append(res);
+                        $("input[name='content']").val("");
+                        $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
+                    });
+                });
+            </script>
             </div>
         </div>
     </div>
