@@ -43,6 +43,7 @@ class ScoresController extends Controller
 
     public function meilleursGroupes()
     {
+        $selectedClanId = 'global';
         $userScores = DB::table('scores')
             ->select('user_id', DB::raw('SUM(score) as total_score'))
             ->groupBy('user_id')
@@ -70,8 +71,34 @@ class ScoresController extends Controller
             ->limit(10)  // Get the top 10 clans
             ->get();
 
+        $userClans = DB::table('clan_users')
+            ->join('clans', 'clans.id', '=', 'clan_users.clan_id')
+            ->where('clan_users.user_id', /*auth()->id()*/ 1)
+            ->select('clans.id as clan_id', 'clans.nom as clan_nom', 'clans.image as clan_image')
+            ->get();
 
-        return view('Leaderboard.topClans', compact('topClans', 'topUsers')); // Send the result to a view
+
+        return view('Leaderboard.topClans', compact('topClans', 'topUsers', 'userClans', 'selectedClanId')); // Send the result to a view
+    }
+
+    public function meilleursMembres($clanId)
+    {
+
+        $meilleursMembresparGroupe = DB::table('users')
+            ->join('clan_users', 'users.id', '=', 'clan_users.user_id')
+            ->join('scores', 'users.id', '=', 'scores.user_id')
+            ->where('clan_users.clan_id', $clanId)
+            ->select(
+                'users.prenom',
+                'users.nom',
+                DB::raw('SUM(scores.score) as total_score')
+            )
+            ->groupBy('users.id', 'users.prenom', 'users.nom')
+            ->orderByDesc('total_score')
+            ->limit(10)
+            ->get();
+
+        return view('Leaderboard.topClans', compact('meilleursMembresparGroupe'));
     }
 
     public function exportTopUsers()

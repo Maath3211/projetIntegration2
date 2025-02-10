@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Livewire\Livewire;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +21,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Livewire::component('global-leaderboard', \App\Http\Livewire\GlobalLeaderboard::class);
+        Livewire::component('clan-leaderboard', \App\Http\Livewire\ClanLeaderboard::class);
+        Livewire::component('test-component', \App\Http\Livewire\TestComponent::class);
     }
 }
