@@ -57,12 +57,12 @@
     </div>
 
     <div class="flex flex-wrap justify-center space-x-4 mt-4">
-        <h1>Statistiques de Loick</h1>
+        <h1>Statistiques de {{ $usager->prenom }}</h1>
     </div>
     
     <!-- Navigation -->
     <div class="flex flex-wrap justify-center space-x-4 mt-4">
-        <button class="bouton">Profil</button>
+      <a href="/profil">  <button class="bouton">Profil</button></a>
     </div>
     
     <!-- Statistiques -->
@@ -73,7 +73,7 @@
         </div>
         
         <div class="statRow">
-            <span>Nombre de fois au gym: {{isset($foisGym) ? $foisGym->first()->score : 'N/A' }}</span>
+            <span>Nombre de fois au gym: {{isset($foisGym) ? $foisGym->first()->score : 'N/A' }} fois</span>
         </div>
         
         <div class="statRow">
