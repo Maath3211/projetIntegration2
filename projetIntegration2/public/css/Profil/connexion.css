@@ -3,7 +3,7 @@ body{
     color: aliceblue;
 }
 
-#form{
+#formConnexion{
     margin-top: 13%;
     margin-left: 25%;
     margin-right: 25%;
@@ -15,10 +15,24 @@ body{
     flex-direction: column;
     align-items: center;
 }
+#formCreation{
+    margin-top: 1%;
+    margin-left: 25%;
+    margin-right: 25%;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: rgba(41, 41, 41, 0.5);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .conteneurErreur {
     display: flex !important;
     align-items: center !important;
-    height: 30px !important;
+    height: 20px !important;
+    font-size: 15px;
 }
 .conteneurForm{
     width: 70%;
@@ -28,8 +42,8 @@ body{
 }
 
 .inputConnexion{
-    background-color: #707070;
-    color: #94fa58 !important; 
+    background-color: #707070 !important;
+    color: #ffffff; 
     border: 1px solid #a9fe77;
     justify-content:center !important;
 }
@@ -41,12 +55,18 @@ input:focus{
     color: rgb(255, 255, 255) !important;
 }
 #titreConnexion{
-    margin-bottom: 5%;
+    margin-bottom: 3%;
     text-align: center;
     font-size: 30px;
     font-weight: bold;
     color: #94fa58;
 }
+
+select:focus {
+    background-color: #999999 !important;
+    color: rgb(255, 255, 255) !important;
+}
+
 .alert-erreur{
     background-color: #dc3545;
     opacity: 90%;
@@ -68,6 +88,7 @@ input:focus{
     text-transform: uppercase;
     margin-top: 2%;
 }
+
  
 .btn-connexion:hover, .unit-btn:hover {
     background: linear-gradient(135deg, #60c22c, #a9fe77);
@@ -75,6 +96,32 @@ input:focus{
 }
  
 .btn-connexion:active, .unit-btn:active {
+    transform: scale(0.95);
+    box-shadow: 1px 1px 5px rgba(169, 254, 119, 0.8);
+}
+
+.btn-retour {
+    background: linear-gradient(135deg, #fe7777, #c22c2c);
+    border: none;
+    padding: 12px 25px;
+    cursor: pointer;
+    font-size: 18px;
+    color: black;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 2px 2px 10px rgba(254, 119, 119, 0.5);
+    text-transform: uppercase;
+    margin-top: 2%;
+}
+
+ 
+.btn-retour:hover, .unit-btn:hover {
+    background: linear-gradient(135deg, #60c22c, #a9fe77);
+    transform: scale(1.05);
+}
+ 
+.btn-retour:active, .unit-btn:active {
     transform: scale(0.95);
     box-shadow: 1px 1px 5px rgba(169, 254, 119, 0.8);
 }
