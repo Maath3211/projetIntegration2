@@ -17,13 +17,6 @@ Route::POST('/broadcast', [Conversations::class,'broadcast']);
 Route::POST('/receive', [Conversations::class,'receive']);
 Route::GET('/conversations', [Conversations::class,'index'])->name('conversations');
 
-//TEST TUTO
-Route::GET('/userRegistration', function() {return view('conversations.userRegistration');});
-Route::POST('/userRegistration', function() {
-    $name = request()->input('name');
-    event(new PusherBroadcast($name));
 
-
-});
 
 
