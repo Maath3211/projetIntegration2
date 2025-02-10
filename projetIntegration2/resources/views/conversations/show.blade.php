@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         body {
             background-color: #222;
@@ -142,61 +145,72 @@
                     chatMessages.scrollTop = chatMessages.scrollHeight;
                 });
 
-                console.log("Pusher key:", '{{config('broadcasting.connections.pusher.key')}}');
-    
-                const pusher = new Pusher('{{config('broadcasting.connections.pusher.key')}}', {
-                    cluster: '{{config('broadcasting.connections.pusher.options.cluster')}}',
-                    encrypted: true
-                });
-
-                pusher.connection.bind('connected', function() {
-                    console.log('Successfully connected to Pusher');
-                });
-
-                pusher.connection.bind('error', function(err) {
-                    console.error('Connection error:', err);
-                });
-
-                const channel = pusher.subscribe('public');
-
-                // Receive
-                channel.bind('chat', function(data) {
-                    console.log("Message received on show page:", data.message); // Debug
-                    $.post("/receive", {
-                        _token: "{{ csrf_token() }}",
-                        messages: data.message
-                    })
-                    .done(function(res) {
-                        console.log("Message appended:", res); // Debug
-                        $("#chat-messages").append(res);
-                        $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
-                    });
-                });
-
-                $("form").submit(function(e) {
-                    e.preventDefault();
-                    console.log("Form submitted!"); // Debug
-                    $.ajax({
-                        type: "POST",
-                        url: "/broadcast",
-                        headers:{
-                            'X-Socket-Id': pusher.connection.socket_id
-                        },
-                        data: {
-                            _token: "{{ csrf_token() }}",
-                            message: $("input[name='content']").val()
-                        }
-                    }).done(function(res) {
-                        console.log("Message sent:", $("input[name='content']").val()); // Debug
-                        $("#chat-messages").append(res);
-                        $("input[name='content']").val("");
-                        $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
-                    });
-                });
             </script>
             </div>
         </div>
     </div>
 
 </body>
+
+<script>
+const userId = "{{ auth()->id() }}"; // ID de l'utilisateur connecté
+const friendId = "{{ $user->id }}";  // ID de l'ami avec qui il discute
+
+// Construire un canal unique basé sur les deux IDs (ex: "chat-3-7")
+const channelName = "chat-" + Math.min(userId, friendId) + "-" + Math.max(userId, friendId);
+
+console.log("Subscribing to:", channelName);
+
+const pusher = new Pusher('{{config('broadcasting.connections.pusher.key')}}', {
+    cluster: '{{config('broadcasting.connections.pusher.options.cluster')}}',
+    encrypted: true
+});
+
+const channel = pusher.subscribe(channelName);
+console.log("Channel:", channel);
+
+// Recevoir les messages de la conversation privée
+channel.bind('mon-event', function(data) {
+    console.log("Message reçu:", data.message);
+    $("#chat-messages").append(`
+        <div class="message">
+            <div class="bubble">${data.message}</div>
+        </div>
+    `);
+    $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
+});
+
+// Envoyer un message via AJAX
+$("form").submit(function(e) {
+    e.preventDefault();
+    console.log("Formulaire envoyé!");
+
+    $.ajax({
+        type: "POST",
+        url: "/broadcast",
+        headers: {
+            'X-Socket-Id': pusher.connection.socket_id
+        },
+        data: {
+            _token: "{{ csrf_token() }}",
+            message: $("input[name='content']").val(),
+            to: friendId // Ajoute l'ID du destinataire
+        }
+    }).done(function(res) {
+        console.log("Message envoyé:", $("input[name='content']").val());
+        $("#chat-messages").append(`
+            <div class="message own-message">
+                <div class="bubble">${$("input[name='content']").val()}</div>
+            </div>
+        `);
+        $("input[name='content']").val("");
+        $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
+    });
+});
+
+
+
+
+
+</script> 
 </html>

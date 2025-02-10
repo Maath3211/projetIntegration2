@@ -45,13 +45,19 @@ class Conversations extends Controller
 
 
     public function store(User $user, StoreMessage $request){
+        $senderId = auth()->id();
+        $receiverId = $user->id;
+
         $message = $this->ConvRepository->createMessage(
             $request->get('content'),
-            1,
-            $user->id
+            $senderId,
+            $receiverId
         );
-        broadcast(new PusherBroadcast($message->content))->toOthers();
-        \Log::info('Message created and broadcasted: ' . $message->content); // Log added
+
+        // Envoi du message via Pusher
+        broadcast(new PusherBroadcast($message->content, $senderId, $receiverId))->toOthers();
+        \Log::info("📡 Message broadcasté : {$message->content}");
+
         return redirect()->route('conversations.show', [$user->id]);
     }
 
@@ -60,8 +66,8 @@ class Conversations extends Controller
     public function broadcast(Request $request){
         \Log::info('📡 Tentative de broadcast avec message: ' . $request->message);
         try {
-            broadcast(new PusherBroadcast($request->message))->toOthers();
-            \Log::info('Broadcasting message to Pusher: ' . $request->message); // Log added for debugging
+            broadcast(new PusherBroadcast($request->message, auth()->id(), $request->to))
+                ->toOthers();
             \Log::info('✅ Message broadcasté avec succès');
         } catch (\Exception $e) {
             \Log::error('❌ Erreur lors du broadcast: ' . $e->getMessage());

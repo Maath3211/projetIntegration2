@@ -5,6 +5,9 @@ use App\Http\Controllers\UserCommunication;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\ScoresController;
 use App\Http\Controllers\Conversations;
+use App\Http\Controllers\StatistiqueController;
+use App\Http\Controllers\GymController;
+use App\Models\User;
 use App\Events\PusherBroadcast;
 
 Route::get('/', function () {

@@ -72,7 +72,7 @@
     </style>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script>
-/*
+
     // Enable pusher logging - don't include this in production
     Pusher.logToConsole = true;
 
@@ -84,7 +84,6 @@
     channel.bind('mon-event', function(data) {
       alert(JSON.stringify(data));
     });
-    */
   </script>
 </head>
 <body>
@@ -122,6 +121,35 @@
 </body>
 <script>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
     console.log("Pusher key:", '{{ config('broadcasting.connections.pusher.key') }}');
     
     const pusher = new Pusher('{{ config('broadcasting.connections.pusher.key') }}', {
@@ -170,6 +198,6 @@
             }
         });
     });
-
+*/
 </script> 
 </html>

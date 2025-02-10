@@ -26,3 +26,7 @@ PUSHER_HOST=
 PUSHER_PORT=443
 PUSHER_SCHEME=https
 PUSHER_LOG=true
+
+
+
+Si tu veux que le canal soit visible à plusieurs utilisateurs (comme un groupe), utilise un PresenceChannel au lieu de PrivateChannel
