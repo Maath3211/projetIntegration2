@@ -1,0 +1,175 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+    overflow: hidden;
+    display: flex;
+    flex-direction: 100vh;
+}
+
+main {
+    flex: 1;
+}
+
+a:hover {
+    color: white;
+}
+
+.colonneNavigationParametres, .colonneParametres {
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+}
+
+.colonneNavigationParametres {
+    background-color: #303030;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-end;
+}
+
+.colonneParametres {
+    background-color: #414141;
+}
+
+.titreNavigation {
+    margin-bottom: 10px;
+    margin-top: 15px;
+    font-weight: bold;
+    padding: 5px;
+    cursor: default;
+}
+
+.conteneurNavigation {
+    margin-top: 20px;
+    margin-right: 20px;
+}
+
+.categorieParametre {
+    width: 100%;
+    padding: 5px;
+    padding-right: 50px;
+    border-radius: 5px;
+    margin-bottom: 2px;
+}
+
+.categorieParametre:hover {
+    background-color: #73af50;   
+    opacity: 0.8;
+    color: black;
+    cursor: pointer;
+}
+
+.active {
+    background-color: #A9FE77;   
+    opacity: 0.8;
+    color: black;
+}
+
+.titreParametre {
+    font-weight: bold;
+}
+
+.conteneurParametres {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 50px;
+    margin-top: 50px;
+    margin-bottom: 20px;
+}
+
+.boutonRetour {
+    font-size: smaller; 
+    margin-right: 50px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    color: #A9FE77;
+    opacity: 0.8;
+}
+
+.boutonRetour:hover {
+    opacity: 1;
+}
+
+.boutonRetour i {
+    padding-bottom: 5px;
+}
+
+.parametresGeneraux {
+    display: flex;
+    justify-content: left;
+    padding-left: 70px;
+}
+
+.parametresGeneraux img{
+    border-radius: 50%;
+    width: 180px;
+    height: 180px;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0);
+    margin-right: 30px;
+}
+
+.barreEnregistrerConteneur {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rangeeEnregistrer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #303030;
+    padding-left: 50px;
+    padding-right: 20px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.rangeeEnregistrer button {
+    background: linear-gradient(135deg, #a9fe77, #60c22c);
+    border: none;
+    padding: 12px 25px;
+    cursor: pointer;
+    font-size: 18px;
+    color: black;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 2px 2px 10px rgba(169, 254, 119, 0.5);
+    text-transform: uppercase;
+}
+
+.rangeeEnregistrer button:hover {
+    background: linear-gradient(135deg, #60c22c, #a9fe77);
+    transform: scale(1.05);
+}
+
+.rangeeEnregistrer button:active {
+    transform: scale(0.95);
+    box-shadow: 1px 1px 5px rgba(169, 254, 119, 0.8);
+}
+
+form {
+    height: 80%;
+    display: flex; 
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#imageClan {
+    display: none;
+}
+
+.televerser {
+    background-color: #333; 
+    color: #f0f0f0; 
+    border: 1px solid #555; 
+    border-radius: 5px; 
+    margin-top: 15px;
+    padding: 10px 20px;
+    cursor: pointer;
+}

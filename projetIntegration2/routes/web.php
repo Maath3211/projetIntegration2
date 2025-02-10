@@ -9,6 +9,8 @@ use App\Http\Controllers\StatistiqueController;
 use App\Http\Controllers\ClanController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GymController;
+use Illuminate\Support\Facades\Log;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -19,6 +21,12 @@ Route::GET('/clan/{id}',
 
 Route::GET('/clan/{id}/parametres',
 [ClanController::class, 'parametres'])->name('clan.parametres');
+
+Route::POST('/clan/{id}/parametres', 
+[ClanController::class, 'parametres'])->name('clan.parametres.post');
+
+Route::POST('/clan/{id}/televerser',
+[ClanController::class, 'televerserImage'])->name('clan.televerserImage');
 
 Route::GET('/yup',
 [UserCommunication::class,'index'])->name('user.index');
