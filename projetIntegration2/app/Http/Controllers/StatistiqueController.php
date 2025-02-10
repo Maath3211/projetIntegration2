@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\Statistique;
 
 class StatistiqueController extends Controller
 {
@@ -11,23 +13,26 @@ class StatistiqueController extends Controller
      */
     public function index()
     {
-        return View("statistique.index");
+        if (auth()->check()) {
+        $usager= User::Find(Auth::id());
+        $statistiques = Statistique::where('user_id', Auth::id())->get();
+
+
+        }
+        return View("statistique.index",compact('statistiques','usager'));
     }
 
 
     public function graphique()
     {
+        $statistiques = Statistique::where('user_id', Auth::id())->get();
         return View("statistique.graphique");
     }
 
     public function thermique()
     {
-        $data = [
-            [0, 0, 10], [0, 1, 20], [0, 2, 30],
-            [1, 0, 15], [1, 1, 25], [1, 2, 35],
-            [2, 0, 20], [2, 1, 30], [2, 2, 40],
-        ];
-        return View("statistique.thermique", compact('data'));
+     
+        return View("statistique.thermique");
     }
 
 

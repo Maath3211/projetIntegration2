@@ -53,7 +53,7 @@
 <div class="container">
     <!-- Profil Image -->
     <div class="flex justify-center mt-4">
-        <div class="profileImage"></div>
+        <div class="profileImage"><img src="{{ $usager->imageProfil }}" alt="image profil" /></div>
     </div>
 
     <div class="flex flex-wrap justify-center space-x-4 mt-4">
