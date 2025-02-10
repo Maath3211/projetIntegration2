@@ -38,6 +38,12 @@ Route::GET('/connexion',
 Route::POST('/connexion',
 [ProfilController::class,'connexion'])->name('profil.connexion');
 
+Route::GET('/creerCompte',
+[ProfilController::class,'pageCreerCompte'])->name('profil.pageCreerCompte');
+
+Route::POST('/creerCompte',
+[ProfilController::class,'creerCompte'])->name('profil.creerCompte');
+
 Route::GET('/meilleursGroupes',
 [ScoresController::class,'meilleursGroupes'])->name('scores.meilleursGroupes');
 Route::POST('/deconnexion',

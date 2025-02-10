@@ -22,7 +22,7 @@
         <div class="d-flex row justify-content-center">
             <div class="col-md-10">
                 
-                <form action="{{ route('profil.connexion') }}" method="post" id="form">
+                <form action="{{ route('profil.connexion') }}" method="post" id="formConnexion">
                     <h1 class="h1" id="titreConnexion">Connexion ou création de compte Gymcord</h1>
                     <div class="conteneurForm">
                         @csrf
@@ -57,6 +57,7 @@
                         </div>
                     </div>
                     <br>
+                    <a href="{{ route('profil.pageCreerCompte') }}" class="text-vert" id="btCreerCompte">Créer un compte</a>
                     @if (session('message'))
                         <div class="alert alert-success">
                             <p class="text-center">{{ session('message') }}</p>
