@@ -28,7 +28,7 @@
                         @csrf
                         <label for="email" class="text-vert">Adresse courriel</label>
                         <input type="email" class="form-control inputConnexion" id="email" placeholder="Adresse courriel"
-                            name="email">
+                            name="email" value="test@test.com">
                         <div class="conteneurErreur">
                             @error('email')
                                 <span class="text-danger">{{ $message }}&ensp;</span>
@@ -44,7 +44,7 @@
                     <div class="conteneurForm">
                         <label for="password" class="text-vert">Mot de passe</label>
                         <input type="password" class="form-control inputConnexion" id="password" placeholder="Mot de passe"
-                            name="password">
+                            name="password" value="adminggg">
                         <div class="conteneurErreur">
                             @error('password')
                                 <span class="text-danger">{{ $message }}&ensp;</span>
