@@ -18,7 +18,6 @@ class ProfilController extends Controller
     public function connexion(ConnexionRequest $request)
     {
         $reussi = Auth::guard()->attempt(['email' => $request->email, 'password' => $request->password]);
- 
          if ($reussi) 
          {
              return redirect()->route('profil.profil');

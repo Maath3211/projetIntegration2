@@ -22,7 +22,11 @@
 
             <span id="engrenage">&#9881;</span> 
             <div class="d-flex justify-content-between mt-3">
-                <button class="btn btn-green">Statistique</button>
+                <form action="{{ route('statistique.index') }}" method="get">
+                    @csrf
+                    <button class="btn btn-green">Statistique</button>
+                </form>
+                
                 <button class="btn btn-green">Ajouter en ami</button>
             </div>
             <div class="mt-3">

@@ -44,10 +44,10 @@ Route::POST('/deconnexion',
 [ProfilController::class,'deconnexion'])->name('profil.deconnexion');
 
 Route::GET('/profil',
-[ProfilController::class,'profil'])->name('profil.profil');
+[ProfilController::class,'profil'])->name('profil.profil')->middleware('auth');
 
 Route::GET('/profil/modification',
-[ProfilController::class,'pageModification'])->name('profil.pageModification');
+[ProfilController::class,'pageModification'])->name('profil.pageModification')->middleware('auth');
 
 Route::GET('/stats',
 [StatistiqueController::class,'index'])->name('statistique.index');
