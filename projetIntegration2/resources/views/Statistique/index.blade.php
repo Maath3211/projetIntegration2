@@ -73,18 +73,20 @@
         </div>
         
         <div class="statRow">
-            <span>Nombre de fois au gym: N/A</span>
+            <span>Nombre de fois au gym: {{isset($foisGym) ? $foisGym->first()->score : 'N/A' }}</span>
         </div>
         
         <div class="statRow">
-            <span>Meilleur suite : N/A</span>
+            <span>Meilleur suite : {{ isset($streak) ? $streak->first()->score : 'N/A' }}</span>
         </div>
         
         <div class="statRow">
-            <span>Poids : N/A lbs</span>
+            <span id="poidsValue" data-lbs="{{ isset($poid) ? $poid->first()->score : 'N/A' }}">
+                Poids : {{ isset($poid) ? $poid->first()->score : 'N/A' }} lbs
+            </span>
             <div class="flex space-x-2">
-                <button class="bouton">Lbs</button>
-                <button class="bouton">Kg</button>
+                <button class="bouton"  onclick="convertWeight('lbs')">Lbs</button>
+                <button class="bouton" onclick="convertWeight('kg')">Kg</button>
                 <a href="/graphique" class="text-gray-400">Voir mon  graphique</a>
             </div>
         </div>
@@ -115,3 +117,20 @@
     </div>
 </div>
 @endsection
+
+
+<script>
+function convertWeight(unit) {
+    let poidsSpan = document.getElementById('poidsValue');
+    let lbs = parseFloat(poidsSpan.getAttribute('data-lbs'));
+
+    if (!isNaN(lbs)) {
+        if (unit === 'kg') {
+            let kg = (lbs * 0.453592).toFixed(2);
+            poidsSpan.innerHTML = `Poids : ${kg} kg`;
+        } else {
+            poidsSpan.innerHTML = `Poids : ${lbs} lbs`;
+        }
+    }
+}
+</script>

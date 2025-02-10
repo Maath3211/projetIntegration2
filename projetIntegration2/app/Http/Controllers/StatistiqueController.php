@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Statistique;
+use App\Models\Statistiques;
+use Illuminate\Support\Facades\Auth;
 
 class StatistiqueController extends Controller
 {
@@ -15,17 +16,19 @@ class StatistiqueController extends Controller
     {
         if (auth()->check()) {
         $usager= User::Find(Auth::id());
-        $statistiques = Statistique::where('user_id', Auth::id())->get();
-
+        $statistiques = Statistiques::where('user_id', Auth::id())->get();
+        $poid = Statistiques::where('user_id', Auth::id())->where('nomStatistique', 'Poids')->get();
+        $streak = Statistiques::where('user_id', Auth::id())->where('nomStatistique', 'Streak')->get();
+        $foisGym = Statistiques::where('user_id', Auth::id())->where('nomStatistique', 'FoisGym')->get();
 
         }
-        return View("statistique.index",compact('statistiques','usager'));
+        return View("statistique.index",compact('statistiques','usager','poid','streak','foisGym'));
     }
 
 
     public function graphique()
     {
-        $statistiques = Statistique::where('user_id', Auth::id())->get();
+        $statistiques = Statistiques::where('user_id', Auth::id())->get();
         return View("statistique.graphique");
     }
 
