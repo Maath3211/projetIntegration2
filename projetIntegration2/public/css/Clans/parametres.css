@@ -1,3 +1,7 @@
+/* 
+STYLE POUR LA PAGE DE PARAMÈTRES 
+*/
+
 body {
     font-family: 'Open Sans', sans-serif;
     overflow: hidden;
@@ -27,10 +31,6 @@ a:hover {
     align-items: flex-end;
 }
 
-.colonneParametres {
-    background-color: #414141;
-}
-
 .titreNavigation {
     margin-bottom: 10px;
     margin-top: 15px;
@@ -50,6 +50,7 @@ a:hover {
     padding-right: 50px;
     border-radius: 5px;
     margin-bottom: 2px;
+    user-select: none;
 }
 
 .categorieParametre:hover {
@@ -59,14 +60,19 @@ a:hover {
     cursor: pointer;
 }
 
-.active {
+.categorieParametre:active {
+  background-color: #A9FE77;  
+}
+
+.actif {
     background-color: #A9FE77;   
     opacity: 0.8;
     color: black;
 }
 
-.titreParametre {
+.titreParametre, .nomClan label {
     font-weight: bold;
+    font-size: 24px;
 }
 
 .conteneurParametres {
@@ -88,6 +94,10 @@ a:hover {
     opacity: 0.8;
 }
 
+.boutonRetour div {
+    font-size: 10px;
+}
+
 .boutonRetour:hover {
     opacity: 1;
 }
@@ -96,19 +106,10 @@ a:hover {
     padding-bottom: 5px;
 }
 
-.parametresGeneraux {
-    display: flex;
-    justify-content: left;
-    padding-left: 70px;
+.colonneParametres {
+    background-color: #414141;
 }
 
-.parametresGeneraux img{
-    border-radius: 50%;
-    width: 180px;
-    height: 180px;
-    box-shadow: 2px 2px 8px rgba(0, 0, 0);
-    margin-right: 30px;
-}
 
 .barreEnregistrerConteneur {
     display: flex;
@@ -121,11 +122,12 @@ a:hover {
     justify-content: space-between;
     align-items: center;
     background-color: #303030;
-    padding-left: 50px;
-    padding-right: 20px;
+    padding-right: 30px;
     padding-top: 15px;
     padding-bottom: 15px;
+    padding-left: 30px;
     border-radius: 5px;
+    font-size: large;
     font-weight: bold;
 }
 
@@ -153,6 +155,29 @@ a:hover {
     box-shadow: 1px 1px 5px rgba(169, 254, 119, 0.8);
 }
 
+/* 
+STYLE POUR LA CATÉGORIE DE PARAMÈTRES GÉNÉRAUX 
+*/
+
+.parametresGeneraux {
+    display: flex;
+    justify-content: left;
+    padding-left: 70px;
+}
+
+.parametresGeneraux img{
+    border-radius: 50%;
+    width: 180px;
+    height: 180px;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0);
+    margin-right: 30px;
+}
+
+.formulaireAjoutImage div:first-child {
+    max-width: 50%;
+    text-align: start;
+}
+
 form {
     height: 80%;
     display: flex; 
@@ -165,11 +190,78 @@ form {
 }
 
 .televerser {
-    background-color: #333; 
-    color: #f0f0f0; 
-    border: 1px solid #555; 
+    background-color: #A9FE77; 
+    color: black; 
+    border: 1px solid black;
     border-radius: 5px; 
     margin-top: 15px;
     padding: 10px 20px;
     cursor: pointer;
+}
+
+.nomClan label{
+    margin-bottom: 20px;
+    font-size: 25px;
+}
+
+.nomClan input {
+    background-color: #A9FE77;
+    border: 1px solid black;
+    width: 350px;
+    height: 30%;
+    font-size: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.nomClan input:focus {
+    background-color: #A9FE77;
+    border: 1px solid black;
+    outline: none;
+    box-shadow: none;
+}
+
+
+/* 
+STYLE POUR LES CATÉGORIES DE CANAUX 
+*/
+
+.categorie {
+    display: flex;
+    margin-left: 50px;
+}
+
+.categorie > *:not(:first-child) {
+    margin-left: 10px;
+}
+
+#confirmationSuppression{
+    display: flex;
+    position: fixed;
+    flex-direction: column;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.conteneurConfirmation {
+    background-color: #414141;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.titreConfirmation {
+    text-align: left;
+    font-weight: bold;
+    font-size: large;
+}
+
+.texteConfirmation {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: small;
 }

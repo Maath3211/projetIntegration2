@@ -19,14 +19,20 @@ Route::get('/', function () {
 Route::GET('/clan/{id}', 
 [ClanController::class, 'index'])->name('clan.montrer');
 
-Route::GET('/clan/{id}/parametres',
+Route::GET('/clan/{id}/parametres/general',
 [ClanController::class, 'parametres'])->name('clan.parametres');
 
-Route::POST('/clan/{id}/parametres', 
+Route::POST('/clan/{id}/parametres/general', 
 [ClanController::class, 'parametres'])->name('clan.parametres.post');
 
-Route::POST('/clan/{id}/televerser',
-[ClanController::class, 'televerserImage'])->name('clan.televerserImage');
+Route::POST('/clan/{id}/enregistrerGeneral',
+[ClanController::class, 'miseAJourGeneral'])->name('clan.miseAJour.general');
+
+Route::GET('/clan/{id}/parametres/canaux',
+[ClanController::class, 'parametres'])->name('clan.parametres.canaux');
+
+Route::POST('/clan/{id}/enregistrerCanaux',
+[ClanController::class, 'miseAJourCanaux'])->name('clan.miseAJour.canaux');
 
 Route::GET('/yup',
 [UserCommunication::class,'index'])->name('user.index');

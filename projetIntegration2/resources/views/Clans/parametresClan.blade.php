@@ -24,7 +24,7 @@
             <div class="conteneurNavigation">
               <div class="titreNavigation">Paramètres</div>
               <div class="navigationParametres">
-                <div class="categorieParametre general" >Général</div>
+                <div class="categorieParametre general actif" >Général</div>
                 <div class="categorieParametre canaux" >Canaux</div>
                 <div class="categorieParametre membres" >Membres</div>
                 <div class="categorieParametre supprimer" >Supprimer le clan</div>
@@ -35,38 +35,38 @@
           <div class="col-md-10 colonneParametres">
             <div class="conteneurParametres ">
 
-              <div class="titreParametre" style="font-size: 24px;">Titre de la section</div>
+              <div class="titreParametre">Paramétres généraux</div>
               <a href="{{ route('clan.montrer', ['id' => $id]) }}">
                 <div class="boutonRetour">
                   <i class="fa-regular fa-circle-xmark fa-3x"></i>
-                  <div>Quitter</div>
+                  <div>QUITTER</div>
                 </div>
               </a>
             </div>
             <!-- TODO - CHANGER L'IMAGE QUI APPARAIT POUR CELLE DU CLAN -->
-            <form action="{{ route('clan.televerserImage', ['id' => $id]) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('clan.miseAJour.general', ['id' => $id]) }}" method="POST" enctype="multipart/form-data" id="formulaireSoumission">
               @csrf
               <div class="row">
                 <div class="col-md-12 parametresGeneraux">
-                  <img src="{{asset('img/Clans/clan_' . $id . '_.png')}}" alt="logoClan">
+                  <img src="{{asset('img/Clans/clan_' . $id . '_.png')}}" alt="erreur lors de l'affichage de votre image.">
                   <div class="formulaireAjoutImage">
                     <div>Une image de forme carrée est recommendée pour le clan.</div>
-                    
                       <div class="form-group">
-                        <label for="imageClan" class="televerser">Choisir une image</label>
+                        <label for="imageClan" class="televerser">Téléverser une image</label>
                         <input type="file" class="form-control-file" id="imageClan" name="imageClan" accept="image/*">
                       </div>
-                      
-                      
-                    
-                  </div>
+                    </div>
+                    <div class="nomClan">
+                        <label for="nomClan">Nom du clan</label>
+                        <input type="text" class="form-control" id="nomClan" name="nomClan" value="Workout Master">
+                    </div>
                 </div>
               </div>
               <div class="row barreEnregistrerConteneur">
-                <div class="col-md-10 rangeeEnregistrer">
-                    <div>N'oubliez pas d'enregistrer vos modifications avant de quitter!</div>
-                    <button type="submit" class="btn btn-success">Enregistrer</button>
-                </div>
+                  <div class="col-md-10 rangeeEnregistrer">
+                      <div>N'oubliez pas d'enregistrer vos modifications avant de quitter!</div>
+                      <button type="submit" class="btn btn-success">Enregistrer</button>
+                  </div>
               </div>
             </form>
           </div>
