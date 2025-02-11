@@ -22,13 +22,13 @@
         <div class="d-flex row justify-content-center">
             <div class="col-md-10">
                 
-                <form action="{{ route('profil.connexion') }}" method="post" id="form">
+                <form action="{{ route('profil.connexion') }}" method="post" id="formConnexion">
                     <h1 class="h1" id="titreConnexion">Connexion ou création de compte Gymcord</h1>
                     <div class="conteneurForm">
                         @csrf
                         <label for="email" class="text-vert">Adresse courriel</label>
                         <input type="email" class="form-control inputConnexion" id="email" placeholder="Adresse courriel"
-                            name="email">
+                            name="email" value="test@test.com">
                         <div class="conteneurErreur">
                             @error('email')
                                 <span class="text-danger">{{ $message }}&ensp;</span>
@@ -44,7 +44,7 @@
                     <div class="conteneurForm">
                         <label for="password" class="text-vert">Mot de passe</label>
                         <input type="password" class="form-control inputConnexion" id="password" placeholder="Mot de passe"
-                            name="password">
+                            name="password" value="adminggg">
                         <div class="conteneurErreur">
                             @error('password')
                                 <span class="text-danger">{{ $message }}&ensp;</span>
@@ -58,7 +58,7 @@
                     </div>
                     <br>
                     @if (session('message'))
-                        <div class="alert alert-success">
+                        <div class="alert alert-succes">
                             <p class="text-center">{{ session('message') }}</p>
                         </div>
                     @endif
@@ -71,6 +71,7 @@
                             @endif
                         @endforeach
                     @endif
+                    <a href="{{ route('profil.creerCompte') }}" class="text-vert" id="btCreerCompte">Créer un compte</a>
                     <button type="submit" class="btn btn-connexion">Connexion</button>
                 </form>
 

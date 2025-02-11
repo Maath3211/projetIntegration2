@@ -31,16 +31,22 @@ Route::GET('/connexion',
 Route::POST('/connexion',
 [ProfilController::class,'connexion'])->name('profil.connexion');
 
+Route::GET('/creerCompte',
+[ProfilController::class,'creerCompte'])->name('profil.creerCompte');
+
+Route::POST('/creerCompte',
+[ProfilController::class,'storeCreerCompte'])->name('profil.storeCreerCompte');
+
 Route::GET('/meilleursGroupes',
 [ScoresController::class,'meilleursGroupes'])->name('scores.meilleursGroupes');
 Route::POST('/deconnexion',
 [ProfilController::class,'deconnexion'])->name('profil.deconnexion');
 
 Route::GET('/profil',
-[ProfilController::class,'profil'])->name('profil.profil');
+[ProfilController::class,'profil'])->name('profil.profil')->middleware('auth');
 
 Route::GET('/profil/modification',
-[ProfilController::class,'pageModification'])->name('profil.pageModification');
+[ProfilController::class,'modification'])->name('profil.modification')->middleware('auth');
 
 Route::GET('/stats',
 [StatistiqueController::class,'index'])->name('statistique.index');
