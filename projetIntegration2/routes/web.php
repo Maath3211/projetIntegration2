@@ -10,6 +10,7 @@ use App\Http\Controllers\GymController;
 use App\Models\User;
 use App\Events\PusherBroadcast;
 
+
 Route::get('/', function () {
     return view('welcome');
 });

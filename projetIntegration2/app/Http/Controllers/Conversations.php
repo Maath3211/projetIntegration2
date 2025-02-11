@@ -35,6 +35,7 @@ class Conversations extends Controller
     }
 
     public function show(User $user){
+        //dd($user);
         $users = User::select('email','id')->get();
         return view('conversations.show',[
             'users' => $this->ConvRepository->getConversations(),
@@ -64,6 +65,7 @@ class Conversations extends Controller
 
 
     public function broadcast(Request $request){
+        \Log::info('Message envoyé via Pusher', $request->all());
         \Log::info('📡 Tentative de broadcast avec message: ' . $request->message);
         try {
             broadcast(new PusherBroadcast($request->message, auth()->id(), $request->to))

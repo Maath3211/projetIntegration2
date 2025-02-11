@@ -109,6 +109,7 @@
                     </div>
                     <hr>
                     @endforeach
+                    @include('conversations.receive')
 
                     @if ($messages->previousPageUrl())
                     <div class="div text-center">
@@ -153,11 +154,13 @@
 </body>
 
 <script>
+    
 const userId = "{{ auth()->id() }}"; // ID de l'utilisateur connecté
 const friendId = "{{ $user->id }}";  // ID de l'ami avec qui il discute
 
-// Construire un canal unique basé sur les deux IDs (ex: "chat-3-7")
 const channelName = "chat-" + Math.min(userId, friendId) + "-" + Math.max(userId, friendId);
+
+
 
 console.log("Subscribing to:", channelName);
 
@@ -166,8 +169,18 @@ const pusher = new Pusher('{{config('broadcasting.connections.pusher.key')}}', {
     encrypted: true
 });
 
-const channel = pusher.subscribe(channelName);
-console.log("Channel:", channel);
+
+pusher.connection.bind('connected', function() {
+        console.log('Successfully connected to Pusher');
+    });
+
+    pusher.connection.bind('error', function(err) {
+        console.error('Connection error:', err);
+    });
+
+
+    const channel = pusher.subscribe(channelName);
+
 
 // Recevoir les messages de la conversation privée
 channel.bind('mon-event', function(data) {
@@ -194,6 +207,7 @@ $("form").submit(function(e) {
         data: {
             _token: "{{ csrf_token() }}",
             message: $("input[name='content']").val(),
+            from: userId, // Ajoute l'ID de l'utilisateur connecté
             to: friendId // Ajoute l'ID du destinataire
         }
     }).done(function(res) {
@@ -207,10 +221,6 @@ $("form").submit(function(e) {
         $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
     });
 });
-
-
-
-
 
 </script> 
 </html>
