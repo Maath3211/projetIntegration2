@@ -41,7 +41,7 @@ class Conversations extends Controller
         return view('conversations.show',[
             'users' => $this->ConvRepository->getConversations(),
             'user' => $user,
-            'messages' => $this->ConvRepository->getMessageFor(auth()->id(), $user->id)->paginate(50)//Pagination des messages par 2
+            'messages' => $this->ConvRepository->getMessageFor(auth()->id(), $user->id)->paginate(300)//Pagination des messages par 2
         ]);
     }
 
@@ -58,7 +58,7 @@ class Conversations extends Controller
 
         // Envoi du message via Pusher
         broadcast(new PusherBroadcast($message->content, $senderId, $receiverId))->toOthers();
-        \Log::info("📡 Message broadcasté : {$message->content}");
+        //\Log::info("📡 Message broadcasté : {$message->content}");
 
         return redirect()->route('conversations.show', [$user->id]);
     }
@@ -66,12 +66,12 @@ class Conversations extends Controller
 
 
     public function broadcast(Request $request){
-        \Log::info('Message envoyé via Pusher', $request->all());
-        \Log::info('📡 Tentative de broadcast avec message: ' . $request->message);
+        //\Log::info('Message envoyé via Pusher', $request->all());
+        //\Log::info('📡 Tentative de broadcast avec message: ' . $request->message);
         try {
             broadcast(new PusherBroadcast($request->message, auth()->id(), $request->to))
                 ->toOthers();
-            \Log::info('✅ Message broadcasté avec succès');
+            //\Log::info('✅ Message broadcasté avec succès');
             
             // Enregistrement des informations dans la table user_ami
             \DB::table('user_ami')->insert([
@@ -81,7 +81,7 @@ class Conversations extends Controller
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
-            \Log::info('✅ Message Enregistrer avec succès');
+            //\Log::info('✅ Message Enregistrer avec succès');
 
             
 
