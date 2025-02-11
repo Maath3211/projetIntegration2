@@ -65,9 +65,10 @@
   <main>
     <div>
       @yield('contenu')
+      @livewireScripts
     </div>
   </main>
-  @livewireScripts
+
   <!-- Pied de page -->
   <footer>
   </footer>

@@ -24,5 +24,7 @@ class AppServiceProvider extends ServiceProvider
         Livewire::component('global-leaderboard', \App\Http\Livewire\GlobalLeaderboard::class);
         Livewire::component('clan-leaderboard', \App\Http\Livewire\ClanLeaderboard::class);
         Livewire::component('test-component', \App\Http\Livewire\TestComponent::class);
+        Livewire::component('leaderboard-switcher', \App\Http\Livewire\LeaderboardSwitcher::class);
+        Livewire::component('sidebar-clans', \App\Http\Livewire\SidebarClans::class);
     }
 }

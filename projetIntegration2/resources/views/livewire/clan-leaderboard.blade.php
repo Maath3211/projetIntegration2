@@ -23,27 +23,27 @@
                 <div class="row">
                     <!-- Column for positions 1 to 5 -->
                     <div class="col-md-6">
-                        @foreach ($topClans->take(5) as $index => $clan)
+                        @foreach ($meilleursMembres->take(5) as $index => $membre)
                         <div class="clan-row d-flex align-items-center justify-content-between mb-2 py-2 px-3 border-bottom">
                             <div class="d-flex align-items-center">
                                 <div class="position mr-3">{{ $index + 1 }}</div>
-                                <img src="{{ asset('images/clans/' . $clan->clan_image) }}" alt="Clan Image" class="rounded-circle" style="width:40px; height:40px;">
-                                <span class="clan-nom ml-3">{{ $clan->clan_nom }}</span>
+                                <img src="{{asset($membre->user_image) }}" alt="User Image" class="rounded-circle" style="width:40px; height:40px;">
+                                <span class="clan-nom ml-3">{{ $membre->user_nom }}</span>
                             </div>
-                            <span class="score">{{ $clan->clan_total_score }} points</span>
+                            <span class="score">{{ $membre->user_total_score }} points</span>
                         </div>
                         @endforeach
                     </div>
                     <!-- Column for positions 6 to 10 -->
                     <div class="col-md-6">
-                        @foreach ($topClans->slice(5, 5) as $index => $clan)
+                        @foreach ($meilleursMembres->slice(5, 5) as $index => $membre)
                         <div class="clan-row d-flex align-items-center justify-content-between mb-2 py-2 px-3 border-bottom">
                             <div class="d-flex align-items-center">
                                 <div class="position mr-3">{{ $index + 6 }}</div>
-                                <img src="{{ asset('images/clans/' . $clan->clan_image) }}" alt="Clan Image" class="rounded-circle" style="width:40px; height:40px;">
-                                <span class="clan-nom ml-3">{{ $clan->clan_nom }}</span>
+                                <img src="{{ asset($membre->user_image) }}" alt="User Image" class="rounded-circle" style="width:40px; height:40px;">
+                                <span class="clan-nom ml-3">{{ $membre->user_prenom }} {{ $membre->user_nom }}</span>
                             </div>
-                            <span class="score">{{ $clan->clan_total_score }} points</span>
+                            <span class="score">{{ $membre->user_total_score }} points</span>
                         </div>
                         @endforeach
                     </div>
@@ -71,27 +71,27 @@
                 <div class="row">
                     <!-- Column for positions 1 to 5 -->
                     <div class="col-md-6">
-                        @foreach ($topUsers->take(5) as $index => $user)
+                        @foreach ($topScoreImprovement->take(5) as $index => $user)
                         <div class="clan-row d-flex align-items-center justify-content-between mb-2 py-2 px-3 border-bottom">
                             <div class="d-flex align-items-center">
                                 <div class="position mr-3">{{ $index + 1 }}</div>
-                                <img src="{{ asset($user->imageProfil) }}" alt="User Image" class="rounded-circle" style="width:40px; height:40px;">
-                                <span class="clan-nom ml-3">{{ $user->prenom }} {{ $user->nom }}</span>
+                                <img src="{{ asset($user->user_image) }}" alt="User Image" class="rounded-circle" style="width:40px; height:40px;">
+                                <span class="clan-nom ml-3">{{ $user->user_prenom }} {{ $user->user_nom }}</span>
                             </div>
-                            <span class="score">{{ $user->total_score }} points</span>
+                            <span class="score">{{ $user->score_improvement }} points</span>
                         </div>
                         @endforeach
                     </div>
                     <!-- Column for positions 6 to 10 -->
                     <div class="col-md-6">
-                        @foreach ($topUsers->slice(5, 5) as $index => $user)
+                        @foreach ($topScoreImprovement->slice(5, 5) as $index => $user)
                         <div class="clan-row d-flex align-items-center justify-content-between mb-2 py-2 px-3 border-bottom">
                             <div class="d-flex align-items-center">
                                 <div class="position mr-3">{{ $index + 6 }}</div>
-                                <img src="{{ asset($user->imageProfil) }}" alt="User Image" class="rounded-circle" style="width:40px; height:40px;">
+                                <img src="{{ asset($user->user_image) }}" alt="User Image" class="rounded-circle" style="width:40px; height:40px;">
                                 <span class="clan-nom ml-3">{{ $user->prenom }} {{ $user->nom }}</span>
                             </div>
-                            <span class="score">{{ $user->total_score }} points</span>
+                            <span class="score">{{ $user->score_improvement }} points</span>
                         </div>
                         @endforeach
                     </div>

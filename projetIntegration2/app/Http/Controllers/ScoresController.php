@@ -81,25 +81,7 @@ class ScoresController extends Controller
         return view('Leaderboard.topClans', compact('topClans', 'topUsers', 'userClans', 'selectedClanId')); // Send the result to a view
     }
 
-    public function meilleursMembres($clanId)
-    {
 
-        $meilleursMembresparGroupe = DB::table('users')
-            ->join('clan_users', 'users.id', '=', 'clan_users.user_id')
-            ->join('scores', 'users.id', '=', 'scores.user_id')
-            ->where('clan_users.clan_id', $clanId)
-            ->select(
-                'users.prenom',
-                'users.nom',
-                DB::raw('SUM(scores.score) as total_score')
-            )
-            ->groupBy('users.id', 'users.prenom', 'users.nom')
-            ->orderByDesc('total_score')
-            ->limit(10)
-            ->get();
-
-        return view('Leaderboard.topClans', compact('meilleursMembresparGroupe'));
-    }
 
     public function exportTopUsers()
     {
