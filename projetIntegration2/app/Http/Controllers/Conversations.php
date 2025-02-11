@@ -36,11 +36,12 @@ class Conversations extends Controller
 
     public function show(User $user){
         //dd($user);
-        $users = auth()->id();;
+        $users = auth()->id();
+        //dd($user);
         return view('conversations.show',[
             'users' => $this->ConvRepository->getConversations(),
             'user' => $user,
-            'messages' => $this->ConvRepository->getMessageFor(auth()->id(), $user->id)->paginate(50) //Pagination des messages par 2
+            'messages' => $this->ConvRepository->getMessageFor(auth()->id(), $user->id)->paginate(50)//Pagination des messages par 2
         ]);
     }
 

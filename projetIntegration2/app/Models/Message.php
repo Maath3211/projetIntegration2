@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Message extends Model
 {
-    protected $table = "utilisateur_ami";
+    protected $table = "user_ami";
     protected $fillable = [
         'message',
-        'envoyeur_id',
-        'receveur_id',
+        'idEnvoyer',
+        'idReceveur',
         'created_at',
     ];
 

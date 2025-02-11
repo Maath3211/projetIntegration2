@@ -61,6 +61,12 @@
         .own-message .bubble {
             background: pink;
         }
+        .received-message {
+            justify-content: flex-start;
+        }
+        .received-message .bubble {
+            background: lightblue;
+        }
         .message-input {
             background: pink;
             padding: 10px;
@@ -83,10 +89,10 @@
             <div class="col-md-3 chat-sidebar">
                 <p>Liste des amis / groupes d'amis</p>
                 @include('conversations.utilisateurs',['users'=>$users])
-
             </div>
             <div class="col-md-9">
                 <div class="chat-messages" id="chat-messages">
+
                     @if ($messages->hasMorePages())
                         <div class="div text-center">
                             <a href="{{$messages->nextPageUrl()}}" class="btn btn-light">
@@ -94,24 +100,19 @@
                             </a>
                         </div>
                     @endif
+
                     @foreach ($messages as $message)
-                    <div class="message {{ $message->from->id !== $user->id ? 'offset-md-9 text-right' : '' }}">
+                    <div class="message {{ $message->idEnvoyer == auth()->id() ? 'own-message' : 'received-message' }}">
                         <div class="avatar bg-primary text-white rounded-circle p-2">SS</div>
                         <div class="bubble">
-                            <strong>{{$message->from->email}}</strong> 
-                            <span class="text-muted">{{ substr($message->created_at, 11, 5) }}
-                            </span>
+                            <strong>{{$message->email}}</strong> 
+                            <span class="text-muted">{{ substr($message->created_at, 11, 5) }}</span>
                             <br>
-                            <p>
-                                {!! nl2br(e($message->message)) !!}
-                                {{//dd($message)
-                                ;}}
-                            </p>
+                            <p>{!! nl2br(e($message->message)) !!}</p>
                         </div>
                     </div>
                     <hr>
                     @endforeach
-                    @include('conversations.receive')
 
                     @if ($messages->previousPageUrl())
                     <div class="div text-center">
@@ -120,6 +121,7 @@
                         </a>
                     </div>
                     @endif
+
                 </div>
 
                 <div class="d-flex align-items-center mt-3">
@@ -133,96 +135,88 @@
                         </div>
                     </form>
                 </div>
-                    <u>
-                        @foreach ($errors->all() as $error)
-                        <li>{{$error}}</li>
-                            
-                        @endforeach
-                    </u>
-                </div>
-            </div>
-            <script>
-                // Scroll to the bottom of the chat messages
-                document.addEventListener("DOMContentLoaded", function() {
-                    var chatMessages = document.getElementById("chat-messages");
-                    chatMessages.scrollTop = chatMessages.scrollHeight;
-                });
-
-            </script>
+                <u>
+                    @foreach ($errors->all() as $error)
+                    <li>{{$error}}</li>
+                    @endforeach
+                </u>
             </div>
         </div>
     </div>
 
+    <script>
+        // Scroll to the bottom of the chat messages
+        document.addEventListener("DOMContentLoaded", function() {
+            var chatMessages = document.getElementById("chat-messages");
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        });
+
+        const userId = "{{ auth()->id() }}"; // ID de l'utilisateur connecté
+        const friendId = "{{ $user->id }}";  // ID de l'ami avec qui il discute
+
+        const channelName = "chat-" + Math.min(userId, friendId) + "-" + Math.max(userId, friendId);
+
+        console.log("Subscribing to:", channelName);
+
+        const pusher = new Pusher('{{config('broadcasting.connections.pusher.key')}}', {
+            cluster: '{{config('broadcasting.connections.pusher.options.cluster')}}',
+            encrypted: true
+        });
+
+        pusher.connection.bind('connected', function() {
+            console.log('Successfully connected to Pusher');
+        });
+
+        pusher.connection.bind('error', function(err) {
+            console.error('Connection error:', err);
+        });
+
+        const channel = pusher.subscribe(channelName);
+
+        // Recevoir les messages de la conversation privée
+        channel.bind('mon-event', function(data) {
+            console.log("Message reçu:", data);
+            $("#chat-messages").append(`
+                <div class="message received-message">
+                    <div class="bubble">${data.message}</div>  
+                </div>
+                <hr>
+            `);
+            $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
+        });
+
+        // Envoyer un message via AJAX
+        $("form").submit(function(e) {
+            e.preventDefault();
+            console.log("Formulaire envoyé!");
+
+            $.ajax({
+                type: "POST",
+                url: "/broadcast",
+                headers: {
+                    'X-Socket-Id': pusher.connection.socket_id
+                },
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    message: $("input[name='content']").val(),
+                    from: userId, // Ajoute l'ID de l'utilisateur connecté
+                    to: friendId // Ajoute l'ID du destinataire
+                }
+            }).done(function(res) {
+                console.log("Message envoyé:", $("input[name='content']").val());
+                $("#chat-messages").append(`
+                
+                    <div class="message own-message">
+                        
+                        <div class="bubble">${$("input[name='content']").val()}  </div>
+                        
+                    </div>
+                    <hr>
+                `);
+                $("input[name='content']").val("");
+                $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
+            });
+        });
+    </script>
 </body>
-
-<script>
-    
-const userId = "{{ auth()->id() }}"; // ID de l'utilisateur connecté
-const friendId = "{{ $user->id }}";  // ID de l'ami avec qui il discute
-
-const channelName = "chat-" + Math.min(userId, friendId) + "-" + Math.max(userId, friendId);
-
-
-
-console.log("Subscribing to:", channelName);
-
-const pusher = new Pusher('{{config('broadcasting.connections.pusher.key')}}', {
-    cluster: '{{config('broadcasting.connections.pusher.options.cluster')}}',
-    encrypted: true
-});
-
-
-pusher.connection.bind('connected', function() {
-        console.log('Successfully connected to Pusher');
-    });
-
-    pusher.connection.bind('error', function(err) {
-        console.error('Connection error:', err);
-    });
-
-
-    const channel = pusher.subscribe(channelName);
-
-
-// Recevoir les messages de la conversation privée
-channel.bind('mon-event', function(data) {
-    console.log("Message reçu:", data.message);
-    $("#chat-messages").append(`
-        <div class="message">
-            <div class="bubble">${data.message}</div>
-        </div>
-    `);
-    $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
-});
-
-// Envoyer un message via AJAX
-$("form").submit(function(e) {
-    e.preventDefault();
-    console.log("Formulaire envoyé!");
-
-    $.ajax({
-        type: "POST",
-        url: "/broadcast",
-        headers: {
-            'X-Socket-Id': pusher.connection.socket_id
-        },
-        data: {
-            _token: "{{ csrf_token() }}",
-            message: $("input[name='content']").val(),
-            from: userId, // Ajoute l'ID de l'utilisateur connecté
-            to: friendId // Ajoute l'ID du destinataire
-        }
-    }).done(function(res) {
-        console.log("Message envoyé:", $("input[name='content']").val());
-        $("#chat-messages").append(`
-            <div class="message own-message">
-                <div class="bubble">${$("input[name='content']").val()}</div>
-            </div>
-        `);
-        $("input[name='content']").val("");
-        $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
-    });
-});
-
-</script> 
 </html>

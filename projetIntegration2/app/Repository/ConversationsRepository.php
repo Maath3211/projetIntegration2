@@ -45,8 +45,8 @@ class ConversationsRepository{
     public function createMessage(string $content, int $envoyeur, int $receveur){
         return $this->message->newQuery()->create([
             'message' => $content,
-            'envoyeur_id' => $envoyeur,
-            'receveur_id' => $receveur,
+            'idEnvoyer' => $envoyeur,
+            'idReceveur' => $receveur,
             'created_at' => now()
         ]);
 
@@ -55,7 +55,7 @@ class ConversationsRepository{
 
     public function getMessageFor($envoyeur,$receveur){
         return $this->message->newQuery()
-        ->whereRaw("((envoyeur_id = $envoyeur AND receveur_id = $receveur) OR (envoyeur_id = $receveur AND receveur_id = $envoyeur ))")
+        ->whereRaw("((idEnvoyer = $envoyeur AND idReceveur = $receveur) OR (idEnvoyer = $receveur AND idReceveur = $envoyeur ))")
         ->orderBy('created_at', 'ASC')
         ->with([
             'from' => function($query){return $query->select('email','id');}
@@ -68,11 +68,10 @@ class ConversationsRepository{
  */
     private function unreadCount(int $UserId){
         return $this->message->newQuery()
-        ->where('receveur_id', $UserId)
-        ->groupBy('envoyeur_id')
-        ->selectRaw('envoyeur_id, count(id) as count')
-        ->whereRaw('read_at IS NULL')
+        ->where('idReceveur', $UserId)
+        ->groupBy('idEnvoyer')
+        ->selectRaw('idEnvoyer, count(id) as count')
         ->get()
-        ->pluck('count','envoyeur_id');
+        ->pluck('count','idEnvoyer');
     }
 }
