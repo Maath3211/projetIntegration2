@@ -51,19 +51,17 @@ class ProfilController extends Controller
         $utilisateur->password = bcrypt($request->password);
 
         if ($request->hasFile('imageProfil')) {
-            if ($request->imageProfil) {
-                $uploadedFile  =  $request->file('imageProfil');
-                $nomFichierUnique  =  '/images/users/' . str_replace('  ',  '_',  $utilisateur->id)  .  '-'  .  uniqid()  .  '.'  .  $uploadedFile->extension();
-                try {
-                    $request->image->move(public_path('img/Utilisateurs'),  $nomFichierUnique);
-
-                } catch (\Symfony\Component\HttpFoundation\File\Exception\FileException  $e) {
-                    Log::error("Erreur lors du téléversement du fichier.", [$e]);
-                }
-                $utilisateur->image  =  $nomFichierUnique;
+            $uploadedFile = $request->file('imageProfil');
+            $nomFichierUnique = 'images/Utilisateurs/' . str_replace(' ', '_', $utilisateur->id) . '-' . uniqid() . '.' . $uploadedFile->extension();
+            try {
+                $uploadedFile->move(public_path('img/Utilisateurs'), $nomFichierUnique);
+                $utilisateur->imageProfil = $nomFichierUnique;
+            } catch (\Exception $e) {
+                Log::error("Erreur lors du téléversement du fichier.", [$e]);
+                return redirect()->back()->withErrors(['imageProfil' => 'Erreur lors du téléversement de l\'image']);
             }
         } else {
-            return redirect()->route('fournisseur.importation')->withErrors(['error' => 'Aucune image à importer.']);
+            return redirect()->back()->withErrors(['imageProfil' => 'Aucune image sélectionnée']);
         }
 
         $utilisateur->save();
@@ -96,7 +94,9 @@ class ProfilController extends Controller
 
     public function listePays()
     {
-        $response = Http::get('https://restcountries.com/v3.1/all');
+
+        $response = Http::withoutVerifying()->get('https://restcountries.com/v3.1/all');
+        // !! remettre après verification !!         $response = Http::get('https://restcountries.com/v3.1/all');
 
         if ($response->successful()) {
             return collect($response->json())->map(function ($country) {

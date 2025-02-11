@@ -22,7 +22,7 @@
         <div class="d-flex row justify-content-center">
             <div class="col-md-10">
 
-                <form action="{{ route('profil.creerCompte') }}" method="post" id="formCreation">
+                <form action="{{ route('profil.creerCompte') }}" method="post" enctype="multipart/form-data" id="formCreation">
                     @csrf
                     <h1 class="h1" id="titreConnexion">Création de compte Gymcord</h1>
                     <div class="conteneurForm">
