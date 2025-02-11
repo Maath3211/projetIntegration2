@@ -6,11 +6,11 @@
     <div class="container mt-5">
         <div class="profile-container text-center">
             <div class="d-flex align-items-center">
-                <img src="{{ asset('img/Utilisateurs/shrek.jpg') }}" alt="Profile Picture" class="profile-pic me-3">
+                <img src="{{ asset(Auth::user()->imageProfil) }}" alt="Profile Picture" class="profile-pic me-3">
                 <div class="text-start">
-                    <h2 class="greenText">Shrek Evergreen</h2>
-                    <p><strong>A propos:</strong></p>
-                    <p><strong>Membre depuis:</strong> 25 mai 2022</p>
+                    <h2 class="greenText">{{Auth::user()->prenom . ' ' . Auth::user()->nom}}</h2>
+                    <p><strong>A propos: </strong>{{ Auth::user()->aPropos }}</p>
+                    <p><strong>Membre depuis:</strong> {{Auth::user()->created_at->format('d/m/Y')}}</p>
                 </div>
             </div>
 
@@ -20,13 +20,13 @@
             </form>
 
 
-            <span id="engrenage">&#9881;</span> 
+            <span id="engrenage">&#9881;</span>
             <div class="d-flex justify-content-between mt-3">
                 <form action="{{ route('statistique.index') }}" method="get">
                     @csrf
                     <button class="btn btn-green">Statistique</button>
                 </form>
-                
+
                 <button class="btn btn-green">Ajouter en ami</button>
             </div>
             <div class="mt-3">

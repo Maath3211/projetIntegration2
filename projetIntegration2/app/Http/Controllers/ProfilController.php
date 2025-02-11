@@ -52,7 +52,7 @@ class ProfilController extends Controller
 
         if ($request->hasFile('imageProfil')) {
             $uploadedFile = $request->file('imageProfil');
-            $nomFichierUnique = 'images/Utilisateurs/' . str_replace(' ', '_', $utilisateur->id) . '-' . uniqid() . '.' . $uploadedFile->extension();
+            $nomFichierUnique = 'img/Utilisateurs/' . str_replace(' ', '_', $utilisateur->id) . '-' . uniqid() . '.' . $uploadedFile->extension();
             try {
                 $uploadedFile->move(public_path('img/Utilisateurs'), $nomFichierUnique);
                 $utilisateur->imageProfil = $nomFichierUnique;
