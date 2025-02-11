@@ -2,10 +2,11 @@
 <html>
 
 <head>
-    <title>Carte des Gymnases</title>
+    <title>Carte des Gyms</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-p/..." crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <style>
         body {
@@ -25,14 +26,36 @@
             margin-left: 20px; /* Ajouter de l'espace à gauche */
             display: flex;
             flex-direction: column;
+            position: relative;
+        }
+
+        #search-input-container {
+            display: flex;
+            align-items: center;
+            position: relative;
         }
 
         #search-bar {
-            width: 100%;
+            flex: 1;
             padding: 10px;
+            padding-right: 35px; /* Pour laisser de la place au bouton */
             border: 1px solid #A9FE77;
             border-radius: 5px;
             font-size: 16px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        #clear-search {
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            color: #A9FE77;
+            text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+            display: inline;
+            /* Un petit marge négative permet de le superposer à l'intérieur de la textbox */
+            margin-left: -35px;
             margin-bottom: 10px;
         }
 
@@ -134,13 +157,34 @@
             color: white;
             text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
         }
+
+        /* Add/update your CSS */
+        #current-location-btn {
+            position: absolute;
+            bottom: 10px;
+            left: 250px; /* Adjust this value so the button appears to the left of your legend */
+            z-index: 1000;
+            padding: 10px;
+            background-color: #A9FE77;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Increase the size of the Font Awesome icon */
+        #current-location-btn i {
+            font-size: 24px; /* Increase as needed */
+        }
     </style>
 </head>
 
 <body>
     <div id="search-container">
         <h1>Position des gyms à proximité</h1>
-        <input type="text" id="search-bar" placeholder="Rechercher un gym (ex: Econofitness)">
+        <div id="search-input-container">
+            <input type="text" id="search-bar" placeholder="Rechercher un gym (ex: Econofitness)">
+            <button id="clear-search">x</button>
+        </div>
         <div id="no-results-container">
             Aucun résultat trouvé pour la recherche "<span id="search-term"></span>"
         </div>
@@ -155,9 +199,10 @@
             <input type="checkbox" id="toggle-circles" checked>
             <label for="toggle-circles" style="color: white;">Afficher les cercles d'achalandage</label>
         </div>
+        <button id="current-location-btn"><i class="fa-solid fa-location-crosshairs"></i></button>
     </div>
     <script>
-        // Initialiser la carte avec les coordonnées du Cégep de Trois-Rivières
+        // Initialiser la carte avec les coordonnées du Cégep de Trois-Rivières---------------------------------------------------------------------
         var map = L.map('map').setView([46.35503515618501, -72.57240632483241], 13); // Coordonnées du Cégep de Trois-Rivières
 
         // Ajouter une couche de tuiles OpenStreetMap
@@ -169,8 +214,7 @@
         var customIcon = L.icon({
             iconUrl: '/img/green-marker-icon.png', // Chemin de votre icône personnalisée
             iconSize: [45, 45], // Taille de l'icône
-            iconAnchor: [17, 50], // Point de l'icône qui correspondra à la position du marqueur
-            popupAnchor: [1, -34] // Point depuis lequel la popup doit s'ouvrir par rapport à l'icône
+            iconAnchor: [22, 45] // Point d'ancrage de l'icône
         });
 
         // Créer une icône pour la position actuelle
@@ -218,7 +262,6 @@
                     var currentLocationMarker = L.marker([lat, lon], { icon: currentLocationIcon }).addTo(map);
                     var currentLocationLabel = L.divIcon({
                         className: 'label',
-                        html: 'Vous êtes ici',
                         iconSize: [100, 20],
                         iconAnchor: [50, 60]
                     });
@@ -264,7 +307,7 @@
                             }
 
                             // Taille de base pour le cercle (modifiable)
-                            var baseSize = 90;
+                            var baseSize = 60;
 
                             // Créer un icône gradient centré sur le pin
                             var gradientIcon = L.divIcon({
@@ -462,6 +505,148 @@
 
         legend.addTo(map);
     </script>
+    <script>
+        document.getElementById('search-bar').addEventListener('input', function() {
+            var searchBar = document.getElementById('search-bar');
+            var clearButton = document.getElementById('clear-search');
+            if (searchBar.value.length > 0) {
+                clearButton.style.display = 'inline';
+            } else {
+                clearButton.style.display = 'inline';
+            }
+        });
+
+        document.getElementById('clear-search').addEventListener('click', function() {
+            var searchBar = document.getElementById('search-bar');
+            searchBar.value = '';
+            this.style.display = 'inline';
+            // Déclenche un événement input pour mettre à jour la recherche (si votre code de recherche y est abonné)
+            searchBar.dispatchEvent(new Event('input'));
+        });
+
+        // Supposons que vous avez déjà créé et affiché le marqueur de position actuel, par exemple :
+        var currentPosMarker;
+        
+        // Si la géolocalisation a été utilisée, créez le marqueur initial
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                var lat = position.coords.latitude;
+                var lon = position.coords.longitude;
+                var initialLatLng = [lat, lon];
+                map.setView(initialLatLng, 13);
+                currentPosMarker = L.marker(initialLatLng, { icon: currentLocationIcon, draggable: false }).addTo(map);
+                // Afficher les gyms autour de la position initiale
+                getGyms(lat, lon);
+            });
+        }
+        
+        // Ajoutez un écouteur d'événement pour le double-clic sur la carte
+        // Vous pouvez changer 'dblclick' en 'click' si vous préférez un simple clic
+        map.on('dblclick', function(e) {
+            var newLatLng = e.latlng;
+            // Remove the old current position marker if it exists
+            if (typeof currentPosMarker !== 'undefined' && currentPosMarker) {
+                map.removeLayer(currentPosMarker);
+            }
+            // Add a new marker at the double-clicked location
+            currentPosMarker = L.marker(newLatLng, { icon: currentLocationIcon, draggable: false }).addTo(map);
+            map.setView(newLatLng, 13);
+            getGyms(newLatLng.lat, newLatLng.lng);
+        });
+    </script>
+    <script>
+  // Variable globale pour le marqueur de position (initial ou sélectionné)
+  var currentPosMarker;
+
+  // Créer le marqueur initial avec le tooltip "Vous êtes ici"
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      var lat = position.coords.latitude;
+      var lon = position.coords.longitude;
+      var initialLatLng = [lat, lon];
+      map.setView(initialLatLng, 13);
+      currentPosMarker = L.marker(initialLatLng, { icon: currentLocationIcon, draggable: false }).addTo(map);
+      currentPosMarker.bindTooltip("Vous êtes ici", {
+        permanent: true, direction: 'top', offset: [1, -37], className: 'current-position-tooltip'
+      }).openTooltip();
+      getGyms(lat, lon);
+    });
+  }
+
+  // Sur double-clic (ou clic) sur la carte, déplacez le marqueur et mettez à jour la tooltip
+  map.on('dblclick', function(e) {
+    var newLatLng = e.latlng;
+    if (currentPosMarker) {
+      currentPosMarker.setLatLng(newLatLng);
+      // Réactualiser la tooltip pour qu'elle suive le marqueur
+      currentPosMarker.bindTooltip("Vous êtes ici", {
+        permanent: true, direction: 'top', offset: [0, -15], className: 'current-position-tooltip'
+      }).openTooltip();
+    } else {
+      currentPosMarker = L.marker(newLatLng, { icon: currentLocationIcon, draggable: false }).addTo(map);
+      currentPosMarker.bindTooltip("Vous êtes ici", {
+        permanent: true, direction: 'top', offset: [0, -15], className: 'current-position-tooltip'
+      }).openTooltip();
+    }
+    map.setView(newLatLng);
+    getGyms(newLatLng.lat, newLatLng.lng);
+  });
+</script>
+<script>
+  // Variable globale pour le marqueur de position (initial ou sélectionné)
+  var currentPosMarker;
+
+  // Créer le marqueur initial sans le tooltip "Vous êtes ici"
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      var lat = position.coords.latitude;
+      var lon = position.coords.longitude;
+      var initialLatLng = [lat, lon];
+      map.setView(initialLatLng, 13);
+      currentPosMarker = L.marker(initialLatLng, { icon: currentLocationIcon, draggable: false }).addTo(map);
+      getGyms(lat, lon);
+    });
+  }
+
+  // Lors d'un double-clic sur la carte, supprimez le marqueur actuel
+  // et affichez un nouveau pin sans aucun tooltip
+  map.on('dblclick', function(e) {
+    var newLatLng = e.latlng;
+    // Supprimer le marqueur actuel s'il existe
+    if (currentPosMarker) {
+      map.removeLayer(currentPosMarker);
+    }
+    // Créer un nouveau marqueur et le stocker dans currentPosMarker
+    currentPosMarker = L.marker(newLatLng, { icon: currentLocationIcon, draggable: false }).addTo(map);
+    map.setView(newLatLng, 13);
+    getGyms(newLatLng.lat, newLatLng.lng);
+  });
+</script>
+<script>
+// Place this JavaScript code after your map/legend initialization code
+document.getElementById('current-location-btn').addEventListener('click', function() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var lat = position.coords.latitude;
+            var lon = position.coords.longitude;
+            var currentLatLng = [lat, lon];
+            map.setView(currentLatLng, 13);
+
+            // Remove the old marker if it exists
+            if (currentPosMarker) {
+                map.removeLayer(currentPosMarker);
+            }
+            // Add a new marker at the current location
+            currentPosMarker = L.marker(currentLatLng, { icon: currentLocationIcon, draggable: false }).addTo(map);
+
+            // Optionally update nearby gyms
+            getGyms(lat, lon);
+        });
+    } else {
+        alert('La géolocalisation n\'est pas supportée par ce navigateur.');
+    }
+});
+</script>
 </body>
 
 </html>
