@@ -36,11 +36,11 @@ class Conversations extends Controller
 
     public function show(User $user){
         //dd($user);
-        $users = User::select('email','id')->get();
+        $users = auth()->id();;
         return view('conversations.show',[
             'users' => $this->ConvRepository->getConversations(),
             'user' => $user,
-            'messages' => $this->ConvRepository->getMessageFor(1, $user->id)->paginate(50) //Pagination des messages par 2
+            'messages' => $this->ConvRepository->getMessageFor(auth()->id(), $user->id)->paginate(50) //Pagination des messages par 2
         ]);
     }
 
@@ -71,6 +71,20 @@ class Conversations extends Controller
             broadcast(new PusherBroadcast($request->message, auth()->id(), $request->to))
                 ->toOthers();
             \Log::info('✅ Message broadcasté avec succès');
+            
+            // Enregistrement des informations dans la table user_ami
+            \DB::table('user_ami')->insert([
+                'idEnvoyer' => auth()->id(),
+                'idReceveur' => $request->to,
+                'message' => $request->message,
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+            \Log::info('✅ Message Enregistrer avec succès');
+
+            
+
+
         } catch (\Exception $e) {
             \Log::error('❌ Erreur lors du broadcast: ' . $e->getMessage());
         }

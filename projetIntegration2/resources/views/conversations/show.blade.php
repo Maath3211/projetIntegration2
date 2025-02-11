@@ -104,6 +104,8 @@
                             <br>
                             <p>
                                 {!! nl2br(e($message->message)) !!}
+                                {{//dd($message)
+                                ;}}
                             </p>
                         </div>
                     </div>
