@@ -15,6 +15,21 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::GET('/clan/{id}', 
+[ClanController::class, 'index'])->name('clan.montrer');
+
+Route::GET('/clan/{id}/parametres',
+[ClanController::class, 'parametres'])->name('clan.parametres');
+
+Route::POST('/clan/{id}/parametres', 
+[ClanController::class, 'parametres'])->name('clan.parametres.post');
+
+Route::POST('/clan/{id}/televerser',
+[ClanController::class, 'televerserImage'])->name('clan.televerserImage');
+
+
+
+
 Route::GET('/yup', [UserCommunication::class,'index'])->name('user.index');
 
 Route::GET('/conversations/{user}', [Conversations::class,'show'])->name('conversations.show');
