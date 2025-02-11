@@ -6,19 +6,11 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class CreationCompteRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
@@ -37,16 +29,18 @@ class CreationCompteRequest extends FormRequest
             ],
             'pays' => [
                 'required',
+                'not_in:Choisir'
             ],
             'genre' => [
                 'required', 'in:Homme,Femme,Prefere ne pas dire',
             ],
             'dateNaissance' => [
                 'required',
+                'date',
             ],
             'password' => [
                 'required',
-                'length:8',
+                'min:8',
                 'confirmed',
             ]
         ];
@@ -59,10 +53,12 @@ class CreationCompteRequest extends FormRequest
                 'email.email' => 'L\'email doit être valide',
                 'prenom.required' => 'Le prénom est requis',
                 'nom.required' => 'Le nom est requis',
+                'pays.not_in' => 'Le pays est requis',
                 'pays.required' => 'Le pays est requis',
                 'genre.required' => 'Le genre est requis',
-                'genre.in' => 'Le genre doit être Homme, Femme ou Prefere ne pas dire',
+                'genre.in' => 'Le genre sélectionné n\'est pas valide',
                 'dateNaissance.required' => 'La date de naissance est requise',
+                'dateNaissance.date' => 'La date de naissance doit être une date',
                 'password.required' => 'Le mot de passe est requis',
                 'password.length' => 'Le mot de passe doit contenir au moins 8 caractères',
                 'password.confirmed' => 'La confirmation du mot de passe ne correspond pas'

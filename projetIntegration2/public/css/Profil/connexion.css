@@ -1,3 +1,10 @@
+/*  
+bleu pale 86fffd
+bleu 28e6d3
+vert a9fe77
+mauve a650fc
+*/
+
 body{
     background-color: rgb(54, 54, 54);
     color: aliceblue;
@@ -74,6 +81,14 @@ select:focus {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
+.alert-succes{
+    background-color: #60c22c;
+    opacity: 90%;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    color: black;
+}
+
 .btn-connexion, .unit-btn {
     background: linear-gradient(135deg, #a9fe77, #60c22c);
     border: none;
@@ -117,7 +132,7 @@ select:focus {
 
  
 .btn-retour:hover, .unit-btn:hover {
-    background: linear-gradient(135deg, #60c22c, #a9fe77);
+    background: linear-gradient(135deg, #c22c2c, #fe7777);
     transform: scale(1.05);
 }
  

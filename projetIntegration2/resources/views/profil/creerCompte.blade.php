@@ -88,10 +88,10 @@
                     </div>
                     <div class="conteneurForm">
                         <label for="pays" class="text-vert">Pays</label>
-                        <select class="form-select inputModification form-control">
-                            <option selected>Choisir</option>
+                        <select class="form-select inputConnexion form-control" name="pays">
+                            <option>Choisir</option>
                             @foreach ($countries as $country)
-                                <option value="{{ $country['name'] }}">{{ $country['name'] }}</option>
+                                <option value="{{ $country['name'] }}" {{ old('pays') == $country['name'] ? 'selected' : '' }}>{{ $country['name'] }}</option>
                             @endforeach
                             </select>
                             <div class="conteneurErreur">
@@ -108,9 +108,10 @@
                     <div class="conteneurForm">
                         <label for="genre" class="text-vert">Genre</label>
                         <select class="form-select form-control inputConnexion" name="genre" id="genre">
-                            <option value="Homme">Homme</option>
-                            <option value="Femme">Femme</option>
-                            <option value="Autre">Autre</option>
+                            <option value="Choisir" {{ old('genre') == 'Choisir' ? 'selected' : '' }}>Choisir</option>
+                            <option value="Homme" {{ old('genre') == 'Homme' ? 'selected' : '' }}>Homme</option>
+                            <option value="Femme" {{ old('genre') == 'Femme' ? 'selected' : '' }}>Femme</option>
+                            <option value="Prefere ne pas dire" {{ old('genre') == 'Prefere ne pas dire' ? 'selected' : '' }}>Prefere ne pas dire</option>
                         </select>
                         <div class="conteneurErreur">
                             @error('genre')
@@ -140,7 +141,7 @@
                     </div>
                     <div class="conteneurForm">
                         <label for="password" class="text-vert">Mot de passe</label>
-                        <input type="password" class="form-control inputConnexion" id="password"
+                        <input type="password" name="password" class="form-control inputConnexion" id="password"
                             placeholder="Mot de passe">
                         <div class="conteneurErreur">
                             @error('password')
@@ -155,7 +156,7 @@
                     </div>
                     <div class="conteneurForm">
                         <label for="password_confirmation" class="text-vert">Confirmer le mot de passe</label>
-                        <input type="password" class="form-control inputConnexion" id="password_confirmation"
+                        <input type="password" name="password_confirmation" class="form-control inputConnexion" id="password_confirmation"
                             placeholder="Confirmer le mot de passe">
                         <div class="conteneurErreur">
                             @error('password_confirmation')
@@ -202,5 +203,5 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
 </script>
-
+<script src="{{ asset('js/Profil/creation.js') }}"></script>
 </html>

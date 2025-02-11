@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ConnexionRequest;
 use App\Http\Requests\CreationCompteRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
@@ -30,16 +31,25 @@ class ProfilController extends Controller
          }
     }
 
-    public function pageCreerCompte(){
+    public function creerCompte(){
         $countries = Cache::remember('countries_list_french', now()->addDay(), function () {
             return $this->listePays();
         });
         return View('profil.creerCompte', compact('countries'));
     }
 
-    public function creerCompte(CreationCompteRequest $request){
-        dd($request->all());
-        return redirect()->route('profil.connexion');
+    public function storeCreerCompte(CreationCompteRequest $request){
+        $utilisateur = new User();
+        $utilisateur->email = $request->email;
+        $utilisateur->prenom = $request->prenom;
+        $utilisateur->nom = $request->nom;
+        $utilisateur->imageProfil = $request->imageProfil;
+        $utilisateur->pays = $request->pays;
+        $utilisateur->genre = $request->genre;
+        $utilisateur->dateNaissance = $request->dateNaissance;
+        $utilisateur->password = bcrypt($request->password);
+        $utilisateur->save();
+        return redirect()->route('profil.connexion')->with('message', 'Votre compte a été créé avec succès');
     }
 
 
@@ -54,7 +64,7 @@ class ProfilController extends Controller
         return redirect()->route('profil.pageConnexion');
     }
 
-    public function pageModification()
+    public function modification()
     {
         // Cache the countries for 1 day
         $countries = Cache::remember('countries_list_french', now()->addDay(), function () {

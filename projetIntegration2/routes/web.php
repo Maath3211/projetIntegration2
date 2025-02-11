@@ -39,10 +39,10 @@ Route::POST('/connexion',
 [ProfilController::class,'connexion'])->name('profil.connexion');
 
 Route::GET('/creerCompte',
-[ProfilController::class,'pageCreerCompte'])->name('profil.pageCreerCompte');
+[ProfilController::class,'creerCompte'])->name('profil.creerCompte');
 
 Route::POST('/creerCompte',
-[ProfilController::class,'creerCompte'])->name('profil.creerCompte');
+[ProfilController::class,'storeCreerCompte'])->name('profil.storeCreerCompte');
 
 Route::GET('/meilleursGroupes',
 [ScoresController::class,'meilleursGroupes'])->name('scores.meilleursGroupes');
@@ -53,7 +53,7 @@ Route::GET('/profil',
 [ProfilController::class,'profil'])->name('profil.profil')->middleware('auth');
 
 Route::GET('/profil/modification',
-[ProfilController::class,'pageModification'])->name('profil.pageModification')->middleware('auth');
+[ProfilController::class,'modification'])->name('profil.modification')->middleware('auth');
 
 Route::GET('/stats',
 [StatistiqueController::class,'index'])->name('statistique.index');

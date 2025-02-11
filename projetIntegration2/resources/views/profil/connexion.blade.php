@@ -57,9 +57,8 @@
                         </div>
                     </div>
                     <br>
-                    <a href="{{ route('profil.pageCreerCompte') }}" class="text-vert" id="btCreerCompte">Créer un compte</a>
                     @if (session('message'))
-                        <div class="alert alert-success">
+                        <div class="alert alert-succes">
                             <p class="text-center">{{ session('message') }}</p>
                         </div>
                     @endif
@@ -72,6 +71,7 @@
                             @endif
                         @endforeach
                     @endif
+                    <a href="{{ route('profil.creerCompte') }}" class="text-vert" id="btCreerCompte">Créer un compte</a>
                     <button type="submit" class="btn btn-connexion">Connexion</button>
                 </form>
 
