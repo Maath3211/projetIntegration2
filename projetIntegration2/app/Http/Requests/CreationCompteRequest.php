@@ -25,7 +25,8 @@ class CreationCompteRequest extends FormRequest
                 'required',
             ],
             'imageProfil' => [
-                
+                'required',
+                'mimes:jpg,jpeg,png,bmp,webp,svg',
             ],
             'pays' => [
                 'required',
@@ -53,6 +54,8 @@ class CreationCompteRequest extends FormRequest
                 'email.email' => 'L\'email doit être valide',
                 'prenom.required' => 'Le prénom est requis',
                 'nom.required' => 'Le nom est requis',
+                'imageProfil.required' => 'L\'image de profil est requise',
+                'imageProfil.mimes' => 'L\'image de profil doit être un fichier image',
                 'pays.not_in' => 'Le pays est requis',
                 'pays.required' => 'Le pays est requis',
                 'genre.required' => 'Le genre est requis',

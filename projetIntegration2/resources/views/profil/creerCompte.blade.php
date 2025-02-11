@@ -72,9 +72,10 @@
                         </div>
                     </div>
                     <div class="conteneurForm">
-                        <label for="imageProfil" class="text-vert">Lien de l'image de profil</label>
-                        <input type="text" class="form-control inputConnexion" name="imageProfil" id="imageProfil"
-                            placeholder="Lien de l'image de profil" value="{{ old('imageProfil') }}">
+                        <label for="imageProfil" class="text-vert">Image de profil</label>
+                        <input type="file" class="form-control inputConnexion" id="imageProfil" name="imageProfil">
+                        <label for="imageProfil" class="custom-file-upload" id="filename">Aucun changement</label>
+                        
                         <div class="conteneurErreur">
                             @error('imageProfil')
                                 <span class="text-danger">{{ $message }}&ensp;</span>
@@ -91,19 +92,21 @@
                         <select class="form-select inputConnexion form-control" name="pays">
                             <option>Choisir</option>
                             @foreach ($countries as $country)
-                                <option value="{{ $country['name'] }}" {{ old('pays') == $country['name'] ? 'selected' : '' }}>{{ $country['name'] }}</option>
+                                <option value="{{ $country['name'] }}"
+                                    {{ old('pays') == $country['name'] ? 'selected' : '' }}>{{ $country['name'] }}
+                                </option>
                             @endforeach
-                            </select>
-                            <div class="conteneurErreur">
-                                @error('pays')
-                                    <span class="text-danger">{{ $message }}&ensp;</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#dc3545"
-                                        class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
-                                        <path
-                                            d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
-                                    </svg>
-                                @enderror
-                            </div>
+                        </select>
+                        <div class="conteneurErreur">
+                            @error('pays')
+                                <span class="text-danger">{{ $message }}&ensp;</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#dc3545"
+                                    class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
+                                    <path
+                                        d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
+                                </svg>
+                            @enderror
+                        </div>
                     </div>
                     <div class="conteneurForm">
                         <label for="genre" class="text-vert">Genre</label>
@@ -111,7 +114,9 @@
                             <option value="Choisir" {{ old('genre') == 'Choisir' ? 'selected' : '' }}>Choisir</option>
                             <option value="Homme" {{ old('genre') == 'Homme' ? 'selected' : '' }}>Homme</option>
                             <option value="Femme" {{ old('genre') == 'Femme' ? 'selected' : '' }}>Femme</option>
-                            <option value="Prefere ne pas dire" {{ old('genre') == 'Prefere ne pas dire' ? 'selected' : '' }}>Prefere ne pas dire</option>
+                            <option value="Prefere ne pas dire"
+                                {{ old('genre') == 'Prefere ne pas dire' ? 'selected' : '' }}>Prefere ne pas dire
+                            </option>
                         </select>
                         <div class="conteneurErreur">
                             @error('genre')
@@ -156,8 +161,8 @@
                     </div>
                     <div class="conteneurForm">
                         <label for="password_confirmation" class="text-vert">Confirmer le mot de passe</label>
-                        <input type="password" name="password_confirmation" class="form-control inputConnexion" id="password_confirmation"
-                            placeholder="Confirmer le mot de passe">
+                        <input type="password" name="password_confirmation" class="form-control inputConnexion"
+                            id="password_confirmation" placeholder="Confirmer le mot de passe">
                         <div class="conteneurErreur">
                             @error('password_confirmation')
                                 <span class="text-danger">{{ $message }}&ensp;</span>
@@ -204,4 +209,5 @@
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
 </script>
 <script src="{{ asset('js/Profil/creation.js') }}"></script>
+
 </html>

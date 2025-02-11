@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+
 
 
 class ProfilController extends Controller
@@ -21,24 +23,23 @@ class ProfilController extends Controller
     public function connexion(ConnexionRequest $request)
     {
         $reussi = Auth::guard()->attempt(['email' => $request->email, 'password' => $request->password]);
-         if ($reussi) 
-         {
-             return redirect()->route('profil.profil');
-         } 
-         else 
-         {
-             return redirect()->back()->withErrors(['Informations invalides']);
-         }
+        if ($reussi) {
+            return redirect()->route('profil.profil');
+        } else {
+            return redirect()->back()->withErrors(['Informations invalides']);
+        }
     }
 
-    public function creerCompte(){
+    public function creerCompte()
+    {
         $countries = Cache::remember('countries_list_french', now()->addDay(), function () {
             return $this->listePays();
         });
         return View('profil.creerCompte', compact('countries'));
     }
 
-    public function storeCreerCompte(CreationCompteRequest $request){
+    public function storeCreerCompte(CreationCompteRequest $request)
+    {
         $utilisateur = new User();
         $utilisateur->email = $request->email;
         $utilisateur->prenom = $request->prenom;
@@ -48,6 +49,23 @@ class ProfilController extends Controller
         $utilisateur->genre = $request->genre;
         $utilisateur->dateNaissance = $request->dateNaissance;
         $utilisateur->password = bcrypt($request->password);
+
+        if ($request->hasFile('imageProfil')) {
+            if ($request->imageProfil) {
+                $uploadedFile  =  $request->file('imageProfil');
+                $nomFichierUnique  =  '/images/users/' . str_replace('  ',  '_',  $utilisateur->id)  .  '-'  .  uniqid()  .  '.'  .  $uploadedFile->extension();
+                try {
+                    $request->image->move(public_path('img/Utilisateurs'),  $nomFichierUnique);
+
+                } catch (\Symfony\Component\HttpFoundation\File\Exception\FileException  $e) {
+                    Log::error("Erreur lors du téléversement du fichier.", [$e]);
+                }
+                $utilisateur->image  =  $nomFichierUnique;
+            }
+        } else {
+            return redirect()->route('fournisseur.importation')->withErrors(['error' => 'Aucune image à importer.']);
+        }
+
         $utilisateur->save();
         return redirect()->route('profil.connexion')->with('message', 'Votre compte a été créé avec succès');
     }
@@ -72,7 +90,7 @@ class ProfilController extends Controller
         });
         return View('profil.modification', compact('countries'));
     }
-    
+
 
 
 
@@ -91,5 +109,4 @@ class ProfilController extends Controller
 
         return [];
     }
-
 }
