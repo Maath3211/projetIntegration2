@@ -35,7 +35,7 @@
           <div class="col-md-10 colonneParametres">
             <div class="conteneurParametres ">
 
-              <div class="titreParametre">Paramétres généraux</div>
+              <div class="titreParametre">Paramètres généraux</div>
               <a href="{{ route('clan.montrer', ['id' => $id]) }}">
                 <div class="boutonRetour">
                   <i class="fa-regular fa-circle-xmark fa-3x"></i>

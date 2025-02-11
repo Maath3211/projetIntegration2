@@ -7,6 +7,7 @@ use App\Http\Controllers\ScoresController;
 use App\Http\Controllers\Conversations;
 use App\Http\Controllers\StatistiqueController;
 use App\Http\Controllers\GymController;
+use App\Http\Controllers\ClanController;
 use Illuminate\Support\Facades\Log;
 use App\Models\User;
 use App\Events\PusherBroadcast;

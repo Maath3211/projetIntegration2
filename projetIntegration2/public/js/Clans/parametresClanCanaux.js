@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", function() {
     const categoriesSelectionnees = [];
+    const categoriesRenommage = [];
     let categorieASupprimer = "";
+    let categorieARenommer = "";
 
     const categoriesParametres = document.querySelectorAll('.categorieParametre');
 
@@ -15,8 +17,20 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
+    /*
+    GESTION DU FRONT END DE LA SUPPRESSION D'UNE CATÉGORIE DE CANAL
+    */
+
+    //obtenir les catégories à supprimer
+    document.querySelectorAll('.categorie i.supprimer').forEach(icon => {
+        icon.addEventListener('click', function(){
+            document.getElementById('confirmationSuppression').style.display = 'flex';
+            categorieASupprimer = this.parentElement.querySelector('div').textContent.trim();
+        });
+    });
+
     // si il confirme la suppression, cache la fenêtre de confirmation et la catégorie, puis on l'ajout à la liste des catégories à supprimer.
-    document.getElementById('confirmer').addEventListener('click', function() {
+    document.getElementById('confirmerSuppression').addEventListener('click', function() {
         document.getElementById('confirmationSuppression').style.display = 'none';
         document.querySelector(`.${categorieASupprimer}`).style.display = 'none';
 
@@ -30,17 +44,41 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // cacher la fenêtre de confirmation si il annule le tout
-    document.getElementById('annuler').addEventListener('click', function() {
+    document.getElementById('annulerSuppression').addEventListener('click', function() {
         document.getElementById('confirmationSuppression').style.display = 'none';     
     });
 
 
-    //obtenir les catégories à supprimer
-    document.querySelectorAll('.categorie i.supprimer').forEach(icon => {
+
+
+
+    /*
+    GESTION DU FRONT END DU RENOMMAGE D'UNE CATÉGORIE DE CANAL
+    */
+
+    //obtenir les catégories à renommer
+    document.querySelectorAll('.categorie i.renommer').forEach(icon => {
         icon.addEventListener('click', function(){
-            document.getElementById('confirmationSuppression').style.display = 'flex';
-            categorieASupprimer = this.parentElement.querySelector('div').textContent.trim();
+            document.getElementById('modificationNomCategorie').style.display = 'flex';
+            categorieARenommer = this.parentElement.querySelector('div').textContent.trim();
+            document.querySelector('.texteConfirmation input').value = categorieARenommer;
         });
     });
+
+    document.getElementById('annulerRenommage').addEventListener('click', function() {
+        document.getElementById('modificationNomCategorie').style.display = 'none';
+    })
+
+    document.getElementById('confirmerRenommage').addEventListener('click', function() {
+        document.getElementById('modificationNomCategorie').style.display = 'none';
+
+        valeurEnregistree = (categorieARenommer + ";" + document.querySelector('.texteConfirmation input').value);
+        if(!categoriesRenommage.includes(valeurEnregistree)){
+            categoriesRenommage.push(valeurEnregistree);
+            console.log("Valeur ajoutée : ", valeurEnregistree);
+        }
+
+        document.getElementById('categoriesARenommer').value = categoriesRenommage.join(',');
+    })
 
 });

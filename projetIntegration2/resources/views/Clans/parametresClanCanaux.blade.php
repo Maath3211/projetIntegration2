@@ -35,7 +35,7 @@
         <div class="col-md-10 colonneParametres">
             <div class="conteneurParametres ">
 
-            <div class="titreParametre">Paramétres généraux</div>
+            <div class="titreParametre">Catégories de canaux</div>
             <a href="{{ route('clan.montrer', ['id' => $id]) }}">
                 <div class="boutonRetour">
                 <i class="fa-regular fa-circle-xmark fa-3x"></i>
@@ -50,23 +50,24 @@
                 <div class="col-md-12 parametresCanal">
                     <div class="categorie Général">
                         <i class="fa-solid fa-x supprimer"></i>
-                        <i class="fa-solid fa-pen"></i>
+                        <i class="fa-solid fa-pen renommer"></i>
                         <div>Général</div>
                     </div>
                     <div class="categorie Aide">
                         <i class="fa-solid fa-x supprimer"></i>
-                        <i class="fa-solid fa-pen"></i>
+                        <i class="fa-solid fa-pen renommer"></i>
                         <div>Aide</div>
                     </div>
                     <div class="categorie Compétition">
                         <i class="fa-solid fa-x supprimer"></i>
-                        <i class="fa-solid fa-pen"></i>
+                        <i class="fa-solid fa-pen renommer"></i>
                         <div>Compétition</div>
                     </div>
                 </div>
 
                 <!-- Hidden input field to store the added values -->
                 <input type="hidden" name="categoriesASupprimer" id="categoriesSelectionnees">
+                <input type="hidden" name="categoriesARenommer" id="categoriesARenommer">
 
                 <div class="row barreEnregistrerConteneur">
                     <div class="col-md-10 rangeeEnregistrer">
@@ -75,6 +76,8 @@
                     </div>
                 </div>
             </form>
+
+            <!-- Fenêtre contextuelle pour confirmer la suppression d'une catégorie de canal -->
             <div id="confirmationSuppression">
                 <div class="conteneurConfirmation">
                     <div class="titreConfirmation">
@@ -85,8 +88,25 @@
                     </div>
 
                     <div class="boutonsConfirmation">
-                        <button id="confirmer" type="button">Yes</button>
-                        <button id="annuler" type="button">No</button>
+                        <button id="annulerSuppression" type="button">Annuler</button>
+                        <button id="confirmerSuppression" type="button">Supprimer</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fenêtre contextuelle pour renommer une catégorie de canal -->
+            <div id="modificationNomCategorie">
+                <div class="conteneurConfirmation">
+                    <div class="titreConfirmation">
+                        <div>Renommer la catégorie de canal</div>
+                    </div>
+                    <div class="texteConfirmation">
+                        <input type="text" class="form-control entreeNomCategorie">
+                    </div>
+
+                    <div class="boutonsConfirmation">
+                        <button id="annulerRenommage" type="button">Annuler</button>
+                        <button id="confirmerRenommage" type="button">Confirmer</button>
                     </div>
                 </div>
             </div>
