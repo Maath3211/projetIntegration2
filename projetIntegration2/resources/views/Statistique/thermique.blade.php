@@ -232,7 +232,12 @@
 <body>
     <div class="boutonContainer">
         <a href="/stats"><button class="bouton">Retour</button></a>
-        <button class="bouton">Sauvegarder</button>
+        <form id="thermiqueForm" action="{{ route('statistique.storeThermique') }}" method="POST">
+             @csrf
+            <input type="hidden" name="donnees" id="donnees">
+            <button class="bouton" id="sauvegarder">Sauvegarder</button>
+        </form>
+
     </div>
 
     <h1 class="titre">Calendrier d'Activité</h1>
@@ -356,6 +361,7 @@
                 jourDiv.style.pointerEvents = "none";
             }
 
+            const value = [0,1,2,3,4,5];
             const colors = ["#ffffff", "#dfffc2", "#ffeb3b", "#ffcccb", "#a8c7e8", "#ffe0b2"];
             const icons = [
                             "", 
@@ -406,6 +412,38 @@
         renderMonth(moisSelectionne, anneeSelectionnee);
     });
 
+    document.getElementById("sauvegarder").addEventListener("click", function () {
+    let jours = document.querySelectorAll(".jour");
+    let donnees = [];
+        console.log("click");
+    jours.forEach(jour => {
+        let jourText = jour.textContent.padStart(2, '0');
+        console.log(jourText);
+        let date = `${anneeSelectionnee}-${(moisSelectionne + 1).toString().padStart(2, '0')}-${jour.textContent.padStart(2, '0')}`;
+        let count = parseInt(jour.dataset.count);
+
+        if (count > 0) { // On enregistre seulement les jours avec une activité
+            let dateAujourdhui = new Date().toISOString().split('T')[0];
+            donnees.push({
+                date: dateAujourdhui,
+                type_activite: count
+            });
+        }
+    });
+
+    if (donnees.length === 0) {
+        alert("Aucune activité sélectionnée !");
+        return;
+    }
+
+    console.log(donnees);
+    document.getElementById('donnees').value = JSON.stringify(donnees);
+    document.getElementById('thermiqueForm').submit();
+
+});
+
+
+        
     renderMonth(moisSelectionne, anneeSelectionnee);
 </script>
 </body>

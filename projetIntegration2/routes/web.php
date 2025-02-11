@@ -58,6 +58,8 @@ Route::GET('/graphique',
 Route::GET('/thermique',
 [StatistiqueController::class,'thermique'])->name('statistique.thermique');
 
+Route::post('/statistique/storeThermique', [StatistiqueController::class, 'storeThermique'])->name('statistique.storeThermique');
+
 Route::GET('/localisation', 
 [GymController::class, 'index'])->name('localisation.index');
 Route::get('/export/top-users', [ScoresController::class, 'exportTopUsers'])->name('export.topUsers');
