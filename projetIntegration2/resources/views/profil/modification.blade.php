@@ -55,11 +55,10 @@
                             <p class="greenText h5">Pays</p>
                         </div>
                         <div class="col-md-4 d-flex flex-column align-items-center">
-                            <select class="form-select inputModification form-control"
-                                aria-label="Default select example">
+                            <select class="form-select inputModification form-control">
                                 <option selected>Choisir</option>
                                 @foreach ($countries as $country)
-                                    <option value="{{ $country['code'] }}">{{ $country['name'] }}</option>
+                                    <option value="{{ $country['name'] }}">{{ $country['name'] }}</option>
                                 @endforeach
                             </select>
                         </div>

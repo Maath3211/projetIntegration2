@@ -6,10 +6,11 @@ use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\ScoresController;
 use App\Http\Controllers\Conversations;
 use App\Http\Controllers\StatistiqueController;
-use App\Http\Controllers\ClanController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\GymController;
 use Illuminate\Support\Facades\Log;
+use App\Models\User;
+use App\Events\PusherBroadcast;
+
 
 
 Route::get('/', function () {
@@ -37,14 +38,21 @@ Route::POST('/clan/{id}/enregistrerCanaux',
 Route::GET('/yup',
 [UserCommunication::class,'index'])->name('user.index');
 
-Route::GET('/conversations',
-[Conversations::class,'index'])->name('conversations');
+Route::POST('/clan/{id}/televerser',
+[ClanController::class, 'televerserImage'])->name('clan.televerserImage');
 
-Route::GET('/conversations/{user}',
-[Conversations::class,'show'])->name('conversations.show');
 
-Route::post('/conversations/{user}',
-[Conversations::class,'store']);
+
+
+Route::GET('/yup', [UserCommunication::class,'index'])->name('user.index');
+
+Route::GET('/conversations/{user}', [Conversations::class,'show'])->name('conversations.show');
+Route::POST('/conversations/{user}', [Conversations::class,'store']);
+Route::POST('/broadcast', [Conversations::class,'broadcast']);
+Route::POST('/receive', [Conversations::class,'receive']);
+Route::GET('/conversations', [Conversations::class,'index'])->name('conversations');
+
+
 
 Route::GET('/connexion',
 [ProfilController::class,'index'])->name('profil.pageConnexion');
@@ -52,16 +60,22 @@ Route::GET('/connexion',
 Route::POST('/connexion',
 [ProfilController::class,'connexion'])->name('profil.connexion');
 
+Route::GET('/creerCompte',
+[ProfilController::class,'creerCompte'])->name('profil.creerCompte');
+
+Route::POST('/creerCompte',
+[ProfilController::class,'storeCreerCompte'])->name('profil.storeCreerCompte');
+
 Route::GET('/meilleursGroupes',
 [ScoresController::class,'meilleursGroupes'])->name('scores.meilleursGroupes');
 Route::POST('/deconnexion',
 [ProfilController::class,'deconnexion'])->name('profil.deconnexion');
 
 Route::GET('/profil',
-[ProfilController::class,'profil'])->name('profil.profil');
+[ProfilController::class,'profil'])->name('profil.profil')->middleware('auth');
 
 Route::GET('/profil/modification',
-[ProfilController::class,'pageModification'])->name('profil.pageModification');
+[ProfilController::class,'modification'])->name('profil.modification')->middleware('auth');
 
 Route::GET('/stats',
 [StatistiqueController::class,'index'])->name('statistique.index');

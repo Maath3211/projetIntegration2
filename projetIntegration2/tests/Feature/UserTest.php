@@ -5,16 +5,16 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use App\Models\Profil;
+use App\Models\User;
 
-class ProfilTest extends TestCase
+class UserTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
     public function user_can_login_with_valid_credentials()
     {
-        $user = Profil::factory()->create([
+        $user = User::factory()->create([
             'email' => 'test@test.com',
             'password' => bcrypt($password = 'adminggg'),
         ]);
@@ -32,7 +32,7 @@ class ProfilTest extends TestCase
     /** @test */
     public function user_can_logout()
     {
-        $user = Profil::factory()->create();
+        $user = User::factory()->create();
         $this->actingAs($user, 'web');
 
         $response = $this->post('/deconnexion');
