@@ -94,8 +94,8 @@ class Conversations extends Controller
     
 
     public function receive(Request $request){
-        \Log::info('Receive method called with message: ' . $request->message);
-        \Log::info('Message received: ' . $request->message); // Debug
+        //\Log::info('Receive method called with message: ' . $request->message);
+        //\Log::info('Message received: ' . $request->message); // Debug
         return response()->json(['message' => $request->message]);
     }
     
