@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         body {
             background-color: #222;
@@ -67,6 +70,21 @@
             outline: none;
         }
     </style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script>
+
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('32555c36d89bf76eb189', {
+      cluster: 'us2'
+    });
+
+    var channel = pusher.subscribe('mon-channel');
+    channel.bind('mon-event', function(data) {
+      alert(JSON.stringify(data));
+    });
+  </script>
 </head>
 <body>
 
@@ -80,42 +98,106 @@
             <div class="col-md-3 chat-sidebar">
                 <p>Liste des amis / groupes d'amis</p>
                 @include('conversations.utilisateurs',['users'=>$users])
-
+                
             </div>
             <div class="col-md-9">
-                <div class="chat-messages">
-                    <div class="message">
-                        <div class="avatar bg-primary text-white rounded-circle p-2">SS</div>
-                        <div class="bubble">
-                            <strong>Sam Sulek</strong> <span class="text-muted">14:34</span><br>
-                            🔊 Audio
-                        </div>
-                    </div>
-                    <div class="message">
-                        <div class="avatar bg-success text-white rounded-circle p-2">X</div>
-                        <div class="bubble">
-                            <strong></strong> <span class="text-muted">14:35</span><br>
-                            <strong></strong>
-                        </div>
-                    </div>
-                    <div class="message own-message">
-                        <div class="bubble">
-                            <strong>Yoan</strong> <span class="text-muted">14:36</span><br>
-                            Nice body
-                        </div>
-                        <div class="avatar bg-danger text-white rounded-circle p-2">Y</div>
-                    </div>
+                <div class="messages">
+                    @include('conversations.receive',['messages'=>"Hey !"])
                 </div>
-
+                
                 <div class="d-flex align-items-center mt-3">
                     <button class="btn btn-secondary me-2">➕</button>
                     <button class="btn btn-secondary me-2">😊</button>
-                    <input type="text" class="message-input" placeholder="Écris un message...">
-                    <button class="btn btn-secondary ms-2">🎤</button>
+                    <form action="/broadcast" method="POST">
+                        <input id="message" name="message" type="text" class="message-input" placeholder="Écris un message...">
+                        <button type="submit" class="btn btn-secondary ms-2">Submit</button>
+                    </form>
+
                 </div>
             </div>
         </div>
     </div>
 
 </body>
+<script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
+    console.log("Pusher key:", '{{ config('broadcasting.connections.pusher.key') }}');
+    
+    const pusher = new Pusher('{{ config('broadcasting.connections.pusher.key') }}', {
+        cluster: '{{ config('broadcasting.connections.pusher.options.cluster') }}',
+        encrypted: true
+    });
+
+    pusher.connection.bind('connected', function() {
+        console.log('Successfully connected to Pusher');
+    });
+
+    pusher.connection.bind('error', function(err) {
+        console.error('Connection error:', err);
+    });
+
+    const channel = pusher.subscribe('mon-channel');
+
+    // Receive
+    channel.bind('mon-event', function(data) {
+        console.log("Message received on index page:", data.message); // Debug
+        $(".messages").append('<div class="message"><div class="bubble">' + data.message + '</div></div>');
+        $(document).scrollTop($(document).height());
+    });
+
+    $("form").on('submit', function(e) {
+        e.preventDefault();
+        console.log("Form submitted!"); // Debug
+        $.ajax({
+            type: "POST",
+            url: "/broadcast",
+            headers: {
+                'X-Socket-Id': pusher.connection.socket_id,
+                'X-CSRF-TOKEN': "{{ csrf_token() }}"
+            },
+            data: {
+                message: $("#message").val()
+            },
+            success: function(res) {
+                console.log("Message sent:", $("#message").val()); // Debug
+                $(".messages").append('<div class="message own-message"><div class="bubble">' + $("#message").val() + '</div></div>');
+                $("#message").val("");
+                $(document).scrollTop($(document).height());
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error("Error sending message:", textStatus, errorThrown); // Debug
+            }
+        });
+    });
+*/
+</script> 
 </html>
