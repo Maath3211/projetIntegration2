@@ -6,7 +6,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
 <style>
     .conteneurImage {
-        background-image: url('{{ asset('images/ui/leaderboard.png') }}');
+        background-image: url('{{ asset('img/ui/leaderboard.png') }}');
         /* Use 'contain' to ensure the whole image is visible */
         background-size: contain;
         background-repeat: no-repeat;

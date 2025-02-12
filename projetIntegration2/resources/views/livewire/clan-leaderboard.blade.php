@@ -4,7 +4,7 @@
         <div class="leaderboard-header p-3 mb-3 border rounded d-flex justify-content-between align-items-center">
             <div>
                 <div class="d-flex align-items-center">
-                    <img src="{{ asset('images/ui/trophy.png') }}" alt="Trophy" style="width:30px; height:30px;" class="mr-2">
+                    <img src="{{ asset('img/ui/trophy.png') }}" alt="Trophy" style="width:30px; height:30px;" class="mr-2">
                     <h2 class="mb-0">Top 10 Meilleurs Membres</h2>
                 </div>
                 <p class="text-muted mb-0">Découvrez les membres les plus performants du groupe</p>
@@ -53,7 +53,7 @@
         <div class="leaderboard-header p-3 mb-3 border rounded d-flex justify-content-between align-items-center">
             <div>
                 <div class="d-flex align-items-center">
-                    <img src="{{ asset('images/ui/trophy.png') }}" alt="Trophy" style="width:30px; height:30px;" class="mr-2">
+                    <img src="{{ asset('img/ui/trophy.png') }}" alt="Trophy" style="width:30px; height:30px;" class="mr-2">
                     <h2 class="mb-0">Top 10 Meilleure Amélioration</h2>
                 </div>
                 <p class="text-muted mb-0">Découvrez les membres ayant la plus grande amélioration du groupe</p>

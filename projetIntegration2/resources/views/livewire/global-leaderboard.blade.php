@@ -4,7 +4,7 @@
         <div class="leaderboard-header p-3 mb-3 border rounded d-flex justify-content-between align-items-center">
             <div>
                 <div class="d-flex align-items-center">
-                    <img src="{{ asset('images/ui/trophy.png') }}" alt="Trophy" style="width:30px; height:30px;" class="mr-2">
+                    <img src="{{ asset('img/ui/trophy.png') }}" alt="Trophy" style="width:30px; height:30px;" class="mr-2">
                     <h2 class="mb-0">Top 10 Meilleurs Groupes</h2>
                 </div>
                 <p class="text-muted mb-0">Découvrez les clans les plus performants et inspirants du moment</p>
@@ -27,7 +27,7 @@
                 <div class="clan-row d-flex align-items-center justify-content-between mb-2 py-2 px-3 border-bottom">
                     <div class="d-flex align-items-center">
                         <div class="position mr-3">{{ $index + 1 }}</div>
-                        <img src="{{ asset('images/clans/' . $clan->clan_image) }}" alt="Clan Image" class="rounded-circle" style="width:40px; height:40px;">
+                        <img src="{{ asset('img/clans/' . $clan->clan_image) }}" alt="Clan Image" class="rounded-circle" style="width:40px; height:40px;">
                         <span class="clan-nom ml-3">{{ $clan->clan_nom }}</span>
                     </div>
                     <span class="score">{{ $clan->clan_total_score }} points</span>
@@ -40,7 +40,7 @@
                 <div class="clan-row d-flex align-items-center justify-content-between mb-2 py-2 px-3 border-bottom">
                     <div class="d-flex align-items-center">
                         <div class="position mr-3">{{ $index + 6 }}</div>
-                        <img src="{{ asset('images/clans/' . $clan->clan_image) }}" alt="Clan Image" class="rounded-circle" style="width:40px; height:40px;">
+                        <img src="{{ asset('img/clans/' . $clan->clan_image) }}" alt="Clan Image" class="rounded-circle" style="width:40px; height:40px;">
                         <span class="clan-nom ml-3">{{ $clan->clan_nom }}</span>
                     </div>
                     <span class="score">{{ $clan->clan_total_score }} points</span>
@@ -53,7 +53,7 @@
         <div class="leaderboard-header p-3 mb-3 border rounded d-flex justify-content-between align-items-center">
             <div>
                 <div class="d-flex align-items-center">
-                    <img src="{{ asset('images/ui/trophy.png') }}" alt="Trophy" style="width:30px; height:30px;" class="mr-2">
+                    <img src="{{ asset('img/ui/trophy.png') }}" alt="Trophy" style="width:30px; height:30px;" class="mr-2">
                     <h2 class="mb-0">Top 10 Meilleurs Utilisateurs</h2>
                 </div>
                 <p class="text-muted mb-0">Découvrez les utilisateurs les plus performants et inspirants du moment</p>
