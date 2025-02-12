@@ -18,13 +18,15 @@ class UtilisateurSeeder extends Seeder
         DB::table('users')->insert([
             'id' => 1,
             'email'=> 'test@test.com',
-            'prenom'=> 'prenom',
-            'nom'=> 'nom',
-            'imageProfil'=> 'lienImage',
+            'prenom'=> 'Mathys',
+            'nom'=> 'Lessard',
+            'imageProfil'=> 'img/Utilisateurs/shrek.jpg',
+            'aPropos'=> 'Je suis un ogre',
             'pays'=> 'canada',
             'genre'=> 'homme',
-            'dateNaissance'=> Carbon::create('2000', '01', '01'),
-            'password' =>Hash::make('adminggg')
+            'dateNaissance'=> Carbon::create('2004', '12', '07'),
+            'password' =>Hash::make('adminggg'),
+            'created_at' => now(),
         ]);
         DB::table('users')->insert([
             'id' => 2,

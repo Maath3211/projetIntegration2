@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('prenom');
             $table->string('nom');
             $table->string('imageProfil'); // !! Ajouter défauts
+            $table->string('aPropos')->nullable();
             $table->string('pays');
             $table->string('genre');
             $table->date('dateNaissance');
