@@ -205,16 +205,17 @@ form {
 }
 
 .nomClan input {
-    background-color: #A9FE77;
+    background-color: rgba(218, 245, 203, 0.5);
     border: 1px solid black;
     width: 350px;
     height: 30%;
     font-size: 20px;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0);
     transition: background-color 0.3s ease;
 }
 
 .nomClan input:focus {
-    background-color: #A9FE77;
+    background-color: rgb(218, 245, 203);
     border: 1px solid black;
     outline: none;
     box-shadow: none;
@@ -257,6 +258,7 @@ STYLE POUR LES CATÉGORIES DE CANAUX
 
 .conteneurConfirmation {
     background-color: #414141;
+    width: 400px;
 }
 
 .titreConfirmation {
@@ -298,6 +300,7 @@ STYLE POUR LES CATÉGORIES DE CANAUX
     padding-right: 25px;
     padding-left: 25px;
     border-radius: 5px;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0);
 }
 
 #confirmerSuppression:hover {
@@ -332,8 +335,31 @@ STYLE POUR LES CATÉGORIES DE CANAUX
     padding-right: 25px;
     padding-left: 25px;
     border-radius: 5px;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0);
 }
 
 #confirmerRenommage:hover {
     background-color: rgb(219, 99, 99);
+}
+
+.entreeNomCategorie {
+    background-color: rgba(218, 245, 203, 0.5);
+    border: 1px solid black;
+    width: 350px;
+    height: 30%;
+    font-size: 20px;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0);
+    transition: background-color 0.3s ease;
+}
+
+.entreeNomCategorie:focus {
+    background-color: rgb(218, 245, 203);
+    border: 1px solid black;
+    outline: none;
+    box-shadow: none;
+}
+
+.messageErreur {
+    color:rgb(219, 82, 82);
+    display: none;
 }

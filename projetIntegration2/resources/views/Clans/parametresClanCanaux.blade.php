@@ -46,27 +46,27 @@
             <!-- TODO - CHANGER L'IMAGE QUI APPARAIT POUR CELLE DU CLAN -->
             <form action="{{ route('clan.miseAJour.canaux', ['id' => $id]) }}" method="POST" enctype="multipart/form-data" id="formulaireSoumission">
             @csrf
-            <div class="row">
-                <div class="col-md-12 parametresCanal">
-                    <div class="categorie Général">
-                        <i class="fa-solid fa-x supprimer"></i>
-                        <i class="fa-solid fa-pen renommer"></i>
-                        <div>Général</div>
-                    </div>
-                    <div class="categorie Aide">
-                        <i class="fa-solid fa-x supprimer"></i>
-                        <i class="fa-solid fa-pen renommer"></i>
-                        <div>Aide</div>
-                    </div>
-                    <div class="categorie Compétition">
-                        <i class="fa-solid fa-x supprimer"></i>
-                        <i class="fa-solid fa-pen renommer"></i>
-                        <div>Compétition</div>
+                <div class="row">
+                    <div class="col-md-12 parametresCanal">
+                        <div class="categorie Général">
+                            <i class="fa-solid fa-x supprimer"></i>
+                            <i class="fa-solid fa-pen renommer"></i>
+                            <div>Général</div>
+                        </div>
+                        <div class="categorie Aide">
+                            <i class="fa-solid fa-x supprimer"></i>
+                            <i class="fa-solid fa-pen renommer"></i>
+                            <div>Aide</div>
+                        </div>
+                        <div class="categorie Compétition">
+                            <i class="fa-solid fa-x supprimer"></i>
+                            <i class="fa-solid fa-pen renommer"></i>
+                            <div>Compétition</div>
+                        </div>
                     </div>
                 </div>
-
-                <!-- Hidden input field to store the added values -->
-                <input type="hidden" name="categoriesASupprimer" id="categoriesSelectionnees">
+                <!-- Input caché pour enregistrer les modifications à faire. -->
+                <input type="hidden" name="categoriesASupprimer" id="categoriesASupprimer">
                 <input type="hidden" name="categoriesARenommer" id="categoriesARenommer">
 
                 <div class="row barreEnregistrerConteneur">
@@ -101,7 +101,8 @@
                         <div>Renommer la catégorie de canal</div>
                     </div>
                     <div class="texteConfirmation">
-                        <input type="text" class="form-control entreeNomCategorie">
+                        <input type="text" name="entreeNomCategorie" class="form-control entreeNomCategorie">
+                        <span class="messageErreur"></span>
                     </div>
 
                     <div class="boutonsConfirmation">

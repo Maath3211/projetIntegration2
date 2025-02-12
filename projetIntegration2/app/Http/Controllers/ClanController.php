@@ -114,11 +114,56 @@ class ClanController extends Controller
 
     // Mise à jour des catégories de canaux (ajouter / supprimer)
     public function miseAJourCanaux(Request $request, $id){
-        //
+        $categoriesASupprimer = explode($request->input('categoriesASupprimer'), ',');
+        $categoriesAModifier = explode($request->input('categoriesARenommer'), ',');
+
+        // si la catégorie à supprimer va aussi être modifiée, on l'enlève de la liste à modifier
+        for($i = 0; $i < count($categoriesASupprimer); $i++){
+            
+            for($j = 0; $j < count($categoriesAModifier); $j++){
+                
+                $categorie = explode(';', $categoriesAModifier[$j][0]);
+
+                if($categoriesASupprimer[$i] === $categorie){
+                    unset($categoriesAModifier[$j]);
+                }
+            }
+        }
+
+        $categoriesAModifier = array_values($categoriesAModifier);
+
+
+        // Vérification des catégories à modifier
+        foreach($categoriesAModifier as $categorie){
+            $valeurs = explode(';', $categorie);
+            if(count($valeurs) != 2){
+                return response()->json([
+                    'error' => 'Une erreur est survenue lors du processus. Veuillez réessayer plus tard.'
+                ], 400);
+            }
+            
+            if(strlen($valeurs[1]) > 50){
+                return response()->json([
+                    'error' => 'Les catégories ne doivent pas dépasser les 50 caractères.'
+                ], 400);
+            } 
+            else if(!preg_match('/^[A-Za-z\u00C0-\u00FF-]+$/', $valeurs[1])) {
+                return response()->json([
+                    'error' => 'Les catégories ne doivent pas contenir de chiffres ou de symboles. Seul les lettres UTF-8 et les traits (-) sont permis.'
+                ], 400);
+            }
+
+            // TODO Faire la modification içi
+        }
+
+        // TODO Faire la suppression des catégories et leurs canaux içi
+
+        return redirect()->route('clan.parametres.post', ['id' => $id])->with('success', 'Changements enregistrés avec succès');
+
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new resource.im 
      */
     public function create()
     {
