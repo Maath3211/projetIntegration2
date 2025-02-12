@@ -162,6 +162,8 @@ class ClanController extends Controller
 
     }
 
+    // Mise à jour de la liste de membres d'un clan (supprimer)
+
     /**
      * Show the form for creating a new resource.im 
      */

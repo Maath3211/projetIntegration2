@@ -64,9 +64,13 @@
                             <div>Compétition</div>
                         </div>
                     </div>
+                    <div>
+                        <button type="button" class="ajouterCategorie">Ajouter une catégorie</button>
+                    </div>
                 </div>
                 <!-- Input caché pour enregistrer les modifications à faire. -->
                 <input type="hidden" name="categoriesASupprimer" id="categoriesASupprimer">
+                <input type="hidden" name="categoriesAAjouter" id="categoriesAAjouter">
                 <input type="hidden" name="categoriesARenommer" id="categoriesARenommer">
 
                 <div class="row barreEnregistrerConteneur">
@@ -78,7 +82,7 @@
             </form>
 
             <!-- Fenêtre contextuelle pour confirmer la suppression d'une catégorie de canal -->
-            <div id="confirmationSuppression">
+            <div id="confirmationSuppression" class="fenetreCategorie">
                 <div class="conteneurConfirmation">
                     <div class="titreConfirmation">
                         <div>Supprimer la catégorie de canal</div>
@@ -88,14 +92,14 @@
                     </div>
 
                     <div class="boutonsConfirmation">
-                        <button id="annulerSuppression" type="button">Annuler</button>
+                        <button class="annuler" type="button">Annuler</button>
                         <button id="confirmerSuppression" type="button">Supprimer</button>
                     </div>
                 </div>
             </div>
 
             <!-- Fenêtre contextuelle pour renommer une catégorie de canal -->
-            <div id="modificationNomCategorie">
+            <div id="modificationNomCategorie" class="fenetreCategorie">
                 <div class="conteneurConfirmation">
                     <div class="titreConfirmation">
                         <div>Renommer la catégorie de canal</div>
@@ -106,8 +110,27 @@
                     </div>
 
                     <div class="boutonsConfirmation">
-                        <button id="annulerRenommage" type="button">Annuler</button>
+                        <button class="annuler" type="button">Annuler</button>
                         <button id="confirmerRenommage" type="button">Confirmer</button>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Fenêtre contextuelle pour ajouter une catégorie de canal -->
+            <div id="ajoutCategorie" class="fenetreCategorie">
+                <div class="conteneurConfirmation">
+                    <div class="titreConfirmation">
+                        <div>Ajouter une catégorie de canal</div>
+                    </div>
+                    <div class="texteConfirmation">
+                        <input type="text" name="entreeNomCategorie" class="form-control entreeNomCategorie" placeholder="ex.: Cardio">
+                        <span class="messageErreur"></span>
+                    </div>
+
+                    <div class="boutonsConfirmation">
+                        <button class="annuler" type="button">Annuler</button>
+                        <button id="confirmerAjout" type="button">Confirmer</button>
                     </div>
                 </div>
             </div>

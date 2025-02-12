@@ -17,17 +17,49 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
+
+    /*
+    FRONT END QUI MARCHE POUR TOUTES LES FENÊTRES CONTEXTUELLES
+    */
+
+    // Vérification de l'input au fur et à mesure
+    document.querySelectorAll('.entreeNomCategorie').forEach(entree => {
+        entree.addEventListener('input', function(){
+            valeur = this.value;
+            messageErreur = this.parentElement.querySelector('.messageErreur');
+    
+            // Règle 1 : la catégorie ne doit pas dépasser les 50 caractères
+            if(valeur.length > 50){
+                messageErreur.textContent = "La catégorie ne doit pas dépasser 50 caractères.";
+                messageErreur.style.display = "block";
+                this.style.borderColor = 'red';
+            }
+            // Règle 2 : pas de nombres ou de symboles, juste les caractères UTF-8 et les traits (-) sont acceptés.
+            else if (!/^[A-Za-z\u00C0-\u00FF-]+$/.test(valeur) && valeur.length !== 0){
+                messageErreur.textContent = "Seulement les lettre (UTF-8) et les traits (-) sont permis."
+                messageErreur.style.display = "block";
+                this.style.borderColor = 'red';
+            }
+            // Si tout va bien, on reset le tout
+            else {
+                messageErreur.style.display = "none";
+                this.style.borderColor = '';
+            }
+    
+        });
+    });
+
+    // Si il annule, on cache la fenêtre contextuelle
+    document.querySelectorAll('.annuler').forEach(bouton => {
+        bouton.addEventListener('click', function() {
+            this.parentElement.parentElement.parentElement.style.display = 'none';
+        });
+    });
+
+
     /*
     GESTION DU FRONT END DE LA SUPPRESSION D'UNE CATÉGORIE DE CANAL
     */
-
-    //obtenir les catégories à supprimer
-    document.querySelectorAll('.categorie i.supprimer').forEach(icon => {
-        icon.addEventListener('click', function(){
-            document.getElementById('confirmationSuppression').style.display = 'flex';
-            categorieASupprimer = this.parentElement.classList[1].trim();
-        });
-    });
 
     // si il confirme la suppression, cache la fenêtre de confirmation et la catégorie, puis on l'ajout à la liste des catégories à supprimer.
     document.getElementById('confirmerSuppression').addEventListener('click', function() {
@@ -43,44 +75,20 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById('categoriesASupprimer').value = categoriesASupprimer.join(',');
     });
 
-    // cacher la fenêtre de confirmation si il annule le tout
-    document.getElementById('annulerSuppression').addEventListener('click', function() {
-        document.getElementById('confirmationSuppression').style.display = 'none';     
+    //obtenir les catégories à supprimer
+    document.querySelectorAll('.categorie i.supprimer').forEach(icon => {
+        icon.addEventListener('click', function(){
+            document.getElementById('confirmationSuppression').style.display = 'flex';
+            categorieASupprimer = this.parentElement.classList[1].trim();
+        });
     });
-
-
-
 
 
     /*
     GESTION DU FRONT END DU RENOMMAGE D'UNE CATÉGORIE DE CANAL
     */
-
-    document.querySelector('.entreeNomCategorie').addEventListener('input', function(){
-        valeur = this.value;
-        messageErreur = document.querySelector('.messageErreur');
-
-        // Règle 1 : la catégorie ne doit pas dépasser les 50 caractères
-        if(valeur.length > 50){
-            messageErreur.textContent = "La catégorie ne doit pas dépasser 50 caractères.";
-            messageErreur.style.display = "block";
-            this.style.borderColor = 'red';
-        }
-        // Règle 2 : pas de nombres ou de symboles, juste les caractères UTF-8 et les traits (-) sont acceptés.
-        else if (!/^[A-Za-z\u00C0-\u00FF-]+$/.test(valeur)){
-            messageErreur.textContent = "Seulement les lettre (UTF-8) et les traits (-) sont permis."
-            messageErreur.style.display = "block";
-            this.style.borderColor = 'red';
-        }
-        // Si tout va bien, on reset le tout
-        else {
-            messageErreur.style.display = "none";
-            this.style.borderColor = '';
-        }
-
-    });
-
-    //obtenir les catégories à renommer
+   
+    // Afficher la fenêtre contextuelle de renommage de catégorie
     document.querySelectorAll('.categorie i.renommer').forEach(icon => {
         icon.addEventListener('click', function(){
             //Récupérer la catégorier à renommer
@@ -102,13 +110,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    // Si il annule, on cache la fenêtre contextuelle
-    document.getElementById('annulerRenommage').addEventListener('click', function() {
-        document.getElementById('modificationNomCategorie').style.display = 'none';
-    });
-
-
-    // Si il enregistre la modification
+    // Quand il clique sur "Confirmer" dans la fenêtre contextuelle
     document.getElementById('confirmerRenommage').addEventListener('click', function() {
         // Cacher la fenêtre contextuelle
         document.getElementById('modificationNomCategorie').style.display = 'none';
@@ -129,4 +131,23 @@ document.addEventListener("DOMContentLoaded", function() {
 
         document.getElementById('categoriesARenommer').value = Object.values(categoriesRenommees);
     });
+
+    /*
+    GESTION DU FRONT END DE L'AJOUT D'UNE CATÉGORIE DE CANAL
+    */
+
+    document.querySelector('.ajouterCategorie').addEventListener('click', function(){
+        document.getElementById('ajoutCategorie').style.display = 'flex';
+        console.log('hehe');
+    });
+
+    // document.getElementById('confirmerAjout').addEventListener('click', function(){
+    //     document.querySelector('.parametresCanal').innerHTML = document.querySelector('.parametresCanal').innerHTML + `<div class="categorie ${this.parentElement.parentElement.querySelector('.entreeNomCategorie')}">
+    //                         <i class="fa-solid fa-x supprimer"></i>
+    //                         <i class="fa-solid fa-pen renommer"></i>
+    //                         <div>Général</div>
+    //                     </div>`;
+    // })
+    
+
 });

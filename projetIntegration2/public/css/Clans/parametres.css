@@ -242,18 +242,15 @@ STYLE POUR LES CATÉGORIES DE CANAUX
     margin-left: 10px;
 }
 
-#confirmationSuppression {
-    display: none;
-    position: fixed;
-    flex-direction: column;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+.ajouterCategorie {
+    background-color: #A9FE77; 
+    color: black; 
+    border: 1px solid black;
+    border-radius: 5px; 
+    margin-top: 25px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-left: 50px;
 }
 
 .conteneurConfirmation {
@@ -286,28 +283,15 @@ STYLE POUR LES CATÉGORIES DE CANAUX
     align-items: center;
 }
 
-#annulerSuppression {
+.annuler {
     margin-right: 15px;
 }
 
-#annulerSuppression:hover {
+.annuler:hover {
     color: #9b9a9a;
 }
 
-#confirmerSuppression {
-    background-color: rgb(219, 82, 82);
-    padding: 10px;
-    padding-right: 25px;
-    padding-left: 25px;
-    border-radius: 5px;
-    box-shadow: 1px 1px 2px rgba(0, 0, 0);
-}
-
-#confirmerSuppression:hover {
-    background-color: rgb(219, 99, 99);
-}
-
-#modificationNomCategorie{
+.fenetreCategorie{
     display: none;
     position: fixed;
     flex-direction: column;
@@ -321,15 +305,7 @@ STYLE POUR LES CATÉGORIES DE CANAUX
     z-index: 1000;
 }
 
-#annulerRenommage {
-    margin-right: 15px;
-}
-
-#annulerRenommage:hover {
-    color: #9b9a9a;
-}
-
-#confirmerRenommage {
+#confirmerRenommage, #confirmerAjout, #confirmerSuppression {
     background-color: rgb(219, 82, 82);
     padding: 10px;
     padding-right: 25px;
@@ -338,7 +314,8 @@ STYLE POUR LES CATÉGORIES DE CANAUX
     box-shadow: 1px 1px 2px rgba(0, 0, 0);
 }
 
-#confirmerRenommage:hover {
+
+#confirmerRenommage:hover, #confirmerAjout:hover, #confirmerSuppression:hover {
     background-color: rgb(219, 99, 99);
 }
 
