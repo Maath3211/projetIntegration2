@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('clans', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('adminId');
-            $table->string('image')->default('default.png');
+            $table->string('image')->default('default.jpg');
             $table->string('nom');
             $table->boolean('public')->default(true);
             $table->timestamps();
