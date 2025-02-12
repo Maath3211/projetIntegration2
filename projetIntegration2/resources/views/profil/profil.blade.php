@@ -16,7 +16,7 @@
 
             <form action="{{ route('profil.deconnexion') }}" method="post">
                 @csrf
-                <button type="submit" class="btn btn-green">Déconnexion</button>
+                <button type="submit" class="btn bouton">Déconnexion</button>
             </form>
 
 
@@ -27,10 +27,10 @@
             <div class="d-flex justify-content-between mt-3">
                 <form action="{{ route('statistique.index') }}" method="get">
                     @csrf
-                    <button class="btn btn-green">Statistique</button>
+                    <button class="btn bouton">Statistique</button>
                 </form>
 
-                <button class="btn btn-green">Ajouter en ami</button>
+                <button class="btn bouton-ami">Ajouter en ami</button>
             </div>
             <div class="mt-3">
                 <p>Ami(s) en commun: <span class="badge bg-purple">P</span></p>

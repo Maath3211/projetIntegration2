@@ -28,6 +28,7 @@ class User extends Authenticatable
         'codeVerification',
         'aPropos',
         'id',
+        'google_id',
     ];
 
     protected $hidden = [

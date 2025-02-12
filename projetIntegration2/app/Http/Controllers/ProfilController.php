@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Laravel\Socialite\Facades\Socialite;
 
 
 
@@ -27,6 +28,33 @@ class ProfilController extends Controller
             return redirect()->route('profil.profil');
         } else {
             return redirect()->back()->withErrors(['Informations invalides']);
+        }
+    }
+
+    public function connexionGoogle()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function googleCallback()
+    {
+        try {
+            $googleUser = Socialite::driver('google')->user();
+
+            // Find user by email
+            $user = User::where('email', $googleUser->getEmail())->first();
+    
+            if (!$user) {
+                return redirect()->route('profil.pageConnexion')->withErrors(['error', 'Aucun compte n\'a été trouvé pour cet email']);
+            }
+    
+            // Log the user in
+            Auth::login($user);
+    
+            return redirect('/profil');
+        } catch (\Exception $e) {
+            Log::error('Google login failed', [$e]);
+            return redirect()->route('profil.pageConnexion')->withErrors(['La connexion avec Google a échoué']);
         }
     }
 

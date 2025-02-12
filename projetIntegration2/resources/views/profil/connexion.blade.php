@@ -68,9 +68,21 @@
                                 <div class="alert alert-erreur">
                                     <p>{{ $error }}</p>
                                 </div>
+                            @elseif ($error == 'La connexion avec Google a échoué')
+                                <div class="alert alert-erreur">
+                                    <p>{{ $error }}</p>
+                                </div>
+                            @elseif ($error == 'Aucun compte n\'a été trouvé pour cet email')
+                                <div class="alert alert-erreur">
+                                    <p>{{ $error }}</p>
+                                </div>
                             @endif
                         @endforeach
                     @endif
+                    <a href="{{ route('profil.connexionGoogle') }}" class="google-btn">
+                        <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google logo">
+                        Continuer avec Google
+                    </a>
                     <a href="{{ route('profil.creerCompte') }}" class="text-vert" id="btCreerCompte">Créer un compte</a>
                     <button type="submit" class="btn btn-connexion">Connexion</button>
                 </form>

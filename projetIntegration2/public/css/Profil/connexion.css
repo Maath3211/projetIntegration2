@@ -140,3 +140,30 @@ select:focus {
     transform: scale(0.95);
     box-shadow: 1px 1px 5px rgba(169, 254, 119, 0.8);
 }
+
+.google-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    border: 1px solid #dadce0;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #5f6368;
+    background-color: white;
+    text-decoration: none;
+    font-family: Arial, sans-serif;
+    font-weight: 500;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    width: fit-content;
+}
+
+.google-btn img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+  
+.google-btn:hover {
+    background-color: #f8f9fa;
+}

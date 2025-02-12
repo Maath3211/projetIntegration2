@@ -8,6 +8,7 @@ use App\Http\Controllers\Conversations;
 use App\Http\Controllers\StatistiqueController;
 use App\Http\Controllers\GymController;
 use App\Http\Controllers\ClanController;
+use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use App\Events\PusherBroadcast;
 
@@ -46,6 +47,13 @@ Route::GET('/connexion',
 
 Route::POST('/connexion',
 [ProfilController::class,'connexion'])->name('profil.connexion');
+
+Route::GET('/auth/google',
+[ProfilController::class,'connexionGoogle'])->name('profil.connexionGoogle');
+
+Route::GET('/auth/google/callback',
+[ProfilController::class,'googleCallback'])->name('profil.googleCallback');
+
 
 Route::GET('/creerCompte',
 [ProfilController::class,'creerCompte'])->name('profil.creerCompte');
