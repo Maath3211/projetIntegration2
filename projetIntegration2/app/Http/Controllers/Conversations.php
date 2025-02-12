@@ -74,13 +74,13 @@ class Conversations extends Controller
             //\Log::info('✅ Message broadcasté avec succès');
             
             // Enregistrement des informations dans la table user_ami
-            \DB::table('user_ami')->insert([
-                'idEnvoyer' => auth()->id(),
-                'idReceveur' => $request->to,
-                'message' => $request->message,
-                'created_at' => now(),
-                'updated_at' => now()
-            ]);
+            // \DB::table('user_ami')->insert([
+            //     'idEnvoyer' => auth()->id(),
+            //     'idReceveur' => $request->to,
+            //     'message' => $request->message,
+            //     'created_at' => now(),
+            //     'updated_at' => now()
+            // ]);
             //\Log::info('✅ Message Enregistrer avec succès');
 
             
