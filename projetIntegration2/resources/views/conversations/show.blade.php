@@ -484,18 +484,12 @@
 
         // Recevoir les messages de la conversation privée
         channel.bind('mon-event', function(data) {
-            //console.log("Message reçu:", data);
+            console.log("Message reçu:", data);
             $("#chat-messages").append(`
-            <div class="message received-message">
-                <div class="avatar bg-primary text-white rounded-circle p-2">{{ substr($user->email, 0, 2) }}</div>
-                <div class="bubble">
-                    <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
-                    <br>
-                    <p>${data.message}</p>
+                <div class="message received-message">
+                    <div class="bubble">${data.message}</div>  
                 </div>
-            </div>
-            <hr>
-
+                <hr>
             `);
             $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
         });
@@ -503,7 +497,7 @@
         // Envoyer un message via AJAX
         $("form").submit(function(e) {
             e.preventDefault();
-            //console.log("Formulaire envoyé!");
+            console.log("Formulaire envoyé!");
 
             $.ajax({
                 type: "POST",
@@ -518,17 +512,12 @@
                     to: friendId // Ajoute l'ID du destinataire
                 }
             }).done(function(res) {
-                //console.log("Message envoyé:", $("input[name='content']").val());
+                console.log("Message envoyé:", $("input[name='content']").val());
                 $("#chat-messages").append(`
                 
                     <div class="message own-message">
-                                        <div class="avatar bg-primary text-white rounded-circle p-2">{{ substr($user->email, 0, 2) }}</div>
-                        <div class="bubble">
-                            <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
-                            <br>
-                            <p>${$("input[name='content']").val()}</p>
-                        </div>
                         
+                        <div class="bubble">${$("input[name='content']").val()}  </div>
                         
                     </div>
                     <hr>
