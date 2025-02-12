@@ -1,18 +1,12 @@
 <div>
-    <!-- Debug info -->
-    <div class="debug-info">
-        <p>Current Clan: {{ $selectedClanId }}</p>
-        <p>Has Top Clans: {{ !empty($topClans) ? 'Yes' : 'No' }}</p>
-        <p>Has Top Users: {{ !empty($topUsers) ? 'Yes' : 'No' }}</p>
-    </div>
-
     @if($selectedClanId === 'global')
-        <div wire:key="global-board">
-            <livewire:global-leaderboard :topClans="$topClans" :topUsers="$topUsers" />
-        </div>
+    <livewire:global-leaderboard
+        :topClans="$topClans"
+        :topUsers="$topUsers"
+        :key="'global-board'" />
     @else
-        <div wire:key="clan-board-{{ $selectedClanId }}">
-            <livewire:clan-leaderboard :selectedClanId="$selectedClanId" />
-        </div>
+    <livewire:clan-leaderboard
+        :selectedClanId="$selectedClanId"
+        :key="'clan-board-' . $selectedClanId" />
     @endif
 </div>

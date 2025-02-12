@@ -142,7 +142,76 @@ class ScoresController extends Controller
         exit;
     }
 
+    public function exportTopMembres($clanId)
+    {
+        $topMembres = DB::table('users')
+            ->join('clan_users', 'users.id', '=', 'clan_users.user_id')
+            ->join('scores', 'users.id', '=', 'scores.user_id')
+            ->where('clan_users.clan_id', $clanId)
+            ->select(
+                'users.imageProfil as user_image',
+                'users.nom as user_nom',
+                'users.prenom as user_prenom',
+                DB::raw('SUM(scores.score) as user_total_score')
+            )
+            ->groupBy('users.id', 'users.imageProfil', 'users.nom', 'users.prenom')
+            ->orderByDesc('user_total_score')
+            ->limit(10)
+            ->get();
 
+        $filename = 'top_membres.csv';
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+
+        $output = fopen('php://output', 'w');
+        // CSV Header: include position column
+        fputcsv($output, ['Position', 'Prenom', 'Nom', 'Total Score']);
+
+        $position = 1;
+        foreach ($topMembres as $membre) {
+            fputcsv($output, [$position, $membre->user_prenom, $membre->user_nom, $membre->user_total_score]);
+            $position++;
+        }
+        fclose($output);
+        exit;
+    }
+
+    public function exportTopAmelioration($clanId)
+    {
+        $oneMonthAgo = now()->subMonth();
+
+        $topAmelioration = DB::table('users')
+            ->join('clan_users', 'users.id', '=', 'clan_users.user_id')
+            ->join('scores', 'users.id', '=', 'scores.user_id')
+            ->where('clan_users.clan_id', $clanId)
+            ->where('scores.created_at', '>=', $oneMonthAgo)
+            ->select(
+                'users.imageProfil as user_image',
+                'users.nom as user_nom',
+                'users.prenom as user_prenom',
+                DB::raw('SUM(scores.score) as score_improvement')
+            )
+            ->groupBy('users.id', 'users.imageProfil', 'users.nom', 'users.prenom')
+            ->orderByDesc('score_improvement')
+            ->limit(10)
+            ->get();
+
+        $filename = 'top_amelioration.csv';
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+
+        $output = fopen('php://output', 'w');
+        // CSV Header: include position column
+        fputcsv($output, ['Position', 'Prenom', 'Nom', 'Improvement Score']);
+
+        $position = 1;
+        foreach ($topAmelioration as $user) {
+            fputcsv($output, [$position, $user->user_prenom, $user->user_nom, $user->score_improvement]);
+            $position++;
+        }
+        fclose($output);
+        exit;
+    }
 
     /**
      * Display the specified resource.
