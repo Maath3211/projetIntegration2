@@ -11,7 +11,6 @@ use App\Http\Controllers\ClanController;
 use App\Models\User;
 use App\Events\PusherBroadcast;
 
-
 Route::get('/', function () {
     return view('welcome');
 });
