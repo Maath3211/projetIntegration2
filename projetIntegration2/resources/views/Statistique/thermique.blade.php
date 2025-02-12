@@ -1,233 +1,6 @@
 @extends('Layouts.app')
 @section('contenu')
-
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #2c2c2c;
-        color: white;
-        text-align: center;
-        margin: 0;
-    }
-
-    .boutonContainer {
-        margin: 20px;
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-    }
-
-  
-    .heatmapContainer {
-        max-width: 800px;
-        margin: 20px auto;
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        color: black;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    }
-
-    .navigation {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        margin-bottom: 10px;
-        gap: 10px;
-    }
-
-    .moisTitre {
-        font-size: 22px;
-        font-weight: bold;
-    }
-
-    .heatmap {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        gap: 8px;
-        max-width: 90%;
-    }
-
-    .jour {
-        width: 50px;
-        height: 50px;
-        border-radius: 3px;
-        background-color: transparent;
-        border: 1px solid #ccc;
-        transition: background-color 0.3s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 16px;
-        cursor: pointer;
-    }
-
-    .titre, .moisTitre {
-        text-align: center;
-        font-size: 32px;
-        margin-bottom: 20px;
-    }
-
-        /* Légende */
-        .legende {
-        flex: 1;
-        background-color: #f9f9f9;
-        padding: 15px;
-        border-radius: 8px;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .legende h3 {
-        margin-top: 0;
-    }
-
-    .legende ul {
-        list-style-type: none;
-        padding-left: 0;
-    }
-
-    .legende li {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-    }
-
-    .legende .color-box {
-        width: 20px;
-        height: 20px;
-        margin-right: 10px;
-        border-radius: 5px;
-    }
-
-    /* Responsive Design */
-    @media (max-width: 1200px) {
-        .heatmap {
-            grid-template-columns: repeat(7, 1fr);
-            gap: 6px;
-        }
-
-        .titre {
-            font-size: 28px;
-        }
-
-        .moisTitre {
-            font-size: 20px;
-        }
-
-        .boutonContainer {
-            flex-direction: column;
-        }
-
-        .back-button, .nav-button {
-            font-size: 14px;
-            padding: 8px 16px;
-        }
-    }
-
-    @media (max-width: 768px) {
-        .heatmap {
-            grid-template-columns: repeat(7, 1fr);
-            gap: 4px;
-        }
-
-        .titre {
-            font-size: 24px;
-        }
-
-        .moisTitre {
-            font-size: 18px;
-        }
-
-        .boutonContainer {
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .back-button, .nav-button {
-            font-size: 14px;
-            padding: 8px 14px;
-        }
-    }
-
-    @media (max-width: 600px) {
-        .heatmap {
-            grid-template-columns: repeat(7, 1fr);
-            gap: 3px;
-        }
-
-        .titre {
-            font-size: 22px;
-        }
-
-        .moisTitre {
-            font-size: 16px;
-        }
-
-        .boutonContainer {
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .back-button, .nav-button {
-            font-size: 12px;
-            padding: 6px 12px;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .heatmap {
-            grid-template-columns: repeat(7, 1fr);
-            gap: 2px;
-        }
-
-        .titre {
-            font-size: 18px;
-        }
-
-        .moisTitre {
-            font-size: 14px;
-        }
-
-        .boutonContainer {
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .back-button, .nav-button {
-            font-size: 12px;
-            padding: 6px 12px;
-        }
-    }
-
-    @media (max-width: 320px) {
-        .heatmap {
-            grid-template-columns: repeat(7, 1fr);
-            gap: 2px;
-        }
-
-        .titre {
-            font-size: 16px;
-        }
-
-        .moisTitre {
-            font-size: 12px;
-        }
-
-        .boutonContainer {
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .back-button, .nav-button {
-            font-size: 10px;
-            padding: 5px 10px;
-        }
-    }
-</style>
+<link rel="stylesheet" style="text/css" href="\css\statistique\thermique.css"> 
 
 <body>
     <div class="boutonContainer">
@@ -287,7 +60,9 @@
         </div>
     </div>
     </div>
-
+    <script>
+    let donnees = @json($donnees);
+</script>
 
 <script>
     const mois = [
@@ -361,16 +136,35 @@
                 jourDiv.style.pointerEvents = "none";
             }
 
-            const value = [0,1,2,3,4,5];
             const colors = ["#ffffff", "#dfffc2", "#ffeb3b", "#ffcccb", "#a8c7e8", "#ffe0b2"];
             const icons = [
-                            "", 
-                            "{{ asset('images/iconeHeatmap/bras.png') }}",  // bras
-                            "{{ asset('images/iconeHeatmap/jambe.png') }}",  // jambe
-                            "{{ asset('images/iconeHeatmap/pectoraux.png') }}",  // pec
-                            "{{ asset('images/iconeHeatmap/back.png') }}", // dos
-                            "{{ asset('images/iconeHeatmap/course.png') }}"   //course
-                        ];
+                "", 
+                "{{ asset('images/iconeHeatmap/bras.png') }}",
+                "{{ asset('images/iconeHeatmap/jambe.png') }}",
+                "{{ asset('images/iconeHeatmap/pectoraux.png') }}",
+                "{{ asset('images/iconeHeatmap/back.png') }}",
+                "{{ asset('images/iconeHeatmap/course.png') }}"
+            ];
+
+            let dateStr = `${annee}-${(index + 1).toString().padStart(2, '0')}-${i.toString().padStart(2, '0')}`;
+            let activite = donnees.find(d => d.date === dateStr);
+
+            if (activite) {
+                let count = activite.type_activite;
+                jourDiv.dataset.count = count;
+                jourDiv.style.backgroundColor = colors[count];
+
+                if (count !== 0) {
+                    const iconImg = document.createElement("img");
+                    iconImg.src = icons[count];
+                    iconImg.alt = "Icone";
+                    iconImg.style.width = "30px";
+                    iconImg.style.height = "30px";
+                    iconImg.style.margin = "auto";
+                    jourDiv.innerHTML = "";
+                    jourDiv.appendChild(iconImg);
+                }
+            }
 
             jourDiv.addEventListener("click", function () {
                 if (this.dataset.editable === "true") {
@@ -378,17 +172,18 @@
                     count = (count + 1) % colors.length;
                     this.dataset.count = count;
                     this.style.backgroundColor = colors[count];
+
                     if (count === 0) {
-                        this.textContent = i;  // Affiche le jour
+                        this.textContent = i;
                     } else {
-                        const iconImg = document.createElement("img");  
-                        iconImg.src = icons[count];  
-                        iconImg.alt = "Icone";  
-                        iconImg.style.width = "30px";  
-                        iconImg.style.height = "30px"; 
-                        iconImg.style.margin = "auto";  
-                        this.innerHTML = "";  
-                        this.appendChild(iconImg); 
+                        const iconImg = document.createElement("img");
+                        iconImg.src = icons[count];
+                        iconImg.alt = "Icone";
+                        iconImg.style.width = "30px";
+                        iconImg.style.height = "30px";
+                        iconImg.style.margin = "auto";
+                        this.innerHTML = "";
+                        this.appendChild(iconImg);
                     }
                 }
             });

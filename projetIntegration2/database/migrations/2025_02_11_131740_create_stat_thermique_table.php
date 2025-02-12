@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('statThermique', function (Blueprint $table) {
             $table->id();
             $table->date('date')->unique();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->integer('type_activite'); // 1: Bras, 2: Jambe, 3: Pectoraux, etc.
             $table->timestamps();
         });

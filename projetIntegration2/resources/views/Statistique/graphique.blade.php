@@ -38,7 +38,6 @@
             height: 500px;
             align-items: center;
             justify-content: center;
-
         }
         #titre{
             text-align: center;
@@ -69,9 +68,9 @@
                 datasets: [{
                     label: 'Poids (Lbs)',
                     data: [152, 157, 145, 140, 143, 136],
-                    borderColor: 'white',
+                    borderColor: '#a9fe77 ',
                     borderWidth: 2,
-                    pointBackgroundColor: 'white',
+                    pointBackgroundColor: '#e5e5e5',
                     fill: false
                 }]
             },
@@ -83,25 +82,38 @@
                         title: {
                             display: true,
                             text: 'Semaines',
-                            color: 'white'
+                            color: '#e5e5e5',
+                            font: { size: 16 }
                         },
-                        ticks: { color: 'white' }
+                        ticks: { 
+                            color: '#e5e5e5',
+                            font: { size: 14 }
+                        }
                     },
                     y: {
                         title: {
                             display: true,
                             text: 'Poids (Lbs)',
-                            color: 'white'
+                            color: '#e5e5e5',
+                            font: { size: 16 }
                         },
-                        ticks: { color: 'white' }
+                        ticks: { 
+                            color: '#e5e5e5',
+                            font: { size: 14 }
+                        }
                     }
                 },
                 plugins: {
-                    legend: { display: false }
+                    legend: { 
+                        display: false,
+                        labels: {
+                            font: { size: 16, weights: 'bold' },
+                        }
+                    }
                 }
             }
         });
     </script>
-    </div>
+</div>
 
 @endsection

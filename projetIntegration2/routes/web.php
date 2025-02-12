@@ -60,6 +60,14 @@ Route::GET('/thermique',
 
 Route::post('/statistique/storeThermique', [StatistiqueController::class, 'storeThermique'])->name('statistique.storeThermique');
 
+Route::post('/statistiques/save', [StatistiqueController::class, 'save'])->name('statistiques.save');
+
+Route::delete('/statistiques/{id}', [StatistiqueController::class, 'delete'])->name('statistiques.delete');
+
+Route::post('/statistiques/{id}/update-poids', [StatistiqueController::class, 'updatePoids'])->name('statistiques.updatePoids');
+
+Route::post('/statistiques/{id}/update-exercise', [StatistiqueController::class, 'updateExercise'])->name('statistiques.updateExercise');
+
 Route::GET('/localisation', 
 [GymController::class, 'index'])->name('localisation.index');
 Route::get('/export/top-users', [ScoresController::class, 'exportTopUsers'])->name('export.topUsers');

@@ -16,14 +16,19 @@ class StatistiqueController extends Controller
     public function index()
     {
         if (auth()->check()) {
-        $usager= User::Find(Auth::id());
-        $statistiques = Statistiques::where('user_id', Auth::id())->get();
-        $poid = Statistiques::where('user_id', Auth::id())->where('nomStatistique', 'Poids')->get();
-        $streak = Statistiques::where('user_id', Auth::id())->where('nomStatistique', 'Streak')->get();
-        $foisGym = Statistiques::where('user_id', Auth::id())->where('nomStatistique', 'FoisGym')->get();
-
+            $usager = User::find(Auth::id());
+            
+            // Exclure Poids, Streak et FoisGym des statistiques
+            $statistiques = Statistiques::where('user_id', Auth::id())
+                ->whereNotIn('nomStatistique', ['Poids', 'Streak', 'FoisGym'])
+                ->get();
+    
+            $poid = Statistiques::where('user_id', Auth::id())->where('nomStatistique', 'Poids')->get();
+            $streak = Statistiques::where('user_id', Auth::id())->where('nomStatistique', 'Streak')->get();
+            $foisGym = Statistiques::where('user_id', Auth::id())->where('nomStatistique', 'FoisGym')->get();
         }
-        return View("statistique.index",compact('statistiques','usager','poid','streak','foisGym'));
+    
+        return view("statistique.index", compact('statistiques', 'usager', 'poid', 'streak', 'foisGym'));
     }
 
 
@@ -35,12 +40,14 @@ class StatistiqueController extends Controller
 
     public function thermique()
     {
-        $donnees = StatThermique::all(); // Récupère toutes les données, vous pouvez filtrer par date si nécessaire
+        $donnees = StatThermique::where('user_id', Auth::id())->get();;                  // Récupère toutes les données, vous pouvez filtrer par date si nécessaire
         return view("statistique.thermique", compact('donnees'));
     }
 
     public function storeThermique(Request $request)
     {
+
+        $userid = Auth::id();
         $donnees = json_decode($request->input('donnees'), true);
 
         if (is_null($donnees)) {
@@ -50,6 +57,7 @@ class StatistiqueController extends Controller
             $data = [
                 'date' => $item['date'],
                 'type_activite' => $item['type_activite'],
+                'user_id' => $userid
             ];
 
             StatThermique::updateOrCreate(
@@ -60,6 +68,30 @@ class StatistiqueController extends Controller
 
         return redirect()->back()->with('success', 'Données sauvegardées avec succès !');
     }
+
+
+    public function save(Request $request)
+    {
+        $request->validate([
+            'stats' => 'required|array',
+            'stats.*.nomStatistique' => 'required|string',
+            'stats.*.score' => 'required|numeric',
+        ]);
+    
+        foreach ($request->stats as $stat) {
+            Statistiques::create([
+                'user_id' => auth()->id(),
+                'nomStatistique' => $stat['nomStatistique'],
+                'score' => $stat['score']
+            ]);
+        }
+    
+        return response()->json(['message' => 'Statistiques enregistrées avec succès !']);
+    }
+
+    
+
+
 
 
     /**
