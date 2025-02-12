@@ -8,9 +8,9 @@
             <div class="d-flex align-items-center">
                 <img src="{{ asset(Auth::user()->imageProfil) }}" alt="Profile Picture" class="profile-pic me-3">
                 <div class="text-start">
-                    <h2 class="greenText">{{Auth::user()->prenom . ' ' . Auth::user()->nom}}</h2>
+                    <h2 class="greenText">{{ Auth::user()->prenom . ' ' . Auth::user()->nom }}</h2>
                     <p><strong>A propos: </strong>{{ Auth::user()->aPropos }}</p>
-                    <p><strong>Membre depuis:</strong> {{Auth::user()->created_at->format('d/m/Y')}}</p>
+                    <p><strong>Membre depuis:</strong> {{ Auth::user()->created_at->format('d/m/Y') }}</p>
                 </div>
             </div>
 
@@ -20,7 +20,10 @@
             </form>
 
 
-            <span id="engrenage">&#9881;</span>
+            <form action="{{ route('profil.modification') }}" method="get">
+                @csrf
+                <button><span id="engrenage">&#9881;</span></button>
+            </form>
             <div class="d-flex justify-content-between mt-3">
                 <form action="{{ route('statistique.index') }}" method="get">
                     @csrf
