@@ -90,7 +90,21 @@ class StatistiqueController extends Controller
     }
 
     
-
+    public function delete($id)
+    {
+        // Récupérer l'exercice par son ID et vérifier s'il appartient à l'utilisateur authentifié
+        $statistique = Statistiques::where('id', $id)->where('user_id', auth()->id())->first();
+    
+        // Vérifier si l'exercice existe
+        if ($statistique) {
+            // Supprimer l'exercice
+            $statistique->delete();
+            
+            return response()->json(['message' => 'Exercice supprimé avec succès !']);
+        } else {
+            return response()->json(['message' => 'Exercice non trouvé ou vous n\'êtes pas autorisé à le supprimer.'], 404);
+        }
+    }
 
 
 
