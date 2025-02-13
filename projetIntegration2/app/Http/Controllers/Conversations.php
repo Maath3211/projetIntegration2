@@ -68,19 +68,20 @@ class Conversations extends Controller
     public function broadcast(Request $request){
         //\Log::info('Message envoyé via Pusher', $request->all());
         //\Log::info('📡 Tentative de broadcast avec message: ' . $request->message);
+
         try {
-            broadcast(new PusherBroadcast($request->message, auth()->id(), $request->to))
-                ->toOthers();
+            
+            broadcast(new PusherBroadcast($request->message, auth()->id(), $request->to))->toOthers();
             //\Log::info('✅ Message broadcasté avec succès');
             
             // Enregistrement des informations dans la table user_ami
-            // \DB::table('user_ami')->insert([
-            //     'idEnvoyer' => auth()->id(),
-            //     'idReceveur' => $request->to,
-            //     'message' => $request->message,
-            //     'created_at' => now(),
-            //     'updated_at' => now()
-            // ]);
+            \DB::table('user_ami')->insert([
+                'idEnvoyer' => auth()->id(),
+                'idReceveur' => $request->to,
+                'message' => $request->message,
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
             //\Log::info('✅ Message Enregistrer avec succès');
 
             

@@ -103,8 +103,6 @@
 
 @section('contenu')
 
-
-
 <div class="contenuPrincipal">
     <div class="container-fluid">
         <div class="row">
@@ -374,18 +372,6 @@
         </div>
     </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
     <script>
         // Scroll to the bottom of the chat messages
         document.addEventListener("DOMContentLoaded", function() {
