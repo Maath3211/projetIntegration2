@@ -30,8 +30,8 @@ class PusherBroadcast implements ShouldBroadcastNow
     public function broadcastOn()
     {
         // Canal unique pour chaque conversation
-        $channelName = "chat-" . min($this->senderId, $this->receiverId) . "-" . max($this->senderId, $this->receiverId);
-        return new Channel($channelName);
+        $channelName = "private-chat." . min($this->senderId, $this->receiverId) . "." . max($this->senderId, $this->receiverId);
+        return new PrivateChannel($channelName);
     }
 
     public function broadcastAs(): string
