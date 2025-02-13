@@ -1,7 +1,9 @@
+
+ 
 @extends('Layouts.app')
 @section('titre', 'Conversation-Ami')
 <body>
-
+ 
     <style>
         body {
             background-color: #222;
@@ -76,10 +78,10 @@
     flex-direction: column;
     height: 100vh; /* Prendre toute la hauteur de l'écran */
 }
-
-
+ 
+ 
     </style>
-
+ 
 @section('style')
 <link rel="stylesheet" style="text/css" href="{{asset('css/Leaderboard.css')}}">
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
@@ -98,11 +100,11 @@
     border-bottom: 2px solid rgba(255, 255, 255, 1);
 }
 </style>
-
+ 
 @endsection()
-
+ 
 @section('contenu')
-
+ 
 <div class="contenuPrincipal">
     <div class="container-fluid">
         <div class="row">
@@ -123,10 +125,10 @@
                 </div>
             </div>
             <div class="col-md-8 colonneMessages2">
-
-
-
-
+ 
+ 
+ 
+ 
                 <!-- Contenu supprimé -->
                     <div class="chat-messages" id="chat-messages">
     
@@ -142,7 +144,7 @@
                         <div class="message {{ $message->idEnvoyer == auth()->id() ? 'own-message' : 'received-message' }}">
                             <div class="avatar bg-primary text-white rounded-circle p-2">{{ substr($user->email, 0, 2) }}</div>
                             <div class="bubble">
-                                <strong>{{$message->email}}</strong> 
+                                <strong>{{$message->email}}</strong>
                                 <span class="text-muted">{{ substr($message->created_at, 11, 5) }}</span>
                                 <br>
                                 <p>{!! nl2br(e($message->message)) !!}</p>
@@ -177,31 +179,31 @@
                         <li>{{$error}}</li>
                         @endforeach
                     </u>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
             </div>
             <div class="col-md-2 colonneMembres">
                 <div class="contenuScrollableMembres">
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur1.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur1.jpg')}}" >
                             <div>
                                 <strong>ADMIN</strong> - Tommy Jackson
                             </div>
@@ -209,7 +211,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur2.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur2.jpg')}}" >
                             <div>
                                 AverageGymGoer
                             </div>
@@ -217,7 +219,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur3.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur3.jpg')}}" >
                             <div>
                                 NotTheAverageGuy
                             </div>
@@ -225,7 +227,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur4.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur4.jpg')}}" >
                             <div>
                                 Julie St-Aubin  
                             </div>
@@ -233,7 +235,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur5.avif')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur5.avif')}}" >
                             <div>
                                 Gnulons  
                             </div>
@@ -241,7 +243,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur6.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur6.jpg')}}" >
                             <div>
                                 Jack Jacked
                             </div>
@@ -249,7 +251,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur7.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur7.jpg')}}" >
                             <div>
                                 Sophie  
                             </div>
@@ -257,7 +259,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur8.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur8.jpg')}}" >
                             <div>
                                 Lucia Percada
                             </div>
@@ -265,7 +267,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur9.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur9.jpg')}}" >
                             <div>
                                 Stevie  
                             </div>
@@ -273,7 +275,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur11.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur11.jpg')}}" >
                             <div>
                                 Tom  
                             </div>
@@ -281,7 +283,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur12.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur12.jpg')}}" >
                             <div>
                                 Bluestack  
                             </div>
@@ -289,7 +291,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur13.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur13.jpg')}}" >
                             <div>
                                 CoolCarl123
                             </div>
@@ -297,7 +299,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur14.webp')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur14.webp')}}" >
                             <div>
                                 Sylvain  
                             </div>
@@ -305,7 +307,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur15.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur15.jpg')}}" >
                             <div>
                                 Ghost  
                             </div>
@@ -313,7 +315,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur16.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur16.jpg')}}" >
                             <div>
                                 Coach Noah  
                             </div>
@@ -321,7 +323,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur17.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur17.jpg')}}" >
                             <div>
                                 MotivationGuy  
                             </div>
@@ -329,7 +331,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur18.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur18.jpg')}}" >
                             <div>
                                 xXDarkSlayerXx  
                             </div>
@@ -337,7 +339,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur19.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur19.jpg')}}" >
                             <div>
                                 CalisthenicGod_1  
                             </div>
@@ -345,7 +347,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur20.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur20.jpg')}}" >
                             <div>
                                 Gymcord#654302  
                             </div>
@@ -353,7 +355,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur4.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur4.jpg')}}" >
                             <div>
                                 Julia Julia    
                             </div>
@@ -361,7 +363,7 @@
                     </div>
                     <div class="membre">
                         <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur2.jpg')}}" > 
+                            <img src="{{asset('img/Utilisateurs/utilisateur2.jpg')}}" >
                             <div>
                                 Dieu Poulet
                             </div>
@@ -372,94 +374,104 @@
         </div>
     </div>
 </div>
-
-
-
-
-
-
-<<<<<<< Updated upstream
-
-
-
-
-
-
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
     <script>
         // Scroll to the bottom of the chat messages
         document.addEventListener("DOMContentLoaded", function() {
             var chatMessages = document.getElementById("chat-messages");
             chatMessages.scrollTop = chatMessages.scrollHeight;
         });
-
-            </script>
-            </div>
-        </div>
-    </div>
-
-</body>
-
-<script>
-const userId = "{{ auth()->id() }}"; // ID de l'utilisateur connecté
-const friendId = "{{ $user->id }}";  // ID de l'ami avec qui il discute
-
-// Construire un canal unique basé sur les deux IDs (ex: "chat-3-7")
-const channelName = "chat-" + Math.min(userId, friendId) + "-" + Math.max(userId, friendId);
-
+ 
+        const userId = "{{ auth()->id() }}"; // ID de l'utilisateur connecté
+        const friendId = "{{ $user->id }}";  // ID de l'ami avec qui il discute
+ 
+        const channelName = "chat-" + Math.min(userId, friendId) + "-" + Math.max(userId, friendId);
+ 
         console.log("Subscribing to:", channelName);
-
-const pusher = new Pusher('{{config('broadcasting.connections.pusher.key')}}', {
-    cluster: '{{config('broadcasting.connections.pusher.options.cluster')}}',
-    encrypted: true
-});
-
-const channel = pusher.subscribe(channelName);
-console.log("Channel:", channel);
-
-// Recevoir les messages de la conversation privée
-channel.bind('mon-event', function(data) {
-    console.log("Message reçu:", data.message);
-    $("#chat-messages").append(`
-        <div class="message">
-            <div class="bubble">${data.message}</div>
-        </div>
-    `);
-    $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
-});
-
+ 
+        const pusher = new Pusher('{{config('broadcasting.connections.pusher.key')}}', {
+            cluster: '{{config('broadcasting.connections.pusher.options.cluster')}}',
+            encrypted: true
+        });
+ 
+        pusher.connection.bind('connected', function() {
+            console.log('Successfully connected to Pusher');
+        });
+ 
+        pusher.connection.bind('error', function(err) {
+            console.error('Connection error:', err);
+        });
+ 
+        const channel = pusher.subscribe(channelName);
+ 
+        // Recevoir les messages de la conversation privée
+        channel.bind('mon-event', function(data) {
+            //console.log("Message reçu:", data);
+            $("#chat-messages").append(`
+            <div class="message received-message">
+                <div class="avatar bg-primary text-white rounded-circle p-2">{{ substr($user->email, 0, 2) }}</div>
+                <div class="bubble">
+                    <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
+                    <br>
+                    <p>${data.message}</p>
+                </div>
+            </div>
+            <hr>
+ 
+            `);
+            $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
+        });
+ 
         // Envoyer un message via AJAX
         $("form").submit(function(e) {
             e.preventDefault();
-            console.log("Formulaire envoyé!");
-
-    $.ajax({
-        type: "POST",
-        url: "/broadcast",
-        headers: {
-            'X-Socket-Id': pusher.connection.socket_id
-        },
-        data: {
-            _token: "{{ csrf_token() }}",
-            message: $("input[name='content']").val(),
-            to: friendId // Ajoute l'ID du destinataire
-        }
-    }).done(function(res) {
-        console.log("Message envoyé:", $("input[name='content']").val());
-        $("#chat-messages").append(`
-            <div class="message own-message">
-                <div class="bubble">${$("input[name='content']").val()}</div>
-            </div>
-        `);
-        $("input[name='content']").val("");
-        $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
-    });
-});
-
-
-
-
-
-</script> 
-</html>
-
+            //console.log("Formulaire envoyé!");
+ 
+            $.ajax({
+                type: "POST",
+                url: "/broadcast",
+                headers: {
+                    'X-Socket-Id': pusher.connection.socket_id
+                },
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    message: $("input[name='content']").val(),
+                    from: userId, // Ajoute l'ID de l'utilisateur connecté
+                    to: friendId // Ajoute l'ID du destinataire
+                }
+            }).done(function(res) {
+                //console.log("Message envoyé:", $("input[name='content']").val());
+                $("#chat-messages").append(`
+                
+                    <div class="message own-message">
+                                        <div class="avatar bg-primary text-white rounded-circle p-2">{{ substr($user->email, 0, 2) }}</div>
+                        <div class="bubble">
+                            <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
+                            <br>
+                            <p>${$("input[name='content']").val()}</p>
+                        </div>
+                        
+                        
+                    </div>
+                    <hr>
+                `);
+                $("input[name='content']").val("");
+                $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
+            });
+        });
+    </script>
+</body>
+ 
 @endsection()
+ 
