@@ -30,3 +30,33 @@ PUSHER_LOG=true
 
 
 Si tu veux que le canal soit visible à plusieurs utilisateurs (comme un groupe), utilise un PresenceChannel au lieu de PrivateChannel
+
+
+
+
+Si les messages s'envoient correctement sur ton ordinateur portable mais pas sur ton PC actuel, alors le problème est probablement lié à la configuration de cURL et des certificats SSL sur ce PC en particulier.
+
+📌 Correction de l'erreur cURL 60 : SSL certificate problem
+1️⃣ Vérifier si cacert.pem est bien configuré dans PHP
+Ouvre ton fichier php.ini et cherche la ligne suivante :
+
+ini
+Copier
+Modifier
+curl.cainfo =
+Si elle est commentée (; au début), enlève le ; et ajoute le chemin complet vers ton fichier cacert.pem, par exemple :
+
+ini
+Copier
+Modifier
+curl.cainfo = "C:\xampp\php\extras\ssl\cacert.pem"
+(Adapte le chemin selon l'emplacement de ton installation PHP !)
+
+2️⃣ Télécharger le fichier cacert.pem à jour
+Si tu ne l'as pas ou s'il est corrompu :
+
+Télécharge-le depuis https://curl.se/ca/cacert.pem.
+Place-le dans un dossier sûr, par exemple : C:\php\cacert.pem ou dans le dossier extras/ssl/ de ton installation PHP.
+Mets à jour la ligne curl.cainfo dans php.ini en indiquant ce chemin.
+3️⃣ Vérifier la configuration OpenSSL dans PHP
+Toujours dans php.ini, assure-toi que cette ligne est bien active (pas de ; au début) :
