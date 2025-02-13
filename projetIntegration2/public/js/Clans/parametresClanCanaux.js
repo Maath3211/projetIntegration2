@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
     const categoriesASupprimer = [];
     const categoriesRenommees = {};
+    const categoriesAAjouter = [];
     let categorieASupprimer = "";
     let categorieARenommer = "";
 
@@ -138,16 +139,59 @@ document.addEventListener("DOMContentLoaded", function() {
 
     document.querySelector('.ajouterCategorie').addEventListener('click', function(){
         document.getElementById('ajoutCategorie').style.display = 'flex';
-        console.log('hehe');
     });
 
-    // document.getElementById('confirmerAjout').addEventListener('click', function(){
-    //     document.querySelector('.parametresCanal').innerHTML = document.querySelector('.parametresCanal').innerHTML + `<div class="categorie ${this.parentElement.parentElement.querySelector('.entreeNomCategorie')}">
-    //                         <i class="fa-solid fa-x supprimer"></i>
-    //                         <i class="fa-solid fa-pen renommer"></i>
-    //                         <div>Général</div>
-    //                     </div>`;
-    // })
+    document.getElementById('confirmerAjout').addEventListener('click', function(){
+        // si une valeur a été entrée
+        if(this.parentElement.parentElement.querySelector('.entreeNomCategorie').value !== ''){
+            
+            // Cacher la valeur entrée
+            document.getElementById('ajoutCategorie').style.display = 'none';
+            let valeurEntree = this.parentElement.parentElement.querySelector('.entreeNomCategorie').value;
+
+
+            // ajouter la catégorie à la liste de catégories affichée
+            document.querySelector('.parametresCanal').innerHTML = document.querySelector('.parametresCanal').innerHTML + `<div class="categorie ${valeurEntree}">
+                            <i class="fa-solid fa-x supprimer"></i>
+                            <i class="fa-solid fa-pen renommer"></i>
+                            <div>${valeurEntree}</div>
+                        </div>`;
+
+            // ajouter la catégorie à la liste de catégories qu'on va ajouter plus tard
+            categoriesAAjouter.push(valeurEntree); 
+            document.getElementById('categoriesAAjouter').value = categoriesAAjouter.join(',');
+
+
+            // Ajouter les événements pour cette nouvelle catégorie
+            document.querySelector(`.parametresCanal .${valeurEntree} .supprimer`).addEventListener('click', function(){
+                document.getElementById('confirmationSuppression').style.display = 'flex';
+                categorieASupprimer = this.parentElement.classList[1].trim();
+            });
+
+            // Ajouter les événements pour cette nouvelle catégorie
+            document.querySelector(`.parametresCanal .${valeurEntree} .renommer`).addEventListener('click', function(){
+                //Récupérer la catégorier à renommer
+                document.getElementById('modificationNomCategorie').style.display = 'flex';
+
+                const categorieCanal = this.parentElement.classList[1].trim();
+                categorieARenommer = categorieCanal;
+
+                // vérifier si une modification a déjà été faite pour cette catégorie depuis le chargement de la page
+                let dernierNom = "";
+                if(categoriesRenommees[categorieARenommer])
+                    dernierNom = categoriesRenommees[categorieARenommer].split(';')[1];
+                else
+                    dernierNom = categorieARenommer;
+                
+
+                // Pré-remplir le champ avec le nom actuel
+                document.querySelector('.entreeNomCategorie').value = dernierNom;    
+            });
+
+            // effacer la valeur entrée initialement
+            this.parentElement.parentElement.querySelector('.entreeNomCategorie').value = '';
+        }
+    });
     
 
 });

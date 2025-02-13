@@ -114,8 +114,9 @@ class ClanController extends Controller
 
     // Mise à jour des catégories de canaux (ajouter / supprimer)
     public function miseAJourCanaux(Request $request, $id){
-        $categoriesASupprimer = explode($request->input('categoriesASupprimer'), ',');
-        $categoriesAModifier = explode($request->input('categoriesARenommer'), ',');
+        $categoriesASupprimer = explode(',', $request->input('categoriesASupprimer'));
+        $categoriesAModifier = explode(',', $request->input('categoriesARenommer'));
+        $categoriesAAjouter = explode(',', $request->input('categoriesAAjouter'));
 
         // si la catégorie à supprimer va aussi être modifiée, on l'enlève de la liste à modifier
         for($i = 0; $i < count($categoriesASupprimer); $i++){
@@ -153,6 +154,7 @@ class ClanController extends Controller
                 ], 400);
             }
 
+            // TODO Faire les ajouts içi
             // TODO Faire la modification içi
         }
 
