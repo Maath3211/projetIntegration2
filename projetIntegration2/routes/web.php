@@ -54,6 +54,8 @@ Route::GET('/auth/google',
 Route::GET('/auth/google/callback',
 [ProfilController::class,'googleCallback'])->name('profil.googleCallback');
 
+Route::GET('/creerCompteGoogle',
+[ProfilController::class,'creerCompteGoogle'])->name('profil.creerCompteGoogle');
 
 Route::GET('/creerCompte',
 [ProfilController::class,'creerCompte'])->name('profil.creerCompte');

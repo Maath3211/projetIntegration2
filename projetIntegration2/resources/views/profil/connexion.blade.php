@@ -68,7 +68,11 @@
                                 <div class="alert alert-erreur">
                                     <p>{{ $error }}</p>
                                 </div>
-                            @elseif ($error == 'La connexion avec Google a échoué')
+                            @elseif ($error == 'La connexion avec Google a échoué 1')
+                                <div class="alert alert-erreur">
+                                    <p>{{ $error }}</p>
+                                </div>
+                            @elseif ($error == 'La connexion avec Google a échoué 2')
                                 <div class="alert alert-erreur">
                                     <p>{{ $error }}</p>
                                 </div>

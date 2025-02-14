@@ -38,8 +38,25 @@ return [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
         'redirect' => env('GOOGLE_REDIRECT_URI'),
-        'scopes' => ['openid', 'profile', 'email'], // Ensure profile scope is included
-        'fields' => ['given_name', 'family_name', 'email', 'picture'],
+        'scopes' => [
+            'openid',
+            'profile',
+            'email',
+            'https://www.googleapis.com/auth/user.birthday.read',
+            'https://www.googleapis.com/auth/user.gender.read',
+            'https://www.googleapis.com/auth/user.addresses.read'
+        ],
+        'fields' => [
+            'given_name',
+            'family_name',
+            'email',
+            'picture',
+            'birthday',
+            'gender',
+            'locale',
+            'address'
+        ],
+        'prompt' => 'consent'
     ],
 
 ];

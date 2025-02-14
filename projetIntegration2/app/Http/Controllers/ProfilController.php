@@ -40,22 +40,43 @@ class ProfilController extends Controller
     {
         try {
             $googleUser = Socialite::driver('google')->user();
+            dd($googleUser);
+            $user = User::where('google_id', $googleUser->getId())->first();
 
-            // Find user by email
-            $user = User::where('email', $googleUser->getEmail())->first();
-    
-            if (!$user) {
-                return redirect()->route('profil.pageConnexion')->withErrors(['error', 'Aucun compte n\'a été trouvé pour cet email']);
+            if (!$user || $user == null) {
+                  // Store Google data in session
+            session([
+                'google_data' => [
+                    'email' => $googleUser->getEmail(),
+                    'prenom' => $googleUser->user['given_name'],
+                    'nom' => $googleUser->user['family_name'],
+                    'image_url' => $googleUser->getAvatar(),
+                    'google_id' => $googleUser->getId()
+                ]
+            ]);
+            
+            return redirect()->route('profil.creerCompteGoogle');
             }
     
-            // Log the user in
-            Auth::login($user);
+            else if($user->google_id == $googleUser->getId()) {
+                Auth::login($user);
+                return redirect('/profil');
+            }
+            else{
+                return redirect()->route('profil.pageConnexion')->withErrors(['La connexion avec Google a échoué 1']);
+            }
     
-            return redirect('/profil');
         } catch (\Exception $e) {
             Log::error('Google login failed', [$e]);
-            return redirect()->route('profil.pageConnexion')->withErrors(['La connexion avec Google a échoué']);
+            return redirect()->route('profil.pageConnexion')->withErrors(['La connexion avec Google a échoué 2']);
         }
+    }
+
+    public function creerCompteGoogle(){
+        $countries = Cache::remember('countries_list_french', now()->addDay(), function () {
+            return $this->listePays();
+        });
+        return view('profil.creerCompteGoogle', compact('countries'));
     }
 
     public function creerCompte()
