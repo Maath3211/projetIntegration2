@@ -29,7 +29,7 @@
             flex-grow: 1;
             min-height: 0; /* Permet au flexbox de bien fonctionner */
             height: auto;
-            background: #2E2222;
+            background: #414141;
             padding: 15px;
             height: 400px;
             overflow-y: auto;
@@ -55,13 +55,13 @@
             justify-content: flex-end;
         }
         .own-message .bubble {
-            background: pink;
+            background: #A9FE77;
         }
         .received-message {
             justify-content: flex-start;
         }
         .received-message .bubble {
-            background: lightblue;
+            background: #A9FE77;
         }
         .message-input {
             background: pink;
