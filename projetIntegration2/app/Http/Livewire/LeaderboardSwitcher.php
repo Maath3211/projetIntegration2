@@ -10,8 +10,12 @@ class LeaderboardSwitcher extends Component
     public $selectedClanId = 'global';
     public $topClans;
     public $topUsers;
+    public $refreshCounter = 0; // Add counter
 
-    protected $listeners = ['clanSelected' => 'updateSelectedClan'];
+    protected $listeners = [
+        'clanSelected' => 'updateSelectedClan',
+        'refreshComponent' => '$refresh'
+    ];
 
     public function mount($topClans = null, $topUsers = null)
     {
@@ -28,11 +32,21 @@ class LeaderboardSwitcher extends Component
     {
         Log::debug('updateSelectedClan called', ['clanId' => $clanId]);
         $this->selectedClanId = $clanId;
+        $this->refreshCounter++; // Increment on each change
+    }
+
+    public function selectClan($clanId)
+    {
+        Log::debug('selectClan called', ['from' => $this->selectedClanId, 'to' => $clanId]);
+        // Do not reset here; simply update the selected clan
+        $this->selectedClanId = $clanId;
+        $this->emit('clanSelected', $clanId);
+        $this->emit('refreshComponent');
     }
 
     public function render()
     {
-        Log::debug('LeaderboardSwitcher rendering', ['current_clan' => $this->selectedClanId]);
-        return view('livewire.leaderboard-switcher');
+        Log::debug('LeaderboardSwitcher rendering', ['selectedClanId' => $this->selectedClanId]);
+        return view('livewire.leaderboard-switcher')->with('refreshCounter', $this->refreshCounter);
     }
 }

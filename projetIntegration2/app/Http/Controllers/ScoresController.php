@@ -98,7 +98,7 @@ class ScoresController extends Controller
             ->limit(10)
             ->get();
 
-        $filename = 'top_users.csv';
+        $filename = 'meilleurs_membres_global_' . '_' . date('d-m-Y') . '.csv';
         header('Content-Type: text/csv');
         header('Content-Disposition: attachment; filename="' . $filename . '"');
 
@@ -126,7 +126,7 @@ class ScoresController extends Controller
             ->limit(10)
             ->get();
 
-        $filename = 'top_clans.csv';
+        $filename = 'meilleurs_clans_global' . '_' . date('d-m-Y') . '.csv';
         header('Content-Type: text/csv');
         header('Content-Disposition: attachment; filename="' . $filename . '"');
 
@@ -159,8 +159,9 @@ class ScoresController extends Controller
             ->orderByDesc('user_total_score')
             ->limit(10)
             ->get();
-
-        $filename = 'top_membres.csv';
+        $clan = DB::table('clans')->where('id', $clanId)->first();
+        $clanSlug = strtolower(str_replace(' ', '_', $clan->nom));
+        $filename = 'meilleurs_membres_' . $clanSlug . '_' . date('d-m-Y') . '.csv';
         header('Content-Type: text/csv');
         header('Content-Disposition: attachment; filename="' . $filename . '"');
 
@@ -197,7 +198,9 @@ class ScoresController extends Controller
             ->limit(10)
             ->get();
 
-        $filename = 'top_amelioration.csv';
+        $clan = DB::table('clans')->where('id', $clanId)->first();
+        $clanSlug = strtolower(str_replace(' ', '_', $clan->nom));
+        $filename = 'meilleurs_ameliorations_' . $clanSlug . '_' . date('d-m-Y') . '.csv';
         header('Content-Type: text/csv');
         header('Content-Disposition: attachment; filename="' . $filename . '"');
 

@@ -17,7 +17,7 @@ class SidebarClans extends Component
     public function selectClan($clanId)
     {
         $this->selectedClanId = $clanId; // Update local state
-        $this->dispatch('clanSelected', $clanId);
+        $this->emit('clanSelected', $clanId); // This method exists on Livewire\Component (version 2+)
     }
 
     public function render()
