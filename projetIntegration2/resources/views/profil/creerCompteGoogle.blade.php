@@ -73,9 +73,8 @@
                         </div>
                     </div>
                     <div class="conteneurForm">
-                        <label for="imageProfil" class="text-vert">Image de profil</label>
-                        <input type="file" class="form-control inputConnexion" id="imageProfil" name="imageProfil">
-                        <label for="imageProfil" class="custom-file-upload" id="filename">Aucun changement</label>
+                        <label for="imageProfil" class="text-vert">Image de profil provenant de google</label>
+                        <input type="file" class="form-control inputConnexion" id="imageProfil" name="imageProfil" hidden>
                         
                         <div class="conteneurErreur">
                             @error('imageProfil')
@@ -112,11 +111,10 @@
                     <div class="conteneurForm">
                         <label for="genre" class="text-vert">Genre</label>
                         <select class="form-select form-control inputConnexion" name="genre" id="genre">
-                            <option value="Choisir" {{ old('genre') == 'Choisir' ? 'selected' : '' }}>Choisir</option>
-                            <option value="Homme" {{ old('genre') == 'Homme' ? 'selected' : '' }}>Homme</option>
-                            <option value="Femme" {{ old('genre') == 'Femme' ? 'selected' : '' }}>Femme</option>
+                            <option value="Homme" {{ session('google_data')['genre'] == 'Homme' ? 'selected' : '' }}>Homme</option>
+                            <option value="Femme" {{ session('google_data')['genre'] == 'Femme' ? 'selected' : '' }}>Femme</option>
                             <option value="Prefere ne pas dire"
-                                {{ old('genre') == 'Prefere ne pas dire' ? 'selected' : '' }}>Prefere ne pas dire
+                                {{ session('google_data')['genre'] == 'Prefere ne pas dire' ? 'selected' : '' }}>Prefere ne pas dire
                             </option>
                         </select>
                         <div class="conteneurErreur">
@@ -133,7 +131,7 @@
                     <div class="conteneurForm">
                         <label for="dateNaissance" class="text-vert">Date de naissance</label>
                         <input type="date" class="form-control inputConnexion" name="dateNaissance"
-                            id="dateNaissance" placeholder="Date de naissance" value="{{ old('dateNaissance') }}">
+                            id="dateNaissance" placeholder="Date de naissance" value="{{ session('google_data')['dateNaissance'] }}">
                         <div class="conteneurErreur">
                             @error('dateNaissance')
                                 <span class="text-danger">{{ $message }}&ensp;</span>

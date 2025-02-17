@@ -3,16 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ConnexionRequest;
+use App\Http\Requests\CreationCompteGoogleRequest;
 use App\Http\Requests\CreationCompteRequest;
 use App\Http\Requests\ModificationRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Laravel\Socialite\Facades\Socialite;
-use PhpParser\Node\Expr\AssignOp\Mod;
 
 class ProfilController extends Controller
 {
@@ -30,52 +29,6 @@ class ProfilController extends Controller
             return redirect()->back()->withErrors(['Informations invalides']);
         }
     }
-
-    public function connexionGoogle()
-    {
-       return Socialite::driver('google')->redirect();
-    }
-
-    public function googleCallback()
-    {
-        try {
-            $googleUser = Socialite::driver('google')->user();
-            // dd($googleUser);
-            $user = User::where('google_id', $googleUser->getId())->first();
-
-            if (!$user || $user == null) {
-                // Store Google data in session
-                session([
-                    'google_data' => [
-                        'email' => $googleUser->getEmail(),
-                        'prenom' => $googleUser->user['given_name'],
-                        'nom' => $googleUser->user['family_name'],
-                        'image_url' => $googleUser->getAvatar(),
-                        'google_id' => $googleUser->getId()
-                    ]
-                ]);
-
-                return redirect()->route('profil.creerCompteGoogle');
-            } else if ($user->google_id == $googleUser->getId()) {
-                Auth::login($user);
-                return redirect('/profil');
-            } else {
-                return redirect()->route('profil.pageConnexion')->withErrors(['La connexion avec Google a échoué 1']);
-            }
-        } catch (\Exception $e) {
-            Log::error('Google login failed', [$e]);
-            return redirect()->route('profil.pageConnexion')->withErrors(['La connexion avec Google a échoué 2']);
-        }
-    }
-
-    public function creerCompteGoogle()
-    {
-        $countries = Cache::remember('countries_list_french', now()->addDay(), function () {
-            return $this->listePays();
-        });
-        return view('profil.creerCompteGoogle', compact('countries'));
-    }
-
     public function creerCompte()
     {
         $countries = Cache::remember('countries_list_french', now()->addDay(), function () {
@@ -114,6 +67,110 @@ class ProfilController extends Controller
         return redirect()->route('profil.connexion')->with('message', 'Votre compte a été créé avec succès');
     }
 
+    public function creerCompteGoogle()
+    {
+        $countries = Cache::remember('countries_list_french', now()->addDay(), function () {
+            return $this->listePays();
+        });
+        return view('profil.creerCompteGoogle', compact('countries'));
+    }
+
+    public function connexionGoogle()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function googleCallback()
+    {
+        try {
+            $googleUser = Socialite::driver('google')->user();
+            $client = new \Google_Client();
+            $client->setAccessToken($googleUser->token);
+            $peopleService = new \Google_Service_PeopleService($client);
+            $profile = $peopleService->people->get('people/me', [
+                'personFields' => 'addresses,birthdays,genders,locations'
+            ]);
+
+            $birthday = null;
+            if ($profile->getBirthdays()) {
+                foreach ($profile->getBirthdays() as $bday) {
+                    if ($bday->getDate() && $bday->getDate()->getYear()) {
+                        $birthday = sprintf(
+                            '%d-%02d-%02d',
+                            $bday->getDate()->getYear(),
+                            $bday->getDate()->getMonth(),
+                            $bday->getDate()->getDay()
+                        );
+                        break;
+                    }
+                }
+            }
+
+            $gender = null;
+            if ($profile->getGenders()) {
+                $gender = $profile->getGenders()[0]->getValue();
+                $gender = match ($gender) {
+                    'male' => 'Homme',
+                    'female' => 'Femme',
+                    default => 'Prefere ne pas dire'
+                };
+            }
+
+            session([
+                'google_data' => [
+                    'email' => $googleUser->getEmail(),
+                    'prenom' => $googleUser->user['given_name'],
+                    'nom' => $googleUser->user['family_name'],
+                    'image_url' => $googleUser->getAvatar(),
+                    'google_id' => $googleUser->getId(),
+                    'dateNaissance' => $birthday,
+                    'genre' => $gender
+                ]
+            ]);
+
+            return redirect()->route('profil.creerCompteGoogle');
+        } catch (\Exception $e) {
+            Log::error('Google login failed', ['error' => $e->getMessage()]);
+            return redirect()->route('profil.pageConnexion')
+                ->withErrors(['La connexion avec Google a échoué']);
+        }
+    }
+
+    public function storeCreerCompteGoogle(CreationCompteGoogleRequest $request)
+    {
+        $utilisateur = new User();
+        $utilisateur->email = $request->email;
+        $utilisateur->prenom = $request->prenom;
+        $utilisateur->nom = $request->nom;
+        $utilisateur->pays = $request->pays;
+        $utilisateur->genre = $request->genre;
+        $utilisateur->dateNaissance = $request->dateNaissance;
+        $utilisateur->password = bcrypt($request->password);
+
+        $googleData = session('google_data');
+        if ($googleData && isset($googleData['image_url'])) {
+            try {
+            $imageContent = file_get_contents($googleData['image_url']);
+            $nomFichierUnique = 'img/Utilisateurs/' . str_replace(' ', '_', $utilisateur->id) . '-' . uniqid() . '.jpg';
+            
+            if (file_put_contents(public_path($nomFichierUnique), $imageContent)) {
+                $utilisateur->imageProfil = $nomFichierUnique;
+            } else {
+                Log::error("Erreur lors de la sauvegarde de l'image Google");
+                return redirect()->back()->withErrors(['imageProfil' => "Erreur lors de la sauvegarde de l'image"]);
+            }
+            } catch (\Exception $e) {
+            Log::error("Erreur lors du téléchargement de l'image Google", [$e]);
+            return redirect()->back()->withErrors(['imageProfil' => "Erreur lors du téléchargement de l'image"]);
+            }
+        } else {
+            return redirect()->back()->withErrors(['imageProfil' => 'Aucune image Google trouvée']);
+        }
+
+        $utilisateur->save();
+        return redirect()->route('profil.connexion')->with('message', 'Votre compte a été créé avec succès');
+    }
+
 
     public function profil()
     {
@@ -135,7 +192,8 @@ class ProfilController extends Controller
         return View('profil.modification', compact('countries'));
     }
 
-    public function updateModification(ModificationRequest $request){
+    public function updateModification(ModificationRequest $request)
+    {
         $utilisateur = Auth::user();
         $utilisateur->prenom = $request('prenom');
         $utilisateur->nom = $request('nom');

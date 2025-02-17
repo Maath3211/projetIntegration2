@@ -44,7 +44,6 @@ return [
             'https://www.googleapis.com/auth/userinfo.email',
             'https://www.googleapis.com/auth/user.birthday.read',
             'https://www.googleapis.com/auth/user.gender.read',
-            'https://www.googleapis.com/auth/user.addresses.read'
         ],
         'access_type' => 'offline',
         'prompt' => 'consent select_account',
