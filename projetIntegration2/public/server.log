@@ -36,3 +36,11 @@
 [Mon Feb 17 20:09:29 2025] 127.0.0.1:63232 [GET] URI: /meta.json
 [Mon Feb 17 20:09:33 2025] 127.0.0.1:63250 [POST] URI: /broadcastClan
 [Mon Feb 17 20:09:36 2025] 127.0.0.1:63266 [GET] URI: /testClan/1
+[Mon Feb 17 20:09:58 2025] 127.0.0.1:63392 [GET] URI: /clan/1
+[Mon Feb 17 20:09:59 2025] 127.0.0.1:63428 [GET] URI: /meta.json
+[Mon Feb 17 20:10:03 2025] 127.0.0.1:63445 [GET] URI: /meta.json
+[Mon Feb 17 20:11:38 2025] 127.0.0.1:63601 [GET] URI: /testClan/1
+[Mon Feb 17 20:11:38 2025] 127.0.0.1:63613 [GET] URI: /meta.json
+[Mon Feb 17 20:11:39 2025] 127.0.0.1:63637 [GET] URI: /meta.json
+[Mon Feb 17 20:11:41 2025] 127.0.0.1:63640 [GET] URI: /testClan/1
+[Mon Feb 17 20:11:45 2025] 127.0.0.1:63669 [POST] URI: /broadcastClan

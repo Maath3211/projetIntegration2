@@ -392,7 +392,7 @@
         });
 
         const userId = "{{ auth()->id() }}"; // ID de l'utilisateur connecté
-        const friendId = "{{ $user->id }}";  // ID de l'ami avec qui il discute
+        const friendId = "{{ $user->id }}";  // ID de l'ami avec qui il discute :: Plutot le clan avec qui il discute
 
         const channelName = "chat-" + friendId;
 

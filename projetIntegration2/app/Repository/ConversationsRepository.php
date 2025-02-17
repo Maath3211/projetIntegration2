@@ -64,35 +64,6 @@ class ConversationsRepository{
             'from' => function($query){return $query->select('email','id');}
         ]);
     }
-
-    public function getMessageClanFor($envoyeur,$clan){
-        return $this->message->newQuery()
-        ->whereRaw("((idEnvoyer = $envoyeur AND idReceveur = $clan) OR (idEnvoyer = $clan AND idReceveur = $envoyeur ))")
-        ->orderBy('created_at', 'ASC')
-        ->with([
-            'from' => function($query){return $query->select('email','id');}
-        ]);
-    }
-
-
-    public function getConversationsClan(){
-        $conversation =  $this->user->newQuery()->
-        select('email','id')
-        ->get();
-        
-        $unread = $this->unreadCount(1);
-
-        foreach($conversation as $conv){
-            if(isset($unread[$conv->id])){
-                $conv->unread = $unread[$conv->id];
-            }else{ 
-                $conv->unread = 0;
-            }
-        }
-        return $conversation;
-    }
-
-
 /**
  * 
  * @params int $UserId
