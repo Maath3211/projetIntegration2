@@ -7,6 +7,7 @@ use App\Http\Controllers\ScoresController;
 use App\Http\Controllers\Conversations;
 use App\Http\Controllers\StatistiqueController;
 use App\Http\Controllers\GymController;
+use App\Http\Controllers\AmisController;
 use App\Models\User;
 use App\Events\PusherBroadcast;
 
@@ -76,3 +77,8 @@ Route::GET('/localisation',
 [GymController::class, 'index'])->name('localisation.index');
 Route::get('/export/top-users', [ScoresController::class, 'exportTopUsers'])->name('export.topUsers');
 Route::get('/export/top-clans', [ScoresController::class, 'exportTopClans'])->name('export.topClans');
+
+//Route pour l'ajout d'amis
+Route::get('amis', [AmisController::class, 'index'])->name('amis.index');
+Route::post('amis/recherche', [AmisController::class, 'recherche'])->name('amis.recherche');
+Route::post('amis/ajouter', [AmisController::class, 'ajouter'])->name('amis.ajouter');
