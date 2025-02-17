@@ -167,7 +167,7 @@
                 <div class="row barreEnregistrerConteneur">
                     <div class="col-md-10 rangeeInviter">
                         <div>Lien d'invitation: </div>
-                        <div>https://gymcord.com/invite/213E092hdjasvgFAEWd214#210e9!43$#1% <i class="fa-regular fa-copy"></i></div>
+                        <div>https://gymcord.com/invite/213E092hdjasvgFAEWd214#210e9!43$#1% <i class="fa-regular fa-copy copier"></i></div>
                     </div>
                     <div class="col-md-10 rangeeEnregistrer">
                         <div>N'oubliez pas d'enregistrer vos modifications avant de quitter!</div>
@@ -180,36 +180,19 @@
             <div id="confirmationSuppression" class="fenetreCategorie">
                 <div class="conteneurConfirmation">
                     <div class="titreConfirmation">
-                        <div>Supprimer la catégorie de canal</div>
+                        <div>Expulser le membre</div>
                     </div>
                     <div class="texteConfirmation">
-                        <div>Êtes-vous sur de vouloir supprimer cette catégorie et tous ses canaux?</div>
+                        <div>Êtes-vous sur de vouloir expulser ce membre?</div>
                     </div>
 
                     <div class="boutonsConfirmation">
                         <button class="annuler" type="button">Annuler</button>
-                        <button id="confirmerSuppression" type="button">Supprimer</button>
+                        <button id="confirmerSuppression" type="button">Expulser</button>
                     </div>
                 </div>
             </div>
 
-            <!-- Fenêtre contextuelle pour ajouter une catégorie de canal -->
-            <div id="ajoutCategorie" class="fenetreCategorie">
-                <div class="conteneurConfirmation">
-                    <div class="titreConfirmation">
-                        <div>Ajouter une catégorie de canal</div>
-                    </div>
-                    <div class="texteConfirmation">
-                        <input type="text" name="entreeNomCategorie" class="form-control entreeNomCategorie" placeholder="ex.: Cardio">
-                        <span class="messageErreur"></span>
-                    </div>
-
-                    <div class="boutonsConfirmation">
-                        <button class="annuler" type="button">Annuler</button>
-                        <button id="confirmerAjout" type="button">Confirmer</button>
-                    </div>
-                </div>
-            </div>
         </div>
         </div>
     </div>

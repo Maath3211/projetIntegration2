@@ -356,6 +356,7 @@ STYLE POUR LES CATÉGORIES DE CANAUX
     display: flex;
     justify-content: start;
     align-items: center;
+    cursor: pointer;
 }
 
 .membre:hover div{

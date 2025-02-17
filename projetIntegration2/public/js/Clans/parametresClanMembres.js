@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     //obtenir les membres à supprimer
-    document.querySelectorAll('.categorie i.supprimer').forEach(icon => {
+    document.querySelectorAll('.membre i.supprimer').forEach(icon => {
         icon.addEventListener('click', function(){
             //obtenir la catégorie à ajouter dans les "à supprimer"
             const texteCategorie = this.parentElement.querySelector('div').textContent.trim();
@@ -30,6 +30,17 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById('categoriesSelectionnees').value = categoriesSelectionnees.join(',')
 
         });
+    });
+
+    document.querySelector('.copier').addEventListener('click', function(){
+        let texte = document.querySelector('.rangeeInviter div:last-of-type').textContent.trim();
+        console.log(texte);
+
+        navigator.clipboard.writeText(texte).then(function() {
+            alert("lien d'invitation copié.");
+        }).catch(function(err) {
+            console.error("erreur lors de la copie du lien d'invitation.");
+        })
     });
 
 });
