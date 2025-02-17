@@ -12,7 +12,7 @@ class ClanController extends Controller
     // Accueil d'un clan
     public function index($id){
         //$clan = Clan::findOrFail($id);
-        return View('Clans.accueilClans'/*, compact('clan')*/);
+        return View('Clans.accueilClans', compact('id'/*, $clan*/));
     }
 
     // Paramètres d'un clan
@@ -164,6 +164,64 @@ class ClanController extends Controller
 
     }
 
+    public function actionsCanal(Request $request, $id){
+        // Renommer le canal
+        Log::info('HAHAHAHAAHAH');
+        Log::info('clanId: '. $id);
+        Log::info('action: '. $request->input('action'));
+        Log::info('requete: '. $request->input('requete'));
+
+        $requete = json_decode($request->input('requete'), true);
+
+        if(isset($requete['canal'])){
+            //$canal = Canal::findOrFail($requete['canal']);
+
+            if($request->input('action') === 'renommer'){
+                if(strlen($requete['nouveauNom']) > 50){
+                    return response()->json([
+                        'error' => 'Les catégories ne doivent pas dépasser les 50 caractères.'
+                    ], 400);
+                } 
+                else if(!preg_match('/^[A-Za-z\u00C0-\u00FF-]+$/', $requete['nouveauNom'])) {
+                    return response()->json([
+                        'error' => 'Les catégories ne doivent pas contenir de chiffres ou de symboles. Seul les lettres UTF-8 et les traits (-) sont permis.'
+                    ], 400);
+                }
+                
+                //$canal->titre = $requete['nouveauNom'];
+                //$canal->save();
+                
+                return redirect()->back()-with('message', 'modification faite avec succès!');
+            } 
+            else if($request->input('action') === 'supprimer') {
+                //$canal->delete();
+                return redirect()->back()->with('message', 'suppression faite avec succès!');
+            }
+        }
+        else if($request->input('action') === 'ajouter') {
+            if(strlen($requete['nouveauNom']) > 50){
+                return response()->json([
+                    'error' => 'Les catégories ne doivent pas dépasser les 50 caractères.'
+                ], 400);
+            } 
+            else if(!preg_match('/^[A-Za-z\u00C0-\u00FF-]+$/', $requete['nouveauNom'])) {
+                return response()->json([
+                    'error' => 'Les catégories ne doivent pas contenir de chiffres ou de symboles. Seul les lettres UTF-8 et les traits (-) sont permis.'
+                ], 400);
+            }
+
+            //Ajouter un nouveau Cana
+            // $canal = new Canal();
+            // $canal->titre = $requete['nouveauNom'];
+            // $canal->clanId = $id;
+            // $canal->categorieId = $requete['categorie'];
+            // $canal->save();
+            return redirect()->back()->with('message', 'ajout fait avec succès!');
+        }
+        else {
+            Log::info('ERREUR - Action interdite. Veuillez contacter le support');
+        }
+    }
     // Mise à jour de la liste de membres d'un clan (supprimer)
 
     /**

@@ -24,6 +24,9 @@ Route::GET('/clan/{id}',
 Route::GET('/clan/{id}/parametres/general',
 [ClanController::class, 'parametres'])->name('clan.parametres');
 
+Route::POST('/clan/{id}/action/canal',
+[ClanController::class, 'actionsCanal'])->name('canal.actions');
+
 Route::POST('/clan/{id}/parametres/general', 
 [ClanController::class, 'parametres'])->name('clan.parametres.post');
 

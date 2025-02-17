@@ -31,13 +31,13 @@
             <a  href="#"> <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee"><i class="fa-solid fa-ranking-star fa-2xl"></i></div></a>
 
             <!-- Tous les clans dont l'utilisateur actuel fait partie -->
-            <a  href="/clan/1"> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
-            <a  href="/clan/2"> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
-            <a  href="/clan/3"> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
-            <a  href="/clan/4"> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
-            <a  href="/clan/5"> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
-            <a  href="/clan/6"> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
-            <a  href="/clan/7"> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
+            <a  href="{{ route('clan.montrer', ['id' => 1]) }}"> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
+            <a  href="{{ route('clan.montrer', ['id' => 2]) }}"> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
+            <a  href="{{ route('clan.montrer', ['id' => 3]) }}"> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
+            <a  href="{{ route('clan.montrer', ['id' => 4]) }}"> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
+            <a  href="{{ route('clan.montrer', ['id' => 5]) }}"> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
+            <a  href="{{ route('clan.montrer', ['id' => 6]) }}"> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
+            <a  href="{{ route('clan.montrer', ['id' => 7]) }}"> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
 
         </aside>
     </header>
