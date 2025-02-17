@@ -9,6 +9,7 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+    //A qui appartien cette migration
     public function up(): void
     {
         Schema::create('clan_users', function (Blueprint $table) {

@@ -39,6 +39,9 @@ Route::POST('/broadcast', [Conversations::class,'broadcast']);
 Route::POST('/receive', [Conversations::class,'receive']);
 Route::GET('/conversations', [Conversations::class,'index'])->name('conversations');
 
+Route::GET('/testClan/{group}', [Conversations::class,'showGroupe'])->name('conversations.showGroupe');
+
+
 
 
 Route::GET('/connexion',

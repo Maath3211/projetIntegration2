@@ -42,6 +42,23 @@ class ConversationsRepository{
         return $conversation;
     }
 
+    public function getConversationsClan(){
+        $conversation =  $this->user->newQuery()->
+        select('email','id')
+        ->get();
+        
+        $unread = $this->unreadCount(1);
+
+        foreach($conversation as $conv){
+            if(isset($unread[$conv->id])){
+                $conv->unread = $unread[$conv->id];
+            }else{ 
+                $conv->unread = 0;
+            }
+        }
+        return $conversation;
+    }
+
     public function createMessage(string $content, int $envoyeur, int $receveur){
         return $this->message->newQuery()->create([
             'message' => $content,

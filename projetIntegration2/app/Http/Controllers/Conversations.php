@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Repository\ConversationsRepository;
 use App\Http\Requests\StoreMessage;
 use App\Events\PusherBroadcast;
+use App\Models\Clan;
+use App\Events\MessageGroup;
 
 
 
@@ -97,6 +99,18 @@ class Conversations extends Controller
         //\Log::info('Receive method called with message: ' . $request->message);
         //\Log::info('Message received: ' . $request->message); // Debug
         return response()->json(['message' => $request->message]);
+    }
+
+
+    public function showGroupe(Clan $groupe){
+        //dd($user);
+        $users = auth()->id();
+        //dd($user);
+        return view('conversations.show',[
+            'users' => $this->ConvRepository->getConversations(),
+            'user' => $groupe,
+            'messages' => $this->ConvRepository->getMessageFor(auth()->id(), $user->id)->paginate(300)//Pagination des messages par 2
+        ]);
     }
     
 }
