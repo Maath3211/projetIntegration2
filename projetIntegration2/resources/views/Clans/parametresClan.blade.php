@@ -12,22 +12,71 @@
         <link rel="stylesheet" style="text/css" href="\css\gabaritCss.css">
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://kit.fontawesome.com/55ec8bd5f8.js" crossorigin="anonymous"></script>
-        
         <link rel="stylesheet" style="text/css" href="{{asset('css/Clans/parametres.css')}}">
 <meta charset="UTF-8">
 </head>
 
 <body class=" flex h-screen" id="background">
-    <!-- Main Content -->
     <main id="main">
-        <div>
-          @yield('contenu')
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-2 colonneNavigationParametres">
+            <div class="conteneurNavigation">
+              <div class="titreNavigation">Paramètres</div>
+              <div class="navigationParametres">
+                <div class="categorieParametre general actif" >Général</div>
+                <div class="categorieParametre canaux" >Canaux</div>
+                <div class="categorieParametre membres" >Membres</div>
+                <div class="categorieParametre supprimer" >Supprimer le clan</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-10 colonneParametres">
+            <div class="conteneurParametres ">
+
+              <div class="titreParametre">Paramètres généraux</div>
+              <a href="{{ route('clan.montrer', ['id' => $id]) }}">
+                <div class="boutonRetour">
+                  <i class="fa-regular fa-circle-xmark fa-3x"></i>
+                  <div>QUITTER</div>
+                </div>
+              </a>
+            </div>
+            <!-- TODO - CHANGER L'IMAGE QUI APPARAIT POUR CELLE DU CLAN -->
+            <form action="{{ route('clan.miseAJour.general', ['id' => $id]) }}" method="POST" enctype="multipart/form-data" id="formulaireSoumission">
+              @csrf
+              <div class="row">
+                <div class="col-md-12 parametresGeneraux">
+                  <img src="{{asset('img/Clans/clan_' . $id . '_.png')}}" alt="erreur lors de l'affichage de votre image.">
+                  <div class="formulaireAjoutImage">
+                    <div>Une image de forme carrée est recommendée pour le clan.</div>
+                      <div class="form-group">
+                        <label for="imageClan" class="televerser">Téléverser une image</label>
+                        <input type="file" class="form-control-file" id="imageClan" name="imageClan" accept="image/*">
+                      </div>
+                    </div>
+                    <div class="nomClan">
+                        <label for="nomClan">Nom du clan</label>
+                        <input type="text" class="form-control" id="nomClan" name="nomClan" value="Workout Master">
+                    </div>
+                </div>
+              </div>
+              <div class="row barreEnregistrerConteneur">
+                  <div class="col-md-10 rangeeEnregistrer">
+                      <div>N'oubliez pas d'enregistrer vos modifications avant de quitter!</div>
+                      <button type="submit" class="btn btn-success">Enregistrer</button>
+                  </div>
+              </div>
+            </form>
+          </div>
         </div>
+      </div>
     </main>
-<!-- Mettre le footer -->
  <footer>
 </footer>
 </body>
+<script src="{{ asset('js/Clans/parametresClan.js') }}" crossorigin="anonymous"> </script>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
