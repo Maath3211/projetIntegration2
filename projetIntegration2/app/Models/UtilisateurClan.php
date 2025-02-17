@@ -35,4 +35,6 @@ class UtilisateurClan extends Model
     {
         return $this->belongsTo(Clan::class, 'idClan');
     }
+
+    
 }

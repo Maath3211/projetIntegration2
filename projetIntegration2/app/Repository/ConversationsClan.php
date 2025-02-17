@@ -51,14 +51,18 @@ class ConversationsClan{
     }
 
 
-    public function getMessageClanFor($envoyeur,$clan){
+    public function getMessageClanFor($clanId)
+    {
         return $this->message->newQuery()
-        ->whereRaw("((idEnvoyer = $envoyeur AND idClan = $clan) OR (idEnvoyer = $clan AND idClan = $envoyeur ))")
-        ->orderBy('created_at', 'ASC')
-        ->with([
-            'user' => function($query){return $query->select('email','id');}
-        ]);
+            ->where('idClan', $clanId) // On récupère tous les messages du clan
+            ->orderBy('created_at', 'ASC')
+            ->with([
+                'user' => function($query) { // Assurez-vous que 'sender' est bien défini dans le modèle Message
+                    return $query->select('id', 'email');
+                }
+            ])->paginate(300);
     }
+    
 /**
  * 
  * @params int $UserId

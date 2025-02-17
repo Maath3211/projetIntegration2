@@ -104,21 +104,39 @@ class Conversations extends Controller
     }
 
 
-    public function showClan(Clan $clans){
-        //dd($clans);
-        $users = auth()->id();
-        //dd($user);
-        return view('conversations.showClan',[
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+    public function showClan(Clan $clans)
+    {
+        return view('conversations.showClan', [
             'users' => $this->ClanRepository->getConversationsClan(),
             'user' => $clans,
-            'messages' => $this->ClanRepository->getMessageClanFor(auth()->id(), $clans->id)->paginate(300)//Pagination des messages par 2
+            'messages' => $this->ClanRepository->getMessageClanFor($clans->id) // Plus besoin de auth()->id()
         ]);
     }
+    
 
     public function broadcastClan(Request $request){
 
-        \Log::info('Message envoyé via Pusher', $request->all());
-        \Log::info('📡 Tentative de broadcast avec message: ' . $request->message);
+        //\Log::info('Message envoyé via Pusher', $request->all());
+        //\Log::info('📡 Tentative de broadcast avec message: ' . $request->message);
         try {
             broadcast(new MessageGroup($request->message, auth()->id(),$request->to))
                 ->toOthers();
@@ -138,7 +156,7 @@ class Conversations extends Controller
 
 
         } catch (\Exception $e) {
-            \Log::error('❌ Erreur lors du broadcast: ' . $e->getMessage());
+            //\Log::error('❌ Erreur lors du broadcast: ' . $e->getMessage());
         }
         return response()->json(['message' => $request->message]);
     }
