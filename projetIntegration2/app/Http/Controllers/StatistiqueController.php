@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Statistiques;
 use App\Models\StatThermique;
+use App\Models\PoidsUtilisateur;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class StatistiqueController extends Controller
 {
@@ -34,9 +36,46 @@ class StatistiqueController extends Controller
 
     public function graphique()
     {
-        $statistiques = Statistiques::where('user_id', Auth::id())->get();
-        return View("statistique.graphique");
+        $user = Auth::user();
+        $dateCreationCompte = Carbon::parse($user->created_at);
+
+        $currentDate = Carbon::now();
+        $diffWeeks = (int) $dateCreationCompte->diffInWeeks($currentDate);
+
+    
+        $donnees = PoidsUtilisateur::where('user_id', Auth::id()) 
+        ->orderBy('semaine', 'asc')
+        ->get();
+
+    // Extraire les semaines et poids
+    $semaines = $donnees->pluck('semaine')->toArray();
+    $poids = $donnees->pluck('poids')->toArray();
+
+
+    return view("statistique.graphique", compact('dateCreationCompte','semaines', 'poids', 'diffWeeks'));
     }
+
+
+    public function ajouterPoids(Request $request)
+{
+    $request->validate([
+        'poids' => 'required|numeric',
+        'semaine' => 'required|integer',
+    ]);
+
+    $poidsUtilisateur = PoidsUtilisateur::updateOrCreate(
+        [
+            'user_id' => Auth::id(),
+            'semaine' => $request->semaine
+        ],
+        [
+            'poids' => $request->poids
+        ]
+    );
+
+    return response()->json(['success' => true, 'poids' => $poidsUtilisateur->poids, 'semaine' => $poidsUtilisateur->semaine]);
+}
+
 
     public function thermique()
     {
@@ -106,7 +145,22 @@ class StatistiqueController extends Controller
         }
     }
 
+    public function updateWeight(Request $request)
+    { \Log::info('Request received for updateWeight', ['request' => $request->all()]);
 
+        $user = Auth::user();
+        $poid = $user->poids()->first();
+    
+        if ($poid) {
+            $poid->score = $request->input('poids');
+            $poid->save();
+            \Log::info('Weight updated successfully', ['poid' => $poid]);
+            return response()->json(['success' => true]);
+        } else {
+            \Log::error('Weight update failed: Weight not found');
+            return response()->json(['success' => false]);
+        }
+    }
 
     /**
      * Show the form for creating a new resource.

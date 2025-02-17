@@ -47,28 +47,44 @@
             justify-content: center;
             font-size: 32px;
         }
+        input[type="number"] {
+        color: black;
+    }
     </style>
 
 <div id="main">
     <a href="/stats"><button class="bouton">retour</button></a>
+
+  
+        <h1 id="titre">Vous êtes à la semaine {{$diffWeeks}}</h1>
+   
+
     <h1 id="titre">Amélioration de votre poids</h1>
     <div class="uniteToggle">
         <button class="bouton">Lbs</button>
         <button class="bouton">Kg</button>
     </div>
+    <form id="poidsForm">
+        <label for="poids">Poids:</label>
+        <input type="number" id="poids" name="poids" required>
+        <button type="submit" class="bouton">Ajouter</button>
+    </form>
+ 
     <div class="graphiqueContainer">
-        <canvas id="graphique"></canvas>
+    <canvas id="exerciceChart"></canvas>
     </div>
     <script>
-        const ctx = document.getElementById('graphique').getContext('2d');
+      document.addEventListener("DOMContentLoaded", function () {
+        const ctx = document.getElementById('exerciceChart').getContext('2d');
+
         new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ['1', '2', '3', '4', '5', '6'],
+                labels: @json($semaines),
                 datasets: [{
                     label: 'Poids (Lbs)',
-                    data: [152, 157, 145, 140, 143, 136],
-                    borderColor: '#a9fe77 ',
+                    data: @json($poids),
+                    borderColor: '#a9fe77',
                     borderWidth: 2,
                     pointBackgroundColor: '#e5e5e5',
                     fill: false
@@ -113,6 +129,39 @@
                 }
             }
         });
+        document.getElementById('poidsForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const poids = document.getElementById('poids').value;
+            const currentDate = new Date();
+            const diffTime = Math.abs(currentDate - dateCreationCompte);
+            const diffWeeks = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 7));
+
+            fetch('{{ route('ajouter-poids') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    poids: poids,
+                    semaine: diffWeeks
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const index = chart.data.labels.indexOf(diffWeeks);
+                    if (index !== -1) {
+                        chart.data.datasets[0].data[index] = poids;
+                    } else {
+                        chart.data.labels.push(diffWeeks);
+                        chart.data.datasets[0].data.push(poids);
+                    }
+                    chart.update();
+                }
+            });
+        });
+    });
     </script>
 </div>
 

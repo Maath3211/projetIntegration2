@@ -20,5 +20,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ScoreSeeder::class);
         $this->call(ClanUserSeeder::class);
         $this->call(StatistiquesSeeder::class);
+        $this->call(PoidsUtilisateurSeeder::class);
     }
 }

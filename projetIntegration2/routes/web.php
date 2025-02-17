@@ -66,7 +66,12 @@ Route::delete('/statistiques/{id}', [StatistiqueController::class, 'delete'])->n
 
 Route::post('/statistiques/{id}/update-poids', [StatistiqueController::class, 'updatePoids'])->name('statistiques.updatePoids');
 
+
+Route::post('/ajouter-poids', [StatistiqueController::class, 'ajouterPoids'])->name('ajouter-poids');
+
 Route::post('/statistiques/{id}/update-exercise', [StatistiqueController::class, 'updateExercise'])->name('statistiques.updateExercise');
+
+
 
 Route::GET('/localisation', 
 [GymController::class, 'index'])->name('localisation.index');
