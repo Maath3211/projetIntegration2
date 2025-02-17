@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ConnexionRequest;
 use App\Http\Requests\CreationCompteRequest;
+use App\Http\Requests\ModificationRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -11,8 +12,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Laravel\Socialite\Facades\Socialite;
-
-
+use PhpParser\Node\Expr\AssignOp\Mod;
 
 class ProfilController extends Controller
 {
@@ -33,46 +33,43 @@ class ProfilController extends Controller
 
     public function connexionGoogle()
     {
-        return Socialite::driver('google')->redirect();
+       return Socialite::driver('google')->redirect();
     }
 
     public function googleCallback()
     {
         try {
             $googleUser = Socialite::driver('google')->user();
-            dd($googleUser);
+            // dd($googleUser);
             $user = User::where('google_id', $googleUser->getId())->first();
 
             if (!$user || $user == null) {
-                  // Store Google data in session
-            session([
-                'google_data' => [
-                    'email' => $googleUser->getEmail(),
-                    'prenom' => $googleUser->user['given_name'],
-                    'nom' => $googleUser->user['family_name'],
-                    'image_url' => $googleUser->getAvatar(),
-                    'google_id' => $googleUser->getId()
-                ]
-            ]);
-            
-            return redirect()->route('profil.creerCompteGoogle');
-            }
-    
-            else if($user->google_id == $googleUser->getId()) {
+                // Store Google data in session
+                session([
+                    'google_data' => [
+                        'email' => $googleUser->getEmail(),
+                        'prenom' => $googleUser->user['given_name'],
+                        'nom' => $googleUser->user['family_name'],
+                        'image_url' => $googleUser->getAvatar(),
+                        'google_id' => $googleUser->getId()
+                    ]
+                ]);
+
+                return redirect()->route('profil.creerCompteGoogle');
+            } else if ($user->google_id == $googleUser->getId()) {
                 Auth::login($user);
                 return redirect('/profil');
-            }
-            else{
+            } else {
                 return redirect()->route('profil.pageConnexion')->withErrors(['La connexion avec Google a échoué 1']);
             }
-    
         } catch (\Exception $e) {
             Log::error('Google login failed', [$e]);
             return redirect()->route('profil.pageConnexion')->withErrors(['La connexion avec Google a échoué 2']);
         }
     }
 
-    public function creerCompteGoogle(){
+    public function creerCompteGoogle()
+    {
         $countries = Cache::remember('countries_list_french', now()->addDay(), function () {
             return $this->listePays();
         });
@@ -138,6 +135,29 @@ class ProfilController extends Controller
         return View('profil.modification', compact('countries'));
     }
 
+    public function updateModification(ModificationRequest $request){
+        $utilisateur = Auth::user();
+        $utilisateur->prenom = $request('prenom');
+        $utilisateur->nom = $request('nom');
+        $utilisateur->pays = $request('pays');
+        $utilisateur->genre = $request('genre');
+        $utilisateur->dateNaissance = $request('dateNaissance');
+
+        if (request()->hasFile('imageProfil')) {
+            $uploadedFile = request()->file('imageProfil');
+            $nomFichierUnique = 'img/Utilisateurs/' . str_replace(' ', '_', $utilisateur->id) . '-' . uniqid() . '.' . $uploadedFile->extension();
+            try {
+                $uploadedFile->move(public_path('img/Utilisateurs'), $nomFichierUnique);
+                $utilisateur->imageProfil = $nomFichierUnique;
+            } catch (\Exception $e) {
+                Log::error("Erreur lors du téléversement du fichier.", [$e]);
+                return redirect()->back()->withErrors(['imageProfil' => 'Erreur lors du téléversement de l\'image']);
+            }
+        }
+
+        $utilisateur->save();
+        return redirect()->route('profil.profil')->with('message', 'Votre profil a été mis à jour avec succès');
+    }
 
 
 

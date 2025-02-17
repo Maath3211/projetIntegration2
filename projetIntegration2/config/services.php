@@ -40,23 +40,15 @@ return [
         'redirect' => env('GOOGLE_REDIRECT_URI'),
         'scopes' => [
             'openid',
-            'profile',
-            'email',
+            'https://www.googleapis.com/auth/userinfo.profile',
+            'https://www.googleapis.com/auth/userinfo.email',
             'https://www.googleapis.com/auth/user.birthday.read',
             'https://www.googleapis.com/auth/user.gender.read',
             'https://www.googleapis.com/auth/user.addresses.read'
         ],
-        'fields' => [
-            'given_name',
-            'family_name',
-            'email',
-            'picture',
-            'birthday',
-            'gender',
-            'locale',
-            'address'
-        ],
-        'prompt' => 'consent'
+        'access_type' => 'offline',
+        'prompt' => 'consent select_account',
+        'include_granted_scopes' => true
     ],
-
+    
 ];

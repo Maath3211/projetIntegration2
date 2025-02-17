@@ -74,6 +74,9 @@ Route::GET('/profil',
 Route::GET('/profil/modification',
 [ProfilController::class,'modification'])->name('profil.modification')->middleware('auth');
 
+Route::POST('/profil/modification/update',
+[ProfilController::class,'updateModification'])->name('profil.updateModification')->middleware('auth');
+
 Route::GET('/stats',
 [StatistiqueController::class,'index'])->name('statistique.index');
 

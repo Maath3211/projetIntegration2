@@ -97,3 +97,9 @@ select:focus {
     transform: scale(0.95);
     box-shadow: 1px 1px 5px #77f5fe;
 }
+
+.conteneurErreur {
+    display: flex !important;
+    height: 20px !important;
+    font-size: 15px;
+}
