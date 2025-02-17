@@ -39,7 +39,8 @@ class MessageGroup implements ShouldBroadcastNow
     public function broadcastOn(): array
     {
         $channelName = "chat-" . $this->groupId;
-        return new Channel($channelName);
+        return [new Channel($channelName)];
+
     }
 
     public function broadcastAs(): string

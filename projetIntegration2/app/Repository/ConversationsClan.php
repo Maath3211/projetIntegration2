@@ -6,7 +6,7 @@ use App\Models\Message;
 use App\Models\UtilisateurClan;
 
 
-class ConversationsRepository{
+class ConversationsClan{
 
     /**
      * @var User
@@ -14,40 +14,20 @@ class ConversationsRepository{
 
     private $user;
     /**
-     * @var Message
+     * @var UtilisateurClan
      */
 
      private $message;
-    public function __construct(User $user, Message $message){
+    public function __construct(User $user, UtilisateurClan $message){
         $this->user = $user;
         $this->message = $message;
-    }
-
-
-    //TODO: Changer pour la connextion de l'utilisateur
-    //A ajouter where "user_id = auth()->id()"
-    public function getConversations(){
-        $conversation =  $this->user->newQuery()->
-        select('email','id')
-        ->get();
-        
-        $unread = $this->unreadCount(1);
-
-        foreach($conversation as $conv){
-            if(isset($unread[$conv->id])){
-                $conv->unread = $unread[$conv->id];
-            }else{ 
-                $conv->unread = 0;
-            }
-        }
-        return $conversation;
     }
 
     public function getConversationsClan(){
         $conversation =  $this->user->newQuery()->
         select('email','id')
         ->get();
-        
+        /*
         $unread = $this->unreadCount(1);
 
         foreach($conversation as $conv){
@@ -56,7 +36,7 @@ class ConversationsRepository{
             }else{ 
                 $conv->unread = 0;
             }
-        }
+        } */
         return $conversation;
     }
 
@@ -71,21 +51,12 @@ class ConversationsRepository{
     }
 
 
-    public function getMessageFor($envoyeur,$receveur){
-        return $this->message->newQuery()
-        ->whereRaw("((idEnvoyer = $envoyeur AND idReceveur = $receveur) OR (idEnvoyer = $receveur AND idReceveur = $envoyeur ))")
-        ->orderBy('created_at', 'ASC')
-        ->with([
-            'from' => function($query){return $query->select('email','id');}
-        ]);
-    }
-
     public function getMessageClanFor($envoyeur,$clan){
         return $this->message->newQuery()
-        ->whereRaw("((idEnvoyer = $envoyeur AND idReceveur = $receveur) OR (idEnvoyer = $receveur AND idReceveur = $envoyeur ))")
+        ->whereRaw("((idEnvoyer = $envoyeur AND idClan = $clan) OR (idEnvoyer = $clan AND idClan = $envoyeur ))")
         ->orderBy('created_at', 'ASC')
         ->with([
-            'from' => function($query){return $query->select('email','id');}
+            'user' => function($query){return $query->select('email','id');}
         ]);
     }
 /**
@@ -93,6 +64,7 @@ class ConversationsRepository{
  * @params int $UserId
  * @return \Illuminate\Support\Collection
  */
+/*
     private function unreadCount(int $UserId){
         return $this->message->newQuery()
         ->where('idReceveur', $UserId)
@@ -101,4 +73,5 @@ class ConversationsRepository{
         ->get()
         ->pluck('count','idEnvoyer');
     }
+        */
 }

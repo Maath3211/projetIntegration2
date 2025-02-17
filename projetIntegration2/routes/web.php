@@ -39,7 +39,9 @@ Route::POST('/broadcast', [Conversations::class,'broadcast']);
 Route::POST('/receive', [Conversations::class,'receive']);
 Route::GET('/conversations', [Conversations::class,'index'])->name('conversations');
 
-Route::GET('/testClan/{group}', [Conversations::class,'showGroupe'])->name('conversations.showGroupe');
+Route::GET('/testClan/{clans}', [Conversations::class,'showClan'])->name('conversations.showClan');
+Route::POST('/broadcastClan', [Conversations::class,'broadcastClan']);
+Route::POST('/receiveClan', [Conversations::class,'receiveClan']);
 
 
 

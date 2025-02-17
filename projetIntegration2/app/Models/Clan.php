@@ -9,13 +9,15 @@ class Clan extends Model
 {
     use HasFactory;
 
-    protected $table = "clan";
+    //Changer ajouter un s
+    protected $table = "clans";
 
     protected $fillable = [
         'adminId',
         'image',
         'nom',
-        'public'
+        'public',
+        'id'
     ];
 
     public function users(){

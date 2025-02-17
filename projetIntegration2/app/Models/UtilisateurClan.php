@@ -12,7 +12,7 @@ class UtilisateurClan extends Model
     protected $table = "utilisateur_clan";
     protected $fillable = [
         'idEnvoyer',
-        'idGroupe',
+        'idClan',
         'message',
     ];
 
@@ -31,8 +31,8 @@ class UtilisateurClan extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function group(): BelongsTo
+    public function clan(): BelongsTo
     {
-        return $this->belongsTo(Clan::class, 'idGroupe');
+        return $this->belongsTo(Clan::class, 'idClan');
     }
 }
