@@ -39,6 +39,12 @@ Route::GET('/clan/{id}/parametres/canaux',
 Route::POST('/clan/{id}/enregistrerCanaux',
 [ClanController::class, 'miseAJourCanaux'])->name('clan.miseAJour.canaux');
 
+Route::GET('/clan/{id}/parametres/membres',
+[ClanController::class, 'parametres'])->name('clan.parametres.membres');
+
+Route::POST('/clan/{id}/enregistrerMembres',
+[ClanController::class, 'miseAJourMembres'])->name('clan.miseAJour.membres');
+
 Route::GET('/yup',
 [UserCommunication::class,'index'])->name('user.index');
 

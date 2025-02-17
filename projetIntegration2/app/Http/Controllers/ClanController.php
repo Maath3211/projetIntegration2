@@ -26,9 +26,9 @@ class ClanController extends Controller
             //les paramètres de catégories de canaux
             return View('Clans.parametresClanCanaux', compact('id'/*, 'clan*/ ));
         }
-        else if (Route::currentRouteName() === ""){
+        else if (Route::currentRouteName() === "clan.parametres.membres"){
             // les paramètres des membres du clan
-            return View('Clans.parametresClan', compact('id'/*, 'clan*/ ));
+            return View('Clans.parametresClanMembres', compact('id'/*, 'clan*/ ));
         }
     }
 
@@ -187,7 +187,7 @@ class ClanController extends Controller
                         'error' => 'Les catégories ne doivent pas contenir de chiffres ou de symboles. Seul les lettres UTF-8 et les traits (-) sont permis.'
                     ], 400);
                 }
-                
+
                 //$canal->titre = $requete['nouveauNom'];
                 //$canal->save();
                 
