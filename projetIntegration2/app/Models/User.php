@@ -17,6 +17,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $table = "users";
+    
     protected $fillable = [
         'email',
         'prenom',
@@ -28,6 +29,7 @@ class User extends Authenticatable
         'codeVerification',
         'aPropos',
         'id',
+        'google_id',
     ];
 
     protected $hidden = [

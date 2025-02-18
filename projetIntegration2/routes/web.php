@@ -8,6 +8,7 @@ use App\Http\Controllers\Conversations;
 use App\Http\Controllers\StatistiqueController;
 use App\Http\Controllers\GymController;
 use App\Http\Controllers\ClanController;
+use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Log;
 use App\Models\User;
 use App\Events\PusherBroadcast;
@@ -15,7 +16,7 @@ use App\Events\PusherBroadcast;
 
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('profil.pageConnexion');
 });
 
 Route::GET('/clan/{id}', 
@@ -65,6 +66,11 @@ Route::POST('/broadcast', [Conversations::class,'broadcast']);
 Route::POST('/receive', [Conversations::class,'receive']);
 Route::GET('/conversations', [Conversations::class,'index'])->name('conversations');
 
+Route::GET('/testClan/{clans}', [Conversations::class,'showClan'])->name('conversations.showClan');
+Route::POST('/broadcastClan', [Conversations::class,'broadcastClan']);
+Route::POST('/receiveClan', [Conversations::class,'receiveClan']);
+
+
 
 
 Route::GET('/connexion',
@@ -72,6 +78,18 @@ Route::GET('/connexion',
 
 Route::POST('/connexion',
 [ProfilController::class,'connexion'])->name('profil.connexion');
+
+Route::GET('/auth/google',
+[ProfilController::class,'connexionGoogle'])->name('profil.connexionGoogle');
+
+Route::GET('/auth/google/callback',
+[ProfilController::class,'googleCallback'])->name('profil.googleCallback');
+
+Route::GET('/creerCompteGoogle',
+[ProfilController::class,'creerCompteGoogle'])->name('profil.creerCompteGoogle');
+
+Route::POST('/creerCompteGoogle',
+[ProfilController::class,'storeCreerCompteGoogle'])->name('profil.storeCreerCompteGoogle');
 
 Route::GET('/creerCompte',
 [ProfilController::class,'creerCompte'])->name('profil.creerCompte');
@@ -89,6 +107,9 @@ Route::GET('/profil',
 
 Route::GET('/profil/modification',
 [ProfilController::class,'modification'])->name('profil.modification')->middleware('auth');
+
+Route::POST('/profil/modification/update',
+[ProfilController::class,'updateModification'])->name('profil.updateModification')->middleware('auth');
 
 Route::GET('/stats',
 [StatistiqueController::class,'index'])->name('statistique.index');

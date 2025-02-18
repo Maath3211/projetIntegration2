@@ -15,7 +15,8 @@ class Clan extends Model
         'adminId',
         'image',
         'nom',
-        'public'
+        'public',
+        'id'
     ];
 
     public function users(){

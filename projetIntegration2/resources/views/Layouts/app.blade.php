@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-  <link rel="stylesheet" style="text/css" href="\css\gabaritCss.css"> <!-- style du "layout" app.blade.css -->
+  <link rel="stylesheet" style="text/css" href="\css\GabaritCss.css"> <!-- style du "layout" app.blade.css -->
   <script src="https://cdn.tailwindcss.com"></script> <!-- nous rajoute <aside> et <main> entre autres -->
   <script src="https://kit.fontawesome.com/55ec8bd5f8.js" crossorigin="anonymous"></script> <!-- importation de Font Awesome pour les icônes -->
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet"> <!-- famille de police -->
@@ -42,15 +42,21 @@
 
             <a id="creerClan"> <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee"><i class="fa-regular fa-square-plus fa-2xl"></i></i></div></a>
 
-        </aside>
+        <form action="{{route('profil.deconnexion')}}" method="post">
+          @csrf
+          <button class="w-16 h-16 overflow-hidden" id="imgDeconnexion"><img src="{{ asset('img/logout.png') }}" class="object-cover w-full h-full"></button>
+        </form>
+      </aside>
     </header>
-    
-    <!-- Contenu principal -->
-    <main>
-        <div>
-          @yield('contenu')
-        </div>
-    </main>
+      
+
+  <!-- Contenu principal -->
+  <main>
+    <div>
+      @yield('contenu')
+      @livewireScripts
+    </div>
+  </main>
 
   <!-- Pied de page -->
   <footer>
@@ -58,7 +64,7 @@
 
 </body>
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>-->
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>

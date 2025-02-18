@@ -34,5 +34,20 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
-
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT_URI'),
+        'scopes' => [
+            'openid',
+            'https://www.googleapis.com/auth/userinfo.profile',
+            'https://www.googleapis.com/auth/userinfo.email',
+            'https://www.googleapis.com/auth/user.birthday.read',
+            'https://www.googleapis.com/auth/user.gender.read',
+        ],
+        'access_type' => 'offline',
+        'prompt' => 'consent select_account',
+        'include_granted_scopes' => true
+    ],
+    
 ];
