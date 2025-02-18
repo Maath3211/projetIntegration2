@@ -51,7 +51,7 @@ class ProfilController extends Controller
 
         if ($request->hasFile('imageProfil')) {
             $uploadedFile = $request->file('imageProfil');
-            $nomFichierUnique = 'img/Utilisateurs/' . str_replace(' ', '_', $utilisateur->id) . '-' . uniqid() . '.' . $uploadedFile->extension();
+            $nomFichierUnique = 'img/Utilisateurs/' . uniqid() . '.' . $uploadedFile->extension();
             try {
                 $uploadedFile->move(public_path('img/Utilisateurs'), $nomFichierUnique);
                 $utilisateur->imageProfil = $nomFichierUnique;
@@ -162,7 +162,7 @@ class ProfilController extends Controller
         if ($googleData && isset($googleData['image_url'])) {
             try {
                 $imageContent = file_get_contents($googleData['image_url']);
-                $nomFichierUnique = 'img/Utilisateurs/' . str_replace(' ', '_', $utilisateur->id) . '-' . uniqid() . '.jpg';
+                $nomFichierUnique = 'img/Utilisateurs/' . str_replace(' ', '_', $utilisateur->google_id) . '-' . uniqid() . '.jpg';
 
                 if (file_put_contents(public_path($nomFichierUnique), $imageContent)) {
                     $utilisateur->imageProfil = $nomFichierUnique;
@@ -209,14 +209,18 @@ class ProfilController extends Controller
     public function updateModification(ModificationRequest $request)
     {
         $utilisateur = Auth::user();
-        $utilisateur->prenom = $request('prenom');
-        $utilisateur->nom = $request('nom');
-        $utilisateur->pays = $request('pays');
-        $utilisateur->genre = $request('genre');
-        $utilisateur->dateNaissance = $request('dateNaissance');
+        $utilisateur->prenom = $request->input('prenom');
+        $utilisateur->nom = $request->input('nom');
+        $utilisateur->pays = $request->input('pays');
+        $utilisateur->genre = $request->input('genre');
+        $utilisateur->dateNaissance = $request->input('dateNaissance');
 
-        if (request()->hasFile('imageProfil')) {
-            $uploadedFile = request()->file('imageProfil');
+        if ($request->hasFile('imageProfil')) {
+            if ($utilisateur->imageProfil && file_exists(public_path($utilisateur->imageProfil))) {
+                unlink(public_path($utilisateur->imageProfil));
+            }
+
+            $uploadedFile = $request->file('imageProfil');
             $nomFichierUnique = 'img/Utilisateurs/' . str_replace(' ', '_', $utilisateur->id) . '-' . uniqid() . '.' . $uploadedFile->extension();
             try {
                 $uploadedFile->move(public_path('img/Utilisateurs'), $nomFichierUnique);
@@ -230,8 +234,6 @@ class ProfilController extends Controller
         $utilisateur->save();
         return redirect()->route('profil.profil')->with('message', 'Votre profil a été mis à jour avec succès');
     }
-
-
 
     public function listePays()
     {
