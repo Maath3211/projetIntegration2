@@ -40,6 +40,8 @@
             <a  href="{{ route('clan.montrer', ['id' => 6]) }}"> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
             <a  href="{{ route('clan.montrer', ['id' => 7]) }}"> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
 
+            <a id="creerClan"> <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee"><i class="fa-regular fa-square-plus fa-2xl"></i></i></div></a>
+
         </aside>
     </header>
     

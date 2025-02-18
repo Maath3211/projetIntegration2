@@ -27,7 +27,7 @@
                 <div class="categorieParametre general" >Général</div>
                 <div class="categorieParametre canaux" >Canaux</div>
                 <div class="categorieParametre membres actif" >Membres</div>
-                <div class="categorieParametre supprimer" >Supprimer le clan</div>
+                <div class="categorieParametre supprimer">Supprimer le clan</div>
             </div>
             </div>
         </div>
@@ -35,7 +35,7 @@
         <div class="col-md-10 colonneParametres">
             <div class="conteneurParametres ">
 
-            <div class="titreParametre">Catégories de canaux</div>
+            <div class="titreParametre">Membres du clan</div>
             <a href="{{ route('clan.montrer', ['id' => $id]) }}">
                 <div class="boutonRetour">
                 <i class="fa-regular fa-circle-xmark fa-3x"></i>
@@ -44,114 +44,130 @@
             </a>
             </div>
             <!-- TODO - CHANGER L'IMAGE QUI APPARAIT POUR CELLE DU CLAN -->
-            <form action="{{ route('clan.miseAJour.canaux', ['id' => $id]) }}" method="POST" enctype="multipart/form-data" id="formulaireSoumission">
+            <form action="{{ route('clan.miseAJour.membres', ['id' => $id]) }}" method="POST" enctype="multipart/form-data" id="formulaireSoumission">
             @csrf
                 <div class="row">
                     <div class="col-md-12 parametresCanal">
-                        <div class="membre">
+                        <div class="membre membre_1">
                             <i class="fa-solid fa-x supprimer"></i>
                             <img src="{{asset('img/Utilisateurs/utilisateur1.jpg')}}" > 
                             <div>
                                 Tommy Jackson
                             </div>
                         </div>
-                        <div class="membre">
+                        <div class="membre membre_2">
                             <i class="fa-solid fa-x supprimer"></i>
                             <img src="{{asset('img/Utilisateurs/utilisateur2.jpg')}}" > 
                             <div>
                                 AverageGymGoer
                             </div>
-                        </div><div class="membre">
+                        </div>
+                        <div class="membre membre_3">
                             <i class="fa-solid fa-x supprimer"></i>
                             <img src="{{asset('img/Utilisateurs/utilisateur3.jpg')}}" > 
                             <div>
                                 NotTheAverageGuy
                             </div>
-                        </div><div class="membre">
+                        </div>
+                        <div class="membre membre_4">
                             <i class="fa-solid fa-x supprimer"></i>
                             <img src="{{asset('img/Utilisateurs/utilisateur4.jpg')}}" > 
                             <div>
                                 Julie St-Aubin
                             </div>
-                        </div><div class="membre">
+                        </div>
+                        <div class="membre membre_5">
                             <i class="fa-solid fa-x supprimer"></i>
                             <img src="{{asset('img/Utilisateurs/utilisateur20.jpg')}}" > 
                             <div>
                                 Gnulons
                             </div>
-                        </div><div class="membre">
+                        </div>
+                        <div class="membre membre_6">
                             <i class="fa-solid fa-x supprimer"></i>
                             <img src="{{asset('img/Utilisateurs/utilisateur6.jpg')}}" > 
                             <div>
                                 Jack Jacked
                             </div>
-                        </div><div class="membre">
+                        </div>
+                        <div class="membre membre_7">
                             <i class="fa-solid fa-x supprimer"></i>
                             <img src="{{asset('img/Utilisateurs/utilisateur7.jpg')}}" > 
                             <div>
                                 Sophie
                             </div>
-                        </div><div class="membre">
+                        </div>
+                        <div class="membre membre_8">
                             <i class="fa-solid fa-x supprimer"></i>
                             <img src="{{asset('img/Utilisateurs/utilisateur8.jpg')}}" > 
                             <div>
                                 Lucia Percada
                             </div>
-                        </div><div class="membre">
+                        </div>
+                        <div class="membre membre_9">
                             <i class="fa-solid fa-x supprimer"></i>
                             <img src="{{asset('img/Utilisateurs/utilisateur9.jpg')}}" > 
                             <div>
                                 Stevie
                             </div>
-                        </div><div class="membre">
+                        </div>
+                        <div class="membre membre_10">
                             <i class="fa-solid fa-x supprimer"></i>
                             <img src="{{asset('img/Utilisateurs/utilisateur19.jpg')}}" > 
                             <div>
                                 Tom
                             </div>
-                        </div><div class="membre">
+                        </div>
+                        <div class="membre membre_11">
                             <i class="fa-solid fa-x supprimer"></i>
                             <img src="{{asset('img/Utilisateurs/utilisateur11.jpg')}}" > 
                             <div>
                                 Bluestack
                             </div>
-                        </div><div class="membre">
+                        </div>
+                        <div class="membre membre_12">
                             <i class="fa-solid fa-x supprimer"></i>
                             <img src="{{asset('img/Utilisateurs/utilisateur12.jpg')}}" > 
                             <div>
                                 CoolCarl123
                             </div>
-                        </div><div class="membre">
+                        </div>
+                        <div class="membre membre_13">
                             <i class="fa-solid fa-x supprimer"></i>
                             <img src="{{asset('img/Utilisateurs/utilisateur13.jpg')}}" > 
                             <div>
                                 Sylvain
                             </div>
-                        </div><div class="membre">
+                        </div>
+                        <div class="membre membre_14">
                             <i class="fa-solid fa-x supprimer"></i>
                             <img src="{{asset('img/Utilisateurs/utilisateur21.jpg')}}" > 
                             <div>
                                 Ghost
                             </div>
-                        </div><div class="membre">
+                        </div>
+                        <div class="membre membre_15">
                             <i class="fa-solid fa-x supprimer"></i>
                             <img src="{{asset('img/Utilisateurs/utilisateur15.jpg')}}" > 
                             <div>
                                 Coach Noah
                             </div>
-                        </div><div class="membre">
+                        </div>
+                        <div class="membre membre_16">
                             <i class="fa-solid fa-x supprimer"></i>
                             <img src="{{asset('img/Utilisateurs/utilisateur16.jpg')}}" > 
                             <div>
                                 MotivationGuy
                             </div>
-                        </div><div class="membre">
+                        </div>
+                        <div class="membre membre_17">
                             <i class="fa-solid fa-x supprimer"></i>
                             <img src="{{asset('img/Utilisateurs/utilisateur17.jpg')}}" > 
                             <div>
                                 xXDarkSlayerXx
                             </div>
-                        </div><div class="membre">
+                        </div>
+                        <div class="membre membre_18">
                             <i class="fa-solid fa-x supprimer"></i>
                             <img src="{{asset('img/Utilisateurs/utilisateur18.jpg')}}" > 
                             <div>
@@ -161,7 +177,7 @@
                     </div>
                 </div>
                 <!-- Input caché pour enregistrer les modifications à faire. -->
-                <input type="hidden" name="membresASupprimer" id="categoriesASupprimer">
+                <input type="hidden" name="membresASupprimer" id="membresASupprimer">
 
                 
                 <div class="row barreEnregistrerConteneur">
@@ -176,8 +192,8 @@
                 </div>
             </form>
 
-            <!-- Fenêtre contextuelle pour confirmer la suppression d'une catégorie de canal -->
-            <div id="confirmationSuppression" class="fenetreCategorie">
+            <!-- Fenêtre contextuelle pour confirmer l'expulsion d'un membre -->
+            <div id="confirmationSuppressionMembre" class="fenetreCategorie">
                 <div class="conteneurConfirmation">
                     <div class="titreConfirmation">
                         <div>Expulser le membre</div>
@@ -192,6 +208,24 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Fenêtre contextuelle pour confirmer la suppression du clan -->
+            <div id="confirmationSuppressionClan" class="fenetreCategorie">
+                <div class="conteneurConfirmation">
+                    <div class="titreConfirmation">
+                        <div>Supprimer le clan</div>
+                    </div>
+                    <div class="texteConfirmation">
+                        <div>Êtes-vous sur de vouloir supprimer le clan? Cette action est irréversible.</div>
+                    </div>
+
+                    <div class="boutonsConfirmation">
+                        <button class="annuler" type="button">Annuler</button>
+                        <button id="confirmerSuppressionClan" type="button">Supprimer</button>
+                    </div>
+                </div>
+            </div>
+            <form action="{{ route('clan.supprimer', ['id' => $id]) }}" method="POST" enctype="multipart/form-data" id="formulaireSuppressionClan"></form>
 
         </div>
         </div>

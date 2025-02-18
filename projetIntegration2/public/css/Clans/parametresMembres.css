@@ -60,6 +60,17 @@ a:hover {
     cursor: pointer;
 }
 
+.categorieParametre.supprimer:hover {
+    background-color: rgb(219, 99, 99);
+    opacity: 0.8;
+    color: black;
+    cursor: pointer;
+}
+
+.categorieParametre.supprimer.actif {
+    background-color: rgb(219, 99, 99);
+}
+
 .categorieParametre:active {
   background-color: #A9FE77;  
 }
@@ -78,6 +89,14 @@ a:hover {
 .parametresCanal {
     overflow-y: auto;
     height: 61vh;
+
+    /* cacher la barre de défilement pour les membres */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.parametresCanal::-webkit-scrollbar {
+    display: none;
 }
 
 .conteneurParametres {
@@ -314,7 +333,7 @@ STYLE POUR LES CATÉGORIES DE CANAUX
     z-index: 1000;
 }
 
-#confirmerRenommage, #confirmerAjout, #confirmerSuppression {
+#confirmerRenommage, #confirmerAjout, #confirmerSuppression, #confirmerSuppressionClan {
     background-color: rgb(219, 82, 82);
     padding: 10px;
     padding-right: 25px;
@@ -324,7 +343,7 @@ STYLE POUR LES CATÉGORIES DE CANAUX
 }
 
 
-#confirmerRenommage:hover, #confirmerAjout:hover, #confirmerSuppression:hover {
+#confirmerRenommage:hover, #confirmerAjout:hover, #confirmerSuppression:hover, #confirmerSuppressionClan:hover {
     background-color: rgb(219, 99, 99);
 }
 
@@ -356,12 +375,8 @@ STYLE POUR LES CATÉGORIES DE CANAUX
     display: flex;
     justify-content: start;
     align-items: center;
-    cursor: pointer;
-}
-
-.membre:hover div{
-    text-decoration: underline;
-    font-weight: bold;
+    cursor: default;
+    user-select: none;
 }
 
 .membre img {

@@ -164,19 +164,21 @@ class ClanController extends Controller
 
     }
 
+    // interactions avec les canaux des clans (ajouter / renommer / supprimer)
     public function actionsCanal(Request $request, $id){
-        // Renommer le canal
-        Log::info('HAHAHAHAAHAH');
         Log::info('clanId: '. $id);
         Log::info('action: '. $request->input('action'));
         Log::info('requete: '. $request->input('requete'));
 
+        // obtenir la requête dans un format JSON
+        $action = $request->input('action');
         $requete = json_decode($request->input('requete'), true);
 
         if(isset($requete['canal'])){
             //$canal = Canal::findOrFail($requete['canal']);
 
-            if($request->input('action') === 'renommer'){
+            // pour renommer un canal
+            if($action === 'renommer'){
                 if(strlen($requete['nouveauNom']) > 50){
                     return response()->json([
                         'error' => 'Les catégories ne doivent pas dépasser les 50 caractères.'
@@ -193,12 +195,14 @@ class ClanController extends Controller
                 
                 return redirect()->back()-with('message', 'modification faite avec succès!');
             } 
-            else if($request->input('action') === 'supprimer') {
+            // pour supprimer un canal
+            else if($action === 'supprimer') {
                 //$canal->delete();
                 return redirect()->back()->with('message', 'suppression faite avec succès!');
             }
         }
-        else if($request->input('action') === 'ajouter') {
+        // pour ajouter un canal
+        else if($action === 'ajouter') {
             if(strlen($requete['nouveauNom']) > 50){
                 return response()->json([
                     'error' => 'Les catégories ne doivent pas dépasser les 50 caractères.'
@@ -210,7 +214,7 @@ class ClanController extends Controller
                 ], 400);
             }
 
-            //Ajouter un nouveau Cana
+            //Ajouter un nouveau Canal
             // $canal = new Canal();
             // $canal->titre = $requete['nouveauNom'];
             // $canal->clanId = $id;
@@ -222,8 +226,21 @@ class ClanController extends Controller
             Log::info('ERREUR - Action interdite. Veuillez contacter le support');
         }
     }
-    // Mise à jour de la liste de membres d'un clan (supprimer)
 
+    // Mise à jour de la liste de membres d'un clan (supprimer)
+    public function miseAJourMembres(Request $request, $id){
+        $membreASupprimer = explode(';', $request->input('membresASupprimer'));
+
+        foreach($membreASupprimer as $membre){
+            if(!empty($membre)){
+                $membreTrouve = ClanUtilisateur::where('utilisateur', $membre)->where('clan', $id)->first();
+                // if($membreTrouve){
+                //     $membreTrouve->delete();
+                // }
+            }
+        }
+
+    }
     /**
      * Show the form for creating a new resource.im 
      */
@@ -257,10 +274,13 @@ class ClanController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Supprimer un clan
      */
-    public function destroy(string $id)
+    public function supprimer(string $id)
     {
-        //
+        //$clan = Clan::findOrFail($id);
+        //$clan->delete();
+        
+        // TODO - FAIRE RETOURNER À L'ACCUEIL
     }
 }

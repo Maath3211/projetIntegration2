@@ -41,7 +41,6 @@ class ClanSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-            // Add more clans as needed
         ]);
     }
 }
