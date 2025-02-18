@@ -125,11 +125,14 @@ class Conversations extends Controller
 
     public function showClan(Clan $clans)
     {
+        
         return view('conversations.showClan', [
             'users' => $this->ClanRepository->getConversationsClan(),
             'user' => $clans,
             'messages' => $this->ClanRepository->getMessageClanFor($clans->id) // Plus besoin de auth()->id()
+            
         ]);
+        
     }
     
 

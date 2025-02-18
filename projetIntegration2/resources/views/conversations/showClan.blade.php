@@ -139,8 +139,9 @@
                         @endif
     
                         @foreach ($messages as $message)
+                        
                         <div class="message {{ $message->idEnvoyer == auth()->id() ? 'own-message' : 'received-message' }}">
-                            <div class="avatar bg-primary text-white rounded-circle p-2">{{ substr($user->email, 0, 2) }}</div>
+                            <div class="avatar bg-primary text-white rounded-circle p-2">{{ substr($message->user->email, 0, 2) }}</div>
                             <div class="bubble">
                                 <strong>{{$message->email}}</strong> 
                                 <span class="text-muted">{{ substr($message->created_at, 11, 5) }}</span>
@@ -418,7 +419,7 @@
             //console.log("Message reçu:", data);
             $("#chat-messages").append(`
             <div class="message received-message">
-                <div class="avatar bg-primary text-white rounded-circle p-2">{{ substr($user->email, 0, 2) }}</div>
+                <div class="avatar bg-primary text-white rounded-circle p-2">{{ substr($message->user->email, 0, 2) }}</div>
                 <div class="bubble">
                     <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
                     <br>
@@ -453,7 +454,7 @@
                 $("#chat-messages").append(`
                 
                     <div class="message own-message">
-                                        <div class="avatar bg-primary text-white rounded-circle p-2">{{ substr($user->email, 0, 2) }}</div>
+                                        <div class="avatar bg-primary text-white rounded-circle p-2">{{ substr($message->user->email, 0, 2) }}</div>
                         <div class="bubble">
                             <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
                             <br>
