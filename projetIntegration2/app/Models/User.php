@@ -26,6 +26,7 @@ class User extends Authenticatable
         'genre',
         'dateNaissance',
         'codeVerification',
+        'aPropos',
         'id',
     ];
 

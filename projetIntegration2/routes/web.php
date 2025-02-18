@@ -8,8 +8,10 @@ use App\Http\Controllers\Conversations;
 use App\Http\Controllers\StatistiqueController;
 use App\Http\Controllers\GymController;
 use App\Http\Controllers\ClanController;
+use Illuminate\Support\Facades\Log;
 use App\Models\User;
 use App\Events\PusherBroadcast;
+
 
 
 Route::get('/', function () {
@@ -19,11 +21,26 @@ Route::get('/', function () {
 Route::GET('/clan/{id}', 
 [ClanController::class, 'index'])->name('clan.montrer');
 
-Route::GET('/clan/{id}/parametres',
+Route::GET('/clan/{id}/parametres/general',
 [ClanController::class, 'parametres'])->name('clan.parametres');
 
-Route::POST('/clan/{id}/parametres', 
+Route::POST('/clan/{id}/action/canal',
+[ClanController::class, 'actionsCanal'])->name('canal.actions');
+
+Route::POST('/clan/{id}/parametres/general', 
 [ClanController::class, 'parametres'])->name('clan.parametres.post');
+
+Route::POST('/clan/{id}/enregistrerGeneral',
+[ClanController::class, 'miseAJourGeneral'])->name('clan.miseAJour.general');
+
+Route::GET('/clan/{id}/parametres/canaux',
+[ClanController::class, 'parametres'])->name('clan.parametres.canaux');
+
+Route::POST('/clan/{id}/enregistrerCanaux',
+[ClanController::class, 'miseAJourCanaux'])->name('clan.miseAJour.canaux');
+
+Route::GET('/yup',
+[UserCommunication::class,'index'])->name('user.index');
 
 Route::POST('/clan/{id}/televerser',
 [ClanController::class, 'televerserImage'])->name('clan.televerserImage');
@@ -82,3 +99,5 @@ Route::GET('/localisation',
 [GymController::class, 'index'])->name('localisation.index');
 Route::get('/export/top-users', [ScoresController::class, 'exportTopUsers'])->name('export.topUsers');
 Route::get('/export/top-clans', [ScoresController::class, 'exportTopClans'])->name('export.topClans');
+Route::get('/export/top-membres/{clanId}', [ScoresController::class, 'exportTopMembres'])->name('export.topMembres');
+Route::get('/export/top-amelioration/{clanId}', [ScoresController::class, 'exportTopAmelioration'])->name('export.topAmelioration');

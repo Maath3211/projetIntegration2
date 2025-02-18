@@ -19,6 +19,7 @@ class UserFactory extends Factory
             'nom' => $this->faker->lastName,
             'imageProfil' => $this->faker->imageUrl,
             'pays' => $this->faker->country,
+            'aPropos' => $this->faker->sentence,
             'genre' => $this->faker->randomElement(['male', 'female']),
             'dateNaissance' => $this->faker->date,
             'codeVerification' => Str::random(10),
