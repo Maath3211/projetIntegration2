@@ -11,10 +11,10 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         
-                <!-- Importation pour les fonctionnalité pusher et ajax -->
-                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+        <!-- Importation pour les fonctionnalité pusher et ajax -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
         
         <link rel="stylesheet" style="text/css" href="\css\gabaritCss.css"> <!-- style du "layout" app.blade.css -->
         <script src="https://cdn.tailwindcss.com"></script> <!-- nous rajoute <aside> et <main> entre autres -->
