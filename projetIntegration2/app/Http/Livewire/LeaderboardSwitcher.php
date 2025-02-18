@@ -10,7 +10,7 @@ class LeaderboardSwitcher extends Component
     public $selectedClanId = 'global';
     public $topClans;
     public $topUsers;
-    public $refreshCounter = 0; // Add counter
+    public $refreshKey;
 
     protected $listeners = [
         'clanSelected' => 'updateSelectedClan',
@@ -21,32 +21,32 @@ class LeaderboardSwitcher extends Component
     {
         $this->topClans = $topClans ?? collect();
         $this->topUsers = $topUsers ?? collect();
-        Log::debug('LeaderboardSwitcher mounted', [
-            'initial_clan' => $this->selectedClanId,
-            'has_topClans' => !empty($this->topClans),
-            'has_topUsers' => !empty($this->topUsers)
+        $this->refreshKey = now()->timestamp;
+    }
+
+    public function updateSelectedClan($params)
+    {
+        $clanId = $params['clanId'] ?? 'global';
+        Log::debug('LeaderboardSwitcher updating clan', [
+            'from' => $this->selectedClanId,
+            'to' => $clanId
         ]);
-    }
-
-    public function updateSelectedClan($clanId)
-    {
-        Log::debug('updateSelectedClan called', ['clanId' => $clanId]);
+        
+        // Reset state and update
         $this->selectedClanId = $clanId;
-        $this->refreshCounter++; // Increment on each change
-    }
-
-    public function selectClan($clanId)
-    {
-        Log::debug('selectClan called', ['from' => $this->selectedClanId, 'to' => $clanId]);
-        // Do not reset here; simply update the selected clan
-        $this->selectedClanId = $clanId;
-        $this->emit('clanSelected', $clanId);
-        $this->emit('refreshComponent');
+        $this->refreshKey = now()->timestamp;
+        
+        // Force component refresh
+        $this->dispatch('refreshComponent');
     }
 
     public function render()
     {
-        Log::debug('LeaderboardSwitcher rendering', ['selectedClanId' => $this->selectedClanId]);
-        return view('livewire.leaderboard-switcher')->with('refreshCounter', $this->refreshCounter);
+        Log::debug('LeaderboardSwitcher rendering', [
+            'selectedClanId' => $this->selectedClanId,
+            'refreshKey' => $this->refreshKey
+        ]);
+        
+        return view('livewire.leaderboard-switcher');
     }
 }
