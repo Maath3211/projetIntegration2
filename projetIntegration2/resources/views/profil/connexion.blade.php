@@ -18,6 +18,8 @@
 <body>
     <link rel="stylesheet" href="{{ asset('css/Profil/connexion.css') }}">
 
+    <img src="{{ asset('img/backgroundConnexion.png') }}" alt="Background" id="imgBackground">
+
     <div class="container-fluid">
         <div class="d-flex row justify-content-center">
             <div class="col-md-10">

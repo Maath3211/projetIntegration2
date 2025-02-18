@@ -14,12 +14,6 @@
                 </div>
             </div>
 
-            <form action="{{ route('profil.deconnexion') }}" method="post">
-                @csrf
-                <button type="submit" class="btn bouton">Déconnexion</button>
-            </form>
-
-
             <form action="{{ route('profil.modification') }}" method="get">
                 @csrf
                 <button><span id="engrenage">&#9881;</span></button>

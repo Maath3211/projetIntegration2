@@ -16,7 +16,7 @@ use App\Events\PusherBroadcast;
 
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('profil.pageConnexion');
 });
 
 Route::GET('/clan/{id}', 
