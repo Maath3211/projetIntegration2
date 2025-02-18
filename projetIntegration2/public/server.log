@@ -132,3 +132,4 @@
 [Tue Feb 18 13:38:25 2025] 127.0.0.1:59574 [GET] URI: /meta.json
 [Tue Feb 18 13:38:27 2025] 127.0.0.1:59577 [POST] URI: /broadcastClan
 [Tue Feb 18 13:38:30 2025] 127.0.0.1:59581 [POST] URI: /broadcastClan
+[Tue Feb 18 13:39:27 2025] 127.0.0.1:59613 [GET] URI: /testClan/1
