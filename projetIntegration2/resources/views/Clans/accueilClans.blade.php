@@ -39,250 +39,250 @@
                         </div>
                         <div class="conteneurCanaux">
                             <div class="categorieCanal">
-                                <div class="titreCategorieCanal">
+                                <div class="titreCategorieCanal categorie_1">
                                     <div>
                                         <i class="fa-solid fa-minus"></i>
                                         Général
                                     </div>
-                                    <a href="#"><i class="fa-solid fa-plus fa-xs"></i></a>
+                                    <i class="fa-solid fa-plus fa-xs"></i>
                                 </div>
 
                                 <div class="canal">
-                                    <a href="#">
+                                    <a href="/clan/{{$id}}/bienvenue" class="canal_1">
                                         <div>
                                             <i class="fa-solid fa-hashtag"></i>
                                             bienvenue
                                         </div>
                                     </a>
                                     <div class="iconesModificationCanal">
-                                        <a href="#"><i class="fa-solid fa-pen "></i></a>
-                                        <a href="#"><i class="fa-solid fa-x"></i></a>
+                                        <i class="fa-solid fa-pen modifier"></i>
+                                        <i class="fa-solid fa-x supprimer"></i>
                                     </div>
                                 </div>
                                 <div class="canal">
-                                    <a href="#">
+                                    <a href="/clan/{{$id}}/annonces" class="canal_2">
                                         <div>
                                             <i class="fa-solid fa-hashtag"></i>
                                             annonces
                                         </div>
                                     </a>
                                     <div class="iconesModificationCanal">
-                                        <a href="#"><i class="fa-solid fa-pen "></i></a>
-                                        <a href="#"><i class="fa-solid fa-x"></i></a>
+                                        <i class="fa-solid fa-pen modifier"></i>
+                                        <i class="fa-solid fa-x supprimer"></i>
                                     </div>
                                 </div>
                                 <div class="canal">
-                                    <a href="#">
+                                    <a href="/clan/{{$id}}/règles-et-informations" class="canal_3">
                                         <div>
                                             <i class="fa-solid fa-hashtag"></i>
                                             règles-et-informations
                                         </div>
                                     </a>
                                     <div class="iconesModificationCanal">
-                                        <a href="#"><i class="fa-solid fa-pen "></i></a>
-                                        <a href="#"><i class="fa-solid fa-x"></i></a>
+                                        <i class="fa-solid fa-pen modifier"></i>
+                                        <i class="fa-solid fa-x supprimer"></i>
                                     </div>
                                 </div>
                                 <div class="canal">
-                                    <a href="#">
+                                    <a href="/clan/{{$id}}/introductions" class="canal_4">
                                         <div>
                                             <i class="fa-solid fa-hashtag"></i>
                                             introductions
                                         </div>
                                     </a>
                                     <div class="iconesModificationCanal">
-                                        <a href="#"><i class="fa-solid fa-pen "></i></a>
-                                        <a href="#"><i class="fa-solid fa-x"></i></a>
+                                        <i class="fa-solid fa-pen modifier"></i>
+                                        <i class="fa-solid fa-x supprimer"></i>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="categorieCanal">
-                                <div class="titreCategorieCanal">
+                                <div class="titreCategorieCanal categorie_2">
                                     <div>
                                         <i class="fa-solid fa-minus"></i>
                                         Aide
                                     </div>
-                                    <a href="#"><i class="fa-solid fa-plus fa-xs"></i></a>
+                                    <i class="fa-solid fa-plus fa-xs"></i>
                                 </div>
 
                                 <div class="canal">
-                                    <a href="#">
+                                    <a href="/clan/{{$id}}/trucs-et-astuces" class="canal_5">
                                         <div>
                                             <i class="fa-solid fa-hashtag"></i>
                                             trucs-et-astuces
                                         </div>
                                     </a>
                                     <div class="iconesModificationCanal">
-                                        <a href="#"><i class="fa-solid fa-pen "></i></a>
-                                        <a href="#"><i class="fa-solid fa-x"></i></a>
+                                        <i class="fa-solid fa-pen modifier"></i>
+                                        <i class="fa-solid fa-x supprimer"></i>
                                     </div>
                                 </div>
                                 <div class="canal">
-                                    <a href="#">
+                                    <a href="/clan/{{$id}}/plan-entrainement"  class="canal_6">
                                         <div>
                                             <i class="fa-solid fa-hashtag"></i>
                                             plan-entrainement
                                         </div>
                                     </a>
                                     <div class="iconesModificationCanal">
-                                        <a href="#"><i class="fa-solid fa-pen "></i></a>
-                                        <a href="#"><i class="fa-solid fa-x"></i></a>
+                                        <i class="fa-solid fa-pen modifier"></i>
+                                        <i class="fa-solid fa-x supprimer"></i>
                                     </div>
                                 </div>
                                 <div class="canal">
-                                    <a href="#">
+                                    <a href="/clan/{{$id}}/images-progrès" class="canal_7">
                                         <div>
                                             <i class="fa-solid fa-hashtag"></i>
                                             images-progrès
                                         </div>
                                     </a>
                                     <div class="iconesModificationCanal">
-                                        <a href="#"><i class="fa-solid fa-pen "></i></a>
-                                        <a href="#"><i class="fa-solid fa-x"></i></a>
+                                        <i class="fa-solid fa-pen modifier"></i>
+                                        <i class="fa-solid fa-x supprimer"></i>
                                     </div>
                                 </div>
                                 <div class="canal">
-                                    <a href="#">
+                                    <a href="/clan/{{$id}}/nutrition" class="canal_8">
                                         <div>
                                             <i class="fa-solid fa-hashtag"></i>
                                             nutrition
                                         </div>
                                     </a>
                                     <div class="iconesModificationCanal">
-                                        <a href="#"><i class="fa-solid fa-pen "></i></a>
-                                        <a href="#"><i class="fa-solid fa-x"></i></a>
+                                        <i class="fa-solid fa-pen modifier"></i>
+                                        <i class="fa-solid fa-x supprimer"></i>
                                     </div>
                                 </div>
                                 <div class="canal">
-                                    <a href="#">
+                                    <a href="/clan/{{$id}}/efforts-journaliers" class="canal_9">
                                         <div>
                                             <i class="fa-solid fa-hashtag"></i>
                                             efforts-journaliers
                                         </div>
                                     </a>
                                     <div class="iconesModificationCanal">
-                                        <a href="#"><i class="fa-solid fa-pen "></i></a>
-                                        <a href="#"><i class="fa-solid fa-x"></i></a>
+                                        <i class="fa-solid fa-pen modifier"></i>
+                                        <i class="fa-solid fa-x supprimer"></i>
                                     </div>
                                 </div>
                                 <div class="canal">
-                                    <a href="#">
+                                    <a href="/clan/{{$id}}/zone-de-récupération" class="canal_10">
                                         <div>
                                             <i class="fa-solid fa-hashtag"></i>
                                             zone-de-récupération
                                         </div>
                                     </a>
                                     <div class="iconesModificationCanal">
-                                        <a href="#"><i class="fa-solid fa-pen "></i></a>
-                                        <a href="#"><i class="fa-solid fa-x"></i></a>
+                                        <i class="fa-solid fa-pen modifier"></i>
+                                        <i class="fa-solid fa-x supprimer"></i>
                                     </div>
                                 </div>
                                 <div class="canal">
-                                    <a href="#">
+                                    <a href="/clan/{{$id}}/musculation" class="canal_11">
                                         <div>
                                             <i class="fa-solid fa-hashtag"></i>
                                             musculation
                                         </div>
                                     </a>
                                     <div class="iconesModificationCanal">
-                                        <a href="#"><i class="fa-solid fa-pen "></i></a>
-                                        <a href="#"><i class="fa-solid fa-x"></i></a>
+                                        <i class="fa-solid fa-pen modifier"></i>
+                                        <i class="fa-solid fa-x supprimer"></i>
                                     </div>
                                 </div>
                                 <div class="canal">
-                                    <a href="#">
+                                    <a href="/clan/{{$id}}/cardio" class="canal_12">
                                         <div>
                                             <i class="fa-solid fa-hashtag"></i>
                                             cardio
                                         </div>
                                     </a>
                                     <div class="iconesModificationCanal">
-                                        <a href="#"><i class="fa-solid fa-pen "></i></a>
-                                        <a href="#"><i class="fa-solid fa-x"></i></a>
+                                        <i class="fa-solid fa-pen modifier"></i>
+                                        <i class="fa-solid fa-x supprimer"></i>
                                     </div>
                                 </div>
                                 <div class="canal">
-                                    <a href="#">
+                                    <a href="/clan/{{$id}}/entrainements-maison" class="canal_13">
                                         <div>
                                             <i class="fa-solid fa-hashtag"></i>
                                             entrainements-maison
                                         </div>
                                     </a>
                                     <div class="iconesModificationCanal">
-                                        <a href="#"><i class="fa-solid fa-pen "></i></a>
-                                        <a href="#"><i class="fa-solid fa-x"></i></a>
+                                        <i class="fa-solid fa-pen modifier"></i>
+                                        <i class="fa-solid fa-x supprimer"></i>
                                     </div>
                                 </div>
                                 <div class="canal">
-                                    <a href="#">
+                                    <a href="/clan/{{$id}}/discussion" class="canal_14">
                                         <div>
                                             <i class="fa-solid fa-hashtag"></i>
                                             discussion
                                         </div>
                                     </a>
                                     <div class="iconesModificationCanal">
-                                        <a href="#"><i class="fa-solid fa-pen "></i></a>
-                                        <a href="#"><i class="fa-solid fa-x"></i></a>
+                                        <i class="fa-solid fa-pen modifier"></i>
+                                        <i class="fa-solid fa-x supprimer"></i>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="categorieCanal">
-                                <div class="titreCategorieCanal">
+                                <div class="titreCategorieCanal categorie_3">
                                     <div>
                                         <i class="fa-solid fa-minus"></i>
                                         Compétition
                                     </div>
-                                    <a href="#"><i class="fa-solid fa-plus fa-xs"></i></a>
+                                    <i class="fa-solid fa-plus fa-xs"></i>
                                 </div>
 
                                 <div class="canal">
-                                    <a href="#">
+                                    <a href="/clan/{{$id}}/defis-hebdomadaires" class="canal_15">
                                         <div>
                                             <i class="fa-solid fa-hashtag"></i>
                                             defis-hebdomadaires
                                         </div>
                                     </a>
                                     <div class="iconesModificationCanal">
-                                        <a href="#"><i class="fa-solid fa-pen "></i></a>
-                                        <a href="#"><i class="fa-solid fa-x"></i></a>
+                                        <i class="fa-solid fa-pen modifier"></i>
+                                        <i class="fa-solid fa-x supprimer"></i>
                                     </div>
                                 </div>
                                 <div class="canal">
-                                    <a href="#">
+                                    <a href="/clan/{{$id}}/combats-de-clans" class="canal_16">
                                         <div>
                                             <i class="fa-solid fa-hashtag"></i>
                                             combats-de-clans
                                         </div>
                                     </a>
                                     <div class="iconesModificationCanal">
-                                        <a href="#"><i class="fa-solid fa-pen "></i></a>
-                                        <a href="#"><i class="fa-solid fa-x"></i></a>
+                                        <i class="fa-solid fa-pen modifier"></i>
+                                        <i class="fa-solid fa-x supprimer"></i>
                                     </div>
                                 </div>
                                 <div class="canal">
-                                    <a href="#">
+                                    <a href="/clan/{{$id}}/mur-de-motivation" class="canal_17">
                                         <div>
                                             <i class="fa-solid fa-hashtag"></i>
                                             mur-de-motivation
                                         </div>
                                     </a>
                                     <div class="iconesModificationCanal">
-                                        <a href="#"><i class="fa-solid fa-pen "></i></a>
-                                        <a href="#"><i class="fa-solid fa-x"></i></a>
+                                        <i class="fa-solid fa-pen modifier"></i>
+                                        <i class="fa-solid fa-x supprimer"></i>
                                     </div>
                                 </div>
                                 <div class="canal">
-                                    <a href="#">
+                                    <a href="/clan/{{$id}}/victoires" class="canal_18">
                                         <div>
                                             <i class="fa-solid fa-hashtag"></i>
                                             victoires
                                         </div>
                                     </a>
                                     <div class="iconesModificationCanal">
-                                        <a href="#"><i class="fa-solid fa-pen "></i></a>
-                                        <a href="#"><i class="fa-solid fa-x"></i></a>
+                                        <i class="fa-solid fa-pen modifier"></i>
+                                        <i class="fa-solid fa-x supprimer"></i>
                                     </div>
                                 </div>
                             </div>
@@ -293,7 +293,7 @@
             <div class="col-md-8 colonneMessages">
                 <div class="contenuScrollable">
                     <div class="message">
-                        <a href="#"><img src="{{asset('img/Utilisateurs/utilisateurParDefaut.jpg')}}" ></a>
+                        <a href=""><img src="{{asset('img/Utilisateurs/utilisateurParDefaut.jpg')}}" ></a>
                         <div class="contenu">
                             <div class="utilisateur">
                                 <a><strong>Gymcord#654302</strong></a>
@@ -305,10 +305,10 @@
                     </div>
 
                     <div class="message">
-                        <a href="#"><img src="{{asset('img/Utilisateurs/coachNoah.jpg')}}" ></a>
+                        <a href=""><img src="{{asset('img/Utilisateurs/coachNoah.jpg')}}" ></a>
                         <div class="contenu">
                             <div class="utilisateur">
-                                <a href="#"><strong>Coach Noah</strong></a>
+                                <a href=""><strong>Coach Noah</strong></a>
                             </div>
                             <div class="texteMessage">
                                 Pas de problème! As-tu des trucs en particulier que tu souhaites travailler?
@@ -317,7 +317,7 @@
                     </div>
 
                     <div class="message">
-                        <a href="#"><img src="{{asset('img/Utilisateurs/utilisateurParDefaut.jpg')}}" ></a>
+                        <a href=""><img src="{{asset('img/Utilisateurs/utilisateurParDefaut.jpg')}}" ></a>
                         <div class="contenu">
                             <div class="utilisateur">
                                 <a><strong>Gymcord#654302</strong></a>
@@ -329,10 +329,10 @@
                     </div>
 
                     <div class="message">
-                        <a href="#"><img src="{{asset('img/Utilisateurs/coachNoah.jpg')}}" ></a>
+                        <a href=""><img src="{{asset('img/Utilisateurs/coachNoah.jpg')}}" ></a>
                         <div class="contenu">
                             <div class="utilisateur">
-                                <a href="#"><strong>Coach Noah</strong></a>
+                                <a href=""><strong>Coach Noah</strong></a>
                             </div>
                             <div class="texteMessage">
                                 Aucun problème, il-y-a beaucoup de personnes comme toi qui viennent sur l'app elle est vraiment cool! Ce que je veux dire c'est plus quel genre de but tu as en t'entrainant?
@@ -342,7 +342,7 @@
                     </div>
 
                     <div class="message">
-                        <a href="#"><img src="{{asset('img/Utilisateurs/utilisateurParDefaut.jpg')}}" ></a>
+                        <a href=""><img src="{{asset('img/Utilisateurs/utilisateurParDefaut.jpg')}}" ></a>
                         <div class="contenu">
                             <div class="utilisateur">
                                 <a><strong>Gymcord#654302</strong></a>
@@ -354,10 +354,10 @@
                     </div>
 
                     <div class="message">
-                        <a href="#"><img src="{{asset('img/Utilisateurs/coachNoah.jpg')}}" ></a>
+                        <a href=""><img src="{{asset('img/Utilisateurs/coachNoah.jpg')}}" ></a>
                         <div class="contenu">
                             <div class="utilisateur">
-                                <a href="#"><strong>Coach Noah</strong></a>
+                                <a href=""><strong>Coach Noah</strong></a>
                             </div>
                             <div class="texteMessage">
                                 Ouais pas de problème santé générale alors. Pour ça tu regarderas # plans-entrainement ils ont des trucs vraiment cool tu peux trouver des très bons entrainements qu'on a fait pour les débutants.
@@ -376,7 +376,7 @@
                     </div>
 
                     <div class="message">
-                        <a href="#"><img src="{{asset('img/Utilisateurs/utilisateurParDefaut.jpg')}}" ></a>
+                        <a href=""><img src="{{asset('img/Utilisateurs/utilisateurParDefaut.jpg')}}" ></a>
                         <div class="contenu">
                             <div class="utilisateur">
                                 <a><strong>Gymcord#654302</strong></a>
@@ -389,10 +389,10 @@
 
                     
                     <div class="message">
-                        <a href="#"><img src="{{asset('img/Utilisateurs/coachNoah.jpg')}}" ></a>
+                        <a href=""><img src="{{asset('img/Utilisateurs/coachNoah.jpg')}}" ></a>
                         <div class="contenu">
                             <div class="utilisateur">
-                                <a href="#"><strong>Coach Noah</strong></a>
+                                <a href=""><strong>Coach Noah</strong></a>
                             </div>
                             <div class="texteMessage">
                                 Pas de problème!
@@ -401,10 +401,10 @@
                     </div>
 
                     <div class="message">
-                        <a href="#"><img src="{{asset('img/Utilisateurs/coachNoah.jpg')}}" ></a>
+                        <a href=""><img src="{{asset('img/Utilisateurs/coachNoah.jpg')}}" ></a>
                         <div class="contenu">
                             <div class="utilisateur">
-                                <a href="#"><strong>Coach Noah</strong></a>
+                                <a href=""><strong>Coach Noah</strong></a>
                             </div>
                             <div class="texteMessage">
                                 Si t'as des questions hésite pas! Tu devrais m'envoyer une demande d'amis aussi m'as garder tes notifications activées.
@@ -413,7 +413,7 @@
                     </div>
 
                     <div class="message">
-                        <a href="#"><img src="{{asset('img/Utilisateurs/utilisateurParDefaut.jpg')}}" ></a>
+                        <a href=""><img src="{{asset('img/Utilisateurs/utilisateurParDefaut.jpg')}}" ></a>
                         <div class="contenu">
                             <div class="utilisateur">
                                 <a><strong>Gymcord#654302</strong></a>
@@ -425,7 +425,7 @@
                     </div>
 
                     <div class="message">
-                        <a href="#"><img src="{{asset('img/Utilisateurs/utilisateurParDefaut.jpg')}}" ></a>
+                        <a href=""><img src="{{asset('img/Utilisateurs/utilisateurParDefaut.jpg')}}" ></a>
                         <div class="contenu">
                             <div class="utilisateur">
                                 <a><strong>Gymcord#654302</strong></a>
@@ -437,10 +437,10 @@
                     </div>
 
                     <div class="message">
-                        <a href="#"><img src="{{asset('img/Utilisateurs/coachNoah.jpg')}}" ></a>
+                        <a href=""><img src="{{asset('img/Utilisateurs/coachNoah.jpg')}}" ></a>
                         <div class="contenu">
                             <div class="utilisateur">
-                                <a href="#"><strong>Coach Noah</strong></a>
+                                <a href=""><strong>Coach Noah</strong></a>
                             </div>
                             <div class="texteMessage">
                                 Acceptée!
@@ -459,7 +459,7 @@
             <div class="col-md-2 colonneMembres">
                 <div class="contenuScrollableMembres">
                     <div class="membre">
-                        <a href="#">
+                        <a href="">
                             <img src="{{asset('img/Utilisateurs/utilisateur1.jpg')}}" > 
                             <div>
                                 <strong>ADMIN</strong> - Tommy Jackson
@@ -467,7 +467,7 @@
                         </a>
                     </div>
                     <div class="membre">
-                        <a href="#">
+                        <a href="">
                             <img src="{{asset('img/Utilisateurs/utilisateur2.jpg')}}" > 
                             <div>
                                 AverageGymGoer
@@ -475,7 +475,7 @@
                         </a>
                     </div>
                     <div class="membre">
-                        <a href="#">
+                        <a href="">
                             <img src="{{asset('img/Utilisateurs/utilisateur3.jpg')}}" > 
                             <div>
                                 NotTheAverageGuy
@@ -483,7 +483,7 @@
                         </a>
                     </div>
                     <div class="membre">
-                        <a href="#">
+                        <a href="">
                             <img src="{{asset('img/Utilisateurs/utilisateur4.jpg')}}" > 
                             <div>
                                 Julie St-Aubin  
@@ -491,7 +491,7 @@
                         </a>
                     </div>
                     <div class="membre">
-                        <a href="#">
+                        <a href="">
                             <img src="{{asset('img/Utilisateurs/utilisateur5.avif')}}" > 
                             <div>
                                 Gnulons  
@@ -499,7 +499,7 @@
                         </a>
                     </div>
                     <div class="membre">
-                        <a href="#">
+                        <a href="">
                             <img src="{{asset('img/Utilisateurs/utilisateur6.jpg')}}" > 
                             <div>
                                 Jack Jacked
@@ -507,7 +507,7 @@
                         </a>
                     </div>
                     <div class="membre">
-                        <a href="#">
+                        <a href="">
                             <img src="{{asset('img/Utilisateurs/utilisateur7.jpg')}}" > 
                             <div>
                                 Sophie  
@@ -515,7 +515,7 @@
                         </a>
                     </div>
                     <div class="membre">
-                        <a href="#">
+                        <a href="">
                             <img src="{{asset('img/Utilisateurs/utilisateur8.jpg')}}" > 
                             <div>
                                 Lucia Percada
@@ -523,7 +523,7 @@
                         </a>
                     </div>
                     <div class="membre">
-                        <a href="#">
+                        <a href="">
                             <img src="{{asset('img/Utilisateurs/utilisateur9.jpg')}}" > 
                             <div>
                                 Stevie  
@@ -531,7 +531,7 @@
                         </a>
                     </div>
                     <div class="membre">
-                        <a href="#">
+                        <a href="">
                             <img src="{{asset('img/Utilisateurs/utilisateur11.jpg')}}" > 
                             <div>
                                 Tom  
@@ -539,7 +539,7 @@
                         </a>
                     </div>
                     <div class="membre">
-                        <a href="#">
+                        <a href="">
                             <img src="{{asset('img/Utilisateurs/utilisateur12.jpg')}}" > 
                             <div>
                                 Bluestack  
@@ -547,7 +547,7 @@
                         </a>
                     </div>
                     <div class="membre">
-                        <a href="#">
+                        <a href="">
                             <img src="{{asset('img/Utilisateurs/utilisateur13.jpg')}}" > 
                             <div>
                                 CoolCarl123
@@ -555,7 +555,7 @@
                         </a>
                     </div>
                     <div class="membre">
-                        <a href="#">
+                        <a href="">
                             <img src="{{asset('img/Utilisateurs/utilisateur14.webp')}}" > 
                             <div>
                                 Sylvain  
@@ -563,7 +563,7 @@
                         </a>
                     </div>
                     <div class="membre">
-                        <a href="#">
+                        <a href="">
                             <img src="{{asset('img/Utilisateurs/utilisateur15.jpg')}}" > 
                             <div>
                                 Ghost  
@@ -571,7 +571,7 @@
                         </a>
                     </div>
                     <div class="membre">
-                        <a href="#">
+                        <a href="">
                             <img src="{{asset('img/Utilisateurs/utilisateur16.jpg')}}" > 
                             <div>
                                 Coach Noah  
@@ -579,7 +579,7 @@
                         </a>
                     </div>
                     <div class="membre">
-                        <a href="#">
+                        <a href="">
                             <img src="{{asset('img/Utilisateurs/utilisateur17.jpg')}}" > 
                             <div>
                                 MotivationGuy  
@@ -587,7 +587,7 @@
                         </a>
                     </div>
                     <div class="membre">
-                        <a href="#">
+                        <a href="">
                             <img src="{{asset('img/Utilisateurs/utilisateur18.jpg')}}" > 
                             <div>
                                 xXDarkSlayerXx  
@@ -595,7 +595,7 @@
                         </a>
                     </div>
                     <div class="membre">
-                        <a href="#">
+                        <a href="">
                             <img src="{{asset('img/Utilisateurs/utilisateur19.jpg')}}" > 
                             <div>
                                 CalisthenicGod_1  
@@ -603,7 +603,7 @@
                         </a>
                     </div>
                     <div class="membre">
-                        <a href="#">
+                        <a href="">
                             <img src="{{asset('img/Utilisateurs/utilisateur20.jpg')}}" > 
                             <div>
                                 Gymcord#654302  
@@ -611,7 +611,7 @@
                         </a>
                     </div>
                     <div class="membre">
-                        <a href="#">
+                        <a href="">
                             <img src="{{asset('img/Utilisateurs/utilisateur4.jpg')}}" > 
                             <div>
                                 Julia Julia    
@@ -619,7 +619,7 @@
                         </a>
                     </div>
                     <div class="membre">
-                        <a href="#">
+                        <a href="">
                             <img src="{{asset('img/Utilisateurs/utilisateur2.jpg')}}" > 
                             <div>
                                 Dieu Poulet
@@ -630,6 +630,66 @@
             </div>
         </div>
     </div>
+    <form id="formulaireClan" action="{{ route('canal.actions', ['id' => $id]) }}" method="POST">
+        @csrf
+        <input type="hidden" class="action" name="action">
+        <input type="hidden" class="requete" name="requete">
+    </form>
+
+    <!-- Fenêtre contextuelle pour ajouter un canal -->
+    <div id="ajoutCanal" class="fenetreCategorie">
+        <div class="conteneurConfirmation">
+            <div class="titreConfirmation">
+                <div>Ajouter un canal</div>
+            </div>
+            <div class="texteConfirmation">
+                <input type="text" name="entreeNomCanal" class="form-control entreeNomCanal" placeholder="ex.: Cardio">
+                <span class="messageErreur"></span>
+            </div>
+
+            <div class="boutonsConfirmation">
+                <button class="annuler" type="button">Annuler</button>
+                <button id="confirmerAjout" type="button">Confirmer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fenêtre contextuelle pour renommer un canal -->
+    <div id="renommerCanal" class="fenetreCategorie">
+        <div class="conteneurConfirmation">
+            <div class="titreConfirmation">
+                <div>Renommer un canal</div>
+            </div>
+            <div class="texteConfirmation">
+                <input type="text" name="entreeNomCanal" class="form-control entreeNomCanal" placeholder="ex.: Cardio">
+                <span class="messageErreur"></span>
+            </div>
+
+            <div class="boutonsConfirmation">
+                <button class="annuler" type="button">Annuler</button>
+                <button id="confirmerRenommage" type="button">Confirmer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fenêtre contextuelle pour supprimer un canal -->
+    <div id="confirmationSuppression" class="fenetreCategorie">
+        <div class="conteneurConfirmation">
+            <div class="titreConfirmation">
+                <div>Supprimer le canal</div>
+            </div>
+            <div class="texteConfirmation">
+                <div>Êtes-vous sur de vouloir supprimer ce canal?</div>
+            </div>
+
+            <div class="boutonsConfirmation">
+                <button class="annuler" type="button">Annuler</button>
+                <button id="confirmerSuppression" type="button">Supprimer</button>
+            </div>
+        </div>
+    </div>
+
+
 </div>
 
 @endsection()

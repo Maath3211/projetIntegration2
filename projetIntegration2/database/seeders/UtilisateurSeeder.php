@@ -41,7 +41,7 @@ class UtilisateurSeeder extends Seeder
         ]);
         DB::table('users')->insert([
             'id' => 3,
-            'email'=> 'test3',
+            'email'=> 'test3@test.com',
             'prenom'=> 'prenom',
             'nom'=> 'nom',
             'imageProfil'=> 'lienImage',

@@ -21,42 +21,24 @@
 </head>
 
 <body class=" flex h-screen">
-  <!-- Barre de navigation entre les clans et les messages privés entre autres -->
-  <header>
-    <aside class="w-20 text-white h-screen flex flex-col items-center py-4 space-y-4 p-5">
+    <!-- Barre de navigation entre les clans et les messages privés entre autres -->
+    <header>
+        <aside class="w-20 text-white h-screen flex flex-col items-center py-4 space-y-4 p-5">
 
-      <!-- Navigation aux messages privés entre utilisateurs -->
-      <a href="#">
-        <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee"><i class="fa-solid fa-comment fa-2xl"></i></div>
-      </a>
+            <!-- Navigation aux messages privés entre utilisateurs -->
+            <a  href="#"> <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee"><i class="fa-solid fa-comment fa-2xl"></i></div></a>
 
-      <!-- Navigation aux classements -->
-      <a href="#">
-        <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee"><i class="fa-solid fa-ranking-star fa-2xl"></i></div>
-      </a>
+            <!-- Navigation aux classements -->
+            <a  href="#"> <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee"><i class="fa-solid fa-ranking-star fa-2xl"></i></div></a>
 
-      <!-- Tous les clans dont l'utilisateur actuel fait partie -->
-      <a href="/clan/1">
-        <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div>
-      </a>
-      <a href="/clan/2">
-        <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div>
-      </a>
-      <a href="/clan/3">
-        <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div>
-      </a>
-      <a href="/clan/4">
-        <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div>
-      </a>
-      <a href="/clan/5">
-        <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div>
-      </a>
-      <a href="/clan/6">
-        <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div>
-      </a>
-      <a href="/clan/7">
-        <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div>
-      </a>
+            <!-- Tous les clans dont l'utilisateur actuel fait partie -->
+            <a  href="{{ route('clan.montrer', ['id' => 1]) }}"> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
+            <a  href="{{ route('clan.montrer', ['id' => 2]) }}"> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
+            <a  href="{{ route('clan.montrer', ['id' => 3]) }}"> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
+            <a  href="{{ route('clan.montrer', ['id' => 4]) }}"> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
+            <a  href="{{ route('clan.montrer', ['id' => 5]) }}"> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
+            <a  href="{{ route('clan.montrer', ['id' => 6]) }}"> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
+            <a  href="{{ route('clan.montrer', ['id' => 7]) }}"> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
 
       <form action="{{route('profil.deconnexion')}}" method="post">
         @csrf
@@ -79,7 +61,7 @@
 
 </body>
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>-->
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>

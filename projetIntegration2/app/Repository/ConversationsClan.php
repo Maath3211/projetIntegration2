@@ -6,7 +6,7 @@ use App\Models\Message;
 use App\Models\UtilisateurClan;
 
 
-class ConversationsRepository{
+class ConversationsClan{
 
     /**
      * @var User
@@ -14,23 +14,20 @@ class ConversationsRepository{
 
     private $user;
     /**
-     * @var Message
+     * @var UtilisateurClan
      */
 
      private $message;
-    public function __construct(User $user, Message $message){
+    public function __construct(User $user, UtilisateurClan $message){
         $this->user = $user;
         $this->message = $message;
     }
 
-
-    //TODO: Changer pour la connextion de l'utilisateur
-    //A ajouter where "user_id = auth()->id()"
-    public function getConversations(){
+    public function getConversationsClan(){
         $conversation =  $this->user->newQuery()->
         select('email','id')
         ->get();
-        
+        /*
         $unread = $this->unreadCount(1);
 
         foreach($conversation as $conv){
@@ -39,11 +36,9 @@ class ConversationsRepository{
             }else{ 
                 $conv->unread = 0;
             }
-        }
+        } */
         return $conversation;
     }
-
-    
 
     public function createMessage(string $content, int $envoyeur, int $receveur){
         return $this->message->newQuery()->create([
@@ -56,19 +51,24 @@ class ConversationsRepository{
     }
 
 
-    public function getMessageFor($envoyeur,$receveur){
+    public function getMessageClanFor($clanId)
+    {
         return $this->message->newQuery()
-        ->whereRaw("((idEnvoyer = $envoyeur AND idReceveur = $receveur) OR (idEnvoyer = $receveur AND idReceveur = $envoyeur ))")
-        ->orderBy('created_at', 'ASC')
-        ->with([
-            'from' => function($query){return $query->select('email','id');}
-        ]);
+            ->where('idClan', $clanId) // On récupère tous les messages du clan
+            ->orderBy('created_at', 'ASC')
+            ->with([
+                'user' => function($query) { // Assurez-vous que 'sender' est bien défini dans le modèle Message
+                    return $query->select('id', 'email');
+                }
+            ])->paginate(300);
     }
+    
 /**
  * 
  * @params int $UserId
  * @return \Illuminate\Support\Collection
  */
+/*
     private function unreadCount(int $UserId){
         return $this->message->newQuery()
         ->where('idReceveur', $UserId)
@@ -77,4 +77,5 @@ class ConversationsRepository{
         ->get()
         ->pluck('count','idEnvoyer');
     }
+        */
 }

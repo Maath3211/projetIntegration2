@@ -9,8 +9,10 @@ use App\Http\Controllers\StatistiqueController;
 use App\Http\Controllers\GymController;
 use App\Http\Controllers\ClanController;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Facades\Log;
 use App\Models\User;
 use App\Events\PusherBroadcast;
+
 
 
 Route::get('/', function () {
@@ -20,11 +22,26 @@ Route::get('/', function () {
 Route::GET('/clan/{id}', 
 [ClanController::class, 'index'])->name('clan.montrer');
 
-Route::GET('/clan/{id}/parametres',
+Route::GET('/clan/{id}/parametres/general',
 [ClanController::class, 'parametres'])->name('clan.parametres');
 
-Route::POST('/clan/{id}/parametres', 
+Route::POST('/clan/{id}/action/canal',
+[ClanController::class, 'actionsCanal'])->name('canal.actions');
+
+Route::POST('/clan/{id}/parametres/general', 
 [ClanController::class, 'parametres'])->name('clan.parametres.post');
+
+Route::POST('/clan/{id}/enregistrerGeneral',
+[ClanController::class, 'miseAJourGeneral'])->name('clan.miseAJour.general');
+
+Route::GET('/clan/{id}/parametres/canaux',
+[ClanController::class, 'parametres'])->name('clan.parametres.canaux');
+
+Route::POST('/clan/{id}/enregistrerCanaux',
+[ClanController::class, 'miseAJourCanaux'])->name('clan.miseAJour.canaux');
+
+Route::GET('/yup',
+[UserCommunication::class,'index'])->name('user.index');
 
 Route::POST('/clan/{id}/televerser',
 [ClanController::class, 'televerserImage'])->name('clan.televerserImage');
@@ -39,6 +56,11 @@ Route::POST('/conversations/{user}', [Conversations::class,'store']);
 Route::POST('/broadcast', [Conversations::class,'broadcast']);
 Route::POST('/receive', [Conversations::class,'receive']);
 Route::GET('/conversations', [Conversations::class,'index'])->name('conversations');
+
+Route::GET('/testClan/{clans}', [Conversations::class,'showClan'])->name('conversations.showClan');
+Route::POST('/broadcastClan', [Conversations::class,'broadcastClan']);
+Route::POST('/receiveClan', [Conversations::class,'receiveClan']);
+
 
 
 
