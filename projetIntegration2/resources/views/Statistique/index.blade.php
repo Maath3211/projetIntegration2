@@ -106,8 +106,8 @@
         </div>
         
         <div class="statRow">
-            <span id="poidsValue" data-lbs="{{ isset($poid) ? $poid->first()->score : 'N/A' }}">
-                Poids : {{ isset($poid) ? $poid->first()->score : 'N/A' }} lbs
+            <span id="poidsValue" data-lbs="{{ isset($poids) ? $poids : 'N/A' }}">
+              Votre poids le plus bas : {{ isset($poids) ? $poids : 'N/A' }} lbs
             </span>
             <div class="flex space-x-2">
                 <button class="bouton" onclick="convertWeight('lbs')">Lbs</button>
@@ -137,7 +137,7 @@
                     <button class="bouton">Lbs</button>
                     <button class="bouton">Kg</button>
                     <button class="bouton"  onclick="deleteExercise({{ $stat->id }})">🗑️</button>
-                    <a href="/graphique/{{ $stat->id }}" class="text-gray-400">Voir mon graphique</a>
+                    <a href="/graphiqueExercice/{{ $stat->id }}" class="text-gray-400">Voir mon graphique</a>
                 </div>
             </div>
         @endforeach
@@ -152,9 +152,9 @@ function convertWeight(unit) {
     if (!isNaN(lbs)) {
         if (unit === 'kg') {
             let kg = (lbs * 0.453592).toFixed(2);
-            poidsSpan.innerHTML = `Poids : ${kg} kg`;
+            poidsSpan.innerHTML = ` Votre poids le plus bas : ${kg} kg`;
         } else {
-            poidsSpan.innerHTML = `Poids : ${lbs} lbs`;
+            poidsSpan.innerHTML = ` Votre poids le plus bas : ${lbs} lbs`;
         }
     }
 }
@@ -195,7 +195,7 @@ function saveExercise() {
                         <button class="bouton">Lbs</button>
                         <button class="bouton">Kg</button>
                         <button class="bouton" onclick="deleteExercise(${data.id})">🗑️</button>
-                        <a href="/graphique/${data.id}" class="text-gray-400">Voir mon graphique</a>
+                        <a href="/graphiqueExercice/${data.id}" class="text-gray-400">Voir mon graphique</a>
                     </div>
                 `;
                 document.querySelector('.statContainer').appendChild(newExercise);

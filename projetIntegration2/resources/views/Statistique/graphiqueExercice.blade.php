@@ -93,7 +93,7 @@ input[type="number"] {
     <div class="form-container">
     <form action="{{ route('ajouter-poids') }}" method="POST">
         @csrf
-        <label for="poids">Poids(lbs) :</label>
+        <label for="poids">Poids :</label>
         <input type="number" id="poids" name="poids" required>
         <button type="submit" class="bouton">Ajouter/Modifier</button>
     </form>
@@ -189,3 +189,5 @@ input[type="number"] {
 </div>
 
 @endsection
+
+

@@ -12,12 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('poids_utilisateur', function (Blueprint $table) {
+            $table->id();
             $table->integer('semaine');
             $table->integer('poids');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
 
-            $table->primary('semaine');
         });
     }
 

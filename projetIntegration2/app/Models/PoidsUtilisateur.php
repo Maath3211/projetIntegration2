@@ -9,8 +9,7 @@ class PoidsUtilisateur extends Model
 {
     use HasFactory;
 
-    protected $table = 'poids_utilisateur'; // Nom de la table
-    protected $fillable = ['semaine', 'poids','user_id']; // Champs remplissables
-    public $incrementing = false;
-    protected $primaryKey = ['semaine']; 
+    protected $table = 'poids_utilisateur';
+    protected $fillable = ['semaine', 'poids','user_id'];
+    public $incrementing = true; 
 }

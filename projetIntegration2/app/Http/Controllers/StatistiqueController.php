@@ -25,12 +25,12 @@ class StatistiqueController extends Controller
                 ->whereNotIn('nomStatistique', ['Poids', 'Streak', 'FoisGym'])
                 ->get();
     
-            $poid = Statistiques::where('user_id', Auth::id())->where('nomStatistique', 'Poids')->get();
+            $poids = PoidsUtilisateur::where('user_id', Auth::id())->orderBy('poids', 'asc')->first()->poids;
             $streak = Statistiques::where('user_id', Auth::id())->where('nomStatistique', 'Streak')->get();
             $foisGym = Statistiques::where('user_id', Auth::id())->where('nomStatistique', 'FoisGym')->get();
         }
-    
-        return view("statistique.index", compact('statistiques', 'usager', 'poid', 'streak', 'foisGym'));
+        
+        return view("statistique.index", compact('statistiques', 'usager', 'poids', 'streak', 'foisGym'));
     }
 
 
@@ -40,7 +40,7 @@ class StatistiqueController extends Controller
         $dateCreationCompte = Carbon::parse($user->created_at);
 
         $currentDate = Carbon::now();
-        $diffWeeks = (int) $dateCreationCompte->diffInWeeks($currentDate);
+        $diffWeeks = (int) $dateCreationCompte->diffInWeeks($currentDate)+1;
 
     
         $donnees = PoidsUtilisateur::where('user_id', Auth::id()) 
@@ -56,24 +56,59 @@ class StatistiqueController extends Controller
     }
 
 
-    public function ajouterPoids(Request $request)
+    
+    public function graphiqueExercice()
+    {
+        $user = Auth::user();
+        $dateCreationCompte = Carbon::parse($user->created_at);
+
+        $currentDate = Carbon::now();
+        $diffWeeks = (int) $dateCreationCompte->diffInWeeks($currentDate)+1;
+
+    
+        $donnees = PoidsUtilisateur::where('user_id', Auth::id()) 
+        ->orderBy('semaine', 'asc')
+        ->get();
+
+
+    $semaines = $donnees->pluck('semaine')->toArray();
+    $poids = $donnees->pluck('poids')->toArray();
+
+
+   
+
+
+    return view("statistique.graphiqueExercice", compact('dateCreationCompte','semaines', 'poids', 'diffWeeks'));
+    }
+
+
+public function ajouterPoids(Request $request)
 {
     $request->validate([
         'poids' => 'required|numeric',
-        'semaine' => 'required|integer',
+        'poids' => 'gt:0',
     ]);
+    
+    $user = Auth::user();
+    $dateCreationCompte = Carbon::parse($user->created_at);
+    $currentDate = Carbon::now();
+    
+    $poids = (int) $request->input('poids');
+    
+    $data = [
+        'user_id' => $user->id,
+        'semaine' => (int)$dateCreationCompte->diffInWeeks($currentDate) + 1,
+        'poids' => $poids
+    ];
 
+   
+    
     $poidsUtilisateur = PoidsUtilisateur::updateOrCreate(
-        [
-            'user_id' => Auth::id(),
-            'semaine' => $request->semaine
-        ],
-        [
-            'poids' => $request->poids
-        ]
+        ['user_id' => $data['user_id'], 'semaine' => $data['semaine']],
+        $data
     );
-
-    return response()->json(['success' => true, 'poids' => $poidsUtilisateur->poids, 'semaine' => $poidsUtilisateur->semaine]);
+    
+    return redirect()->back()->with('success', 'Poids ajouté avec succès !');
 }
 
 
