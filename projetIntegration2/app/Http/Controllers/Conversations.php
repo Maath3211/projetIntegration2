@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Clan;
 use App\Models\User;
+use App\Models\UtilisateurClan;
 use App\Repository\ConversationsRepository;
 use App\Repository\ConversationsClan;
 use App\Http\Requests\StoreMessage;
@@ -107,6 +108,32 @@ class Conversations extends Controller
 
 
 
+    public function destroy(UtilisateurClan $message)
+    {
+        // Afficher l'ID dans la console
+        $lastId = \DB::table('utilisateur_clan')->insertGetId([
+            'idEnvoyer' => auth()->id(),
+            'idClan'    => $request->to,
+            'message'   => $request->message,
+            'created_at'=> now(),
+            'updated_at'=> now()
+        ]);
+        if (auth()->id() !== $message->idEnvoyer) {
+            return response()->json(['error' => 'Action non autorisée'], 403);
+        }
+    
+        // Stocke l'ID avant suppression
+        $messageId = $message->id;
+        $message->delete();
+    
+        // Diffuser l'événement de suppression via Pusher
+        broadcast(new MessageGroup($messageId, auth()->id(), $message->idClan, true, $lastId))->toOthers();
+    
+        return response()->json(['success' => 'Message supprimé']);
+    }
+    
+    
+
 
 
 
@@ -141,7 +168,19 @@ class Conversations extends Controller
         //\Log::info('Message envoyé via Pusher', $request->all());
         //\Log::info('📡 Tentative de broadcast avec message: ' . $request->message);
         try {
-            broadcast(new MessageGroup($request->message, auth()->id(),$request->to))
+
+            // Afficher l'ID dans la console
+            $lastId = \DB::table('utilisateur_clan')->insertGetId([
+                'idEnvoyer' => auth()->id(),
+                'idClan'    => $request->to,
+                'message'   => $request->message,
+                'created_at'=> now(),
+                'updated_at'=> now()
+            ]);
+            
+            \Log::info('ID de la table utilisateur_clan: ' . $lastId);
+
+            broadcast(new MessageGroup($request->message, auth()->id(),$request->to, false, $lastId))
                 ->toOthers();
             //\Log::info('✅ Message broadcasté avec succès');
             
@@ -155,13 +194,12 @@ class Conversations extends Controller
             ]);
             //\Log::info('✅ Message Enregistrer avec succès');
 
-            
 
 
         } catch (\Exception $e) {
             //\Log::error('❌ Erreur lors du broadcast: ' . $e->getMessage());
         }
-        return response()->json(['message' => $request->message]);
+        return response()->json(['message' => $request->message, 'last_id' => $lastId]);
     }
 
 

@@ -60,6 +60,9 @@ Route::GET('/testClan/{clans}', [Conversations::class,'showClan'])->name('conver
 Route::POST('/broadcastClan', [Conversations::class,'broadcastClan']);
 Route::POST('/receiveClan', [Conversations::class,'receiveClan']);
 
+Route::delete('/messages/{message}', [Conversations::class, 'destroy'])->middleware('auth')->name('messages.destroy');
+
+
 
 
 
