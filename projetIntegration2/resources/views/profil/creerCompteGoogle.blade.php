@@ -22,7 +22,7 @@
         <div class="d-flex row justify-content-center">
             <div class="col-md-10">
 
-                <form action="{{ route('profil.creerCompte') }}" method="post" enctype="multipart/form-data" id="formCreation">
+                <form action="{{ route('profil.storeCreerCompteGoogle') }}" method="post" id="formCreation">
                     @csrf
                     <h1 class="h1" id="titreConnexion">Création de compte Gymcord</h1>
                     <div class="conteneurForm">
@@ -74,7 +74,7 @@
                     </div>
                     <div class="conteneurForm">
                         <label for="imageProfil" class="text-vert">Image de profil provenant de google</label>
-                        <input type="file" class="form-control inputConnexion" id="imageProfil" name="imageProfil" hidden>
+                        {{-- <input type="file" class="form-control inputConnexion" id="imageProfil" name="imageProfil" hidden> --}}
                         
                         <div class="conteneurErreur">
                             @error('imageProfil')
@@ -175,11 +175,11 @@
                     </div>
                     @if (session('errors'))
                         @foreach ($errors->all() as $error)
-                            @if ($error == 'Informations invalides')
+                           {{--  @if ($error == 'Informations invalides') --}}
                                 <div class="alert alert-erreur">
                                     <p>{{ $error }}</p>
                                 </div>
-                            @endif
+                            {{-- @endif --}}
                         @endforeach
                     @endif
                     <div>

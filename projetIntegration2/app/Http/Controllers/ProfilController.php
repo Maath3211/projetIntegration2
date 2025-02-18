@@ -84,6 +84,16 @@ class ProfilController extends Controller
     {
         try {
             $googleUser = Socialite::driver('google')->user();
+
+            $existingUser = User::where('google_id', $googleUser->getId())
+                ->orWhere('email', $googleUser->getEmail())
+                ->first();
+
+            if ($existingUser) {
+                Auth::login($existingUser);
+                return redirect()->route('profil.profil');
+            }
+
             $client = new \Google_Client();
             $client->setAccessToken($googleUser->token);
             $peopleService = new \Google_Service_PeopleService($client);
@@ -146,28 +156,32 @@ class ProfilController extends Controller
         $utilisateur->genre = $request->genre;
         $utilisateur->dateNaissance = $request->dateNaissance;
         $utilisateur->password = bcrypt($request->password);
+        $utilisateur->google_id = session('google_data.google_id');
 
         $googleData = session('google_data');
         if ($googleData && isset($googleData['image_url'])) {
             try {
-            $imageContent = file_get_contents($googleData['image_url']);
-            $nomFichierUnique = 'img/Utilisateurs/' . str_replace(' ', '_', $utilisateur->id) . '-' . uniqid() . '.jpg';
-            
-            if (file_put_contents(public_path($nomFichierUnique), $imageContent)) {
-                $utilisateur->imageProfil = $nomFichierUnique;
-            } else {
-                Log::error("Erreur lors de la sauvegarde de l'image Google");
-                return redirect()->back()->withErrors(['imageProfil' => "Erreur lors de la sauvegarde de l'image"]);
-            }
+                $imageContent = file_get_contents($googleData['image_url']);
+                $nomFichierUnique = 'img/Utilisateurs/' . str_replace(' ', '_', $utilisateur->id) . '-' . uniqid() . '.jpg';
+
+                if (file_put_contents(public_path($nomFichierUnique), $imageContent)) {
+                    $utilisateur->imageProfil = $nomFichierUnique;
+                } else {
+                    Log::error("Erreur lors de la sauvegarde de l'image Google");
+                    return redirect()->back()->withErrors(['imageProfil' => "Erreur lors de la sauvegarde de l'image"]);
+                }
             } catch (\Exception $e) {
-            Log::error("Erreur lors du téléchargement de l'image Google", [$e]);
-            return redirect()->back()->withErrors(['imageProfil' => "Erreur lors du téléchargement de l'image"]);
+                Log::error("Erreur lors du téléchargement de l'image Google", [$e]);
+                return redirect()->back()->withErrors(['imageProfil' => "Erreur lors du téléchargement de l'image"]);
             }
         } else {
             return redirect()->back()->withErrors(['imageProfil' => 'Aucune image Google trouvée']);
         }
 
         $utilisateur->save();
+        Auth::login($utilisateur);
+        return redirect()->route('profil.profil');
+
         return redirect()->route('profil.connexion')->with('message', 'Votre compte a été créé avec succès');
     }
 

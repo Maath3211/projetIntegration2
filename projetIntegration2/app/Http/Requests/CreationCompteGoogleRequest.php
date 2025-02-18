@@ -41,7 +41,7 @@ class CreationCompteGoogleRequest extends FormRequest
                 'required',
                 'min:8',
                 'confirmed',
-            ]
+            ],
         ];
     }
 
