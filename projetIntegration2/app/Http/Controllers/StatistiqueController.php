@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Statistiques;
 use App\Models\StatThermique;
 use App\Models\PoidsUtilisateur;
+use App\Models\ScoreExercice;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
@@ -39,8 +40,8 @@ class StatistiqueController extends Controller
         $user = Auth::user();
         $dateCreationCompte = Carbon::parse($user->created_at);
 
-        $currentDate = Carbon::now();
-        $diffWeeks = (int) $dateCreationCompte->diffInWeeks($currentDate)+1;
+        $dateAjd = Carbon::now();
+        $diffWeeks = (int) $dateCreationCompte->diffInWeeks($dateAjd)+1;
 
     
         $donnees = PoidsUtilisateur::where('user_id', Auth::id()) 
@@ -57,29 +58,59 @@ class StatistiqueController extends Controller
 
 
     
-    public function graphiqueExercice()
+
+
+    public function graphiqueExercice(Statistiques $exercice)
     {
-        $user = Auth::user();
-        $dateCreationCompte = Carbon::parse($user->created_at);
+      
+        $dateCreationExercice = Carbon::parse($exercice->created_at);
 
-        $currentDate = Carbon::now();
-        $diffWeeks = (int) $dateCreationCompte->diffInWeeks($currentDate)+1;
-
+        $dateAjd = Carbon::now();
+        $diffWeeks = (int) $dateCreationExercice->diffInWeeks($dateAjd)+1;
     
-        $donnees = PoidsUtilisateur::where('user_id', Auth::id()) 
+        $donnees = ScoreExercice::where('statistique_id', $exercice->id) 
         ->orderBy('semaine', 'asc')
         ->get();
 
 
     $semaines = $donnees->pluck('semaine')->toArray();
-    $poids = $donnees->pluck('poids')->toArray();
+    $score = $donnees->pluck('score')->toArray();
 
-
-   
-
-
-    return view("statistique.graphiqueExercice", compact('dateCreationCompte','semaines', 'poids', 'diffWeeks'));
+    return view("statistique.graphiqueExercice", compact('dateCreationExercice','semaines', 'score', 'diffWeeks','exercice'));
     }
+
+
+    public function ajouterScoreExercice(Request $request, Statistiques $exercice)
+    {
+        $request->validate([
+            'score' => 'required|numeric',
+            'score' => 'gt:0',
+        ]);
+        
+        $statistique = Statistiques::find($exercice->id);
+        $dateCreationExercice = Carbon::parse($exercice->created_at);
+        $dateAjd = Carbon::now();
+        
+        $score = (int) $request->input('score');
+        
+        $data = [
+            'statistique_id' => $statistique->id,
+            'semaine' => (int)$dateCreationExercice->diffInWeeks($dateAjd) + 1,
+            'score' => $score
+        ];
+    
+       
+        
+        $scoreExercice = ScoreExercice::updateOrCreate(
+            ['statistique_id' => $data['statistique_id'], 'semaine' => $data['semaine']],
+            $data
+        );
+        
+        return redirect()->back()->with('success', 'Score ajouté avec succès !');
+    }
+    
+
+
 
 
 public function ajouterPoids(Request $request)
@@ -91,13 +122,13 @@ public function ajouterPoids(Request $request)
     
     $user = Auth::user();
     $dateCreationCompte = Carbon::parse($user->created_at);
-    $currentDate = Carbon::now();
+    $dateAjd = Carbon::now();
     
     $poids = (int) $request->input('poids');
     
     $data = [
         'user_id' => $user->id,
-        'semaine' => (int)$dateCreationCompte->diffInWeeks($currentDate) + 1,
+        'semaine' => (int)$dateCreationCompte->diffInWeeks($dateAjd) + 1,
         'poids' => $poids
     ];
 

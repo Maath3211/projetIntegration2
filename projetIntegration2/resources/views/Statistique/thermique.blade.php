@@ -64,6 +64,8 @@
     let donnees = @json($donnees);
 </script>
 
+
+
 <script>
     const mois = [
         { nom: "Janvier", jours: 31 },

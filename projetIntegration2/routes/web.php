@@ -55,7 +55,7 @@ Route::GET('/stats',
 Route::GET('/graphique',
 [StatistiqueController::class,'graphique'])->name('statistique.graphique');
 
-Route::GET('/graphiqueExercice/{id}',
+Route::GET('/graphiqueExercice/{exercice}',
 [StatistiqueController::class,'graphiqueExercice'])->name('statistique.graphiqueExercice');
 
 Route::GET('/thermique',
@@ -71,6 +71,8 @@ Route::post('/statistiques/{id}/update-poids', [StatistiqueController::class, 'u
 
 
 Route::post('/ajouter-poids', [StatistiqueController::class, 'ajouterPoids'])->name('ajouter-poids');
+
+Route::post('/ajouter-score/{exercice}', [StatistiqueController::class, 'ajouterScoreExercice'])->name('ajouter-score');
 
 
 

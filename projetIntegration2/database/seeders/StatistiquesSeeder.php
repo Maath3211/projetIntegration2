@@ -37,5 +37,13 @@ class StatistiquesSeeder extends Seeder
             'user_id' => 1,
             'date' => now(),
         ]);
+        
+        Statistiques::create([
+            'id' => 4,
+            'nomStatistique' => 'test',
+            'score' => 40,
+            'user_id' => 1,
+            'date' => now(),
+        ]);
     }
 }
