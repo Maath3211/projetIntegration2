@@ -10,7 +10,7 @@ class SidebarClans extends Component
     public $userClans;
     public $selectedClanId = 'global';
     
-    protected $listeners = ['refreshComponent' => '$refresh'];
+    protected $listeners = ['switchedClan'];
 
     public function mount($userClans)
     {
@@ -23,13 +23,20 @@ class SidebarClans extends Component
 
     public function selectClan($clanId)
     {
-        Log::debug('SidebarClans selectClan', [
+        Log::debug('SidebarClans selectClan called', [
             'from' => $this->selectedClanId,
             'to' => $clanId
         ]);
         
+        if ($this->selectedClanId !== $clanId) {
+            $this->selectedClanId = $clanId;
+            $this->dispatch('clanSelected', $clanId);
+        }
+    }
+
+    public function switchedClan($clanId)
+    {
         $this->selectedClanId = $clanId;
-        $this->dispatch('clanSelected', ['clanId' => $clanId]); // Pass as array
     }
 
     public function render()

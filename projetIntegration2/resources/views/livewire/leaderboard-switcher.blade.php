@@ -1,44 +1,43 @@
-<div id="clanInfo" 
+<div 
+    id="clanInfo" 
     data-clan-name="{{ 
         $selectedClanId === 'global' 
             ? 'Global' 
-            : (App\Models\Clan::find($selectedClanId)?->nom ?? 'Unknown') 
-    }}"
-    wire:key="clan-info-{{ $selectedClanId }}">
+            : ($selectedClan?->nom ?? 'Unknown') 
+    }}">
     
-    <div wire:key="content-{{ $selectedClanId }}">
+    <div wire:key="leaderboard-{{ $selectedClanId }}-{{ $refreshKey }}">
         @if($selectedClanId === 'global')
             <livewire:global-leaderboard
                 :topClans="$topClans"
                 :topUsers="$topUsers"
-                :key="'global'" />
+                :wire:key="'global-' . $refreshKey" />
         @else
             <livewire:clan-leaderboard
                 :selectedClanId="$selectedClanId"
-                :key="'clan-' . $selectedClanId" />
+                :wire:key="'clan-' . $selectedClanId . '-' . $refreshKey" />
         @endif
     </div>
 </div>
 
-@section('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script wire:ignore>
-        function updateDocumentTitle() {
-            const clanInfo = document.getElementById('clanInfo');
-            if (clanInfo) {
-                const clanName = clanInfo.getAttribute('data-clan-name');
-                document.title = `Leaderboards - ${clanName}`;
-                console.log("Document title updated to:", document.title);
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', updateDocumentTitle);
-        
-        document.addEventListener('livewire:load', function() {
-            Livewire.hook('message.processed', (message, component) => {
-                console.log('Livewire update:', component?.id, message);
-                setTimeout(updateDocumentTitle, 100);
-            });
+@push('scripts')
+<script wire:ignore>
+    document.addEventListener('livewire:init', () => {
+        Livewire.on('switchedClan', (data) => {
+            console.log('Clan switched to:', data.clanId);
+            updateDocumentTitle();
         });
-    </script>
-@endsection
+    });
+
+    function updateDocumentTitle() {
+        const clanInfo = document.getElementById('clanInfo');
+        if (clanInfo) {
+            const clanName = clanInfo.getAttribute('data-clan-name');
+            document.title = `Leaderboards - ${clanName}`;
+            console.log("Document title updated to:", document.title);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', updateDocumentTitle);
+</script>
+@endpush
