@@ -8,7 +8,7 @@
     <a href="/stats"><button class="bouton">retour</button></a>
 
   
-        <h1 id="titre">Vous êtes à la semaine {{$diffWeeks}}</h1>
+        <h1 id="titre">Vous êtes à la semaine {{$diffSemaines}}</h1>
    
 
     <h1 id="titre">Amélioration de votre {{$exercice->nomStatistique}}</h1>

@@ -41,7 +41,7 @@ class StatistiqueController extends Controller
         $dateCreationCompte = Carbon::parse($user->created_at);
 
         $dateAjd = Carbon::now();
-        $diffWeeks = (int) $dateCreationCompte->diffInWeeks($dateAjd)+1;
+        $diffSemaines = (int) $dateCreationCompte->diffInWeeks($dateAjd)+1;
 
     
         $donnees = PoidsUtilisateur::where('user_id', Auth::id()) 
@@ -53,7 +53,7 @@ class StatistiqueController extends Controller
     $poids = $donnees->pluck('poids')->toArray();
 
 
-    return view("statistique.graphique", compact('dateCreationCompte','semaines', 'poids', 'diffWeeks'));
+    return view("statistique.graphique", compact('dateCreationCompte','semaines', 'poids', 'diffSemaines'));
     }
 
 
@@ -66,7 +66,7 @@ class StatistiqueController extends Controller
         $dateCreationExercice = Carbon::parse($exercice->created_at);
 
         $dateAjd = Carbon::now();
-        $diffWeeks = (int) $dateCreationExercice->diffInWeeks($dateAjd)+1;
+        $diffSemaines = (int) $dateCreationExercice->diffInWeeks($dateAjd)+1;
     
         $donnees = ScoreExercice::where('statistique_id', $exercice->id) 
         ->orderBy('semaine', 'asc')
@@ -76,7 +76,7 @@ class StatistiqueController extends Controller
     $semaines = $donnees->pluck('semaine')->toArray();
     $score = $donnees->pluck('score')->toArray();
 
-    return view("statistique.graphiqueExercice", compact('dateCreationExercice','semaines', 'score', 'diffWeeks','exercice'));
+    return view("statistique.graphiqueExercice", compact('dateCreationExercice','semaines', 'score', 'diffSemaines','exercice'));
     }
 
 
