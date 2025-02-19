@@ -138,20 +138,14 @@ class ClanController extends Controller
         foreach($categoriesAModifier as $categorie){
             $valeurs = explode(';', $categorie);
             if(count($valeurs) != 2){
-                return response()->json([
-                    'error' => 'Une erreur est survenue lors du processus. Veuillez réessayer plus tard.'
-                ], 400);
+                return redirect()->back()->with('erreur', 'Une erreur est survenue lors du processus. Veuillez réessayer plus tard.');
             }
             
             if(strlen($valeurs[1]) > 50){
-                return response()->json([
-                    'error' => 'Les catégories ne doivent pas dépasser les 50 caractères.'
-                ], 400);
+                return redirect()->back()->with('erreur', 'Les catégories ne doivent pas dépasser les 50 caractères.');
             } 
             else if(!preg_match('/^[A-Za-z\u00C0-\u00FF-]+$/', $valeurs[1])) {
-                return response()->json([
-                    'error' => 'Les catégories ne doivent pas contenir de chiffres ou de symboles. Seul les lettres UTF-8 et les traits (-) sont permis.'
-                ], 400);
+                return redirect()->back()->with('erreur', 'Les catégories ne doivent pas contenir de chiffres ou de symboles. Seul les lettres UTF-8 et les traits (-) sont permis.');
             }
 
             // TODO Faire les ajouts içi
@@ -180,14 +174,10 @@ class ClanController extends Controller
             // pour renommer un canal
             if($action === 'renommer'){
                 if(strlen($requete['nouveauNom']) > 50){
-                    return response()->json([
-                        'error' => 'Les catégories ne doivent pas dépasser les 50 caractères.'
-                    ], 400);
+                    return redirect()->back()->with('erreur', 'Les canaux ne doivent pas dépasser les 50 caractères.');
                 } 
                 else if(!preg_match('/^[A-Za-z\u00C0-\u00FF-]+$/', $requete['nouveauNom'])) {
-                    return response()->json([
-                        'error' => 'Les catégories ne doivent pas contenir de chiffres ou de symboles. Seul les lettres UTF-8 et les traits (-) sont permis.'
-                    ], 400);
+                    return redirect()->back()->with('erreur', 'Les canaux ne doivent pas contenir de chiffres ou de symboles. Seul les lettres UTF-8 et les traits (-) sont permis.');
                 }
 
                 //$canal->titre = $requete['nouveauNom'];
@@ -204,14 +194,10 @@ class ClanController extends Controller
         // pour ajouter un canal
         else if($action === 'ajouter') {
             if(strlen($requete['nouveauNom']) > 50){
-                return response()->json([
-                    'error' => 'Les catégories ne doivent pas dépasser les 50 caractères.'
-                ], 400);
+                return redirect()->back()->with('erreur', 'Les canaux ne doivent pas dépasser les 50 caractères.');
             } 
             else if(!preg_match('/^[A-Za-z\u00C0-\u00FF-]+$/', $requete['nouveauNom'])) {
-                return response()->json([
-                    'error' => 'Les catégories ne doivent pas contenir de chiffres ou de symboles. Seul les lettres UTF-8 et les traits (-) sont permis.'
-                ], 400);
+                return redirect()->back()->with('erreur', 'Les canaux ne doivent pas contenir de chiffres ou de symboles. Seul les lettres UTF-8 et les traits (-) sont permis.');
             }
 
             //Ajouter un nouveau Canal
@@ -241,12 +227,61 @@ class ClanController extends Controller
         }
 
     }
+
     /**
-     * Show the form for creating a new resource.im 
+     * Créer un clan
      */
-    public function create()
+    public function creerClan(Request $request)
     {
-        //
+
+        Log::info($request);
+        // utiliser son id comme id d'administrateur du clan
+        $utilisateur = auth()->id();
+
+        // validation des entrees
+        $donneesValidees = $request->validate([
+            'nomClan' => [
+                'required',
+                'string',
+                'max:50',
+                'regex:/^[\p{L}\s\-]+$/u' // juste les lettres UTF-8, espaces & tirets
+            ],
+            'imageClan' => [
+                'nullable',
+                'image',
+                'mimes:jpeg,png,jpg,gif,svg'
+            ],
+            'clanPublic' => 'boolean'
+        ],[
+            'nomClan.required' => 'Le nom du clan est obligatoire',
+            'nomClan.string' => 'Le nom du clan doit être de type string',
+            'nomClan.max' => 'Le nom du clan ne doit pas dépasser les 50 caractères',
+            'nomClan.regex' => 'Le nom du clan ne peut contenir que des lettres UTF-8, des espaces et des tirets (-)',
+            'imageClan.image' => 'L\image du clan doit être une image',
+            'imageClan.mimes' => 'L\'image du clan doit être un format valide (jpeg, png, jpg, gif, svg)',
+            'clanPublic.boolean' => 'Le clan doit être soit privé soit public. (boolean)'
+        ]);
+
+        
+
+
+        $clan = Clan::create([
+            'adminId' => $utilisateur,
+            'image' => null, // on défini l'image plus tard une fois qu'on a l'id
+            'nom' => $donneesValidees['nomClan'],
+            'public' => $donneesValidees['clanPublic'] ?? false
+        ]);
+
+        if($request->hasFile('imageClan') && $request->file('imageClan')->isValid()) {
+            $image = $request->file('imageClan');
+            $chemin = $image->storeAs('public/img/Clans', 'clan_' . $clan->id . '.' . $image->getClientOriginalExtension());
+
+            //mettre a jour l'image dans la bd
+            $clan->update(['image' => $chemin]);
+        }
+
+
+        return redirect()->back()->with('message', 'Clan créé avec succès!');
     }
 
     /**

@@ -46,6 +46,9 @@ Route::GET('/clan/{id}/parametres/membres',
 Route::POST('/clan/{id}/enregistrerMembres',
 [ClanController::class, 'miseAJourMembres'])->name('clan.miseAJour.membres');
 
+Route::POST('/clan/creer',
+[ClanController::class, 'creerClan'])->name('clan.creer');
+
 Route::POST('/clan/{id}/supprimer',
 [ClanController::class, 'supprimer'])->name('clan.supprimer');
 
