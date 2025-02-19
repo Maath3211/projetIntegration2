@@ -452,7 +452,7 @@ channel.bind('event-group', function(data) {
                         {{ isset($message) ? substr($message->user->email, 0, 2) : 'rien' }}
                     </div>
                     <div class="bubble">
-                        <strong>{{ $message->user->email }}</strong>
+                        <strong>{{ isset($message) ? $message->user->email : 'rien' }}</strong>
                         <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
                         <br>
                         <p>${data.message}</p>
@@ -493,7 +493,7 @@ channel.bind('event-group', function(data) {
                         <div class="message own-message">
                             <button class="delete-btn" data-id="${res.last_id}">🗑️</button>
                             <div class="bubble">
-                                <strong>{{ $message->user->email }}</strong>
+                                <strong>{{isset($message) ? $message->user->email : 'rien'  }}</strong>
                                 <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
                                 <br>
                                 <p>${$("input[name='content']").val()}</p>

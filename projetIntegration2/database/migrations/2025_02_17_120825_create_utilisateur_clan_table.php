@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('utilisateur_clan', function (Blueprint $table) {
             $table->id();
-            $table->integer('idEnvoyer');
-            $table->integer('idClan');
+            $table->unsignedBigInteger('idEnvoyer');
+            $table->unsignedBigInteger('idClan');
             $table->text('message');
             $table->timestamps();
+            $table->foreign('idEnvoyer')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('idClan')->references('id')->on('clans')->onDelete('cascade');
         });
     }
 
