@@ -24,45 +24,46 @@
         <div class="d-flex row justify-content-center">
             <div class="col-md-10">
 
-                <form action="{{ route('profil.connexion') }}" method="post" id="formConnexion">
-                    <h1 class="h1" id="titreConnexion">Connexion ou création de compte Gymcord</h1>
+                <form action="{{ route('profil.resetPassword') }}" method="post" id="formConnexion">
+                    @csrf
+                    <input type="text" value="{{ $token }}" name="token" hidden>
+                    <h1 class="h1" id="titreConnexion">Réinitialisation de mot de passe</h1>
                     <div class="conteneurForm">
-                        @csrf
                         <label for="email" class="text-vert">Adresse courriel</label>
                         <input type="email" class="form-control inputConnexion" id="email"
-                            placeholder="Adresse courriel" name="email" value="test@test.com">
-                        <div class="conteneurErreur">
-                            @error('email')
-                                <span class="text-danger">{{ $message }}&ensp;</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#dc3545"
-                                    class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
-                                    <path
-                                        d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
-                                </svg>
-                            @enderror
-                        </div>
+                            value="{{ $email }}" name="email" readonly>
                     </div>
+
                     <div class="conteneurForm">
                         <label for="password" class="text-vert">Mot de passe</label>
                         <input type="password" class="form-control inputConnexion" id="password"
-                            placeholder="Mot de passe" name="password" value="adminggg">
-                        <div class="conteneurErreur">
-                            @error('password')
-                                <span class="text-danger">{{ $message }}&ensp;</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#dc3545"
-                                    class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
-                                    <path
-                                        d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
-                                </svg>
-                            @enderror
-                        </div>
+                            placeholder="Mot de passe" name="password">
+                        @error('password')
+                            <span class="text-danger">{{ $message }}&ensp;</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#dc3545"
+                                class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
+                                <path
+                                    d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
+                            </svg>
+                        @enderror
+                    </div>
+                    <div class="conteneurForm">
+                        <label for="password_confirmation" class="text-vert">Confirmation mot de passe</label>
+                        <input type="password" class="form-control inputConnexion" id="password_confirmation"
+                            placeholder="Confirmation mot de passe" name="password_confirmation">
+                        @error('password_confirmation')
+                            <span class="text-danger">{{ $message }}&ensp;</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#dc3545"
+                                class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
+                                <path
+                                    d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
+                            </svg>
+                        @enderror
                     </div>
                     <br>
                     @if (session('message'))
-                        <div class="alert" id="divMessage">
-                            <p class="text-center" id="pMessage">
-                                {{ session('message') }}
-                            </p>
+                        <div class="alert alert-succes">
+                            <p class="text-center">{{ session('message') }}</p>
                         </div>
                     @endif
                     @if (session('errors'))
@@ -74,13 +75,8 @@
                             @endif
                         @endforeach
                     @endif
-                    <a href="{{ route('profil.connexionGoogle') }}" class="google-btn">
-                        <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google logo">
-                        Continuer avec Google
-                    </a>
-                    <a href='{{route('profil.reinitialisation')}}' class="text-vert" id="btMotDePasseOublie">Mot de passe oublié?</a>
-                    <a href="{{ route('profil.creerCompte') }}" class="text-vert" id="btCreerCompte">Créer un compte</a>
-                    <button type="submit" class="btn btn-connexion">Connexion</button>
+                    <button type="submit" class="btn btn-connexion">Réinitialisation</button>
+                    <a href="{{ route('profil.connexion') }}" class="btn btn-retour">Retour</a>
                 </form>
 
             </div>

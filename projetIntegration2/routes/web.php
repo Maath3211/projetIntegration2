@@ -102,6 +102,24 @@ Route::GET('/profil/modification',
 Route::POST('/profil/modification/update',
 [ProfilController::class,'updateModification'])->name('profil.updateModification')->middleware('auth');
 
+
+
+Route::GET('/reinitialisation',
+[ProfilController::class,'pageMotDePasseOublie'])->name('profil.reinitialisation');
+
+Route::post('/reinitialisation',
+[ProfilController::class, 'motDePasseOublieEmail'])->name('profil.motDePasseOublieEmail');
+
+
+Route::get('/reinitialisation/{token}',
+[ProfilController::class, 'showResetPasswordForm'])->name('profil.reinitialisation.token');
+
+
+Route::post('/reinitialisationMDP',
+[ProfilController::class, 'resetPassword'])->name('profil.resetPassword');
+
+
+
 Route::GET('/stats',
 [StatistiqueController::class,'index'])->name('statistique.index');
 

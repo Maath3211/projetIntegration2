@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Http\Requests\ConnexionRequest;
 use App\Http\Requests\CreationCompteGoogleRequest;
 use App\Http\Requests\CreationCompteRequest;
@@ -12,6 +13,11 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\reinitialisation;
 
 class ProfilController extends Controller
 {
@@ -234,6 +240,98 @@ class ProfilController extends Controller
         $utilisateur->save();
         return redirect()->route('profil.profil')->with('message', 'Votre profil a été mis à jour avec succès');
     }
+
+
+
+
+    public function pageMotDePasseOublie()
+    {
+        return View('profil.reinitialisation');
+    }
+
+    public function emailReinitialisation()
+    {
+        return View('emails.motDePasseOublie');
+    }
+
+    public function motDePasseOublieEmail(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+
+        $user = User::where('email', $request->email)->first();
+        if (!$user) {
+            return redirect()->route('profil.connexion')->with('message', 'Un courriel de reinitialisation a été envoyé si le compte existe');
+        }
+
+        $token = Str::random(64);
+        
+        $existingToken = DB::table('password_reset_tokens')->where('email', $request->email)->first();
+        if ($existingToken) {
+            DB::table('password_reset_tokens')->where('email', $request->email)->delete();
+        }
+
+        DB::table('password_reset_tokens')->insert([
+            'email' => $request->email,
+            'token' => $token,
+            'created_at' => Carbon::now()
+        ]);
+
+        Mail::to($request->email)->send(new reinitialisation($token));
+        return redirect()->route('profil.connexion')->with('message', 'Un courriel de reinitialisation a été envoyé si le compte existe');
+    }
+
+    public function showResetPasswordForm(string $token)
+    {
+        $tokenData = DB::table('password_reset_tokens')->where('token', $token)->first();
+        if (!$tokenData) {
+            return redirect('/connexion')->withErrors(['token' => 'Token invalide!']);
+        }
+        return view('profil.reinitialisationMDP', ['token' => $token, 'email' => $tokenData->email]);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:8|confirmed',
+            'token' => 'required'
+        ], [
+            'email.required' => 'Le courriel est requis',
+            'email.email' => 'Le format du courriel est invalide',
+            'password.required' => 'Le mot de passe est requis',
+            'password.min' => 'Le mot de passe doit contenir au moins 8 caractères',
+            'password.confirmed' => 'La confirmation du mot de passe ne correspond pas',
+            'token.required' => 'Le jeton de réinitialisation est requis'
+        ]);
+
+        $updatePassword = DB::table('password_reset_tokens')
+            ->where([
+                'email' => $request->email,
+                'token' => $request->token
+            ])->first();
+
+        if (!$updatePassword) {
+            return back()->withErrors(['email' => 'Token invalide!']);
+        }
+
+        User::where('email', $request->email)
+            ->update(['password' => bcrypt($request->password)]);
+
+        DB::table('password_reset_tokens')->where(['email' => $request->email])->delete();
+
+        return redirect('/connexion')->with('message', 'Mot de passe mis à jour!');
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     public function listePays()
     {

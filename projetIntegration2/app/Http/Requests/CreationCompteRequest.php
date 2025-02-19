@@ -42,6 +42,8 @@ class CreationCompteRequest extends FormRequest
             'dateNaissance' => [
                 'required',
                 'date',
+                'before:today',
+                'after:1900-01-01'
             ],
             'password' => [
                 'required',
@@ -67,6 +69,8 @@ class CreationCompteRequest extends FormRequest
                 'genre.in' => 'Le genre sélectionné n\'est pas valide',
                 'dateNaissance.required' => 'La date de naissance est requise',
                 'dateNaissance.date' => 'La date de naissance doit être une date',
+                'dateNaissance.before' => 'La date de naissance doit être avant aujourd\'hui',
+                'dateNaissance.after' => 'La date de naissance doit être après 1900-01-01',
                 'password.required' => 'Le mot de passe est requis',
                 'password.length' => 'Le mot de passe doit contenir au moins 8 caractères',
                 'password.confirmed' => 'La confirmation du mot de passe ne correspond pas'

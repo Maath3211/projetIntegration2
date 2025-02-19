@@ -131,7 +131,7 @@
                     <div class="conteneurForm">
                         <label for="dateNaissance" class="text-vert">Date de naissance</label>
                         <input type="date" class="form-control inputConnexion" name="dateNaissance"
-                            id="dateNaissance" placeholder="Date de naissance" value="{{ session('google_data')['dateNaissance'] }}">
+                            id="dateNaissance" placeholder="Date de naissance" value="{{ session('google_data')['dateNaissance'] }}" max="{{ date('Y-m-d') }}" min="1900-01-01">
                         <div class="conteneurErreur">
                             @error('dateNaissance')
                                 <span class="text-danger">{{ $message }}&ensp;</span>

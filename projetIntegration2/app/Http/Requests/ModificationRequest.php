@@ -48,6 +48,8 @@ class ModificationRequest extends FormRequest
             'dateNaissance' => [
                 'required',
                 'date',
+                'before:today',
+                'after:1900-01-01'
             ],
         ];
     }
@@ -68,6 +70,8 @@ class ModificationRequest extends FormRequest
                 'genre.in' => 'Le genre sélectionné n\'est pas valide',
                 'dateNaissance.required' => 'La date de naissance est requise',
                 'dateNaissance.date' => 'La date de naissance doit être une date',
+                'dateNaissance.before' => 'La date de naissance doit être avant aujourd\'hui',
+                'dateNaissance.after' => 'La date de naissance doit être après 1900-01-01',
             ];
     }
 }
