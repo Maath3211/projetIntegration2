@@ -53,7 +53,7 @@ class LeaderboardSwitcher extends Component
                     ->limit(10)
                     ->get();
 
-                $this->topClans = DB::table('Clan_users as cu')
+                $this->topClans = DB::table('clan_users as cu')
                     ->join(DB::raw('(SELECT user_id, SUM(score) as total_score FROM scores GROUP BY user_id) as su'), 'cu.user_id', '=', 'su.user_id')
                     ->join('clans', 'clans.id', '=', 'cu.clan_id')
                     ->select('cu.clan_id', 'clans.nom as clan_nom', 'clans.image as clan_image', DB::raw('SUM(su.total_score) as clan_total_score'))

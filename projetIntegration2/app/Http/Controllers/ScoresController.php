@@ -62,7 +62,7 @@ class ScoresController extends Controller
             ->limit(10)
             ->get();
 
-        $topClans = DB::table('Clan_users as cu')
+        $topClans = DB::table('clan_users as cu')
             ->join(DB::raw('(SELECT user_id, SUM(score) as total_score FROM scores GROUP BY user_id) as su'), 'cu.user_id', '=', 'su.user_id')
             ->join('clans', 'clans.id', '=', 'cu.clan_id')  // Join the Clan table to get image and name
             ->select('cu.clan_id', 'clans.nom as clan_nom', 'clans.image as clan_image', DB::raw('SUM(su.total_score) as clan_total_score'))
