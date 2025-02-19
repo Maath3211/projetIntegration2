@@ -38,9 +38,9 @@
         .message {
             display: flex;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 10px; 
         }
-        .message img {
+        .message img {/
             max-width: 100px;
             border-radius: 5px;
         }
@@ -71,6 +71,16 @@
             border: none;
             outline: none;
         }
+        .separator {
+            display: block;       /* Pour qu'il se comporte comme un bloc */
+            flex-basis: 100%;     /* Dans un conteneur flex, occupe toute la ligne */
+            width: 100%;          /* S'assure qu'il prend toute la largeur disponible */
+            border-top: 1px solid #ccc; /* Définit la ligne */
+            margin: 20px 0;       /* Espacement avant et après */
+        }
+
+
+
         .colonneMessages2 {
     display: flex;
     flex-direction: column;
@@ -139,22 +149,29 @@
                         @endif
     
                         @foreach ($messages as $message)
-                        
-                        <div class="message {{ $message->idEnvoyer == auth()->id() ? 'own-message' : 'received-message' }}" id="message-{{ $message->id }}">
-                            @if ($message->idEnvoyer == auth()->id())
-                                <!-- Bouton de suppression visible uniquement pour l'auteur -->
-                                <button class="delete-btn" data-id="{{ $message->id }}">🗑️</button>
-                            @endif
-                            <div class="bubble">
-                                <strong>{{ $message->user->email }}</strong>
-                                <span class="text-muted">{{ substr($message->created_at, 11, 5) }}</span>
-                                <br>
-                                <p>{!! nl2br(e($message->message)) !!}</p>
+                            <div class="messageTotal" id="message-{{ $message->id }}">
+                                <div class="message {{ $message->idEnvoyer == auth()->id() ? 'own-message' : 'received-message' }}">
+                                    @if ($message->idEnvoyer == auth()->id())
+                                        <!-- Bouton de suppression visible uniquement pour l'auteur -->
+                                        <button class="delete-btn" data-id="{{ $message->id }}">🗑️</button>
+                                    @else
+                                        <div class="avatar bg-primary text-white rounded-circle p-2">{{ substr($message->user->email, 0, 2) }}</div>
+                                    @endif
+                                    <div class="bubble">
+                                        <strong>{{ $message->user->email }}</strong>
+                                        <span class="text-muted">{{ substr($message->created_at, 11, 5) }}</span>
+                                        <br>
+                                        <p>{!! nl2br(e($message->message)) !!}</p>
+                                    </div>
+                                    @if ($message->idEnvoyer != auth()->id())
+                                        <!-- Bouton de suppression visible uniquement pour l'auteur -->
+                                    @else
+                                        <div class="avatar bg-primary text-white rounded-circle p-2">{{ substr($message->user->email, 0, 2) }}</div>
+                                    @endif
+                                </div>
+                                <div class="separator"></div>
                             </div>
-                            <div class="avatar bg-primary text-white rounded-circle p-2">{{ substr($message->user->email, 0, 2) }}</div>
-                        </div>
-                        <hr>
-                    @endforeach
+                        @endforeach
                     
     
                         @if ($messages->previousPageUrl())
@@ -420,23 +437,35 @@
         const channel = pusher.subscribe(channelName);
 
         // Recevoir les messages de la conversation privée
-        channel.bind('event-group', function(data) {
-            //console.log("Message reçu:", data);
-            if(data.deleted == false){
-            $("#chat-messages").append(`
+channel.bind('event-group', function(data) {
+    // Vérifier si le message a été supprimé
+    if (data.deleted === true) {
+        // Si le message a été supprimé, le retirer du DOM
+        $(`#message-${data.last_id}`).remove();
+    } else {
+        // Sinon, ajouter le message normalement
+        $("#chat-messages").append(`
+            <div class="messageTotal" id="message-${data.last_id}">
                 <div class="message received-message">
-                <div class="avatar bg-primary text-white rounded-circle p-2">{{ isset($message) ? substr($message->user->email, 0, 2) : 'rien' }}</div>
-                <div class="bubble">
-                    <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
-                    <br>
-                    <p>${data.message}</p>
+                    <div class="avatar bg-primary text-white rounded-circle p-2">
+                        <!-- Affiche la première lettre de l'email -->
+                        {{ isset($message) ? substr($message->user->email, 0, 2) : 'rien' }}
+                    </div>
+                    <div class="bubble">
+                        <strong>{{ $message->user->email }}</strong>
+                        <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
+                        <br>
+                        <p>${data.message}</p>
+                    </div>
                 </div>
-                </div>
-                <hr>
-            `);
-            $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
-            }
-        });
+                <div class="separator"></div>
+            </div>
+        `);
+        // Scroll au bas des messages
+        $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
+    }
+});
+
 
         // Envoyer un message via AJAX
         $("form").submit(function(e) {
@@ -456,19 +485,25 @@
                     to: friendId // Ajoute l'ID du destinataire
                 }
             }).done(function(res) {
-                console.log(res.last_id)
-                //console.log("Message envoyé:", $("input[name='content']").val());
+                let avatarText = res.sender_email.substring(0, 2);
+                console.log(avatarText)
                 $("#chat-messages").append(`
-                    <div class="message own-message">
-                        <div class="avatar bg-primary text-white rounded-circle p-2">{{ substr(auth()->user()->email, 0, 2) }}</div>
-                        <button class="delete-btn" data-id="${res.last_id}">🗑️</button>
-                        <div class="bubble">
-                            <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
-                            <br>
-                            <p>${$("input[name='content']").val()}</p>
+                <div class="messageTotal"  id="message-${res.last_id}">
+
+                        <div class="message own-message">
+                            <button class="delete-btn" data-id="${res.last_id}">🗑️</button>
+                            <div class="bubble">
+                                <strong>{{ $message->user->email }}</strong>
+                                <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
+                                <br>
+                                <p>${$("input[name='content']").val()}</p>
+                            </div>
+                        <div class="ml-4 avatar bg-primary text-white rounded-circle p-2">${avatarText}</div>
+
                         </div>
+                            <div class="separator"></div>
+                        
                     </div>
-                    <hr>
                 `);
                 $("input[name='content']").val("");
                 $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
@@ -503,12 +538,13 @@
             });
         });
 
-        // Écouter l'événement de suppression diffusé par Pusher
+        // Écouter l'événement de suppression spécifique diffusé par Pusher
         channel.bind('message-deleted', function(data) {
-            console.log("Message deleted event received:", data);
+            console.log("Message supprimé:", data); // Affiche l'ID du message supprimé pour le débogage
             // Supprime le message correspondant du DOM
             $(`#message-${data.messageId}`).remove();
         });
+
 
 
     </script>

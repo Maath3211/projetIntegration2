@@ -11,6 +11,7 @@ use App\Repository\ConversationsClan;
 use App\Http\Requests\StoreMessage;
 use App\Events\PusherBroadcast;
 use App\Events\MessageGroup;
+use App\Events\SuppressionMessageGroup;
 
 
 
@@ -108,46 +109,26 @@ class Conversations extends Controller
 
 
 
+
+
+
+
     public function destroy(UtilisateurClan $message)
     {
-        // Afficher l'ID dans la console
-        $lastId = \DB::table('utilisateur_clan')->insertGetId([
-            'idEnvoyer' => auth()->id(),
-            'idClan'    => $request->to,
-            'message'   => $request->message,
-            'created_at'=> now(),
-            'updated_at'=> now()
-        ]);
         if (auth()->id() !== $message->idEnvoyer) {
             return response()->json(['error' => 'Action non autorisée'], 403);
         }
     
-        // Stocke l'ID avant suppression
         $messageId = $message->id;
         $message->delete();
     
-        // Diffuser l'événement de suppression via Pusher
-        broadcast(new MessageGroup($messageId, auth()->id(), $message->idClan, true, $lastId))->toOthers();
+        // Diffuser l'événement de suppression spécifique
+        broadcast(new SuppressionMessageGroup($messageId, $message->idClan))->toOthers();
     
         return response()->json(['success' => 'Message supprimé']);
     }
     
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     
 
     public function showClan(Clan $clans)
@@ -164,12 +145,8 @@ class Conversations extends Controller
     
 
     public function broadcastClan(Request $request){
-
-        //\Log::info('Message envoyé via Pusher', $request->all());
-        //\Log::info('📡 Tentative de broadcast avec message: ' . $request->message);
         try {
-
-            // Afficher l'ID dans la console
+            // Insérer le message une seule fois
             $lastId = \DB::table('utilisateur_clan')->insertGetId([
                 'idEnvoyer' => auth()->id(),
                 'idClan'    => $request->to,
@@ -177,30 +154,23 @@ class Conversations extends Controller
                 'created_at'=> now(),
                 'updated_at'=> now()
             ]);
-            
-            \Log::info('ID de la table utilisateur_clan: ' . $lastId);
-
-            broadcast(new MessageGroup($request->message, auth()->id(),$request->to, false, $lastId))
+    
+            // Diffuser l'événement via Pusher
+            broadcast(new MessageGroup($request->message, auth()->id(), $request->to, false, $lastId))
                 ->toOthers();
-            //\Log::info('✅ Message broadcasté avec succès');
-            
-            // Enregistrement des informations dans la table user_ami
-            \DB::table('utilisateur_clan')->insert([
-                'idEnvoyer' => auth()->id(),
-                'idClan' => $request->to,
-                'message' => $request->message,
-                'created_at' => now(),
-                'updated_at' => now()
-            ]);
-            //\Log::info('✅ Message Enregistrer avec succès');
-
-
-
+    
         } catch (\Exception $e) {
-            //\Log::error('❌ Erreur lors du broadcast: ' . $e->getMessage());
+            \Log::error('❌ Erreur lors du broadcast: ' . $e->getMessage());
         }
-        return response()->json(['message' => $request->message, 'last_id' => $lastId]);
+    
+        return response()->json([
+            'message'      => $request->message,
+            'last_id'      => $lastId,
+            'sender_id'    => auth()->id(),
+            'sender_email' => auth()->user()->email  
+        ]);
     }
+    
 
 
     public function receiveClan(Request $request){
