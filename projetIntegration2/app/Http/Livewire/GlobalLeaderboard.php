@@ -6,6 +6,7 @@ use Livewire\Component;
 
 class GlobalLeaderboard extends Component
 {
+    public $showingGraph = false;
     public $topClans;
     public $topUsers;
 
@@ -13,6 +14,16 @@ class GlobalLeaderboard extends Component
     {
         $this->topClans = $topClans;
         $this->topUsers = $topUsers;
+    }
+
+    public function showGraph()
+    {
+        $this->showingGraph = true;
+    }
+
+    public function showLeaderboard()
+    {
+        $this->showingGraph = false;
     }
 
     public function render()

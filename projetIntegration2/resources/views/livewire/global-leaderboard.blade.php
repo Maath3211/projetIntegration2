@@ -1,4 +1,5 @@
 <div style="height: 100vh; overflow-y: auto; scrollbar-width: thin; scrollbar-color: transparent transparent;">
+    @if(!$showingGraph)
     <div id="topClansContainer" style="scrollbar-width: thin; scrollbar-color: transparent transparent;">
         <!-- Leaderboard Header Box -->
         <div class="leaderboard-header p-3 mb-3 border rounded d-flex justify-content-between align-items-center">
@@ -61,13 +62,18 @@
                 </div>
                 <p class="text-muted mb-0">Découvrez les utilisateurs les plus performants et inspirants du moment</p>
             </div>
-            <div class="dropdown ml-2" wire:ignore>
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="exportDropdownUsers" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa-solid fa-share-from-square fa-2x"></i>
+            <div class="d-flex align-items-center">
+                <button class="btn btn-primary mr-2" wire:click="showGraph">
+                    <i class="fa-solid fa-chart-line"></i>
                 </button>
-                <div class="dropdown-menu" aria-labelledby="exportDropdownUsers">
-                    <a class="dropdown-item" href="{{ route('export.topUsers') }}">Exporter Liste CSV</a>
-                    <a class="dropdown-item" href="#" id="exportUsersImageBtn">Exporter Capture</a>
+                <div class="dropdown ml-2" wire:ignore>
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="exportDropdownUsers" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa-solid fa-share-from-square fa-2x"></i>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="exportDropdownUsers">
+                        <a class="dropdown-item" href="{{ route('export.topUsers') }}">Exporter Liste CSV</a>
+                        <a class="dropdown-item" href="#" id="exportUsersImageBtn">Exporter Capture</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -103,6 +109,18 @@
                 @endforeach
             </div>
         </div>
+        @else
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <button class="btn btn-secondary mb-3" wire:click="showLeaderboard">
+                        <i class="fas fa-arrow-left"></i> Retour au classement
+                    </button>
+                    @livewire('score-graph', ['lazy' => true])
+                </div>
+            </div>
+        </div>
+        @endif
     </div>
     <style>
         #topClansContainer::-webkit-scrollbar,
