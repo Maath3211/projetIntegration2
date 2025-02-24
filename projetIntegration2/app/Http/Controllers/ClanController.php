@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
+use App\Models\Clan;
+use App\Models\Canal;
+use App\Models\CategorieCanal;
 
 class ClanController extends Controller
 {
@@ -265,23 +268,46 @@ class ClanController extends Controller
         
 
 
-        $clan = Clan::create([
-            'adminId' => $utilisateur,
-            'image' => null, // on défini l'image plus tard une fois qu'on a l'id
-            'nom' => $donneesValidees['nomClan'],
-            'public' => $donneesValidees['clanPublic'] ?? false
-        ]);
+        // $clan = Clan::create([
+        //     'adminId' => $utilisateur,
+        //     'image' => null, // on défini l'image plus tard une fois qu'on a l'id
+        //     'nom' => $donneesValidees['nomClan'],
+        //     'public' => $donneesValidees['clanPublic'] ?? false
+        // ]);
 
-        if($request->hasFile('imageClan') && $request->file('imageClan')->isValid()) {
-            $image = $request->file('imageClan');
-            $chemin = $image->storeAs('public/img/Clans', 'clan_' . $clan->id . '.' . $image->getClientOriginalExtension());
+        // if ($clan){
+        //     if($request->hasFile('imageClan') && $request->file('imageClan')->isValid()) {
+        //         $image = $request->file('imageClan');
+        //         $chemin = $image->storeAs('public/img/Clans', 'clan_' . $clan->id . '.' . $image->getClientOriginalExtension());
+    
+        //         //mettre a jour l'image dans la bd
+        //         $clan->update(['image' => $chemin]);
+        //     }
 
-            //mettre a jour l'image dans la bd
-            $clan->update(['image' => $chemin]);
-        }
+        //     $categorie = CategorieCanal::create([
+        //         'categorie' => 'Général',
+        //         'clanId' => $clan->id
+        //     ]);
 
+        //     if($categorie) {
+        //         $canal = Canal::create([
+        //             'titre' => 'bienvenue',
+        //             'clanId' => $clan->id,
+        //             'categorieId' => $categorie->id
+        //         ]);
 
-        return redirect()->back()->with('message', 'Clan créé avec succès!');
+        //         $canal = Canal::create([
+        //             'titre' => 'général',
+        //             'clanId' => $clan->id,
+        //             'categorieId' => $categorie->id
+        //         ]);
+
+                return redirect()->back()->with('message', 'Clan créé avec succès!');
+        //     }
+        //     return redirect()->back()->with('message', 'Une erreur a été rencontrée lors de la création du clan mais le clan été créé avec succès.');
+        // }
+
+        // return redirect()->back()->with('error', 'Une erreur a été rencontrée lors de la création du clan. Veuillez réessayer plus tard');
     }
 
     /**

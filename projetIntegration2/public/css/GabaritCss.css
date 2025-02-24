@@ -204,14 +204,6 @@ main{
     position: relative;
 }
 
-.alert-success {
-    background-color: #4CAF50;
-}
-
-.alert-danger {
-    background-color: #f44336;
-}
-
 .close-btn {
     position: absolute;
     top: 5px;
@@ -221,4 +213,16 @@ main{
     border: none;
     color: #fff;
     cursor: pointer;
+}
+
+#messageSucces{
+    background-color: #60c22c;
+    border: 2px solid rgba(71, 70, 70, 0.5);
+    color: black;
+}
+
+#messageErreur{
+    background-color: #c22c2c;
+    border: 2px solid rgba(71, 70, 70, 0.8);
+    color: black;
 }
