@@ -16,6 +16,7 @@ use App\Events\SuppressionMessageGroup;
 
 
 
+
 class Conversations extends Controller
 {
 
@@ -113,20 +114,58 @@ class Conversations extends Controller
 
 
 
+
+
     public function destroy(UtilisateurClan $message)
     {
+        \Log::info('Début de la suppression du message', ['message_id' => $message->id, 'id_envoyer' => $message->idEnvoyer]);
+    
+        // Vérification des droits d'accès de l'utilisateur
         if (auth()->id() !== $message->idEnvoyer) {
+            \Log::warning('Action non autorisée', ['user_id' => auth()->id(), 'message_sender_id' => $message->idEnvoyer]);
             return response()->json(['error' => 'Action non autorisée'], 403);
         }
     
+        \Log::info('Utilisateur autorisé à supprimer le message', ['user_id' => auth()->id()]);
+    
+        // Récupérer l'URL de l'image associée au message
+        $imageUrl = $message->photo; // Remplacez `image` par le nom réel de l'attribut qui contient l'URL de l'image
+        \Log::info('URL de l\'image associée', ['image_url' => $imageUrl]);
+    
+        // Si l'image existe, la supprimer
+        if ($imageUrl) {
+            // Extraire le nom du fichier à partir de l'URL
+            $fileName = basename($imageUrl); // Exemple : '1740422612_IMG_4164.PNG'
+            \Log::info('Nom du fichier extrait de l\'URL', ['file_name' => $fileName]);
+    
+            // Récupérer le chemin complet du fichier
+            $filePath = public_path('img/conversations_photo/' . $fileName);
+            \Log::info('Chemin complet du fichier', ['file_path' => $filePath]);
+    
+            // Vérifier si le fichier existe et le supprimer
+            if (file_exists($filePath)) {
+                unlink($filePath);
+                \Log::info('Fichier supprimé', ['file_path' => $filePath]);
+            } else {
+                \Log::warning('Fichier non trouvé pour suppression', ['file_path' => $filePath]);
+            }
+        } else {
+            \Log::info('Aucune image à supprimer pour ce message');
+        }
+    
+        // Supprimer le message du modèle
         $messageId = $message->id;
         $message->delete();
+        \Log::info('Message supprimé', ['message_id' => $messageId]);
     
-        // Diffuser l'événement de suppression spécifique
+        // Diffuser l'événement de suppression
         broadcast(new SuppressionMessageGroup($messageId, $message->idClan))->toOthers();
+        \Log::info('Événement de suppression diffusé', ['message_id' => $messageId, 'clan_id' => $message->idClan]);
     
         return response()->json(['success' => 'Message supprimé']);
     }
+    
+    
     
     
     
