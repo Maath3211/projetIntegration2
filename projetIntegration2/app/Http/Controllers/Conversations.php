@@ -135,7 +135,7 @@ class Conversations extends Controller
         // Si l'image existe, la supprimer
         if ($imageUrl) {
             // Extraire le nom du fichier à partir de l'URL
-            $fileName = basename($imageUrl); // Exemple : '1740422612_IMG_4164.PNG'
+            $fileName = basename($imageUrl); 
             //\Log::info('Nom du fichier extrait de l\'URL', ['file_name' => $fileName]);
     
             // Récupérer le chemin complet du fichier
