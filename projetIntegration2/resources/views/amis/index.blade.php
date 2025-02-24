@@ -69,6 +69,7 @@
             border-radius: 5px 0 0 5px;
             background-color: #444;
             color: white;
+            width: 400px; /* Ajustez la largeur de la barre de recherche */
         }
         .search-button {
             padding: 10px 20px;
@@ -81,12 +82,72 @@
         .search-button:hover {
             background-color: #666;
         }
+        .result-item > * {
+            margin-right: 10px;
+        }
+        .result-item form {
+            margin: 0;
+        }
+        .result-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        /* Style de la zone cliquable pour afficher le profil */
+        .profile-trigger {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .profile-trigger > * {
+            margin-right: 10px;
+        }
+
+        /* Bouton Ajouter en vert et style ajusté */
+        .add-button {
+            background-color: #a9fe77;
+            color: #000;
+            border: 1px solid #999;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .add-button:hover {
+            background-color: #98e96a;
+        }
     </style>
 
     <h1>Rechercher des amis</h1>
 
+    <div class="top-buttons" style="margin-bottom: 20px;">
+        <a href="{{ route('amis.index') }}" class="search-button" style="text-decoration: none; padding: 10px 20px; background-color: #a9fe77; color: #000; border: 1px solid #999; border-radius: 5px; margin-right: 10px;">
+            Rechercher des amis
+        </a>
+        <a href="{{ route('amis.demandes') }}" class="add-button" style="text-decoration: none; padding: 10px 20px; background-color: #a9fe77; color: #000; border: 1px solid #999; border-radius: 5px;">
+            Liste des demandes d'amis
+        </a>
+    </div>
+
+    <!-- Affichage des messages -->
     @if(session('success'))
-        <p style="color: green;">{{ session('success') }}</p>
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+
+    @if($errors->any())
+        <div class="alert alert-danger">
+            @foreach ($errors->all() as $error)
+                <p>{{ $error }}</p>
+            @endforeach
+        </div>
     @endif
 
     <div class="search-bar">
@@ -101,20 +162,25 @@
         @if($utilisateurs->isEmpty())
             <p>Aucun utilisateur trouvé.</p>
         @else
+            <h2>Résultats de recherche :</h2>
             <ul class="result-list">
-            <h2>Résultats de recherche:</h2>
                 @foreach($utilisateurs as $utilisateur)
-                    <li class="result-item">
-                        @if($utilisateur->avatar)
-                            <img src="{{ asset('images/avatars/' . $utilisateur->avatar) }}" alt="Avatar" class="avatar">
-                        @else
-                            <img src="{{ asset('images/avatars/default-avatar.jpg') }}" alt="Avatar" class="avatar">
-                        @endif
-                        <span class="username">{{ $utilisateur->username }}</span>
-                        <button type="button" class="profile-button" data-toggle="modal" data-target="#profileModal{{ $utilisateur->id }}">Voir Profil</button>
-                        <form action="{{ route('amis.ajouter') }}" method="POST" style="display: inline;">
+                    <li class="result-item" data-target="#profileModal{{ $utilisateur->id }}">
+                        <div class="profile-trigger">
+                            @if($utilisateur->avatar)
+                                <img src="{{ asset('images/avatars/' . $utilisateur->avatar) }}" alt="Avatar" class="avatar" style="width:40px;height:40px;border-radius:50%;">
+                            @else
+                                <img src="{{ asset('images/avatars/default-avatar.jpg') }}" alt="Avatar" class="avatar" style="width:40px;height:40px;border-radius:50%;">
+                            @endif
+                            <span class="username">{{ $utilisateur->username }}</span>
+                        </div>
+                        
+                        <!-- Formulaire d'envoi de demande d'ami -->
+                        <form action="{{ route('amis.ajouter') }}" method="POST" onClick="event.stopPropagation();">
                             @csrf
-                            <input type="hidden" name="utilisateur_id" value="{{ $utilisateur->id }}">
+                            <!-- Ici, "user_id" serait l'expéditeur de la demande et "friend_id" le destinataire -->
+                            <input type="hidden" name="user_id" value="{{ $utilisateurConnecteId ?? 0 }}">
+                            <input type="hidden" name="friend_id" value="{{ $utilisateur->id }}">
                             <button type="submit" class="add-button">Ajouter</button>
                         </form>
                     </li>
@@ -150,3 +216,23 @@
         @endif
     @endisset
 @endsection
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.search-input').forEach(function(input) {
+        input.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                this.form.submit();
+            }
+        });
+    });
+    // Pour chaque zone cliquable, attacher un click qui ouvre le modal correspondant
+    document.querySelectorAll('.profile-trigger').forEach(function(trigger) {
+        trigger.addEventListener('click', function() {
+            var modalId = this.closest('.result-item').getAttribute('data-target');
+            $(modalId).modal('show');
+        });
+    });
+});
+</script>

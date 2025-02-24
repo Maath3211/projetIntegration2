@@ -78,7 +78,17 @@ Route::GET('/localisation',
 Route::get('/export/top-users', [ScoresController::class, 'exportTopUsers'])->name('export.topUsers');
 Route::get('/export/top-clans', [ScoresController::class, 'exportTopClans'])->name('export.topClans');
 
-//Route pour l'ajout d'amis
+//Route pour l'ajout/recherche d'amis/clans
 Route::get('amis', [AmisController::class, 'index'])->name('amis.index');
-Route::post('amis/recherche', [AmisController::class, 'recherche'])->name('amis.recherche');
+Route::match(['get','post'], 'amis/recherche', [AmisController::class, 'recherche'])->name('amis.recherche');
 Route::post('amis/ajouter', [AmisController::class, 'ajouter'])->name('amis.ajouter');
+Route::post('clans/recherche', [AmisController::class, 'rechercheClan'])->name('clans.recherche');
+
+// Affichage de la liste des demandes d'amis
+Route::get('amis/demandes', [AmisController::class, 'demandes'])->name('amis.demandes');
+
+// Traitement de l'acceptation d'une demande d'ami
+Route::post('amis/accepter', [AmisController::class, 'accepter'])->name('amis.accepter');
+
+// Traitement du refus d'une demande d'ami
+Route::post('amis/refuser', [AmisController::class, 'refuser'])->name('amis.refuser');

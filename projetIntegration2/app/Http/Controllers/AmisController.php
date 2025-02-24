@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User; // Utilisé pour la recherche d'amis
+use App\Models\Clan; // Utilisé pour la recherche de clans
 
 class AmisController extends Controller
 {
@@ -16,6 +17,11 @@ class AmisController extends Controller
     // Recherche les utilisateurs par nom d'utilisateur
     public function recherche(Request $requete)
     {
+        // Si la méthode est GET, redirige vers la page principale des amis
+        if ($requete->isMethod('get')) {
+            return redirect()->route('amis.index');
+        }
+
         $requete->validate([
             'q' => 'required|string'
         ]);
@@ -26,21 +32,148 @@ class AmisController extends Controller
         return view('amis.index', compact('utilisateurs'));
     }
 
-    // Ajoute l'utilisateur en ami
-    public function ajouter(Request $requete)
+    public function rechercheClan(Request $request)
     {
-        $requete->validate([
-            'utilisateur_id' => 'required|exists:users,id'
+        $request->validate([
+            'q' => 'required|string'
         ]);
 
-        $amiId = $requete->input('utilisateur_id');
+        $query = $request->input('q');
+        $clans = Clan::where('nom', 'like', "%{$query}%")->get();
 
-        // Exemple de logique simplifiée pour les tests :
-        // Utilisation d'un utilisateur fictif avec l'ID 1
-        $utilisateur = User::find(1);
-        $ami = User::find($amiId);
-        $utilisateur->amis()->attach($ami);
+        return view('amis.index', compact('clans'));
+    }
 
-        return back()->with('success', 'Ami ajouté avec succès.');
+    // Ajoute un ami sans authentification (les IDs sont passés dans la requête)
+    public function ajouter(Request $request)
+    {
+        $request->validate([
+            'friend_id' => 'required|integer|exists:users,id',
+        ]);
+
+        // Utiliser l'utilisateur authentifié ou assigner l'ID 999 si personne n'est connecté
+        if (auth()->check()) {
+            $user = auth()->user();
+        } else {
+            // Pour les tests, si pas d'utilisateur connecté, considérer l'utilisateur 999
+            $user = (object) ['id' => 999];
+        }
+
+        $friendId = $request->input('friend_id');
+
+        // Empêcher d'envoyer une demande à soi-même
+        if ($user->id == $friendId) {
+            return back()->withErrors('Vous ne pouvez pas vous ajouter vous-même.');
+        }
+
+        // Vérifier qu'une demande n'existe pas déjà
+        $exists = \DB::table('demande_amis')
+            ->where('requester_id', $user->id)
+            ->where('requested_id', $friendId)
+            ->exists();
+
+        if ($exists) {
+            return back()->withErrors('Une demande d\'ami a déjà été envoyée.');
+        }
+
+        // Insérer la demande d'ami dans la table
+        \DB::table('demande_amis')->insert([
+            'requester_id' => $user->id,
+            'requested_id' => $friendId,
+            'status'       => 'pending',
+            'created_at'   => now(),
+            'updated_at'   => now(),
+        ]);
+
+        return back()->with('success', 'Demande d\'ami envoyée avec succès!');
+    }
+
+    // Affiche les demandes d'amis destinées à l'utilisateur connecté (ou 999 en test)
+    public function demandes(Request $request)
+    {
+        // Utiliser l'utilisateur authentifié ou l'ID 999 pour les tests
+        $userId = auth()->check() ? auth()->user()->id : 999;
+
+        // Récupérer les demandes reçues en joignant la table users pour obtenir l'avatar et le username du demandeur
+        $demandes = \DB::table('demande_amis')
+            ->join('users', 'demande_amis.requester_id', '=', 'users.id')
+            ->select('demande_amis.*', 'users.username as requester_username', 'users.avatar as requester_avatar')
+            ->where('demande_amis.requested_id', $userId)
+            ->where('demande_amis.status', 'pending')
+            ->get();
+
+        return view('amis.demandes', compact('demandes'));
+    }
+
+    // Accepte une demande d'ami
+    public function accepter(Request $request)
+    {
+        $request->validate([
+            'demande_id' => 'required|integer|exists:demande_amis,id',
+        ]);
+
+        $userId = auth()->check() ? auth()->user()->id : 999;
+
+        // Récupérer la demande
+        $demande = \DB::table('demande_amis')->where('id', $request->input('demande_id'))->first();
+
+        // Vérifier que la demande est destinée à l'utilisateur
+        if ($demande->requested_id != $userId) {
+            return back()->withErrors('Action non autorisée.');
+        }
+
+        // Mettre à jour le statut à "accepted"
+        \DB::table('demande_amis')
+            ->where('id', $request->input('demande_id'))
+            ->update([
+                'status'     => 'accepted',
+                'updated_at' => now(),
+            ]);
+
+        // Insérer la relation d'amitié bidirectionnelle dans la table amis
+        \DB::table('amis')->insert([
+            [
+                'user_id'    => $demande->requested_id,
+                'friend_id'  => $demande->requester_id,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'user_id'    => $demande->requester_id,
+                'friend_id'  => $demande->requested_id,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        ]);
+
+        return back()->with('success', 'Demande d\'ami acceptée et relation ajoutée!');
+    }
+
+    // Refuse une demande d'ami
+    public function refuser(Request $request)
+    {
+        $request->validate([
+            'demande_id' => 'required|integer|exists:demande_amis,id',
+        ]);
+
+        $userId = auth()->check() ? auth()->user()->id : 999;
+
+        // Récupérer la demande
+        $demande = \DB::table('demande_amis')->where('id', $request->input('demande_id'))->first();
+
+        // Vérifier que la demande est destinée à l'utilisateur
+        if ($demande->requested_id != $userId) {
+            return back()->withErrors('Action non autorisée.');
+        }
+
+        // Mettre à jour le statut à "declined"
+        \DB::table('demande_amis')
+            ->where('id', $request->input('demande_id'))
+            ->update([
+                'status'     => 'declined',
+                'updated_at' => now(),
+            ]);
+
+        return back()->with('success', 'Demande d\'ami refusée.');
     }
 }
