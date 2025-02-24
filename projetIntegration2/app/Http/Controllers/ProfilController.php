@@ -18,6 +18,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\reinitialisation;
+use App\Mail\confirmation;
 
 class ProfilController extends Controller
 {
@@ -28,6 +29,10 @@ class ProfilController extends Controller
 
     public function connexion(ConnexionRequest $request)
     {
+        $utilisateur = User::where('email', $request->email)->first();
+        if ($utilisateur->email_verified_at == null) {
+            return redirect()->back()->withErrors(['email' => 'Votre compte n\'a pas été vérifié']);
+        }
         $reussi = Auth::guard()->attempt(['email' => $request->email, 'password' => $request->password]);
         if ($reussi) {
             return redirect()->route('profil.profil');
@@ -54,6 +59,7 @@ class ProfilController extends Controller
         $utilisateur->genre = $request->genre;
         $utilisateur->dateNaissance = $request->dateNaissance;
         $utilisateur->password = bcrypt($request->password);
+        $utilisateur->codeVerification = Str::random(64);
 
         if ($request->hasFile('imageProfil')) {
             $uploadedFile = $request->file('imageProfil');
@@ -69,6 +75,7 @@ class ProfilController extends Controller
             return redirect()->back()->withErrors(['imageProfil' => 'Aucune image sélectionnée']);
         }
 
+        Mail::to($utilisateur->email)->send(new confirmation($utilisateur->codeVerification));
         $utilisateur->save();
         return redirect()->route('profil.connexion')->with('message', 'Votre compte a été créé avec succès');
     }
@@ -96,6 +103,9 @@ class ProfilController extends Controller
                 ->first();
 
             if ($existingUser) {
+                if ($existingUser->email_verified_at == null) {
+                    return redirect()->route('profil.connexion')->withErrors(['email' => 'Votre compte n\'a pas été vérifié']);
+                }
                 Auth::login($existingUser);
                 return redirect()->route('profil.profil');
             }
@@ -241,9 +251,6 @@ class ProfilController extends Controller
         return redirect()->route('profil.profil')->with('message', 'Votre profil a été mis à jour avec succès');
     }
 
-
-
-
     public function pageMotDePasseOublie()
     {
         return View('profil.reinitialisation');
@@ -264,7 +271,7 @@ class ProfilController extends Controller
         }
 
         $token = Str::random(64);
-        
+
         $existingToken = DB::table('password_reset_tokens')->where('email', $request->email)->first();
         if ($existingToken) {
             DB::table('password_reset_tokens')->where('email', $request->email)->delete();
@@ -322,7 +329,12 @@ class ProfilController extends Controller
         return redirect('/connexion')->with('message', 'Mot de passe mis à jour!');
     }
 
-
+    public function confCourriel($codeVerification){
+        $user = User::where('codeVerification', $codeVerification)->first();
+        $user->email_verified_at = now();
+        $user->save();
+        return redirect()->route('profil.connexion')->with('message', 'Votre compte a été vérifié avec succès');
+    }
 
 
 

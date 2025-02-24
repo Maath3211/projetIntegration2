@@ -88,6 +88,9 @@ Route::GET('/creerCompte',
 Route::POST('/creerCompte',
 [ProfilController::class,'storeCreerCompte'])->name('profil.storeCreerCompte');
 
+Route::GET('/confirmation/{codeVerification}',
+[ProfilController::class,'confirmation'])->name('profil.confirmation');
+
 Route::GET('/meilleursGroupes',
 [ScoresController::class,'meilleursGroupes'])->name('scores.meilleursGroupes');
 Route::POST('/deconnexion',
