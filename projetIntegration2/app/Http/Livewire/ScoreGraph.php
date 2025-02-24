@@ -8,58 +8,83 @@ use Illuminate\Support\Facades\DB;
 
 class ScoreGraph extends Component
 {
-    // Use simple public properties that will be accessible in the view
     public $months = [];
     public $clanScores = [];
     public $userScores = [];
-    
-    // A flag to track if the component has been initialized
-    public $initialized = false;
+    public $showType = 'users'; // Options: 'users', 'clans', 'members', 'improvements'
+    public $selectedClanId = null;
 
-    public function mount()
+    protected $listeners = [
+        'updateSelectedClan' => 'updateSelectedClan'
+    ];
+
+    public function mount($showType = 'users', $selectedClanId = null)
     {
-        // Load data only once
-        if (!$this->initialized) {
-            $this->loadChartData();
-            $this->initialized = true;
-        }
+        $this->showType = $showType;
+        $this->selectedClanId = $selectedClanId;
+        $this->loadChartData();
+    }
+    public function hideGraph()
+    {
+        $this->dispatch('closeGraph');
     }
 
-    private function loadChartData()
+    public function loadChartData()
     {
         // Generate data for last 6 months
+        $this->months = [];
+        $this->clanScores = [];
+        $this->userScores = [];
+
         for ($i = 5; $i >= 0; $i--) {
             $month = Carbon::now()->subMonths($i);
             $this->months[] = $month->format('M Y');
-            
+
             $startOfMonth = $month->startOfMonth()->format('Y-m-d');
             $endOfMonth = $month->endOfMonth()->format('Y-m-d');
-            
-            // Get clan scores or use sample data
+
+            // Get clan scores
             try {
-                $clanScore = DB::table('clan_users as cu')
-                    ->join('scores', function($join) use ($startOfMonth, $endOfMonth) {
+                $clanQuery = DB::table('clan_users as cu')
+                    ->join('scores', function ($join) use ($startOfMonth, $endOfMonth) {
                         $join->on('cu.user_id', '=', 'scores.user_id')
                             ->whereBetween('scores.date', [$startOfMonth, $endOfMonth]);
-                    })
-                    ->sum('scores.score');
-                
-                $this->clanScores[] = $clanScore ?: rand(1000, 2000);
+                    });
+
+                // Filter by clan if selected
+                if ($this->selectedClanId && $this->selectedClanId != 'global') {
+                    $clanQuery->where('cu.clan_id', $this->selectedClanId);
+                }
+
+                $clanScore = $clanQuery->sum('scores.score');
+                $this->clanScores[] = $clanScore ?: 0;
             } catch (\Exception $e) {
                 $this->clanScores[] = rand(1000, 2000);
             }
-            
-            // Get user scores or use sample data
+
+            // Get user scores or member scores if clan is selected
             try {
-                $userScore = DB::table('scores')
-                    ->whereBetween('date', [$startOfMonth, $endOfMonth])
-                    ->sum('score');
-                
-                $this->userScores[] = $userScore ?: rand(700, 1500);
+                $userQuery = DB::table('scores')
+                    ->whereBetween('date', [$startOfMonth, $endOfMonth]);
+
+                // Filter by clan if selected
+                if ($this->selectedClanId && $this->selectedClanId != 'global') {
+                    $userQuery->join('clan_users', 'scores.user_id', '=', 'clan_users.user_id')
+                        ->where('clan_users.clan_id', $this->selectedClanId);
+                }
+
+                $userScore = $userQuery->sum('scores.score');
+                $this->userScores[] = $userScore ?: 0; // Change rand(700, 1500) to 0
             } catch (\Exception $e) {
                 $this->userScores[] = rand(700, 1500);
             }
         }
+    }
+
+    public function updateSelectedClan($clanId)
+    {
+        $this->selectedClanId = $clanId;
+        $this->loadChartData();
     }
 
     public function render()

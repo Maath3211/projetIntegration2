@@ -2,7 +2,6 @@
     @if(!$showingGraph)
     <!-- Leaderboard Content -->
     <div id="topClansContainer" style="scrollbar-width: thin; scrollbar-color: transparent transparent;">
-        <!-- Leaderboard Header Box -->
         <div class="leaderboard-header p-3 mb-3 border rounded d-flex justify-content-between align-items-center">
             <div>
                 <div class="d-flex align-items-center">
@@ -11,17 +10,24 @@
                 </div>
                 <p class="text-muted mb-0">Découvrez les clans les plus performants et inspirants du moment</p>
             </div>
-            <div class="dropdown ml-2" wire:ignore>
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="exportDropdown" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
-                    <i class="fa-solid fa-share-from-square fa-2x"></i>
+            <div class="d-flex align-items-center">
+                <button class="btn btn-primary mr-2" wire:click="showClansGraph">
+                    <i class="fa-solid fa-chart-line"></i> Graphique Clans
                 </button>
-                <div class="dropdown-menu" aria-labelledby="exportDropdown">
-                    <a class="dropdown-item" href="{{ route('export.topClans') }}">Exporter Liste CSV</a>
-                    <a class="dropdown-item" href="#" id="exportClansImageBtn">Exporter Capture</a>
+                <div class="dropdown ml-2" wire:ignore>
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="exportDropdown" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <i class="fa-solid fa-share-from-square fa-2x"></i>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="exportDropdown">
+                        <a class="dropdown-item" href="{{ route('export.topClans') }}">Exporter Liste CSV</a>
+                        <a class="dropdown-item" href="#" id="exportClansImageBtn">Exporter Capture</a>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <!-- Clans Content -->
         <div class="row mb-0">
             <div class="col-md-6">
                 @foreach ($topClans->take(5) as $index => $clan)
@@ -37,7 +43,6 @@
                 </div>
                 @endforeach
             </div>
-            <!-- Column for positions 6 to 10 -->
             <div class="col-md-6">
                 @foreach ($topClans->slice(5, 5) as $index => $clan)
                 <div class="clan-row d-flex align-items-center justify-content-between mb-2 py-2 px-3 border-bottom">
@@ -54,7 +59,7 @@
             </div>
         </div>
     </div>
-
+    
     <div id="topUsersContainer" style="scrollbar-width: thin; scrollbar-color: transparent transparent;">
         <div class="leaderboard-header p-3 mb-3 border rounded d-flex justify-content-between align-items-center">
             <div>
@@ -65,11 +70,12 @@
                 <p class="text-muted mb-0">Découvrez les utilisateurs les plus performants et inspirants du moment</p>
             </div>
             <div class="d-flex align-items-center">
-                <button wire:click="showGraph" class="btn btn-primary mr-2">
-                    <i class="fa-solid fa-chart-line"></i> Voir Graphique
+                <button class="btn btn-primary mr-2" wire:click="showUsersGraph">
+                    <i class="fa-solid fa-chart-line"></i> Graphique Utilisateurs
                 </button>
                 <div class="dropdown ml-2" wire:ignore>
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="exportDropdownUsers" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="exportDropdownUsers" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
                         <i class="fa-solid fa-share-from-square fa-2x"></i>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="exportDropdownUsers">
@@ -79,13 +85,14 @@
                 </div>
             </div>
         </div>
+
+        <!-- Users Content -->
         <div class="row mb-0">
-            <!-- Column for positions 1 to 5 -->
             <div class="col-md-6">
                 @foreach ($topUsers->take(5) as $index => $user)
                 <div class="clan-row d-flex align-items-center justify-content-between mb-2 py-2 px-3 border-bottom">
                     <div class="d-flex align-items-center">
-                        <a href="" class="clan-link">
+                        <a href="#" class="clan-link">
                             <div class="position mr-3">{{ $index + 1 }}</div>
                             <img src="{{ asset($user->imageProfil) }}" alt="User Image" class="rounded-circle" style="width:40px; height:40px;">
                             <span class="clan-nom ml-3">{{ $user->prenom }} {{ $user->nom }}</span>
@@ -95,12 +102,11 @@
                 </div>
                 @endforeach
             </div>
-            <!-- Column for positions 6 to 10 -->
             <div class="col-md-6">
                 @foreach ($topUsers->slice(5, 5) as $index => $user)
                 <div class="clan-row d-flex align-items-center justify-content-between mb-2 py-2 px-3 border-bottom">
                     <div class="d-flex align-items-center">
-                        <a href="" class="clan-link">
+                        <a href="#" class="clan-link">
                             <div class="position mr-3">{{ $index + 6 }}</div>
                             <img src="{{ asset($user->imageProfil) }}" alt="User Image" class="rounded-circle" style="width:40px; height:40px;">
                             <span class="clan-nom ml-3">{{ $user->prenom }} {{ $user->nom }}</span>
@@ -113,16 +119,13 @@
         </div>
     </div>
     @else
+    <!-- Graph Content -->
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <!-- Keep this simple, no unique key or fancy loading -->
-                @livewire('score-graph')
-
-                <!-- Add a simple button to go back -->
-                <button class="btn btn-secondary mt-3" wire:click="showLeaderboard">
-                    <i class="fas fa-arrow-left"></i> Retour au classement
-                </button>
+                <div wire:key="score-graph-{{ $chartType }}">
+                    @livewire('score-graph', ['showType' => $chartType])
+                </div>
             </div>
         </div>
     </div>
