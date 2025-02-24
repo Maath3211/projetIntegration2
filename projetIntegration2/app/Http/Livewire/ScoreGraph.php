@@ -74,7 +74,7 @@ class ScoreGraph extends Component
                 }
 
                 $userScore = $userQuery->sum('scores.score');
-                $this->userScores[] = $userScore ?: 0; // Change rand(700, 1500) to 0
+                $this->userScores[] = $userScore ?: 0; 
             } catch (\Exception $e) {
                 $this->userScores[] = rand(700, 1500);
             }
