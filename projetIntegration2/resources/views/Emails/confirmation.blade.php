@@ -11,9 +11,8 @@
         <p>Bonjour {{ $utilisateur->prenom . ' ' . $utilisateur->nom }},</p>
 
         <p>Nous vous remercions de votre inscription. Pour activer votre compte, veuillez cliquer sur le bouton ci-dessous :</p>
-        
         <div style="text-align: center; margin: 30px 0;">
-            <a href="{{ route('profil.confirmation', $utilisateur->token) }}" 
+            <a href="{{ route('profil.confirmation', $utilisateur->codeVerification) }}" 
                style="background-color: #4CAF50; 
                       color: white; 
                       padding: 12px 25px; 
