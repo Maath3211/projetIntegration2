@@ -17,7 +17,7 @@ class SuppressionMessageGroup implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    
+
     public $messageId;
     public $groupId;
 

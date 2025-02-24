@@ -107,6 +107,24 @@
             height: 100vh;
             /* Prendre toute la hauteur de l'écran */
         }
+
+        /* Stylisation des images dans les messages */
+        .message-image {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .message-img {
+            max-width: 100%;
+            /* Limite la largeur de l'image pour s'adapter à l'écran */
+            height: auto;
+            /* Garde le ratio de l'image */
+            border-radius: 8px;
+            /* Bordure arrondie pour l'image */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            /* Ombre légère autour de l'image */
+            margin-top: 10px;
+        }
     </style>
 
     @section('style')
@@ -178,24 +196,40 @@
                                             <button class="delete-btn" data-id="{{ $message->id }}">🗑️</button>
                                         @else
                                             <div class="avatar bg-primary text-white rounded-circle p-2">
-                                                {{ substr($message->user->email, 0, 2) }}</div>
+                                                {{ substr($message->user->email, 0, 2) }}
+                                            </div>
                                         @endif
+
                                         <div class="bubble">
                                             <strong>{{ $message->user->email }}</strong>
                                             <span class="text-muted">{{ substr($message->created_at, 11, 5) }}</span>
                                             <br>
                                             <p>{!! nl2br(e($message->message)) !!}</p>
+
+                                            <!-- Vérifier si une image est attachée au message -->
+                                            @if ($message->photo)
+                                                <div class="message-image">
+                                                    <img src="{{ $message->photo }}" alt="Image" class="message-img">
+
+                                                </div>
+                                            @endif
+
                                         </div>
+
+
                                         @if ($message->idEnvoyer != auth()->id())
-                                            <!-- Bouton de suppression visible uniquement pour l'auteur -->
+                                            <!-- Pas de bouton de suppression pour les messages reçus -->
                                         @else
                                             <div class="avatar bg-primary text-white rounded-circle p-2">
-                                                {{ substr($message->user->email, 0, 2) }}</div>
+                                                {{ substr($message->user->email, 0, 2) }}
+                                            </div>
                                         @endif
                                     </div>
                                     <div class="separator"></div>
                                 </div>
                             @endforeach
+
+
 
 
                             @if ($messages->previousPageUrl())
@@ -209,10 +243,11 @@
                         </div>
 
                         <div class="d-flex align-items-center mt-3">
-                            <form action="" method="post" class="d-flex flex-grow-1">
+                            <form action="" method="post" enctype="multipart/form-data" class="d-flex flex-grow-1">
                                 @csrf
                                 <div class="form-group d-flex align-items-center w-100">
-                                    <button class="btn btn-secondary me-2">➕</button>
+                                    <input type="file" class="btn btn-secondary" name="photo" accept="image/*"
+                                        placeholder="➕">
                                     <button class="btn btn-secondary me-2">😊</button>
 
 
@@ -463,6 +498,12 @@
 
             const channel = pusher.subscribe(channelName);
 
+
+
+
+
+
+
             // Recevoir les messages de la conversation privée
             channel.bind('event-group', function(data) {
                 // Vérifier si le message a été supprimé
@@ -483,6 +524,7 @@
                         <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
                         <br>
                         <p>${data.message}</p>
+                        ${data.photo ? `<div class="message-image"><img src="${data.photo}" alt="Image" class="message-img"></div>` : ''}
                     </div>
                 </div>
                 <div class="separator"></div>
@@ -494,48 +536,68 @@
             });
 
 
+
+
+
+
             // Envoyer un message via AJAX
             $("form").submit(function(e) {
                 e.preventDefault();
-                //console.log("Formulaire envoyé!");
+
+                let formData = new FormData();
+                formData.append("_token", "{{ csrf_token() }}");
+                formData.append("message", $("input[name='content']").val());
+                formData.append("from", userId);
+                formData.append("to", friendId);
+
+                let fileInput = $("input[name='photo']")[0]; // Assurez-vous que l'input file a name='image'
+                if (fileInput.files.length > 0) {
+                    formData.append("photo", fileInput.files[0]); // Ajoute l'image si présente
+                }
 
                 $.ajax({
                     type: "POST",
                     url: "/broadcastClan",
                     headers: {
-                        'X-Socket-Id': pusher.connection.socket_id
+                        "X-Socket-Id": pusher.connection.socket_id,
                     },
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        message: $("input[name='content']").val(),
-                        from: userId, // Ajoute l'ID de l'utilisateur connecté
-                        to: friendId // Ajoute l'ID du destinataire
-                    }
+                    data: formData,
+                    processData: false, // Ne pas traiter les données
+                    contentType: false, // Ne pas définir de type de contenu
                 }).done(function(res) {
+                    console.log(res);
+                    $("input[name='photo']").val(""); // Réinitialiser l'input file 'photo'
+
+                    
+
                     let avatarText = res.sender_email.substring(0, 2);
-                    console.log(avatarText)
+                    let messageContent = res.message ? `<p>${res.message}</p>` : "";
+                    let imageContent = res.photo ?
+                        `<img src="${res.photo}" class="message-image" alt="Image envoyée">` : "";
+
                     $("#chat-messages").append(`
-                <div class="messageTotal"  id="message-${res.last_id}">
-
-                        <div class="message own-message">
-                            <button class="delete-btn" data-id="${res.last_id}">🗑️</button>
-                            <div class="bubble">
-                                <strong>{{ isset($message) ? $message->user->email : 'rien' }}</strong>
-                                <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
-                                <br>
-                                <p>${$("input[name='content']").val()}</p>
-                            </div>
-                        <div class="ml-4 avatar bg-primary text-white rounded-circle p-2">${avatarText}</div>
-
-                        </div>
-                            <div class="separator"></div>
-                        
+            <div class="messageTotal" id="message-${res.last_id}">
+                <div class="message own-message">
+                    <button class="delete-btn" data-id="${res.last_id}">🗑️</button>
+                    <div class="bubble">
+                        <strong>${res.sender_email}</strong>
+                        <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
+                        <br>
+                        ${messageContent}
+                        ${imageContent}
                     </div>
-                `);
+                    <div class="ml-4 avatar bg-primary text-white rounded-circle p-2">${avatarText}</div>
+                </div>
+                <div class="separator"></div>
+            </div>
+        `);
+
                     $("input[name='content']").val("");
+                    $("input[name='image']").val(""); // Réinitialise l'input file
                     $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
                 });
             });
+
 
 
 

@@ -143,20 +143,46 @@ class Conversations extends Controller
         
     }
     
-
-    public function broadcastClan(Request $request){
+    public function broadcastClan(Request $request)
+    {
+        //SI IL Y A UN BUG AVEC PHOTO C'EST ICI
+        $request->validate([
+            'message' => 'nullable|string',
+            'photo'   => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+        ]);
+    
         try {
-            // Insérer le message une seule fois
+            if ($request->hasFile('photo')) {
+                $photo = $request->file('photo');
+                
+                // Définir le chemin de stockage
+                $destinationPath = public_path('img/conversations_photo');
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0755, true); // Crée le dossier s'il n'existe pas
+                }
+    
+                // Générer un nom unique
+                $photoName = time() . '_' . $photo->getClientOriginalName();
+                $photo->move($destinationPath, $photoName);
+    
+                // Construire le chemin d'accès public
+                $photoUrl = asset("img/conversations_photo/{$photoName}");
+            } else {
+                $photoUrl = null;
+            }
+    
+            // Insérer le message dans la base de données
             $lastId = \DB::table('utilisateur_clan')->insertGetId([
                 'idEnvoyer' => auth()->id(),
                 'idClan'    => $request->to,
                 'message'   => $request->message,
+                'photo'     => $photoUrl, // Stocke le chemin public
                 'created_at'=> now(),
                 'updated_at'=> now()
             ]);
     
-            // Diffuser l'événement via Pusher
-            broadcast(new MessageGroup($request->message, auth()->id(), $request->to, false, $lastId))
+            // Diffuser l’événement via Pusher
+            broadcast(new MessageGroup($request->message, auth()->id(), $request->to, false, $lastId, $photoUrl))
                 ->toOthers();
     
         } catch (\Exception $e) {
@@ -167,9 +193,12 @@ class Conversations extends Controller
             'message'      => $request->message,
             'last_id'      => $lastId,
             'sender_id'    => auth()->id(),
-            'sender_email' => auth()->user()->email  
+            'sender_email' => auth()->user()->email,
+            'photo'        => $photoUrl // Retourne l'URL complète
         ]);
     }
+    
+    
     
 
 
