@@ -17,7 +17,7 @@ class AmisController extends Controller
     // Recherche les utilisateurs par nom d'utilisateur
     public function recherche(Request $requete)
     {
-        // Si la méthode est GET, redirige vers la page principale des amis
+        // Si la méthode est GET, rediriger vers la page principale des amis
         if ($requete->isMethod('get')) {
             return redirect()->route('amis.index');
         }
@@ -27,7 +27,23 @@ class AmisController extends Controller
         ]);
 
         $query = $requete->input('q');
-        $utilisateurs = User::where('username', 'like', "%{$query}%")->get();
+
+        // Utiliser l'utilisateur authentifié ou l'ID 999 pour les tests
+        $userId = auth()->check() ? auth()->user()->id : 999;
+
+        // Récupérer la liste des IDs des amis déjà ajoutés par l'utilisateur
+        $friendIds = \DB::table('amis')
+            ->where('user_id', $userId)
+            ->pluck('friend_id')
+            ->toArray();
+
+        // S'assurer d'exclure également l'utilisateur lui-même
+        $friendIds[] = $userId;
+
+        // Rechercher les utilisateurs dont le nom correspond à la recherche et qui ne sont pas déjà amis
+        $utilisateurs = User::where('username', 'like', "%{$query}%")
+            ->whereNotIn('id', $friendIds)
+            ->get();
 
         return view('amis.index', compact('utilisateurs'));
     }
@@ -131,7 +147,7 @@ class AmisController extends Controller
             ]);
 
         // Insérer la relation d'amitié bidirectionnelle dans la table amis
-        \DB::table('amis')->insert([
+        $result = \DB::table('amis')->insert([
             [
                 'user_id'    => $demande->requested_id,
                 'friend_id'  => $demande->requester_id,
@@ -145,6 +161,9 @@ class AmisController extends Controller
                 'updated_at' => now(),
             ]
         ]);
+
+        // Pour déboguer, vous pouvez vérifier le résultat de l'insertion :
+        // dd($result); // Affiche true en cas d'insertion réussie
 
         return back()->with('success', 'Demande d\'ami acceptée et relation ajoutée!');
     }

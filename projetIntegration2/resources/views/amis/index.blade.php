@@ -126,8 +126,6 @@
         }
     </style>
 
-    <h1>Rechercher des amis</h1>
-
     <div class="top-buttons" style="margin-bottom: 20px;">
         <a href="{{ route('amis.index') }}" class="search-button" style="text-decoration: none; padding: 10px 20px; background-color: #a9fe77; color: #000; border: 1px solid #999; border-radius: 5px; margin-right: 10px;">
             Rechercher des amis
