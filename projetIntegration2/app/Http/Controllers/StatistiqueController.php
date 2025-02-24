@@ -184,10 +184,16 @@ public function ajouterPoids(Request $request)
         ]);
     
         foreach ($request->stats as $stat) {
-            Statistiques::create([
-                'user_id' => auth()->id(),
-                'nomStatistique' => $stat['nomStatistique'],
-                'score' => $stat['score']
+            $statistique = Statistiques::create([
+            'user_id' => auth()->id(),
+            'nomStatistique' => $stat['nomStatistique'],
+            'score' => $stat['score']
+            ]);
+
+            ScoreExercice::create([
+            'statistique_id' => $statistique->id,
+            'semaine' => 1,
+            'score' => $stat['score']
             ]);
         }
     
