@@ -10,9 +10,6 @@ class GlobalLeaderboard extends Component
     public $topClans;
     public $topUsers;
 
-    // Ensure we're properly listening for chart events
-    protected $listeners = ['chartDataUpdated' => '$refresh'];
-
     public function mount($topClans, $topUsers)
     {
         $this->topClans = $topClans;

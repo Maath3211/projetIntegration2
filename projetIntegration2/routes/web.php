@@ -113,3 +113,7 @@ Route::get('/export/top-membres/{clanId}', [ScoresController::class, 'exportTopM
 Route::get('/export/top-amelioration/{clanId}', [ScoresController::class, 'exportTopAmelioration'])->name('export.topAmelioration');
 Route::get('/scores/view-graph', [App\Http\Controllers\ScoresController::class, 'viewScoreGraph'])
     ->name('scores.view-graph');
+Route::get('/test-chart', [App\Http\Controllers\ScoresController::class, 'testChart'])
+    ->name('test.chart');
+Route::get('/scores/chart-page', [App\Http\Controllers\ScoresController::class, 'showChart'])
+    ->name('scores.chart-page');

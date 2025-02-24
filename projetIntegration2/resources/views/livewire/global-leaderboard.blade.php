@@ -1,6 +1,6 @@
 <div style="height: 100vh; overflow-y: auto; scrollbar-width: thin; scrollbar-color: transparent transparent;">
     @if(!$showingGraph)
-    <!-- Leaderboard content (unchanged) -->
+    <!-- Leaderboard Content -->
     <div id="topClansContainer" style="scrollbar-width: thin; scrollbar-color: transparent transparent;">
         <!-- Leaderboard Header Box -->
         <div class="leaderboard-header p-3 mb-3 border rounded d-flex justify-content-between align-items-center">
@@ -43,7 +43,7 @@
                 <div class="clan-row d-flex align-items-center justify-content-between mb-2 py-2 px-3 border-bottom">
                     <div class="d-flex align-items-center">
                         <a href="{{ route('clan.montrer', ['id' => $clan->clan_id])}}" class="clan-link {{ request()->routeIs('clan.montrer') && request('id') == $clan->clan_id ? 'active' : '' }}">
-                            <div class="position mr-3">{{ $index + 1 }}</div>
+                            <div class="position mr-3">{{ $index + 6 }}</div>
                             <img src="{{ asset('img/clans/' . $clan->clan_image) }}" alt="Clan Image" class="rounded-circle" style="width:40px; height:40px;">
                             <span class="clan-nom ml-3">{{ $clan->clan_nom }}</span>
                         </a>
@@ -54,6 +54,7 @@
             </div>
         </div>
     </div>
+
     <div id="topUsersContainer" style="scrollbar-width: thin; scrollbar-color: transparent transparent;">
         <div class="leaderboard-header p-3 mb-3 border rounded d-flex justify-content-between align-items-center">
             <div>
@@ -64,9 +65,9 @@
                 <p class="text-muted mb-0">Découvrez les utilisateurs les plus performants et inspirants du moment</p>
             </div>
             <div class="d-flex align-items-center">
-                <a href="{{ route('scores.view-graph') }}" class="btn btn-primary mr-2">
+                <button wire:click="showGraph" class="btn btn-primary mr-2">
                     <i class="fa-solid fa-chart-line"></i> Voir Graphique
-                </a>
+                </button>
                 <div class="dropdown ml-2" wire:ignore>
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="exportDropdownUsers" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa-solid fa-share-from-square fa-2x"></i>
@@ -100,7 +101,7 @@
                 <div class="clan-row d-flex align-items-center justify-content-between mb-2 py-2 px-3 border-bottom">
                     <div class="d-flex align-items-center">
                         <a href="" class="clan-link">
-                            <div class="position mr-3">{{ $index + 1 }}</div>
+                            <div class="position mr-3">{{ $index + 6 }}</div>
                             <img src="{{ asset($user->imageProfil) }}" alt="User Image" class="rounded-circle" style="width:40px; height:40px;">
                             <span class="clan-nom ml-3">{{ $user->prenom }} {{ $user->nom }}</span>
                         </a>
@@ -115,36 +116,15 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <button class="btn btn-secondary mb-3" wire:click="showLeaderboard">
+                <!-- Keep this simple, no unique key or fancy loading -->
+                @livewire('score-graph')
+
+                <!-- Add a simple button to go back -->
+                <button class="btn btn-secondary mt-3" wire:click="showLeaderboard">
                     <i class="fas fa-arrow-left"></i> Retour au classement
                 </button>
-                <!-- Load ScoreGraph component and pass data properly -->
-                <div id="scoreGraphContainer" wire:key="graph-{{ now() }}">
-                    @livewire('score-graph')
-                </div>
             </div>
         </div>
     </div>
     @endif
-    <style>
-        #topClansContainer::-webkit-scrollbar,
-        #topUsersContainer::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        #topClansContainer::-webkit-scrollbar-thumb,
-        #topUsersContainer::-webkit-scrollbar-thumb {
-            background-color: transparent;
-        }
-
-        #topClansContainer:hover::-webkit-scrollbar-thumb,
-        #topUsersContainer:hover::-webkit-scrollbar-thumb {
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-    </style>
 </div>
-
-<!-- Add Chart.js script if not already present in the layout -->
-@push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
-@endpush
