@@ -75,7 +75,7 @@ class ProfilController extends Controller
             return redirect()->back()->withErrors(['imageProfil' => 'Aucune image sélectionnée']);
         }
 
-        Mail::to($utilisateur->email)->send(new confirmation($utilisateur->codeVerification));
+        Mail::to($utilisateur->email)->send(new confirmation($utilisateur));
         $utilisateur->save();
         return redirect()->route('profil.connexion')->with('message', 'Votre compte a été créé avec succès');
     }
