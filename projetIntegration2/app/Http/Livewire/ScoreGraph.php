@@ -4,64 +4,36 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
-use App\Models\WeeklyScore;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class ScoreGraph extends Component
 {
-    public $showModal = false;
     public $graphData = [];
-
-    protected $listeners = ['showScoreGraph' => 'show'];
-
-    public function show()
-    {
-        $this->showModal = true;
-        $this->dispatch('showScoreGraph');
-    }
 
     public function mount()
     {
-        $this->loadGraphData();
+        // Generate sample data since the actual data might be missing
+        $this->generateSampleData();
     }
 
-    private function loadGraphData()
-    {
-        $sixMonthsAgo = Carbon::now()->subMonths(6);
-        
-        // Get data and prepare it for Chart.js
-        $weeklyData = WeeklyScore::where('week_start', '>=', $sixMonthsAgo)
-            ->orderBy('week_start')
-            ->get()
-            ->groupBy('week_start');
-
-        $this->graphData = [
-            'labels' => $weeklyData->keys()->toArray(),
-            'datasets' => [
-                [
-                    'label' => 'Score Evolution',
-                    'data' => $weeklyData->map->avg('score')->values()->toArray(),
-                    'borderColor' => '#4CAF50',
-                    'tension' => 0.1
-                ]
-            ]
-        ];
-    }
-
-    public function render()
+    // This is a simple method to generate sample data for testing
+    private function generateSampleData()
     {
         // Generate last 6 months of dates
-        $dates = collect(range(0, 5))->map(function($i) {
-            return Carbon::now()->subMonths($i)->format('Y-m');
-        })->reverse();
-
-        // Sample data until WeeklyScore table is populated
+        $dates = [];
+        for ($i = 5; $i >= 0; $i--) {
+            $dates[] = Carbon::now()->subMonths($i)->format('Y-m');
+        }
+        
+        // Generate sample data for clans
         $clanScores = [1200, 1350, 1500, 1450, 1600, 1750];
+        
+        // Generate sample data for users
         $userScores = [800, 950, 1100, 1250, 1300, 1400];
 
-        $graphData = [
-            'labels' => $dates->toArray(),
+        $this->graphData = [
+            'labels' => $dates,
             'datasets' => [
                 [
                     'label' => 'Score des Clans',
@@ -81,7 +53,22 @@ class ScoreGraph extends Component
                 ]
             ]
         ];
+    }
 
-        return view('livewire.score-graph', ['graphData' => $graphData]);
+    public function render()
+    {
+        // Use dispatch instead of emit for Livewire v3
+        // And use the compatibility method for both v2 and v3
+        if (method_exists($this, 'dispatch')) {
+            // Livewire v3
+            $this->dispatch('chartDataUpdated', $this->graphData);
+        } else if (method_exists($this, 'emitSelf')) {
+            // Livewire v2
+            $this->emitSelf('chartDataUpdated', $this->graphData);
+        }
+        
+        return view('livewire.score-graph', [
+            'graphData' => $this->graphData
+        ]);
     }
 }

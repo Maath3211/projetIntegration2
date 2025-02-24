@@ -1,5 +1,6 @@
 <div style="height: 100vh; overflow-y: auto; scrollbar-width: thin; scrollbar-color: transparent transparent;">
     @if(!$showingGraph)
+    <!-- Leaderboard content (unchanged) -->
     <div id="topClansContainer" style="scrollbar-width: thin; scrollbar-color: transparent transparent;">
         <!-- Leaderboard Header Box -->
         <div class="leaderboard-header p-3 mb-3 border rounded d-flex justify-content-between align-items-center">
@@ -63,9 +64,9 @@
                 <p class="text-muted mb-0">Découvrez les utilisateurs les plus performants et inspirants du moment</p>
             </div>
             <div class="d-flex align-items-center">
-                <button class="btn btn-primary mr-2" wire:click="showGraph">
-                    <i class="fa-solid fa-chart-line"></i>
-                </button>
+                <a href="{{ route('scores.view-graph') }}" class="btn btn-primary mr-2">
+                    <i class="fa-solid fa-chart-line"></i> Voir Graphique
+                </a>
                 <div class="dropdown ml-2" wire:ignore>
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="exportDropdownUsers" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa-solid fa-share-from-square fa-2x"></i>
@@ -109,19 +110,22 @@
                 @endforeach
             </div>
         </div>
-        @else
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <button class="btn btn-secondary mb-3" wire:click="showLeaderboard">
-                        <i class="fas fa-arrow-left"></i> Retour au classement
-                    </button>
-                    @livewire('score-graph', ['lazy' => true])
+    </div>
+    @else
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <button class="btn btn-secondary mb-3" wire:click="showLeaderboard">
+                    <i class="fas fa-arrow-left"></i> Retour au classement
+                </button>
+                <!-- Load ScoreGraph component and pass data properly -->
+                <div id="scoreGraphContainer" wire:key="graph-{{ now() }}">
+                    @livewire('score-graph')
                 </div>
             </div>
         </div>
-        @endif
     </div>
+    @endif
     <style>
         #topClansContainer::-webkit-scrollbar,
         #topUsersContainer::-webkit-scrollbar {
@@ -139,3 +143,8 @@
         }
     </style>
 </div>
+
+<!-- Add Chart.js script if not already present in the layout -->
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+@endpush
