@@ -125,6 +125,41 @@
             /* Ombre légère autour de l'image */
             margin-top: 10px;
         }
+
+
+
+        /* Masquer l'input réel */
+        .file-upload-input {
+            position: absolute;
+            opacity: 0;
+            z-index: -1;
+
+        }
+
+
+
+        /* Changer la couleur du bouton au survol */
+        .file-upload-label:hover {
+            background-color: #0056b3;
+            /* Couleur plus foncée au survol */
+        }
+
+
+
+
+
+        #preview-container {
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .preview-img {
+            max-width: 100%;
+            height: 120px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
     </style>
 
     @section('style')
@@ -245,41 +280,35 @@
                         <div class="d-flex align-items-center mt-3">
                             <form action="" method="post" enctype="multipart/form-data" class="d-flex flex-grow-1">
                                 @csrf
-                                <div class="form-group d-flex align-items-center w-100">
-                                    <input type="file" class="btn btn-secondary" name="photo" accept="image/*"
-                                        placeholder="➕">
-                                    <button class="btn btn-secondary me-2">😊</button>
+                                <div class="form-group d-flex flex-column w-100">
+                                    <!-- Conteneur pour afficher l'aperçu de l'image -->
+                                    <div id="preview-container"></div>
 
+                                    <!-- Bouton d'upload personnalisé -->
+                                    <div class="file-upload-wrapper">
+                                        <input type="file" class="file-upload-input" name="photo" accept="image/*"
+                                            id="fileUpload" />
+                                        <label for="fileUpload" class="file-upload-btn bg-primary text-white">
+                                            ➕
+                                        </label>
+                                    </div>
 
-                                    <input type="textarea" class="message-input form-control flex-grow-1" name="content"
-                                        placeholder="Écris un message...">
-                                    <button class="btn btn-primary ms-2" type="submit">Submit</button>
+                                    <!-- Autres contrôles du formulaire -->
+                                    <div class="d-flex align-items-center mt-3">
+                                        <button class="btn btn-secondary me-2">😊</button>
+                                        <input type="textarea" class="message-input form-control flex-grow-1" name="content"
+                                            placeholder="Écris un message...">
+                                        <button class="btn btn-primary ms-2" type="submit">Submit</button>
+                                    </div>
                                 </div>
                             </form>
                         </div>
+
                         <u>
                             @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
                             @endforeach
                         </u>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                     </div>
                     <div class="col-md-2 colonneMembres">
@@ -470,6 +499,20 @@
 
 
         <script>
+            // Lorsqu'un fichier est sélectionné
+            $('#fileUpload').on('change', function() {
+                var input = this;
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        // Afficher l'image dans le conteneur d'aperçu
+                        $('#preview-container').html('<img src="' + e.target.result +
+                            '" alt="Aperçu de l\'image sélectionnée" class="preview-img">');
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            });
+
             // Scroll to the bottom of the chat messages
             document.addEventListener("DOMContentLoaded", function() {
                 var chatMessages = document.getElementById("chat-messages");
@@ -566,9 +609,11 @@
                     contentType: false, // Ne pas définir de type de contenu
                 }).done(function(res) {
                     console.log(res);
-                    $("input[name='photo']").val(""); // Réinitialiser l'input file 'photo'
 
-                    
+
+
+                    $("#preview-container").html("");
+                    $("input[name='photo']").val(""); // Réinitialiser l'input file 'photo'
 
                     let avatarText = res.sender_email.substring(0, 2);
                     let messageContent = res.message ? `<p>${res.message}</p>` : "";
