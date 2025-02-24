@@ -62,7 +62,7 @@ class ScoresController extends Controller
             ->limit(10)
             ->get();
 
-        $topClans = DB::table('Clan_users as cu')
+        $topClans = DB::table('clan_users as cu')
             ->join(DB::raw('(SELECT user_id, SUM(score) as total_score FROM scores GROUP BY user_id) as su'), 'cu.user_id', '=', 'su.user_id')
             ->join('clans', 'clans.id', '=', 'cu.clan_id')  // Join the Clan table to get image and name
             ->select('cu.clan_id', 'clans.nom as clan_nom', 'clans.image as clan_image', DB::raw('SUM(su.total_score) as clan_total_score'))
@@ -74,6 +74,7 @@ class ScoresController extends Controller
         $userClans = DB::table('clan_users')
             ->join('clans', 'clans.id', '=', 'clan_users.clan_id')
             ->where('clan_users.user_id', /*auth()->id()*/ 1)
+            ->where('clans.public', 1) // Only include clans where public is 1
             ->select('clans.id as clan_id', 'clans.nom as clan_nom', 'clans.image as clan_image')
             ->get();
 
@@ -97,7 +98,7 @@ class ScoresController extends Controller
             ->limit(10)
             ->get();
 
-        $filename = 'top_users.csv';
+        $filename = 'meilleurs_membres_global_' . '_' . date('d-m-Y') . '.csv';
         header('Content-Type: text/csv');
         header('Content-Disposition: attachment; filename="' . $filename . '"');
 
@@ -125,7 +126,7 @@ class ScoresController extends Controller
             ->limit(10)
             ->get();
 
-        $filename = 'top_clans.csv';
+        $filename = 'meilleurs_clans_global' . '_' . date('d-m-Y') . '.csv';
         header('Content-Type: text/csv');
         header('Content-Disposition: attachment; filename="' . $filename . '"');
 
@@ -158,8 +159,9 @@ class ScoresController extends Controller
             ->orderByDesc('user_total_score')
             ->limit(10)
             ->get();
-
-        $filename = 'top_membres.csv';
+        $clan = DB::table('clans')->where('id', $clanId)->first();
+        $clanSlug = strtolower(str_replace(' ', '_', $clan->nom));
+        $filename = 'meilleurs_membres_' . $clanSlug . '_' . date('d-m-Y') . '.csv';
         header('Content-Type: text/csv');
         header('Content-Disposition: attachment; filename="' . $filename . '"');
 
@@ -196,7 +198,9 @@ class ScoresController extends Controller
             ->limit(10)
             ->get();
 
-        $filename = 'top_amelioration.csv';
+        $clan = DB::table('clans')->where('id', $clanId)->first();
+        $clanSlug = strtolower(str_replace(' ', '_', $clan->nom));
+        $filename = 'meilleurs_ameliorations_' . $clanSlug . '_' . date('d-m-Y') . '.csv';
         header('Content-Type: text/csv');
         header('Content-Disposition: attachment; filename="' . $filename . '"');
 
@@ -211,6 +215,94 @@ class ScoresController extends Controller
         }
         fclose($output);
         exit;
+    }
+
+    public function testChart()
+    {
+        // Get the content of static-html-test.blade.php
+        $content = file_get_contents(resource_path('views/scores/static-html-test.blade.php'));
+
+        // Return as a plain HTML response
+        return response($content)->header('Content-Type', 'text/html');
+    }
+
+    public function showChart()
+    {
+        // Get the same data you'd show on the leaderboard
+        $selectedClanId = 'global';
+
+        $topUsers = DB::table('users')
+            ->join('scores', 'users.id', '=', 'scores.user_id')
+            ->select(
+                'users.prenom',
+                'users.nom',
+                'users.imageProfil',
+                DB::raw('SUM(scores.score) as total_score')
+            )
+            ->groupBy('users.id', 'users.prenom', 'users.nom', 'users.imageProfil')
+            ->orderByDesc('total_score')
+            ->limit(10)
+            ->get();
+
+        $topClans = DB::table('clan_users as cu')
+            ->join(DB::raw('(SELECT user_id, SUM(score) as total_score FROM scores GROUP BY user_id) as su'), 'cu.user_id', '=', 'su.user_id')
+            ->join('clans', 'clans.id', '=', 'cu.clan_id')
+            ->select('cu.clan_id', 'clans.nom as clan_nom', 'clans.image as clan_image', DB::raw('SUM(su.total_score) as clan_total_score'))
+            ->groupBy('cu.clan_id', 'clans.nom', 'clans.image')
+            ->orderByDesc('clan_total_score')
+            ->limit(10)
+            ->get();
+
+        // Create chart data
+        $months = [];
+        $clanScores = [];
+        $userScores = [];
+
+        for ($i = 5; $i >= 0; $i--) {
+            $month = date('Y-m', strtotime("-$i months"));
+            $months[] = date('M Y', strtotime($month));
+
+            // Use sample data for now - replace with actual queries if needed
+            $clanScores[] = rand(1000, 2000);
+            $userScores[] = rand(700, 1500);
+        }
+
+        return view('scores.chart-page', compact('months', 'clanScores', 'userScores', 'topClans', 'topUsers'));
+    }
+
+    public function viewScoreGraph()
+    {
+        // Generate last 6 months of dates
+        $months = [];
+        $clanScores = [];
+        $userScores = [];
+
+        for ($i = 5; $i >= 0; $i--) {
+            $month = date('Y-m', strtotime("-$i months"));
+            $months[] = date('M Y', strtotime($month)); // Formatted month for display
+
+            $startOfMonth = date('Y-m-01', strtotime($month));
+            $endOfMonth = date('Y-m-t', strtotime($month));
+
+            // Get clan scores for this month (or use dummy data)
+            $monthClanScore = DB::table('clan_users as cu')
+                ->join('scores', function ($join) use ($startOfMonth, $endOfMonth) {
+                    $join->on('cu.user_id', '=', 'scores.user_id')
+                        ->whereBetween('scores.date', [$startOfMonth, $endOfMonth]);
+                })
+                ->sum('scores.score');
+
+            $clanScores[] = $monthClanScore ?: rand(1000, 2000); // Fallback to random data
+
+            // Get user scores for this month (or use dummy data)
+            $monthUserScore = DB::table('scores')
+                ->whereBetween('date', [$startOfMonth, $endOfMonth])
+                ->sum('score');
+
+            $userScores[] = $monthUserScore ?: rand(700, 1500); // Fallback to random data
+        }
+
+        return view('scores.graph', compact('months', 'clanScores', 'userScores'));
     }
 
     /**
