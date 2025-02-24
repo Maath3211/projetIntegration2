@@ -29,5 +29,5 @@ Homestead.json
 .phpactor.json
 auth.json
 
-/public/img/conversations_photo/
+/public/img/conversations_photo/*
 
