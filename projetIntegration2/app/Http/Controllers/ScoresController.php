@@ -117,7 +117,7 @@ class ScoresController extends Controller
 
     public function exportTopClans()
     {
-        $topClans = DB::table('Clan_users as cu')
+        $topClans = DB::table('clan_users as cu')
             ->join(DB::raw('(SELECT user_id, SUM(score) as total_score FROM scores GROUP BY user_id) as su'), 'cu.user_id', '=', 'su.user_id')
             ->join('clans', 'clans.id', '=', 'cu.clan_id')
             ->select('clans.nom as clan_nom', DB::raw('SUM(su.total_score) as clan_total_score'))
