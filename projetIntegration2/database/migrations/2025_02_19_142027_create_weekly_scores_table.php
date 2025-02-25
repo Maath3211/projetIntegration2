@@ -11,15 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('clans', function (Blueprint $table) {
+        Schema::create('weekly_scores', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('adminId');
-            $table->string('image')->default('default.jpg');
-            $table->string('nom');
-            $table->boolean('public')->default(true);
+            $table->morphs('scoreable');
+            $table->integer('score');
+            $table->date('week_start');
             $table->timestamps();
-
-            $table->foreign('adminId')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('clans');
+        Schema::dropIfExists('weekly_scores');
     }
 };
