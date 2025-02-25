@@ -77,7 +77,7 @@ class ProfilController extends Controller
 
         Mail::to($utilisateur->email)->send(new confirmation($utilisateur));
         $utilisateur->save();
-        return redirect()->route('profil.connexion')->with('message', 'Votre compte a été créé avec succès');
+        return redirect()->route('profil.connexion')->with('message', 'Votre compte a été créé avec succès! Un courriel de confirmation a été envoyé');
     }
 
     public function creerCompteGoogle()
@@ -173,6 +173,7 @@ class ProfilController extends Controller
         $utilisateur->dateNaissance = $request->dateNaissance;
         $utilisateur->password = bcrypt($request->password);
         $utilisateur->google_id = session('google_data.google_id');
+        $utilisateur->codeVerification = Str::random(64);
 
         $googleData = session('google_data');
         if ($googleData && isset($googleData['image_url'])) {
@@ -195,10 +196,13 @@ class ProfilController extends Controller
         }
 
         $utilisateur->save();
-        Auth::login($utilisateur);
-        return redirect()->route('profil.profil');
+        if ($utilisateur->email_verified_at != null) {
+            Auth::login($utilisateur);
+            return redirect()->route('profil.profil');
+        }
 
-        return redirect()->route('profil.connexion')->with('message', 'Votre compte a été créé avec succès');
+        Mail::to($utilisateur->email)->send(new confirmation($utilisateur));
+        return redirect()->route('profil.connexion')->with('message', 'Votre compte a été créé avec succès! Un courriel de confirmation a été envoyé');
     }
 
 
@@ -206,6 +210,16 @@ class ProfilController extends Controller
     {
         return View('profil.profil');
     }
+
+    public function profilPublic($email)
+    {
+        $utilisateur = User::where('email', 'email')->first();
+        if (!$utilisateur) {
+            return redirect()->route('profil.profil')->withErrors(['Utilisateur introuvable']);
+        }
+        return View('profil.profilPublic', compact('utilisateur'));
+    }
+
 
     public function deconnexion()
     {
@@ -329,9 +343,11 @@ class ProfilController extends Controller
         return redirect('/connexion')->with('message', 'Mot de passe mis à jour!');
     }
 
-    public function confCourriel($codeVerification){
+    public function confCourriel($codeVerification)
+    {
         $user = User::where('codeVerification', $codeVerification)->first();
         $user->email_verified_at = now();
+        $user->codeVerification = null;
         $user->save();
         return redirect()->route('profil.connexion')->with('message', 'Votre compte a été vérifié avec succès');
     }
