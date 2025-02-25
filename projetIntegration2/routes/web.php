@@ -9,6 +9,7 @@ use App\Http\Controllers\StatistiqueController;
 use App\Http\Controllers\ClanController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GymController;
+use App\Http\Controllers\ObjectifController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -76,6 +77,24 @@ Route::post('/ajouter-score/{exercice}', [StatistiqueController::class, 'ajouter
 
 
 
+Route::GET('/objectif',
+[ObjectifController::class,'index'])->name('objectif.index');
+
+Route::GET('/objectif/ajouter',
+[ObjectifController::class,'create'])->name('objectif.create');
+
+
+Route::GET('/objectif/edit/{id}',
+[ObjectifController::class,'edit'])->name('objectif.edit');
+
+Route::post('/objectif',
+ [ObjectifController::class, 'store'])->name('objectif.store');
+
+Route::put('/objectif/{id}',
+ [ObjectifController::class, 'update'])->name('objectif.update');
+
+Route::delete('/objectif/{id}',
+ [ObjectifController::class, 'destroy'])->name('objectif.destroy');
 
 
 Route::GET('/localisation', 

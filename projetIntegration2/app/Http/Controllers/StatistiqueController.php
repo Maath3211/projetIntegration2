@@ -27,11 +27,12 @@ class StatistiqueController extends Controller
                 ->get();
     
             $poids = PoidsUtilisateur::where('user_id', Auth::id())->orderBy('poids', 'asc')->first()->poids;
+            $scoreExercice = ScoreExercice::All();
             $streak = Statistiques::where('user_id', Auth::id())->where('nomStatistique', 'Streak')->get();
             $foisGym = Statistiques::where('user_id', Auth::id())->where('nomStatistique', 'FoisGym')->get();
         }
         
-        return view("statistique.index", compact('statistiques', 'usager', 'poids', 'streak', 'foisGym'));
+        return view("statistique.index", compact('statistiques', 'usager', 'poids', 'streak', 'foisGym', 'scoreExercice'));
     }
 
 
