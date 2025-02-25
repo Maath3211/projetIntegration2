@@ -50,6 +50,9 @@ class ProfilController extends Controller
 
     public function storeCreerCompte(CreationCompteRequest $request)
     {
+        if (User::where('email', $request->email)->exists()) {
+            return redirect()->route('profil.connexion')->withErrors( ['Un compte existe déjà avec cet email']);
+        }
         $utilisateur = new User();
         $utilisateur->email = $request->email;
         $utilisateur->prenom = $request->prenom;
@@ -208,12 +211,14 @@ class ProfilController extends Controller
 
     public function profil()
     {
-        return View('profil.profil');
+        $utilisateur = Auth::user();
+        $clans = $utilisateur->clans; // Fetch all clans associated with the user
+        return view('profil.profil', compact('utilisateur', 'clans' ));
     }
 
     public function profilPublic($email)
     {
-        $utilisateur = User::where('email', 'email')->first();
+        $utilisateur = User::where('email', $email)->first();
         if (!$utilisateur) {
             return redirect()->route('profil.profil')->withErrors(['Utilisateur introuvable']);
         }

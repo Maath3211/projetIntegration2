@@ -93,19 +93,16 @@ Route::POST('/creerCompteGoogle',
 
 Route::GET('/creerCompte',
 [ProfilController::class,'creerCompte'])->name('profil.creerCompte');
-Route::POST(
-    '/creerCompte',
-    [ProfilController::class, 'storeCreerCompte']
-)->name('profil.storeCreerCompte');
 
-Route::GET(
-    '/meilleursGroupes',
-    [ScoresController::class, 'meilleursGroupes']
+Route::POST('/creerCompte',
+[ProfilController::class, 'storeCreerCompte'])->name('profil.storeCreerCompte');
+
+Route::GET('/meilleursGroupes',
+[ScoresController::class, 'meilleursGroupes']
 )->name('scores.meilleursGroupes');
-Route::POST(
-    '/deconnexion',
-    [ProfilController::class, 'deconnexion']
-)->name('profil.deconnexion');
+
+Route::POST('/deconnexion',
+[ProfilController::class, 'deconnexion'])->name('profil.deconnexion');
 
 Route::GET('/confirmation/{codeVerification}',
 [ProfilController::class,'confCourriel'])->name('profil.confirmation');
@@ -115,18 +112,17 @@ Route::GET('/meilleursGroupes',
 Route::POST('/deconnexion',
 [ProfilController::class,'deconnexion'])->name('profil.deconnexion');
 
-Route::GET(
-    '/profil',
-    [ProfilController::class, 'profil']
-)->name('profil.profil')->middleware('auth');
+Route::GET('/profil',
+[ProfilController::class, 'profil'])->name('profil.profil')->middleware('auth');
 
-Route::GET(
-    '/profil/modification',
-    [ProfilController::class, 'modification']
-)->name('profil.modification')->middleware('auth');
+Route::GET('/profil/modification',
+[ProfilController::class,'modification'])->name('profil.modification')->middleware('auth');
 
 Route::POST('/profil/modification/update',
 [ProfilController::class,'updateModification'])->name('profil.updateModification')->middleware('auth');
+
+Route::GET('/profil/{email}',
+[ProfilController::class,'profilPublic'])->name('profil.profilPublic')->middleware('auth');
 
 Route::GET('/reinitialisation',
 [ProfilController::class,'pageMotDePasseOublie'])->name('profil.reinitialisation');
