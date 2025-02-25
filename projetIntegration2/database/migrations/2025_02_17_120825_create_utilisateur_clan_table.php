@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('idEnvoyer');
             $table->unsignedBigInteger('idClan');
             $table->text('message');
-            $table->string('photo')->nullable();
+            $table->string('fichier')->nullable();
             $table->timestamps();
             $table->foreign('idEnvoyer')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('idClan')->references('id')->on('clans')->onDelete('cascade');

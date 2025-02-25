@@ -118,52 +118,42 @@ class Conversations extends Controller
 
     public function destroy(UtilisateurClan $message)
     {
-        //\Log::info('Début de la suppression du message', ['message_id' => $message->id, 'id_envoyer' => $message->idEnvoyer]);
-    
-        // Vérification des droits d'accès de l'utilisateur
         if (auth()->id() !== $message->idEnvoyer) {
-            //\Log::warning('Action non autorisée', ['user_id' => auth()->id(), 'message_sender_id' => $message->idEnvoyer]);
             return response()->json(['error' => 'Action non autorisée'], 403);
         }
     
-        //\Log::info('Utilisateur autorisé à supprimer le message', ['user_id' => auth()->id()]);
+        \Log::info('Détails du message avant suppression', ['message_id' => $message->id, 'fichier' => $message->fichier]);
     
-        // Récupérer l'URL de l'image associée au message
-        $imageUrl = $message->photo; // Remplacez `image` par le nom réel de l'attribut qui contient l'URL de l'image
-        //\Log::info('URL de l\'image associée', ['image_url' => $imageUrl]);
+        if ($message->fichier) {
+            $fichierNom = $message->fichier;
     
-        // Si l'image existe, la supprimer
-        if ($imageUrl) {
-            // Extraire le nom du fichier à partir de l'URL
-            $fileName = basename($imageUrl); 
-            //\Log::info('Nom du fichier extrait de l\'URL', ['file_name' => $fileName]);
+            // Déterminer le dossier selon l'extension
+            $dossier = in_array(pathinfo($fichierNom, PATHINFO_EXTENSION), ['jpg', 'jpeg', 'png', 'gif'])
+                ? 'img/conversations_photo/'
+                : 'fichier/conversations_fichier/';
     
-            // Récupérer le chemin complet du fichier
-            $filePath = public_path('img/conversations_photo/' . $fileName);
-            //\Log::info('Chemin complet du fichier', ['file_path' => $filePath]);
+            $fichierPath = public_path($dossier . $fichierNom);
     
-            // Vérifier si le fichier existe et le supprimer
-            if (file_exists($filePath)) {
-                unlink($filePath);
-                //\Log::info('Fichier supprimé', ['file_path' => $filePath]);
+            \Log::info('Chemin du fichier à supprimer', ['fichier_path' => $fichierPath]);
+    
+            if (file_exists($fichierPath)) {
+                unlink($fichierPath);
+                \Log::info('Fichier supprimé', ['fichier_path' => $fichierPath]);
             } else {
-                //\Log::warning('Fichier non trouvé pour suppression', ['file_path' => $filePath]);
+                \Log::warning('Le fichier n\'existe pas', ['fichier_path' => $fichierPath]);
             }
         } else {
-            //\Log::info('Aucune image à supprimer pour ce message');
+            \Log::info('Aucun fichier associé au message', ['message_id' => $message->id]);
         }
     
-        // Supprimer le message du modèle
         $messageId = $message->id;
         $message->delete();
-        //\Log::info('Message supprimé', ['message_id' => $messageId]);
     
-        // Diffuser l'événement de suppression
         broadcast(new SuppressionMessageGroup($messageId, $message->idClan))->toOthers();
-        //\Log::info('Événement de suppression diffusé', ['message_id' => $messageId, 'clan_id' => $message->idClan]);
     
         return response()->json(['success' => 'Message supprimé']);
     }
+    
     
     
     
@@ -187,27 +177,24 @@ class Conversations extends Controller
         //SI IL Y A UN BUG AVEC PHOTO C'EST ICI
         $request->validate([
             'message' => 'nullable|string',
-            'photo'   => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'fichier' => 'nullable|file|max:20480', // 20 Mo
         ]);
     
         try {
-            if ($request->hasFile('photo')) {
-                $photo = $request->file('photo');
-                
-                // Définir le chemin de stockage
-                $destinationPath = public_path('img/conversations_photo');
-                if (!file_exists($destinationPath)) {
-                    mkdir($destinationPath, 0755, true); // Crée le dossier s'il n'existe pas
-                }
-    
-                // Générer un nom unique
-                $photoName = time() . '_' . $photo->getClientOriginalName();
-                $photo->move($destinationPath, $photoName);
-    
-                // Construire le chemin d'accès public
-                $photoUrl = asset("img/conversations_photo/{$photoName}");
-            } else {
-                $photoUrl = null;
+            $fichierNom = null;
+            if ($request->hasFile('fichier')) {
+                $fichier = $request->file('fichier');
+        
+                // Générer un nom unique avec horodatage
+                $fichierNom = time() . '_' . $fichier->getClientOriginalName();
+        
+                // Déterminer le dossier en fonction du type de fichier
+                $dossier = in_array($fichier->getClientOriginalExtension(), ['jpg', 'jpeg', 'png', 'gif'])
+                    ? 'img/conversations_photo/'
+                    : 'fichier/conversations_fichier/';
+        
+                // Stocker le fichier
+                $fichier->move(public_path($dossier), $fichierNom);
             }
     
             // Insérer le message dans la base de données
@@ -215,13 +202,13 @@ class Conversations extends Controller
                 'idEnvoyer' => auth()->id(),
                 'idClan'    => $request->to,
                 'message'   => $request->message,
-                'photo'     => $photoUrl, // Stocke le chemin public
+                'fichier'     => $fichierNom, // Stocke le chemin public
                 'created_at'=> now(),
                 'updated_at'=> now()
             ]);
     
             // Diffuser l’événement via Pusher
-            broadcast(new MessageGroup($request->message, auth()->id(), $request->to, false, $lastId, $photoUrl))
+            broadcast(new MessageGroup($request->message, auth()->id(), $request->to, false, $lastId, $fichierNom))
                 ->toOthers();
     
         } catch (\Exception $e) {
@@ -233,7 +220,7 @@ class Conversations extends Controller
             'last_id'      => $lastId,
             'sender_id'    => auth()->id(),
             'sender_email' => auth()->user()->email,
-            'photo'        => $photoUrl // Retourne l'URL complète
+            'fichier'        => $fichierNom ? asset($dossier . $fichierNom) : null // Retourne l'URL complète
         ]);
     }
     

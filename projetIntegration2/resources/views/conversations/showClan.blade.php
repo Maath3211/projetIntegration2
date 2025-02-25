@@ -105,35 +105,49 @@
             display: flex;
             flex-direction: column;
             height: 100vh;
-            /* Prendre toute la hauteur de l'écran */
+            /* Take full screen height */
         }
 
-        /* Stylisation des images dans les messages */
+        /* Message image styling */
         .message-image {
             text-align: center;
-            margin-top: 10px;
+            margin: 8px 0;
+            max-width: 300px;
+            /* Limit maximum width */
         }
 
         .message-img {
-            max-width: 100%;
-            /* Limite la largeur de l'image pour s'adapter à l'écran */
-            height: auto;
-            /* Garde le ratio de l'image */
-            border-radius: 8px;
-            /* Bordure arrondie pour l'image */
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            /* Ombre légère autour de l'image */
-            margin-top: 10px;
+            width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+            /* Maintain aspect ratio while covering area */
+
+            /* Rounded corners */
+
+            /* Subtle shadow */
+            transition: transform 0.2s;
+            /* Smooth hover effect */
         }
 
+        .message-img:hover {
+            transform: scale(1.02);
+            /* Slight zoom on hover */
+        }
 
+        .message img {
+            min-width: 60px;
+            max-width: 60px;
+            min-height: 60px;
+            max-height: 60px;
+            border-radius: 0px;
+            margin: 10px;
+        }
 
-        /* Masquer l'input réel */
+        /* File upload styling */
         .file-upload-input {
             position: absolute;
             opacity: 0;
             z-index: -1;
-
         }
 
 
@@ -155,7 +169,7 @@
 
         .preview-img {
             max-width: 100%;
-            height: 120px;
+            height: 250px;
             border-radius: 5px;
             margin-bottom: 10px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
@@ -241,13 +255,26 @@
                                             <br>
                                             <p>{!! nl2br(e($message->message)) !!}</p>
 
-                                            <!-- Vérifier si une image est attachée au message -->
-                                            @if ($message->photo)
-                                                <div class="message-image">
-                                                    <img src="{{ $message->photo }}" alt="Image" class="message-img">
+                                            @if ($message->fichier)
+                                                @php
+                                                    $extension = pathinfo($message->fichier, PATHINFO_EXTENSION);
+                                                    $isImage = in_array($extension, ['jpg', 'jpeg', 'png', 'gif']);
+                                                    $dossier = $isImage
+                                                        ? 'img/conversations_photo/'
+                                                        : 'fichier/conversations_fichier/';
+                                                @endphp
 
-                                                </div>
+                                                @if ($isImage)
+                                                    <img src="{{ asset($dossier . $message->fichier) }}"
+                                                        alt="Image envoyée" class="w-32 h-32 object-cover">
+                                                @else
+                                                    <a href="{{ asset($dossier . $message->fichier) }}" target="_blank"
+                                                        class="text-blue-500">
+                                                        📄 Télécharger {{ $message->fichier }}
+                                                    </a>
+                                                @endif
                                             @endif
+
 
                                         </div>
 
@@ -284,18 +311,14 @@
                                     <!-- Conteneur pour afficher l'aperçu de l'image -->
                                     <div id="preview-container"></div>
 
-                                    <!-- Bouton d'upload personnalisé -->
-                                    <div class="file-upload-wrapper">
-                                        <input type="file" class="file-upload-input" name="photo" accept="image/*"
-                                            id="fileUpload" />
-                                        <label for="fileUpload" class="file-upload-btn bg-primary text-white">
-                                            ➕
-                                        </label>
-                                    </div>
-
                                     <!-- Autres contrôles du formulaire -->
                                     <div class="d-flex align-items-center mt-3">
-                                        <button class="btn btn-secondary me-2">😊</button>
+                                        <div class="file-upload-wrapper me-2">
+                                            <input type="file" class="file-upload-input" name="fichier"
+                                                id="fichierInput" />
+                                            <label for="fichierInput" class="file-upload-btn text-white">📁</label>
+                                        </div>
+                                        <button name="emoji" class="btn btn-secondary me-2">😊</button>
                                         <input type="textarea" class="message-input form-control flex-grow-1" name="content"
                                             placeholder="Écris un message...">
                                         <button class="btn btn-primary ms-2" type="submit">Submit</button>
@@ -500,7 +523,7 @@
 
         <script>
             // Lorsqu'un fichier est sélectionné
-            $('#fileUpload').on('change', function() {
+            $('#fichierInput').on('change', function() {
                 var input = this;
                 if (input.files && input.files[0]) {
                     var reader = new FileReader();
@@ -544,18 +567,38 @@
 
 
 
+// Recevoir les messages de la conversation
+channel.bind('event-group', function(data) {
+    // Vérifier si le message a été supprimé
+    if (data.deleted === true) {
+        // Si le message a été supprimé, le retirer du DOM
+        $(`#message-${data.last_id}`).remove();
+    } else {
+        // Détermine le contenu du message (texte, image ou fichier)
+        let messageContent = data.message ? `<p>${data.message}</p>` : "";
+        console.log(data);
+        // Déterminer si c'est une image ou un fichier à télécharger
+        let fileExtension = data.photo ? data.photo.split('.').pop().toLowerCase() : "";
+        let isImage = ["jpg", "jpeg", "png", "gif"].includes(fileExtension);
+        let fileContent = "";
 
+        if (data.photo) {
+            if (isImage) {
+                fileContent = `<div class="message-image">
+                    <img src="/img/conversations_photo/${data.photo}" alt="Image" class="message-img">
+                </div>`;
+            } else {
+                const fileName = data.photo.split('/').pop(); // Récupérer le nom du fichier
+                fileContent = `<div class="message-file">
+                    <a href="${data.photo}" target="_blank" download class="btn btn-sm btn-primary">
+                        📎 Télécharger ${fileName}
+                    </a>
+                </div>`;
+            }
+        }
 
-
-            // Recevoir les messages de la conversation privée
-            channel.bind('event-group', function(data) {
-                // Vérifier si le message a été supprimé
-                if (data.deleted === true) {
-                    // Si le message a été supprimé, le retirer du DOM
-                    $(`#message-${data.last_id}`).remove();
-                } else {
-                    // Sinon, ajouter le message normalement
-                    $("#chat-messages").append(`
+        // Ajouter le message au chat
+        $("#chat-messages").append(`
             <div class="messageTotal" id="message-${data.last_id}">
                 <div class="message received-message">
                     <div class="avatar bg-primary text-white rounded-circle p-2">
@@ -563,27 +606,27 @@
                         {{ isset($message) ? substr($message->user->email, 0, 2) : 'rien' }}
                     </div>
                     <div class="bubble">
-                        <strong>{{ isset($message) ? $message->user->email : 'rien' }}</strong>
+                        <strong>${data.sender_email ? data.sender_email : ''}</strong>
                         <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
                         <br>
-                        <p>${data.message}</p>
-                        ${data.photo ? `<div class="message-image"><img src="${data.photo}" alt="Image" class="message-img"></div>` : ''}
+                        ${messageContent}
+                        ${fileContent}
                     </div>
                 </div>
                 <div class="separator"></div>
             </div>
         `);
-                    // Scroll au bas des messages
-                    $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
-                }
-            });
+
+        // Scroll au bas des messages
+        $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
+    }
+});
 
 
 
 
 
 
-            // Envoyer un message via AJAX
             $("form").submit(function(e) {
                 e.preventDefault();
 
@@ -593,9 +636,9 @@
                 formData.append("from", userId);
                 formData.append("to", friendId);
 
-                let fileInput = $("input[name='photo']")[0]; // Assurez-vous que l'input file a name='image'
+                let fileInput = $("input[name='fichier']")[0]; // Assurez-vous que l'input file a name='fichier'
                 if (fileInput.files.length > 0) {
-                    formData.append("photo", fileInput.files[0]); // Ajoute l'image si présente
+                    formData.append("fichier", fileInput.files[0]); // Ajoute l'image ou le fichier si présent
                 }
 
                 $.ajax({
@@ -610,15 +653,27 @@
                 }).done(function(res) {
                     console.log(res);
 
-
-
                     $("#preview-container").html("");
-                    $("input[name='photo']").val(""); // Réinitialiser l'input file 'photo'
+                    $("input[name='fichier']").val(""); // Réinitialiser l'input file
 
                     let avatarText = res.sender_email.substring(0, 2);
                     let messageContent = res.message ? `<p>${res.message}</p>` : "";
-                    let imageContent = res.photo ?
-                        `<img src="${res.photo}" class="message-image" alt="Image envoyée">` : "";
+
+                    // Déterminer si c'est une image ou un fichier à télécharger
+                    let fileExtension = res.fichier ? res.fichier.split('.').pop().toLowerCase() : "";
+                    let isImage = ["jpg", "jpeg", "png", "gif"].includes(fileExtension);
+                    let fileContent = "";
+
+                    if (res.fichier) {
+                        if (isImage) {
+                            fileContent =
+                            `<img src="${res.fichier}" class="message-image" alt="Image envoyée">`;
+                        } else {
+                            fileContent = `<a href="../${res.fichier}" target="_blank" class="text-blue-500">
+                    📄 Télécharger ${res.fichier.split('/').pop()}
+                </a>`;
+                        }
+                    }
 
                     $("#chat-messages").append(`
             <div class="messageTotal" id="message-${res.last_id}">
@@ -629,7 +684,7 @@
                         <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
                         <br>
                         ${messageContent}
-                        ${imageContent}
+                        ${fileContent}
                     </div>
                     <div class="ml-4 avatar bg-primary text-white rounded-circle p-2">${avatarText}</div>
                 </div>
@@ -638,10 +693,12 @@
         `);
 
                     $("input[name='content']").val("");
-                    $("input[name='image']").val(""); // Réinitialise l'input file
                     $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
+                }).fail(function(xhr, status, error) {
+                    console.error("Erreur d'envoi :", error);
                 });
             });
+
 
 
 
