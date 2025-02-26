@@ -13,7 +13,6 @@ body {
     gap: 10px;
 }
 
-
 .heatmapContainer {
     max-width: 800px;
     margin: 20px auto;
@@ -69,8 +68,8 @@ body {
     margin-bottom: 20px;
 }
 
-    /* Légende */
-    .legende {
+/* Légende */
+.legende {
     flex: 1;
     background-color: #f9f9f9;
     padding: 15px;

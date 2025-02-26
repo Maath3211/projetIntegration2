@@ -45,7 +45,7 @@ function saveExercise() {
                 // Choisir l'unité de mesure
                 let unitOptions = isRunning
                     ? `<button class="bouton" onclick="convertRunUnit(this, 'km')">Km</button>
-                       <button class="bouton" onclick="convertRunUnit(this, 'Miles')">Min</button>`
+                       <button class="bouton" onclick="convertRunUnit(this, 'Miles')">Miles</button>`
                     : `<button class="bouton" onclick="convertWeight('lbs')">Lbs</button>
                        <button class="bouton" onclick="convertWeight('kg')">Kg</button>`;
 
@@ -64,6 +64,7 @@ function saveExercise() {
                 document.getElementById('exerciseName').value = '';
                 document.getElementById('exerciseScore').value = '';
                 document.getElementById('addExerciseForm').classList.add('hidden');
+                location.reload(); // Reload the page
             } else {
                 alert('Erreur lors de l\'ajout de l\'exercice');
             }

@@ -25,7 +25,7 @@
 <div class="navigation">
     <label for="anneeSelect">Année :</label>
     <select id="anneeSelect" class="bouton">
-        <!-- Les options seront générées dynamiquement -->
+       
     </select>
 </div>
         <div class="heatmap" id="heatmap"></div>

@@ -93,6 +93,9 @@ Route::post('/objectif',
 Route::put('/objectif/{id}',
  [ObjectifController::class, 'update'])->name('objectif.update');
 
+ Route::put('/objectif/update/{id}',
+ [ObjectifController::class, 'updateComplet'])->name('objectif.updateComplet');
+
 Route::delete('/objectif/{id}',
  [ObjectifController::class, 'destroy'])->name('objectif.destroy');
 

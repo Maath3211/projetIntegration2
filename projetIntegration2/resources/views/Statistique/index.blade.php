@@ -4,7 +4,7 @@
 <link rel="stylesheet" style="text/css" href="\css\Statistique\statistiqueIndex.css"> 
 
 <div class="container">
-    <!-- Profil Image -->
+
     <div class="flex justify-center mt-4">
         <div class="profileImage"><img src="{{ $usager->imageProfil }}" alt="image profil" id="image"/></div>
     </div>
@@ -13,13 +13,13 @@
         <h1>Statistiques de {{ $usager->prenom }}</h1>
     </div>
 
-    <!-- Navigation -->
+    
     <div class="flex flex-wrap justify-center space-x-4 mt-4">
       <a href="/profil">  <button class="bouton">Profil</button></a>
       <a href="/objectif">  <button class="bouton">Voir mes objectifs</button></a>
     </div>
     
-    <!-- Statistiques -->
+
     <div class="statContainer space-y-4">
         <div class="statRow">
             <span>Vos statistiques :</span>
@@ -40,13 +40,12 @@
                 <a href="/graphique" class="text-gray-400">Voir mon graphique</a>
             </div>
         </div>
-        
-        <!-- Bouton Ajouter un exercice -->
+    
         <div class="flex justify-center mt-4">
             <button class="bouton" onclick="showAddExerciseForm()">Ajouter un exercice</button>
         </div>
 
-        <!-- Formulaire d'ajout d'exercice -->
+     
         <div id="addExerciseForm" class="statRow hidden">
             <input type="text" id="exerciseName" placeholder="Nom de l'exercice" class="input" />
             <input type="number" id="exerciseScore" placeholder="Score lbs ou km" class="input" />
@@ -54,7 +53,6 @@
             <button type="button" class="bouton" onclick="cancelForm()">Annuler</button>
         </div>
 
-        <!-- Boucle pour afficher tous les exercices -->
         @foreach($statistiques as $stat)
             <div class="statRow" id="exercise-{{ $stat->id }}">
 

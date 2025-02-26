@@ -14,8 +14,9 @@ class ObjectifController extends Controller
      */
     public function index()
     {
-        $objectifs = Objectif::all();
-        return view('objectif.index', compact('objectifs'));
+        $objectifCompleter = Objectif::where("user_id", Auth::id())->where("completer", true)->get();
+        $objectifNonCompleter = Objectif::where("user_id", Auth::id())->where("completer", false)->get();
+        return view('objectif.index', compact('objectifCompleter', 'objectifNonCompleter'));
     }
 
     public function store(Request $request)
@@ -49,12 +50,23 @@ class ObjectifController extends Controller
     $objectif->update([
         'titre' => $request->input('titre'),
         'description' => $request->input('description'),
-        'complet' => $request->has('complet') ? true : false,
     ]);
 
 
     return redirect()->route('objectif.index')->with('success', 'Objectif mis à jour avec succès !');
     }
+    
+
+    public function updateComplet(Request $request, $id)
+    {
+      
+        $objectif = Objectif::findOrFail($id);
+        $objectif->update([
+            'completer' => $request->input('completer'),
+        ]);
+        return redirect()->route('objectif.index')->with('success', 'Objectif mis à jour avec succès !');
+    }  
+
 
     public function destroy($id)
     {
@@ -90,6 +102,8 @@ class ObjectifController extends Controller
         $objectif = Objectif::findOrFail($id);
         return view('objectif.edit', compact('objectif'));
     }
+
+
 
     /**
      * Update the specified resource in storage.
