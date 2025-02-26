@@ -22,7 +22,7 @@
 
     <div class="container-fluid">
         <div class="d-flex row justify-content-center">
-            <div class="col-md-10">
+            <div class="col-12 col-sm-12 col-md-10">
 
                 <form action="{{ route('profil.connexion') }}" method="post" id="formConnexion">
                     <h1 class="h1" id="titreConnexion">Connexion ou création de compte Gymcord</h1>

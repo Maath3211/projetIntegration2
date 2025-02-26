@@ -41,9 +41,7 @@ mauve a650fc
 .btn-lightBlue {
     background-color: #28e6d3;
 }
-.btn-green {
-    background-color: #a9fe77;
-}
+
 
 .imgGroupe {
     width: 200px;
@@ -64,6 +62,88 @@ input:focus,
 select:focus {
     background-color: #999999 !important;
     color: rgb(255, 255, 255) !important;
+}
+
+.btn-save,
+.unit-btn {
+    background: linear-gradient(135deg, #a9fe77, #60c22c);
+    border: none;
+    padding: 12px 25px;
+    cursor: pointer;
+    font-size: 18px;
+    color: black;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 2px 2px 10px rgba(169, 254, 119, 0.5);
+    text-transform: uppercase;
+    margin-top: 2%;
+}
+
+.btn-btn:hover,
+.unit-btn:hover {
+    background: linear-gradient(135deg, #60c22c, #a9fe77);
+    transform: scale(1.05);
+}
+
+.btn-btn:active,
+.unit-btn:active {
+    transform: scale(0.95);
+    box-shadow: 1px 1px 5px rgba(169, 254, 119, 0.8);
+}
+
+.btn-retour {
+    background: linear-gradient(135deg, #fcfe77, #c2b82c);
+    border: none;
+    padding: 12px 25px;
+    cursor: pointer;
+    font-size: 18px;
+    color: black;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 2px 2px 10px #c2b82c;
+    text-transform: uppercase;
+    margin-top: 2%;
+}
+
+.btn-retour:hover,
+.unit-btn:hover {
+    background: linear-gradient(135deg, #c2b82c, #fcfe77);
+    transform: scale(1.05);
+}
+
+.btn-retour:active,
+.unit-btn:active {
+    transform: scale(0.95);
+    box-shadow: 1px 1px 5px #c2b82c;
+}
+
+.btn-suppression {
+    background: linear-gradient(135deg, #fe7777, #c22c2c);
+    border: none;
+    padding: 12px 25px;
+    cursor: pointer;
+    font-size: 18px;
+    color: black;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 2px 2px 10px rgba(254, 119, 119, 0.5);
+    text-transform: uppercase;
+    margin-top: 2%;
+}
+
+.btn-suppression:hover,
+.unit-btn:hover {
+    background: linear-gradient(135deg, #c22c2c, #fe7777);
+    transform: scale(1.05);
+}
+
+.btn-suppression:active,
+.unit-btn:active {
+    transform: scale(0.95);
+    box-shadow: 1px 1px 5px rgba(169, 254, 119, 0.8);
 }
 
 #engrenage {
@@ -102,4 +182,22 @@ select:focus {
     display: flex !important;
     height: 20px !important;
     font-size: 15px;
+}
+
+.modal-content {
+    background: rgb(22, 28, 36);
+    color: white;
+}
+
+.modal-header {
+    border-bottom: 1px solid #60c22c;
+}
+
+.modal-footer {
+    border-top: 1px solid #60c22c;
+}
+
+.fermerModal{
+    color: #ffffff !important;
+    background-color: #60c22c;
 }

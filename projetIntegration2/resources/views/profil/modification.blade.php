@@ -18,7 +18,7 @@
 
                         <div class="row mb-4">
                             <div class="col-md-4 offset-md-2 d-flex align-items-center">
-                                <p class="greenText h5">Photo de profile</p>
+                                <p class="greenText h5">Photo de profil</p>
                             </div>
                             <div class="col-md-4 d-flex flex-column align-items-center">
                                 <img src="{{ asset(Auth::user()->imageProfil) }}" alt="Profile Picture"
@@ -183,14 +183,41 @@
                         </div>
                         <div class="row mb-4">
                             <div class="col-md-4 offset-md-2 d-flex align-items-center">
-                                <button class="btn btn-save btn-green">Sauvegarder</button>
+                                <button type="submit" class="btn btn-save btn-green">Sauvegarder</button>
+                                <p class="btn btn-retour" id="btRetour">Retour</p>
+                                <p class="btn btn-suppression" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal">Suppression</p>
                             </div>
                         </div>
                 </form>
             </div>
 
+            
+
+            <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title h3" id="deleteConfirmationModalLabel">Confirmation de suppression</h5>
+                            <button type="button" class="btn-close fermerModal" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Êtes-vous sûr de vouloir supprimer votre compte ? <strong>Cette action est irréversible.</strong>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-save" data-bs-dismiss="modal">Annuler</button>
+                            <form action="{{ route('profil.suppressionProfil') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="btn btn-suppression">Supprimer mon compte</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
 
         </div>
     </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('js/Profil/modification.js') }}"></script>
 @endsection

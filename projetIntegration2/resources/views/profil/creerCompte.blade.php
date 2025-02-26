@@ -12,11 +12,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" style="text/css" href="\css\GabaritCss.css">
+    <link rel="stylesheet" style="text/css" href="{{ asset('css/Profil/creation.css') }}">
 
 </head>
 
 <body>
-    <link rel="stylesheet" href="{{ asset('css/Profil/connexion.css') }}">
 
     <div class="container-fluid">
         <div class="d-flex row justify-content-center">
