@@ -8,6 +8,7 @@ use App\Http\Controllers\Conversations;
 use App\Http\Controllers\StatistiqueController;
 use App\Http\Controllers\GymController;
 use App\Http\Controllers\AmisController;
+use App\Http\Controllers\ClanController;
 use App\Models\User;
 use App\Events\PusherBroadcast;
 
@@ -92,3 +93,7 @@ Route::post('amis/accepter', [AmisController::class, 'accepter'])->name('amis.ac
 
 // Traitement du refus d'une demande d'ami
 Route::post('amis/refuser', [AmisController::class, 'refuser'])->name('amis.refuser');
+
+// Routes pour la recherche et la gestion des clans
+Route::match(['get','post'], 'clans/recherche', [ClanController::class, 'rechercheClans'])->name('clans.recherche');
+Route::post('clans/rejoindre', [ClanController::class, 'rejoindre'])->name('clans.rejoindre');
