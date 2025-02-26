@@ -174,6 +174,12 @@
             margin-bottom: 10px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
+
+        .emoji-picker {
+            width: 300px;
+            height: 300px;
+            background: #fff;
+        }
     </style>
 
     @section('style')
@@ -305,6 +311,8 @@
                         </div>
 
                         <div class="d-flex align-items-center mt-3">
+
+
                             <form action="" method="post" enctype="multipart/form-data" class="d-flex flex-grow-1">
                                 @csrf
                                 <div class="form-group d-flex flex-column w-100">
@@ -318,9 +326,13 @@
                                                 id="fichierInput" />
                                             <label for="fichierInput" class="file-upload-btn text-white">📁</label>
                                         </div>
-                                        <button name="emoji" class="btn btn-secondary me-2">😊</button>
-                                        <input type="textarea" class="message-input form-control flex-grow-1" name="content"
-                                            placeholder="Écris un message...">
+                                        <button type="button" id="emoji-btn" name="emoji"
+                                            class="btn btn-secondary me-2">😊</button>
+                                        <div id="emoji-picker-container"
+                                            style="position: absolute; display: none; z-index: 1000;"></div>
+
+                                        <input id="message" type="textarea" class="message-input form-control flex-grow-1"
+                                            name="content" placeholder="Écris un message...">
                                         <button class="btn btn-primary ms-2" type="submit">Submit</button>
                                     </div>
                                 </div>
@@ -515,26 +527,58 @@
 
 
 
-
-
-
-
-
-
         <script>
+            function formatMessage(message) {
+                const maxLength = 50; // Maximum length before adding a newline
+                let formattedMessage = '';
+                for (let i = 0; i < message.length; i += maxLength) {
+                    formattedMessage += message.substring(i, i + maxLength) + '\n';
+                }
+                return formattedMessage;
+            }
+
+
+
+
+
+
+
+
+            // ---------------------------
             // Lorsqu'un fichier est sélectionné
             $('#fichierInput').on('change', function() {
                 var input = this;
                 if (input.files && input.files[0]) {
                     var reader = new FileReader();
                     reader.onload = function(e) {
-                        // Afficher l'image dans le conteneur d'aperçu
-                        $('#preview-container').html('<img src="' + e.target.result +
-                            '" alt="Aperçu de l\'image sélectionnée" class="preview-img">');
+                        // Crée un conteneur avec l'image et un bouton "X" pour annuler
+                        $('#preview-container').html(
+                            '<div style="position: relative; display: inline-block;">' +
+                            '<img src="' + e.target.result +
+                            '" alt="Aperçu de l\'image sélectionnée" class="preview-img">' +
+                            '<button id="cancel-preview" ' +
+                            'style="position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.7); border: none; color: white; font-size: 20px; line-height: 20px; width: 25px; height: 25px; border-radius: 50%; cursor: pointer;">' +
+                            '&times;' +
+                            '</button>' +
+                            '</div>'
+                        );
                     }
                     reader.readAsDataURL(input.files[0]);
                 }
             });
+
+            // Lorsqu'on clique sur le bouton "X"
+            $(document).on('click', '#cancel-preview', function() {
+                $('#preview-container').empty();
+                $('#fichierInput').val('');
+            });
+
+
+
+
+
+
+
 
             // Scroll to the bottom of the chat messages
             document.addEventListener("DOMContentLoaded", function() {
@@ -567,38 +611,38 @@
 
 
 
-// Recevoir les messages de la conversation
-channel.bind('event-group', function(data) {
-    // Vérifier si le message a été supprimé
-    if (data.deleted === true) {
-        // Si le message a été supprimé, le retirer du DOM
-        $(`#message-${data.last_id}`).remove();
-    } else {
-        // Détermine le contenu du message (texte, image ou fichier)
-        let messageContent = data.message ? `<p>${data.message}</p>` : "";
-        console.log(data);
-        // Déterminer si c'est une image ou un fichier à télécharger
-        let fileExtension = data.photo ? data.photo.split('.').pop().toLowerCase() : "";
-        let isImage = ["jpg", "jpeg", "png", "gif"].includes(fileExtension);
-        let fileContent = "";
+            // Recevoir les messages de la conversation
+            channel.bind('event-group', function(data) {
+                // Vérifier si le message a été supprimé
+                if (data.deleted === true) {
+                    // Si le message a été supprimé, le retirer du DOM
+                    $(`#message-${data.last_id}`).remove();
+                } else {
+                    // Détermine le contenu du message (texte, image ou fichier)
+                    let messageContent = data.message ? `<p>${data.message}</p>` : "";
+                    console.log(data);
+                    // Déterminer si c'est une image ou un fichier à télécharger
+                    let fileExtension = data.photo ? data.photo.split('.').pop().toLowerCase() : "";
+                    let isImage = ["jpg", "jpeg", "png", "gif"].includes(fileExtension);
+                    let fileContent = "";
 
-        if (data.photo) {
-            if (isImage) {
-                fileContent = `<div class="message-image">
+                    if (data.photo) {
+                        if (isImage) {
+                            fileContent = `<div class="message-image">
                     <img src="/img/conversations_photo/${data.photo}" alt="Image" class="message-img">
                 </div>`;
-            } else {
-                const fileName = data.photo.split('/').pop(); // Récupérer le nom du fichier
-                fileContent = `<div class="message-file">
+                        } else {
+                            const fileName = data.photo.split('/').pop(); // Récupérer le nom du fichier
+                            fileContent = `<div class="message-file">
                     <a href="${data.photo}" target="_blank" download class="btn btn-sm btn-primary">
                         📎 Télécharger ${fileName}
                     </a>
                 </div>`;
-            }
-        }
+                        }
+                    }
 
-        // Ajouter le message au chat
-        $("#chat-messages").append(`
+                    // Ajouter le message au chat
+                    $("#chat-messages").append(`
             <div class="messageTotal" id="message-${data.last_id}">
                 <div class="message received-message">
                     <div class="avatar bg-primary text-white rounded-circle p-2">
@@ -617,10 +661,10 @@ channel.bind('event-group', function(data) {
             </div>
         `);
 
-        // Scroll au bas des messages
-        $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
-    }
-});
+                    // Scroll au bas des messages
+                    $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
+                }
+            });
 
 
 
@@ -667,7 +711,7 @@ channel.bind('event-group', function(data) {
                     if (res.fichier) {
                         if (isImage) {
                             fileContent =
-                            `<img src="${res.fichier}" class="message-image" alt="Image envoyée">`;
+                                `<img src="${res.fichier}" class="message-image" alt="Image envoyée">`;
                         } else {
                             fileContent = `<a href="../${res.fichier}" target="_blank" class="text-blue-500">
                     📄 Télécharger ${res.fichier.split('/').pop()}
@@ -736,6 +780,7 @@ channel.bind('event-group', function(data) {
                 $(`#message-${data.messageId}`).remove();
             });
         </script>
+
     </body>
 
 @endsection()
