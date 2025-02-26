@@ -48,21 +48,15 @@
             @csrf
                 <div class="row">
                     <div class="col-md-12 parametresCanal">
-                        <div class="categorie Général">
-                            <i class="fa-solid fa-x supprimer"></i>
-                            <i class="fa-solid fa-pen renommer"></i>
-                            <div>Général</div>
-                        </div>
-                        <div class="categorie Aide">
-                            <i class="fa-solid fa-x supprimer"></i>
-                            <i class="fa-solid fa-pen renommer"></i>
-                            <div>Aide</div>
-                        </div>
-                        <div class="categorie Compétition">
-                            <i class="fa-solid fa-x supprimer"></i>
-                            <i class="fa-solid fa-pen renommer"></i>
-                            <div>Compétition</div>
-                        </div>
+                        @if(isset($categories))
+                            @foreach($categories as $cat)
+                                <div class="categorie {{$cat->categorie}}">
+                                    <i class="fa-solid fa-x supprimer"></i>
+                                    <i class="fa-solid fa-pen renommer"></i>
+                                    <div>{{$cat->categorie}}</div>
+                                </div>
+                            @endforeach
+                        @endif
                     </div>
                     <div>
                         <button type="button" class="ajouterCategorie">Ajouter une catégorie</button>
@@ -136,6 +130,30 @@
             </div>
         </div>
         </div>
+    </div>
+    <div id="conteneurMessages">
+        @if(session('message'))
+          <div class="alert" id="messageSucces">
+            <span>{{session('message')}}</span>
+            <button class="close-btn" onclick="fermerAlerte("messageSuccess")">X</button>
+          </div>
+        @endif
+
+        <!--Obligé d'utiliser $errors ici c'est la facon que laravel gère ses erreurs-->
+        @if($errors->any() || session('erreur'))
+          <div class="alert" id="messageErreur">
+            <ul>
+              @if($errors->any())
+                @foreach($errors->all() as $erreur)
+                    <li>{{ $erreur }}</li>
+                @endforeach
+              @elseif(session('erreur'))
+                    <li>{{session('erreur')}}</li>
+              @endif
+            </ul>
+            <button class="close-btn">X</button>
+          </div>
+        @endif
     </div>
     </main>
 <footer>

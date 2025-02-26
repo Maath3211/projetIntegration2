@@ -43,4 +43,8 @@ class User extends Authenticatable
         'password' => 'hashed',
         
     ];
+
+    public function clans() {
+        return $this->belongsToMany(Clan::class, 'clan_users');
+    }
 }

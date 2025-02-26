@@ -18,6 +18,13 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
+    // pour fermer une fenêtre contextuelle de notification
+    document.querySelectorAll('.close-btn').forEach(bouton => {
+        bouton.addEventListener('click', function(){
+            bouton.parentElement.style.display = 'none';
+        });
+    });
+
 
     /*
     FRONT END QUI MARCHE POUR TOUTES LES FENÊTRES CONTEXTUELLES

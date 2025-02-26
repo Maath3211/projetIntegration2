@@ -6,9 +6,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Clan;
+use App\Models\User;
 use App\Models\Canal;
 use App\Models\CategorieCanal;
+use Exception;
 
 class ClanController extends Controller
 {
@@ -20,18 +24,27 @@ class ClanController extends Controller
 
     // Paramètres d'un clan
     public function parametres($id){
-        // $clan = Clan::findOrFail($id);
+        $clan = Clan::findOrFail($id);
+
+        if(!$clan){
+            return back()-with('erreur', 'ERREUR - Clan inexistant.');
+        }
+
         if(Route::currentRouteName() === "clan.parametres"){
             //les paramètres généraux
-            return View('Clans.parametresClan', compact('id'/*, 'clan*/ ));
+            return View('Clans.parametresClan', compact('id', 'clan' ));
         }
         else if (Route::currentRouteName() === "clan.parametres.canaux") {
             //les paramètres de catégories de canaux
-            return View('Clans.parametresClanCanaux', compact('id'/*, 'clan*/ ));
+            $categories = CategorieCanal::where('clanId', '=', $clan->id)->get();
+            return View('Clans.parametresClanCanaux', compact('id', 'clan', 'categories'));
         }
         else if (Route::currentRouteName() === "clan.parametres.membres"){
             // les paramètres des membres du clan
-            return View('Clans.parametresClanMembres', compact('id'/*, 'clan*/ ));
+            Log::info('CLAN: ' . $clan);
+            $lienInvitation = $this->genererLienInvitation($clan);
+            $membres = $clan->utilisateurs;
+            return View('Clans.parametresClanMembres', compact('id', 'clan', 'lienInvitation', 'membres'));
         }
     }
 
@@ -50,6 +63,7 @@ class ClanController extends Controller
                 'nomClan.max' => 'Le nom du clan ne doit pas dépasser les 50 caractères.',
             ]);
 
+            $nomClan = $request->input('nomClan');
 
             // si une image a été soumise, on échange l'ancienne avec la nouvelle dans nos fichiers
             if($request->hasFile('imageClan')){
@@ -69,49 +83,39 @@ class ClanController extends Controller
                 
                 //Enregistrer la nouvelle image à la place de l'ancienne image
                 $image = $request->file('imageClan');
-                $nomImage = 'clan_' . $id . '_.' . $image->getClientOriginalExtension();
+                $nomImage = 'img/Clans/clan_' . $id . '_.' . $image->getClientOriginalExtension();
 
                 $image->move(public_path('img/Clans'), $nomImage);
                 
                 // si nomClan est entré, on fait la mise à jour du nom ET de l'image
                 if($request->filled('nomClan')){
-                    //TODO - mettre à jour le nom du clan dans la BD
-                    //TODO - ajouter le chemin de l'image dans la BD
-                    /*
                     $clan = Clan::findOrFail($id);
                     $clan->image = $nomImage;
-                    $clan->nom = $nomClan
+                    $clan->nom = $nomClan;
                     $clan->save();
-                    */
+                    
                 } // sinon on met juste l'image à jour
                 else {
-                    //TODO - ajouter le chemin de l'image dans la BD
-                    /*
                     $clan = Clan::findOrFail($id);
                     $clan->image = $nomImage;
                     $clan->save();
-                    */
                 }
 
-                return redirect()->route('clan.parametres.post', ['id' => $id])->with('success', 'Changements enregistrés avec succès');
+                return redirect()->route('clan.parametres.post', ['id' => $id])->with('message', 'Changements enregistrés avec succès');
             }
             else {
                 if($request->filled('nomClan')){
-                    //TODO - mettre à jour le nom du clan dans la BD
-                    /*
                     $clan = Clan::findOrFail($id);
-                    $clan->image = $nomImage;
-                    $clan->nom = $nomClan
+                    $clan->nom = $nomClan;
                     $clan->save();
-                    */
                 }
             }
 
-            return back()->with('error', 'Veuillez sélectionner une image valide à téléverser.');
-        } catch (\Exception $e) {
+            return back()->with('erreur', 'Veuillez sélectionner une image valide à téléverser.');
+        } catch (Exception $e) {
             Log::error('Téléversement d\'image erronné: ' . $e->getMessage());
     
-            return back()->with('error', 'Une erreur est survenue lors du téléversement de l\'image.');
+            return back()->with('erreur', 'Une erreur est survenue lors du téléversement de l\'image.');
         }
     }
 
@@ -120,6 +124,16 @@ class ClanController extends Controller
         $categoriesASupprimer = explode(',', $request->input('categoriesASupprimer'));
         $categoriesAModifier = explode(',', $request->input('categoriesARenommer'));
         $categoriesAAjouter = explode(',', $request->input('categoriesAAjouter'));
+        
+        // Trier les arrays pour juste prendre ceux qui ont quelque chose dedans
+        $categoriesASupprimer = array_filter($categoriesASupprimer);
+        $categoriesASupprimer = array_values($categoriesASupprimer);
+        
+        $categoriesAModifier = array_filter($categoriesAModifier);
+        $categoriesAModifier = array_values($categoriesAModifier);
+
+        $categoriesAAjouter = array_filter($categoriesAAjouter);
+        $categoriesAAjouter = array_values($categoriesAAjouter);
 
         // si la catégorie à supprimer va aussi être modifiée, on l'enlève de la liste à modifier
         for($i = 0; $i < count($categoriesASupprimer); $i++){
@@ -136,9 +150,32 @@ class ClanController extends Controller
 
         $categoriesAModifier = array_values($categoriesAModifier);
 
+        // Ajouter les catégories à ajouter
+        foreach($categoriesAAjouter as $categorie){
+            // Vérifications
+            if(strlen($categorie) > 50){
+                return redirect()->back()->with('erreur', 'Les catégories ne doivent pas dépasser les 50 caractères.');
+            } 
+            else if(!preg_match('/^[\p{L}-]+$/u', $categorie)) {
+                return redirect()->back()->with('erreur', 'Les catégories ne doivent pas contenir de chiffres ou de symboles. Seul les lettres UTF-8 et les traits (-) sont permis.');
+            }
 
-        // Vérification des catégories à modifier
+            $existe = CategorieCanal::where('clanId', $id)->where('categorie', $categorie)->first();
+            if($existe){
+                return redirect()->back()->with('erreur', 'Ce clan possède déjà une catégorie de canal du même nom.');
+            }
+
+            // Ajout des catégories
+            $cat = [
+                'categorie' => $categorie,
+                'clanId' => $id
+            ];
+            CategorieCanal::create($cat);
+        }
+
+        // Modifier les catégories à modifier
         foreach($categoriesAModifier as $categorie){
+            // Vérifications
             $valeurs = explode(';', $categorie);
             if(count($valeurs) != 2){
                 return redirect()->back()->with('erreur', 'Une erreur est survenue lors du processus. Veuillez réessayer plus tard.');
@@ -147,17 +184,21 @@ class ClanController extends Controller
             if(strlen($valeurs[1]) > 50){
                 return redirect()->back()->with('erreur', 'Les catégories ne doivent pas dépasser les 50 caractères.');
             } 
-            else if(!preg_match('/^[A-Za-z\u00C0-\u00FF-]+$/', $valeurs[1])) {
+            else if(!preg_match('/^[\p{L}-]+$/u', $valeurs[1])) {
                 return redirect()->back()->with('erreur', 'Les catégories ne doivent pas contenir de chiffres ou de symboles. Seul les lettres UTF-8 et les traits (-) sont permis.');
             }
 
-            // TODO Faire les ajouts içi
-            // TODO Faire la modification içi
+            // Renommage des catégories
+            $cat = CategorieCanal::where('clanId', $id)->where('categorie', $valeurs[0])->first();
+            $cat->categorie = $valeurs[1];
+            $cat->save();
         }
 
-        // TODO Faire la suppression des catégories et leurs canaux içi
+        // Supprimer les catégories à supprimer
+        CategorieCanal::where('clanId', $id)->whereIn('categorie', $categoriesASupprimer)->delete();
 
-        return redirect()->route('clan.parametres.post', ['id' => $id])->with('success', 'Changements enregistrés avec succès');
+        
+        return redirect()->route('clan.parametres.canaux', ['id' => $id])->with('message', 'Changements enregistrés avec succès');
 
     }
 
@@ -219,23 +260,26 @@ class ClanController extends Controller
     // Mise à jour de la liste de membres d'un clan (supprimer)
     public function miseAJourMembres(Request $request, $id){
         $membreASupprimer = explode(';', $request->input('membresASupprimer'));
-
-        foreach($membreASupprimer as $membre){
-            if(!empty($membre)){
-                $membreTrouve = ClanUtilisateur::where('utilisateur', $membre)->where('clan', $id)->first();
-                // if($membreTrouve){
-                //     $membreTrouve->delete();
-                // }
+        try {
+            $clan = Clan::findOrFail($id);
+            foreach($membreASupprimer as $membre){
+                if(!empty($membre)){
+                    $utilisateur = User::findOrFail($membre);
+                    if($utilisateur && $utilisateur->id != $clan->adminId){
+                        $utilisateur->clans()->detach($id);
+                    }
+                }
             }
         }
+        catch (Exception $e) {
+            return redirect()->route('clan.parametres.membres', ['id' => $id])->with('erreur', 'Erreur lors de l\'enregistrement des changements. Veuillez réessayer plus tard.');
+        }
 
+        return redirect()->route('clan.parametres.membres', ['id' => $id])->with('message', 'Changements enregistrés avec succès');
     }
 
-    /**
-     * Créer un clan
-     */
-    public function creerClan(Request $request)
-    {
+    // Créer un clan
+    public function creerClan(Request $request){
 
         Log::info($request);
         // utiliser son id comme id d'administrateur du clan
@@ -307,41 +351,47 @@ class ClanController extends Controller
         //     return redirect()->back()->with('message', 'Une erreur a été rencontrée lors de la création du clan mais le clan été créé avec succès.');
         // }
 
-        // return redirect()->back()->with('error', 'Une erreur a été rencontrée lors de la création du clan. Veuillez réessayer plus tard');
+        // return redirect()->back()->with('erreur', 'Une erreur a été rencontrée lors de la création du clan. Veuillez réessayer plus tard');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Supprimer un clan
-     */
-    public function supprimer(string $id)
-    {
+    // Supprimer un clan
+    public function supprimer(string $id){
+        //$user = Auth::user();
+        
         //$clan = Clan::findOrFail($id);
+        //if(!$user || !$clan || $clan->adminId != $user){
+        //  return redirect()->back()->with('erreur', 'Une erreur est survenue lors de la suppression du clan. Assurez-vous d\'être connectés et d'être l'administrateur du clan')
+        //}
+
         //$clan->delete();
         
         // TODO - FAIRE RETOURNER À L'ACCUEIL
     }
+
+    // Accepter une invitation a un clan
+    public function accepterInvitation(Request $request, Clan $clan){
+        if(!$request->hasValidSignature()){
+            abort(403, 'Lien d\'invitaion invalide ou expiré');
+        }
+
+        $utilisateur = Auth::user();
+        if(!$utilisateur){
+            return redirect('/connexion')->with('erreur', 'Vous devez être connectés pour rejoindre un clan.');
+        }
+
+        if($clan->utilisateurs()->where('user_id', $utilisateur->id)->exists()){
+           return redirect()->route('clan.montrer', $clan->id)->with('message', 'Vous êtes déjà membre de ce clan.');
+        }
+        Log::info('CLAN_INVITE1: ' . $clan);
+        $clan->utilisateurs()->sync([$utilisateur->id => ['clan_id' => $clan->id]]);
+
+        return redirect()->route('clan.montrer', $clan->id)->with('message', 'Vous avez rejoint le clan avec succès.');
+    }
+
+    // générer un lien d'invitation au clan
+    public function genererLienInvitation(Clan $clan){
+        $lien = URL::temporarySignedRoute('invitation.accepter', now()->addHours(24), ['clan' => $clan->id]);
+        return $lien;
+    }
+
 }

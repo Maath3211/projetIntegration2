@@ -18,6 +18,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ClanSeeder::class);
         $this->call(ScoreSeeder::class);
         $this->call(ClanUserSeeder::class);
-
+        $this->call(CategoriesCanalSeeder::class);
     }
 }

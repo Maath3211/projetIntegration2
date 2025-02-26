@@ -52,16 +52,18 @@ Route::POST('/clan/creer',
 Route::POST('/clan/{id}/supprimer',
 [ClanController::class, 'supprimer'])->name('clan.supprimer');
 
-Route::GET('/yup',
-[UserCommunication::class,'index'])->name('user.index');
-
 Route::POST('/clan/{id}/televerser',
 [ClanController::class, 'televerserImage'])->name('clan.televerserImage');
 
+Route::GET('/clan/invitation/{clan}',
+[ClanController::class, 'accepterInvitation'])->name('invitation.accepter');
 
 
 
-Route::GET('/yup', [UserCommunication::class,'index'])->name('user.index');
+
+
+Route::GET('/yup',
+[UserCommunication::class,'index'])->name('user.index');
 
 Route::GET('/conversations/{user}', [Conversations::class,'show'])->name('conversations.show');
 Route::POST('/conversations/{user}', [Conversations::class,'store']);

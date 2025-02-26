@@ -86,28 +86,6 @@
           </div>
         </div>
       </form>
-      <div id="conteneurMessages">
-        @if(session('message'))
-          <div class="alert" id="messageSucces">
-            <span>{{session('message')}}</span>
-            <button class="close-btn" onclick="fermerAlerte("messageSuccess")">X</button>
-          </div>
-        @endif
-
-        <!--Obligé d'utiliser $errors ici c'est la facon que laravel gère ses erreurs-->
-        @if($errors->any())
-          <div class="alert" id="messageErreur">
-            <ul>
-              @if($errors->any())
-                @foreach($errors->all() as $erreur)
-                  <li>{{ $erreur }}</li>
-                @endforeach
-              @endif
-            </ul>
-            <button class="close-btn">X</button>
-          </div>
-        @endif
-        </div>
       @livewireScripts
     </div>
   </main>

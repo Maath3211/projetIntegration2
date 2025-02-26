@@ -17,7 +17,7 @@ class ClanSeeder extends Seeder
             [
                 'id' => 1,
                 'adminId' => '1',
-                'image' => 'default.png',
+                'image' => 'img/Clans/clan_1_.png',
                 'nom' => 'Clan Alpha',
                 'public' => true,
                 'created_at' => now(),
@@ -26,7 +26,7 @@ class ClanSeeder extends Seeder
             [
                 'id' => 2,
                 'adminId' => '2',
-                'image' => 'default.png',
+                'image' => 'img/Clans/default.jpg',
                 'nom' => 'Clan Beta',
                 'public' => false,
                 'created_at' => now(),
@@ -35,7 +35,7 @@ class ClanSeeder extends Seeder
             [
                 'id' => 3,
                 'adminId' => '3',
-                'image' => 'default.png',
+                'image' => 'img/Clans/default.jpg',
                 'nom' => 'Clan Gamma',
                 'public' => true,
                 'created_at' => now(),

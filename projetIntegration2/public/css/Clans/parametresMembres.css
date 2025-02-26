@@ -406,7 +406,7 @@ STYLE POUR LES CATÉGORIES DE CANAUX
     padding-left: 30px;
     border-radius: 5px;
     margin-bottom: 15px;
-    width: 50%;
+    width: 55%;
     color: black;
 }
 
@@ -417,7 +417,7 @@ STYLE POUR LES CATÉGORIES DE CANAUX
 }
 
 .rangeeInviter div:last-of-type {
-    display: flex;
+    display: inline-block;
     justify-content: space-between;
     background-color: #8CD262;
     font-weight: bold;
@@ -431,11 +431,15 @@ STYLE POUR LES CATÉGORIES DE CANAUX
     border: 1px solid #636771;
     border-radius: 5px;
     width: 75%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
+
 
 .rangeeInviter i {
     font-size: large;
     margin-left: 15px;
     cursor: pointer;
-    color:#A9FE77;
+    color:#8CD262;
 }
