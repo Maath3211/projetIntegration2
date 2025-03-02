@@ -175,11 +175,76 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
-        .emoji-picker {
-            width: 300px;
-            height: 300px;
-            background: #fff;
-        }
+
+
+
+
+
+
+
+
+
+
+        .emoji-picker-container {
+    position: absolute;
+    width: 300px;
+    height: 400px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    display: none;
+    flex-direction: column;
+    padding: 10px;
+    z-index: 1000;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transform: translateY(10px); /* Décalage initial */
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.emoji-picker-container.active {
+    display: flex;
+    opacity: 1;
+    transform: translateY(0); /* Retourne à sa position normale */
+}
+
+
+#emoji-picker-container {
+    position: absolute;
+    bottom: 60px; /* Ajuste selon la hauteur de ton champ texte */
+    left: 15%;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    max-height: 300px;
+    overflow: hidden;
+    z-index: 1000;
+}
+                .emoji-search-container {
+                    margin-bottom: 10px;
+                }
+            
+                .emoji-search-container input {
+                    width: 100%;
+                    padding: 5px;
+                    border: 1px solid #ccc;
+                    border-radius: 5px;
+                }
+            
+                #emoji-list {
+                    flex-grow: 1;
+                    overflow-y: auto;
+                }
+            
+                .emoji-item {
+                    display: inline-block;
+                    padding: 5px;
+                    font-size: 24px;
+                    cursor: pointer;
+                }
+
+
     </style>
 
     @section('style')
@@ -312,6 +377,7 @@
 
                         <div class="d-flex align-items-center mt-3">
 
+                            
 
                             <form action="" method="post" enctype="multipart/form-data" class="d-flex flex-grow-1">
                                 @csrf
@@ -326,11 +392,8 @@
                                                 id="fichierInput" />
                                             <label for="fichierInput" class="file-upload-btn text-white">📁</label>
                                         </div>
-                                        <button type="button" id="emoji-btn" name="emoji"
-                                            class="btn btn-secondary me-2">😊</button>
-                                        <div id="emoji-picker-container"
-                                            style="position: absolute; display: none; z-index: 1000;"></div>
-
+                                        <div id="emoji-picker-container" class="emoji-picker-container"></div>
+                                        <button type="button" id="emoji-btn" name="emoji"class="btn btn-secondary me-2">😊</button>
                                         <input id="message" type="textarea" class="message-input form-control flex-grow-1"
                                             name="content" placeholder="Écris un message...">
                                         <button class="btn btn-primary ms-2" type="submit">Submit</button>
@@ -344,6 +407,48 @@
                                 <li>{{ $error }}</li>
                             @endforeach
                         </u>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                     </div>
                     <div class="col-md-2 colonneMembres">
@@ -525,7 +630,7 @@
 
 
 
-
+    <script src="{{ asset('js/Conversations/chat.js') }}"></script>
 
         <script>
             function formatMessage(message) {

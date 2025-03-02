@@ -17,6 +17,7 @@
         "vite": "^6.0"
     },
     "dependencies": {
-        "emoji-mart": "^5.6.0"
+        "emoji-mart": "^5.6.0",
+        "livewire": "^0.6.1"
     }
 }
