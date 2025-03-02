@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     // 📌 Création du conteneur de la liste des emojis avec scroll
     const emojiList = document.createElement("div");
     emojiList.id = "emoji-list";
-    emojiList.style.maxHeight = "200px"; // Hauteur max avec scroll
+    emojiList.style.maxHeight = "250px"; // Hauteur max avec scroll
     emojiList.style.overflowY = "auto";
     emojiList.style.padding = "10px";
     emojiList.style.display = "grid";
