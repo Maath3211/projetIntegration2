@@ -85,6 +85,13 @@
             border: none;
             outline: none;
         }
+        .message-text {
+
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            max-width: 500px; /* Ajuste la largeur selon ton design */
+
+        }
 
         .separator {
             display: block;
@@ -324,7 +331,9 @@
                                             <strong>{{ $message->user->email }}</strong>
                                             <span class="text-muted">{{ substr($message->created_at, 11, 5) }}</span>
                                             <br>
-                                            <p>{!! nl2br(e($message->message)) !!}</p>
+                                            <div class="message-text">
+                                                <p>{!! nl2br(e($message->message)) !!}</p>  
+                                            </div>
 
                                             @if ($message->fichier)
                                                 @php
@@ -755,10 +764,12 @@
                         {{ isset($message) ? substr($message->user->email, 0, 2) : 'rien' }}
                     </div>
                     <div class="bubble">
-                        <strong>${data.sender_email ? data.sender_email : ''}</strong>
+                        <strong>{{ isset($message) ? $message->user->email : 'rien' }}</strong>
                         <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
                         <br>
-                        ${messageContent}
+                        <div class="message-text">
+                            ${messageContent}
+                        </div>
                         ${fileContent}
                     </div>
                 </div>
@@ -832,7 +843,9 @@
                         <strong>${res.sender_email}</strong>
                         <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
                         <br>
-                        ${messageContent}
+                        <div class="message-text">
+                            ${messageContent}
+                        </div>
                         ${fileContent}
                     </div>
                     <div class="ml-4 avatar bg-primary text-white rounded-circle p-2">${avatarText}</div>
