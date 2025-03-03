@@ -43,29 +43,16 @@
       </a>
 
       <!-- Tous les clans dont l'utilisateur actuel fait partie -->
-      <a href="{{ route('clan.montrer', ['id' => 1]) }}">
-        <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div>
-      </a>
-      <a href="{{ route('clan.montrer', ['id' => 2]) }}">
-        <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div>
-      </a>
-      <a href="{{ route('clan.montrer', ['id' => 3]) }}">
-        <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div>
-      </a>
-      <a href="{{ route('clan.montrer', ['id' => 4]) }}">
-        <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div>
-      </a>
-      <a href="{{ route('clan.montrer', ['id' => 5]) }}">
-        <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div>
-      </a>
-      <a href="{{ route('clan.montrer', ['id' => 6]) }}">
-        <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div>
-      </a>
-      <a href="{{ route('clan.montrer', ['id' => 7]) }}">
-        <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div>
-      </a>
+      @if(isset($clans))
+        @foreach($clans as $clan)
+          <a href="{{ route('clan.montrer', ['id' => $clan->id]) }}">
+            <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset($clan->image) }}" class="object-cover w-full h-full"></div>
+          </a>
+        @endforeach
+      @endif
 
-            <a id="creerClan"> <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee creerClan"><i class="fa-regular fa-square-plus fa-2xl"></i></i></div></a>
+
+      <a id="creerClan"> <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee creerClan"><i class="fa-regular fa-square-plus fa-2xl"></i></i></div></a>
 
         <form action="{{route('profil.deconnexion')}}" method="post">
           @csrf

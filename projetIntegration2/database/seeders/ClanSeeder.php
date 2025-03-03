@@ -12,7 +12,7 @@ class ClanSeeder extends Seeder
         DB::table('clans')->insert([
             [
                 'id' => 1,
-                'adminId' => '1',
+                'adminId' => 1,
                 'image' => 'img/Clans/clan_1_.jpg',
                 'nom' => 'Clan Alpha',
                 'public' => true,
@@ -21,16 +21,17 @@ class ClanSeeder extends Seeder
             ],
             [
                 'id' => 2,
-                'adminId' => '2',
+                'adminId' => 2,
                 'image' => 'img/Clans/default.jpg',
                 'nom' => 'Clan Beta',
                 'public' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
                 'id'         => 3,
                 'adminId'    => 3,
-                'image' => 'img/Clans/default.jpg',
+                'image'      => 'img/Clans/default.jpg',
                 'nom'        => 'Clan Gamma',
                 'public'     => true,
                 'created_at' => now(),
