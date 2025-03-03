@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Http\Requests\ConnexionRequest;
 use App\Http\Requests\CreationCompteGoogleRequest;
 use App\Http\Requests\CreationCompteRequest;
@@ -12,6 +13,12 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\reinitialisation;
+use App\Mail\confirmation;
 
 class ProfilController extends Controller
 {
@@ -22,6 +29,10 @@ class ProfilController extends Controller
 
     public function connexion(ConnexionRequest $request)
     {
+        $utilisateur = User::where('email', $request->email)->first();
+        if ($utilisateur->email_verified_at == null) {
+            return redirect()->back()->withErrors(['email' => 'Votre compte n\'a pas été vérifié']);
+        }
         $reussi = Auth::guard()->attempt(['email' => $request->email, 'password' => $request->password]);
         if ($reussi) {
             return redirect()->route('profil.profil');
@@ -39,6 +50,9 @@ class ProfilController extends Controller
 
     public function storeCreerCompte(CreationCompteRequest $request)
     {
+        if (User::where('email', $request->email)->exists()) {
+            return redirect()->route('profil.connexion')->withErrors( ['Un compte existe déjà avec cet email']);
+        }
         $utilisateur = new User();
         $utilisateur->email = $request->email;
         $utilisateur->prenom = $request->prenom;
@@ -48,10 +62,11 @@ class ProfilController extends Controller
         $utilisateur->genre = $request->genre;
         $utilisateur->dateNaissance = $request->dateNaissance;
         $utilisateur->password = bcrypt($request->password);
+        $utilisateur->codeVerification = Str::random(64);
 
         if ($request->hasFile('imageProfil')) {
             $uploadedFile = $request->file('imageProfil');
-            $nomFichierUnique = 'img/Utilisateurs/' . str_replace(' ', '_', $utilisateur->id) . '-' . uniqid() . '.' . $uploadedFile->extension();
+            $nomFichierUnique = 'img/Utilisateurs/' . uniqid() . '.' . $uploadedFile->extension();
             try {
                 $uploadedFile->move(public_path('img/Utilisateurs'), $nomFichierUnique);
                 $utilisateur->imageProfil = $nomFichierUnique;
@@ -63,8 +78,9 @@ class ProfilController extends Controller
             return redirect()->back()->withErrors(['imageProfil' => 'Aucune image sélectionnée']);
         }
 
+        Mail::to($utilisateur->email)->send(new confirmation($utilisateur));
         $utilisateur->save();
-        return redirect()->route('profil.connexion')->with('message', 'Votre compte a été créé avec succès');
+        return redirect()->route('profil.connexion')->with('message', 'Votre compte a été créé avec succès! Un courriel de confirmation a été envoyé');
     }
 
     public function creerCompteGoogle()
@@ -90,6 +106,9 @@ class ProfilController extends Controller
                 ->first();
 
             if ($existingUser) {
+                if ($existingUser->email_verified_at == null) {
+                    return redirect()->route('profil.connexion')->withErrors(['email' => 'Votre compte n\'a pas été vérifié']);
+                }
                 Auth::login($existingUser);
                 return redirect()->route('profil.profil');
             }
@@ -157,12 +176,13 @@ class ProfilController extends Controller
         $utilisateur->dateNaissance = $request->dateNaissance;
         $utilisateur->password = bcrypt($request->password);
         $utilisateur->google_id = session('google_data.google_id');
+        $utilisateur->codeVerification = Str::random(64);
 
         $googleData = session('google_data');
         if ($googleData && isset($googleData['image_url'])) {
             try {
                 $imageContent = file_get_contents($googleData['image_url']);
-                $nomFichierUnique = 'img/Utilisateurs/' . str_replace(' ', '_', $utilisateur->id) . '-' . uniqid() . '.jpg';
+                $nomFichierUnique = 'img/Utilisateurs/' . str_replace(' ', '_', $utilisateur->google_id) . '-' . uniqid() . '.jpg';
 
                 if (file_put_contents(public_path($nomFichierUnique), $imageContent)) {
                     $utilisateur->imageProfil = $nomFichierUnique;
@@ -179,17 +199,32 @@ class ProfilController extends Controller
         }
 
         $utilisateur->save();
-        Auth::login($utilisateur);
-        return redirect()->route('profil.profil');
+        if ($utilisateur->email_verified_at != null) {
+            Auth::login($utilisateur);
+            return redirect()->route('profil.profil');
+        }
 
-        return redirect()->route('profil.connexion')->with('message', 'Votre compte a été créé avec succès');
+        Mail::to($utilisateur->email)->send(new confirmation($utilisateur));
+        return redirect()->route('profil.connexion')->with('message', 'Votre compte a été créé avec succès! Un courriel de confirmation a été envoyé');
     }
 
 
     public function profil()
     {
-        return View('profil.profil');
+        $utilisateur = Auth::user();
+        $clans = $utilisateur->clans; // Fetch all clans associated with the user
+        return view('profil.profil', compact('utilisateur', 'clans' ));
     }
+
+    public function profilPublic($email)
+    {
+        $utilisateur = User::where('email', $email)->first();
+        if (!$utilisateur) {
+            return redirect()->route('profil.profil')->withErrors(['Utilisateur introuvable']);
+        }
+        return View('profil.profilPublic', compact('utilisateur'));
+    }
+
 
     public function deconnexion()
     {
@@ -209,14 +244,18 @@ class ProfilController extends Controller
     public function updateModification(ModificationRequest $request)
     {
         $utilisateur = Auth::user();
-        $utilisateur->prenom = $request('prenom');
-        $utilisateur->nom = $request('nom');
-        $utilisateur->pays = $request('pays');
-        $utilisateur->genre = $request('genre');
-        $utilisateur->dateNaissance = $request('dateNaissance');
+        $utilisateur->prenom = $request->input('prenom');
+        $utilisateur->nom = $request->input('nom');
+        $utilisateur->pays = $request->input('pays');
+        $utilisateur->genre = $request->input('genre');
+        $utilisateur->dateNaissance = $request->input('dateNaissance');
 
-        if (request()->hasFile('imageProfil')) {
-            $uploadedFile = request()->file('imageProfil');
+        if ($request->hasFile('imageProfil')) {
+            if ($utilisateur->imageProfil && file_exists(public_path($utilisateur->imageProfil))) {
+                unlink(public_path($utilisateur->imageProfil));
+            }
+
+            $uploadedFile = $request->file('imageProfil');
             $nomFichierUnique = 'img/Utilisateurs/' . str_replace(' ', '_', $utilisateur->id) . '-' . uniqid() . '.' . $uploadedFile->extension();
             try {
                 $uploadedFile->move(public_path('img/Utilisateurs'), $nomFichierUnique);
@@ -230,6 +269,100 @@ class ProfilController extends Controller
         $utilisateur->save();
         return redirect()->route('profil.profil')->with('message', 'Votre profil a été mis à jour avec succès');
     }
+
+    public function pageMotDePasseOublie()
+    {
+        return View('profil.reinitialisation');
+    }
+
+    public function emailReinitialisation()
+    {
+        return View('emails.motDePasseOublie');
+    }
+
+    public function motDePasseOublieEmail(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+
+        $user = User::where('email', $request->email)->first();
+        if (!$user) {
+            return redirect()->route('profil.connexion')->with('message', 'Un courriel de reinitialisation a été envoyé si le compte existe');
+        }
+
+        $token = Str::random(64);
+
+        $existingToken = DB::table('password_reset_tokens')->where('email', $request->email)->first();
+        if ($existingToken) {
+            DB::table('password_reset_tokens')->where('email', $request->email)->delete();
+        }
+
+        DB::table('password_reset_tokens')->insert([
+            'email' => $request->email,
+            'token' => $token,
+            'created_at' => Carbon::now()
+        ]);
+
+        Mail::to($request->email)->send(new reinitialisation($token));
+        return redirect()->route('profil.connexion')->with('message', 'Un courriel de reinitialisation a été envoyé si le compte existe');
+    }
+
+    public function showResetPasswordForm(string $token)
+    {
+        $tokenData = DB::table('password_reset_tokens')->where('token', $token)->first();
+        if (!$tokenData) {
+            return redirect('/connexion')->withErrors(['token' => 'Token invalide!']);
+        }
+        return view('profil.reinitialisationMDP', ['token' => $token, 'email' => $tokenData->email]);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:8|confirmed',
+            'token' => 'required'
+        ], [
+            'email.required' => 'Le courriel est requis',
+            'email.email' => 'Le format du courriel est invalide',
+            'password.required' => 'Le mot de passe est requis',
+            'password.min' => 'Le mot de passe doit contenir au moins 8 caractères',
+            'password.confirmed' => 'La confirmation du mot de passe ne correspond pas',
+            'token.required' => 'Le jeton de réinitialisation est requis'
+        ]);
+
+        $updatePassword = DB::table('password_reset_tokens')
+            ->where([
+                'email' => $request->email,
+                'token' => $request->token
+            ])->first();
+
+        if (!$updatePassword) {
+            return back()->withErrors(['email' => 'Token invalide!']);
+        }
+
+        User::where('email', $request->email)
+            ->update(['password' => bcrypt($request->password)]);
+
+        DB::table('password_reset_tokens')->where(['email' => $request->email])->delete();
+
+        return redirect('/connexion')->with('message', 'Mot de passe mis à jour!');
+    }
+
+    public function confCourriel($codeVerification)
+    {
+        $user = User::where('codeVerification', $codeVerification)->first();
+        $user->email_verified_at = now();
+        $user->codeVerification = null;
+        $user->save();
+        return redirect()->route('profil.connexion')->with('message', 'Votre compte a été vérifié avec succès');
+    }
+
+
+
+
+
+
+
 
 
 

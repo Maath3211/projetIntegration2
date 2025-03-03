@@ -7,6 +7,7 @@
             <p class="text-center msgErreur">{{ session('message') }}</p>
         </div>
     @endif
+    
     <div class="container-fluid">
         <div class="d-flex row justify-content-center">
             <div class="col-md-8 profile-container-mod">
@@ -110,9 +111,9 @@
                                 <p class="greenText h5">Date de naissance</p>
                             </div>
                             <div class="col-md-4 d-flex flex-column align-items-center">
-                                <input type="date" class="inputModification  form-control"
+                                <input type="date" class="inputModification form-control"
                                     value="{{ Auth::user()->dateNaissance }}" placeholder="Date de naissance"
-                                    name="dateNaissance">
+                                    name="dateNaissance" max="{{ date('Y-m-d') }}" min="1900-01-01">
                             </div>
                             <div class="conteneurErreur col-md-4 offset-md-6">
                                 @error('dateNaissance')

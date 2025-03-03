@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Statistiques;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -20,5 +21,8 @@ class DatabaseSeeder extends Seeder
         $this->call(ClanUserSeeder::class);
         $this->call(CategoriesCanalSeeder::class);
         $this->call(CanalSeeder::class);
+        $this->call(StatistiquesSeeder::class);
+        $this->call(PoidsUtilisateurSeeder::class);
+        $this->call(ScoreExerciceSeeder::class);
     }
 }

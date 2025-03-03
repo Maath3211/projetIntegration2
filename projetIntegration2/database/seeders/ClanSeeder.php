@@ -2,15 +2,11 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 class ClanSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         DB::table('clans')->insert([
@@ -28,16 +24,33 @@ class ClanSeeder extends Seeder
                 'adminId' => '2',
                 'image' => 'img/Clans/default.jpg',
                 'nom' => 'Clan Beta',
-                'public' => false,
+                'public' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+                'id'         => 3,
+                'adminId'    => 3,
+                'image' => 'img/Clans/default.jpg',
+                'nom'        => 'Clan Gamma',
+                'public'     => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'id' => 3,
-                'adminId' => '3',
+                'id'         => 4,
+                'adminId'    => 4,
                 'image' => 'img/Clans/default.jpg',
-                'nom' => 'Clan Gamma',
-                'public' => true,
+                'nom'        => 'Clan Delta',
+                'public'     => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id'         => 5,
+                'adminId'    => 5,
+                'image' => 'img/Clans/default.jpg',
+                'nom'        => 'Clan Epsilon',
+                'public'     => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

@@ -27,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
         Livewire::component('test-component', \App\Http\Livewire\TestComponent::class);
         Livewire::component('leaderboard-switcher', \App\Http\Livewire\LeaderboardSwitcher::class);
         Livewire::component('sidebar-clans', \App\Http\Livewire\SidebarClans::class);
+        Livewire::component('score-graph', \App\Http\Livewire\ScoreGraph::class);
         
         //Schema::defaultStringLength(191);
     

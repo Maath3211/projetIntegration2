@@ -13,8 +13,13 @@ class ClanLeaderboard extends Component
     public $selectedClan;
     public $meilleursMembres;
     public $topScoreImprovement;
+    public $showingGraph = false;
+    public $chartType = 'members'; // Options: 'members', 'improvements'
 
-    protected $listeners = ['clanSelected' => 'updateClan'];
+    protected $listeners = [
+        'clanSelected' => 'updateClan',
+        'closeGraph' => 'hideGraph'
+    ];
 
     public function mount($selectedClanId)
     {
@@ -43,7 +48,7 @@ class ClanLeaderboard extends Component
             ->join('scores', 'users.id', '=', 'scores.user_id')
             ->where('clan_users.clan_id', $clanId)
             ->select(
-                'users.imageProfil as user_image', // Adjust the field if needed.
+                'users.imageProfil as user_image',
                 'users.nom as user_nom',
                 'users.prenom as user_prenom',
                 DB::raw('SUM(scores.score) as user_total_score')
@@ -57,7 +62,7 @@ class ClanLeaderboard extends Component
             ->join('clan_users', 'users.id', '=', 'clan_users.user_id')
             ->join('scores', 'users.id', '=', 'scores.user_id')
             ->where('clan_users.clan_id', $clanId)
-            ->where('scores.created_at', '>=', $oneMonthAgo)
+            ->where('scores.date', '>=', $oneMonthAgo)
             ->select(
                 'users.imageProfil as user_image',
                 'users.nom as user_nom',
@@ -68,6 +73,23 @@ class ClanLeaderboard extends Component
             ->orderByDesc('score_improvement')
             ->limit(10)
             ->get();
+    }
+
+    public function showMembersGraph()
+    {
+        $this->chartType = 'members';
+        $this->showingGraph = true;
+    }
+
+    public function showImprovementsGraph()
+    {
+        $this->chartType = 'improvements';
+        $this->showingGraph = true;
+    }
+
+    public function hideGraph()
+    {
+        $this->showingGraph = false;
     }
 
     public function render()

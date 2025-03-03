@@ -44,7 +44,8 @@ class User extends Authenticatable
         
     ];
 
-    public function clans() {
+    public function clans()
+    {
         return $this->belongsToMany(Clan::class, 'clan_users');
     }
 }
