@@ -16,12 +16,16 @@ class CategoriesCanalSeeder extends Seeder
         DB::table('categories_canal')->insert([
             [
                 'clanId' => 1,
-                'categorie' => 'testCat'
+                'categorie' => 'Général'
             ],
             [
                 'clanId' => 1,
-                'categorie' => 'testCat2'
-            ]
+                'categorie' => 'Aide'
+            ],
+            [
+                'clanId' => 1,
+                'categorie' => 'Compétition'
+            ],
         ]);
     }
 }

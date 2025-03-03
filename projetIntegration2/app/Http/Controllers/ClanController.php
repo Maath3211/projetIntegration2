@@ -18,8 +18,25 @@ class ClanController extends Controller
 {
     // Accueil d'un clan
     public function index($id){
-        //$clan = Clan::findOrFail($id);
-        return View('Clans.accueilClans', compact('id'/*, $clan*/));
+        $utilisateur = auth()->id();
+        $utilisateur = User::findOrFail($utilisateur);
+
+        if (!$utilisateur){
+            Log::info('Utilisateur pas connecté.');
+            return redirect('/connexion')->with('erreur', 'Vous devez être connectés pour afficher les clans.');
+        }
+
+        $clans = $utilisateur->clans()->get();
+        $clan = Clan::findOrFail($id);
+        $membres = $clan->utilisateurs;
+        $categories = CategorieCanal::where('clanId', '=', $id)->get();
+        $canauxParCategorie = Canal::whereIn('categorieId', $categories->pluck('id'))->get()->groupBy('categorieId');
+
+        Log::info('CLANS: ' . json_encode($clans->toArray()));
+        Log::info('CATEGORIES: ' . json_encode($categories->pluck('id')->toArray()));
+        Log::info('CANAUX: ' . json_encode($canauxParCategorie->toArray()));
+
+        return View('Clans.accueilClans', compact('id', 'clans', 'clan', 'membres', 'categories', 'canauxParCategorie'));
     }
 
     // Paramètres d'un clan

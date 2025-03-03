@@ -17,7 +17,7 @@ class ClanSeeder extends Seeder
             [
                 'id' => 1,
                 'adminId' => '1',
-                'image' => 'img/Clans/clan_1_.png',
+                'image' => 'img/Clans/clan_1_.jpg',
                 'nom' => 'Clan Alpha',
                 'public' => true,
                 'created_at' => now(),

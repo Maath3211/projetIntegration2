@@ -65,4 +65,10 @@ document.addEventListener("DOMContentLoaded", function() {
         document.querySelector('#formulaireSuppressionClan').submit();
     });
 
+    document.querySelectorAll('.close-btn').forEach(bouton => {
+        bouton.addEventListener('click', function(){
+            bouton.parentElement.style.display = 'none';
+        });
+    });
+
 });

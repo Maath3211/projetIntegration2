@@ -31,4 +31,10 @@ document.addEventListener("DOMContentLoaded", function() {
             liseur.readAsDataURL(fichier);
         }
     });
+
+    document.querySelectorAll('.close-btn').forEach(bouton => {
+        bouton.addEventListener('click', function(){
+            bouton.parentElement.style.display = 'none';
+        });
+    });
 });

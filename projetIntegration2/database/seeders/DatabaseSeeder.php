@@ -19,5 +19,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ScoreSeeder::class);
         $this->call(ClanUserSeeder::class);
         $this->call(CategoriesCanalSeeder::class);
+        $this->call(CanalSeeder::class);
     }
 }

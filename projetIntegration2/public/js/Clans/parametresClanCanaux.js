@@ -200,5 +200,10 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
     
+    document.querySelectorAll('.close-btn').forEach(bouton => {
+        bouton.addEventListener('click', function(){
+            bouton.parentElement.style.display = 'none';
+        });
+    });
 
 });

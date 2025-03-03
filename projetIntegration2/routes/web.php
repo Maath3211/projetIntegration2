@@ -58,6 +58,10 @@ Route::POST('/clan/{id}/televerser',
 Route::GET('/clan/invitation/{clan}',
 [ClanController::class, 'accepterInvitation'])->name('invitation.accepter');
 
+// POUR XAVIER, METTRE LES ROUTES QUE TU AS BESOIN
+// Route::GET('/clan/{id}/canal/{canal}',
+// [ClanController::class, ''])->name('');
+
 
 
 
