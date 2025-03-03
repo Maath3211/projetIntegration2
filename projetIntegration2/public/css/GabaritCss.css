@@ -51,3 +51,9 @@ main{
     transform: scale(0.95);
     box-shadow: 1px 1px 5px rgba(169, 254, 119, 0.8);
 }
+
+#imgDeconnexion{
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+}

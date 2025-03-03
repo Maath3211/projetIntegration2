@@ -22,13 +22,14 @@
         <div class="d-flex row justify-content-center">
             <div class="col-md-10">
 
-                <form action="{{ route('profil.creerCompte') }}" method="post" enctype="multipart/form-data" id="formCreation">
+                <form action="{{ route('profil.storeCreerCompteGoogle') }}" method="post" id="formCreation">
                     @csrf
                     <h1 class="h1" id="titreConnexion">Création de compte Gymcord</h1>
                     <div class="conteneurForm">
                         <label for="email" class="text-vert">Adresse courriel</label>
                         <input type="email" class="form-control inputConnexion" id="email"
-                            placeholder="Adresse courriel" name="email" value="{{ old('email') }}">
+                            placeholder="Adresse courriel" name="email" value="{{ session('google_data')['email'] ?? old('email') }}">
+                        
                         <div class="conteneurErreur">
                             @error('email')
                                 <span class="text-danger">{{ $message }}&ensp;</span>
@@ -44,7 +45,7 @@
                     <div class="conteneurForm">
                         <label for="prenom" class="text-vert">Prénom</label>
                         <input type="text" class="form-control inputConnexion" name="prenom" id="prenom"
-                            placeholder="Prénom" value="{{ old('prenom') }}">
+                            placeholder="Prénom" value="{{ session('google_data')['prenom'] ?? old('prenom') }}">
                         <div class="conteneurErreur">
                             @error('prenom')
                                 <span class="text-danger">{{ $message }}&ensp;</span>
@@ -59,7 +60,7 @@
                     <div class="conteneurForm">
                         <label for="nom" class="text-vert">Nom</label>
                         <input type="text" class="form-control inputConnexion" name="nom" id="nom"
-                            placeholder="Nom" value="{{ old('nom') }}">
+                            placeholder="Nom" value="{{ session('google_data')['nom'] ?? old('nom') }}">
                         <div class="conteneurErreur">
                             @error('nom')
                                 <span class="text-danger">{{ $message }}&ensp;</span>
@@ -72,9 +73,8 @@
                         </div>
                     </div>
                     <div class="conteneurForm">
-                        <label for="imageProfil" class="text-vert">Image de profil</label>
-                        <input type="file" class="form-control inputConnexion" id="imageProfil" name="imageProfil">
-                        <label for="imageProfil" class="custom-file-upload" id="filename">Aucun changement</label>
+                        <label for="imageProfil" class="text-vert">Image de profil provenant de google</label>
+                        {{-- <input type="file" class="form-control inputConnexion" id="imageProfil" name="imageProfil" hidden> --}}
                         
                         <div class="conteneurErreur">
                             @error('imageProfil')
@@ -111,11 +111,10 @@
                     <div class="conteneurForm">
                         <label for="genre" class="text-vert">Genre</label>
                         <select class="form-select form-control inputConnexion" name="genre" id="genre">
-                            <option value="Choisir" {{ old('genre') == 'Choisir' ? 'selected' : '' }}>Choisir</option>
-                            <option value="Homme" {{ old('genre') == 'Homme' ? 'selected' : '' }}>Homme</option>
-                            <option value="Femme" {{ old('genre') == 'Femme' ? 'selected' : '' }}>Femme</option>
+                            <option value="Homme" {{ session('google_data')['genre'] == 'Homme' ? 'selected' : '' }}>Homme</option>
+                            <option value="Femme" {{ session('google_data')['genre'] == 'Femme' ? 'selected' : '' }}>Femme</option>
                             <option value="Prefere ne pas dire"
-                                {{ old('genre') == 'Prefere ne pas dire' ? 'selected' : '' }}>Prefere ne pas dire
+                                {{ session('google_data')['genre'] == 'Prefere ne pas dire' ? 'selected' : '' }}>Prefere ne pas dire
                             </option>
                         </select>
                         <div class="conteneurErreur">
@@ -132,8 +131,7 @@
                     <div class="conteneurForm">
                         <label for="dateNaissance" class="text-vert">Date de naissance</label>
                         <input type="date" class="form-control inputConnexion" name="dateNaissance"
-                            id="dateNaissance" placeholder="Date de naissance" value="{{ old('dateNaissance') }}"
-                            max="{{ date('Y-m-d') }}" min="1900-01-01">
+                            id="dateNaissance" placeholder="Date de naissance" value="{{ session('google_data')['dateNaissance'] }}" max="{{ date('Y-m-d') }}" min="1900-01-01">
                         <div class="conteneurErreur">
                             @error('dateNaissance')
                                 <span class="text-danger">{{ $message }}&ensp;</span>
@@ -177,11 +175,11 @@
                     </div>
                     @if (session('errors'))
                         @foreach ($errors->all() as $error)
-                            @if ($error == 'Informations invalides')
+                           {{--  @if ($error == 'Informations invalides') --}}
                                 <div class="alert alert-erreur">
                                     <p>{{ $error }}</p>
                                 </div>
-                            @endif
+                            {{-- @endif --}}
                         @endforeach
                     @endif
                     <div>

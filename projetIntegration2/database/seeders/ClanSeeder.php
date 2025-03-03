@@ -2,46 +2,54 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 class ClanSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         DB::table('clans')->insert([
             [
-                'id' => 1,
-                'adminId' => '1',
-                'image' => 'default.png',
-                'nom' => 'Clan Alpha',
-                'public' => true,
+                'id'         => 1,
+                'adminId'    => 1,
+                'nom'        => 'Clan Alpha',
+                'public'     => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'id' => 2,
-                'adminId' => '2',
-                'image' => 'default.png',
-                'nom' => 'Clan Beta',
-                'public' => false,
+                'id'         => 2,
+                'adminId'    => 2,
+                'nom'        => 'Clan Beta',
+                'public'     => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'id' => 3,
-                'adminId' => '3',
-                'image' => 'default.png',
-                'nom' => 'Clan Gamma',
-                'public' => true,
+                'id'         => 3,
+                'adminId'    => 3,
+                'nom'        => 'Clan Gamma',
+                'public'     => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-            // Add more clans as needed
+            [
+                'id'         => 4,
+                'adminId'    => 4,
+                'nom'        => 'Clan Delta',
+                'public'     => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id'         => 5,
+                'adminId'    => 5,
+                'nom'        => 'Clan Epsilon',
+                'public'     => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 }

@@ -28,6 +28,31 @@ aside {
     padding-left: 0px !important;
 }
 
+.clan-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    width: 100%;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+/* When the link is hovered over or active (highlighted) */
+.clan-link:hover,
+.clan-link.active {
+    background-color: #6EFF18;
+    /* Sidebar green (adjust as needed) */
+    color: #ffffff;
+}
+
+/* When highlighted, add a light green border around the image */
+.clan-link:hover img,
+.clan-link.active img {
+    border: 2px solid #90EE90;
+    /* Light green border */
+}
+
 .column {
     width: 100%;
     height: 100vh;
@@ -40,10 +65,12 @@ aside {
     font-family: 'Open Sans', sans-serif;
     cursor: default;
 }
+
 .conteneurImage {
-    background-image: url('{{ asset('images/ui/leaderboard.png') }}');
-    background-size: cover;
-    background-position: center center;
+    background-image: url('../img/ui/leaderboard.png');
+    background-size: contain;  /* Ensures the full image is visible */
+    background-repeat: no-repeat;
+    background-position: center;
     width: 100%;
     height: 150px;
     opacity: 0.5;
@@ -96,7 +123,7 @@ aside {
 }
 
 .canal:hover {
-    background-color: #6EFF18;   
+    background-color: #6EFF18;
     opacity: 0.8;
     transition: background-color 0.3s ease-in-out;
 }
@@ -106,7 +133,7 @@ aside {
 }
 
 .canal.active {
-    background-color: #6EFF18;   
+    background-color: #6EFF18;
     opacity: 0.8;
 }
 
@@ -256,7 +283,7 @@ a:hover {
 
 .membre div {
     white-space: nowrap;
-    overflow:hidden;
+    overflow: hidden;
     text-overflow: ellipsis;
     max-width: 100%;
 }
