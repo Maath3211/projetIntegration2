@@ -1,12 +1,10 @@
-
-
 body {
     background-color: rgb(54, 54, 54);
     color: aliceblue;
 }
 
-main{
-    width:100% ;
+main {
+    width: 100%;
 }
 
 
@@ -19,7 +17,7 @@ main{
 }
 
 .bullePersonnalisee i {
-    color: #303030; 
+    color: #303030;
     background-color: #d9d9d9;
     flex-grow: 1;
     height: 100%;
@@ -52,8 +50,22 @@ main{
     box-shadow: 1px 1px 5px rgba(169, 254, 119, 0.8);
 }
 
-#imgDeconnexion{
+#imgDeconnexion {
     position: absolute;
     bottom: 10px;
     left: 10px;
+}
+
+.language-switcher {
+    display: inline-block;
+    margin: 10px 0;
+}
+
+.language-switcher a {
+    text-decoration: none;
+    padding: 5px;
+}
+
+.language-switcher a.active {
+    font-weight: bold;
 }

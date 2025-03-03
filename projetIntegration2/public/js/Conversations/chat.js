@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     searchContainer.style.padding = "5px";
     const searchInput = document.createElement("input");
     searchInput.type = "text";
-    searchInput.placeholder = "Rechercher un emoji...";
+    searchInput.placeholder = translations.emojiSearch;
     searchInput.style.width = "100%";
     searchInput.style.padding = "5px";
     searchInput.style.border = "1px solid #ccc";

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr-CA">
+<html lang="{{ app()->getLocale() }}">
 
 <head>
   <meta charset="utf-8" />
@@ -12,10 +12,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
 
-    <!-- Importation pour les fonctionnalité pusher et ajax -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+  <!-- Importation pour les fonctionnalité pusher et ajax -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
 
   <link rel="stylesheet" style="text/css" href="\css\GabaritCss.css"> <!-- style du "layout" app.blade.css -->
   <script src="https://cdn.tailwindcss.com"></script> <!-- nous rajoute <aside> et <main> entre autres -->
@@ -27,25 +27,50 @@
 </head>
 
 <body class=" flex h-screen">
-    <!-- Barre de navigation entre les clans et les messages privés entre autres -->
-    <header>
-        <aside class="w-20 text-white h-screen flex flex-col items-center py-4 space-y-4 p-5">
+  <!-- Barre de navigation entre les clans et les messages privés entre autres -->
+  <header>
+    <aside class="w-20 text-white h-screen flex flex-col items-center py-4 space-y-4 p-5">
 
-            <!-- Navigation aux messages privés entre utilisateurs -->
-            <a  href="#"> <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee"><i class="fa-solid fa-comment fa-2xl"></i></div></a>
+      <!-- Navigation aux messages privés entre utilisateurs -->
+      <a href="#">
+        <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee"><i class="fa-solid fa-comment fa-2xl"></i></div>
+      </a>
 
-            <!-- Navigation aux classements -->
-            <a  href="#"> <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee"><i class="fa-solid fa-ranking-star fa-2xl"></i></div></a>
+      <!-- Navigation aux classements -->
+      <a href="#">
+        <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee"><i class="fa-solid fa-ranking-star fa-2xl"></i></div>
+      </a>
 
-            <!-- Tous les clans dont l'utilisateur actuel fait partie -->
-            <a  href="{{ route('clan.montrer', ['id' => 1]) }}"> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
-            <a  href="{{ route('clan.montrer', ['id' => 2]) }}"> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
-            <a  href="{{ route('clan.montrer', ['id' => 3]) }}"> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
-            <a  href="{{ route('clan.montrer', ['id' => 4]) }}"> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
-            <a  href="{{ route('clan.montrer', ['id' => 5]) }}"> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
-            <a  href="{{ route('clan.montrer', ['id' => 6]) }}"> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
-            <a  href="{{ route('clan.montrer', ['id' => 7]) }}"> <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div></a>
-
+      <!-- Tous les clans dont l'utilisateur actuel fait partie -->
+      <a href="{{ route('clan.montrer', ['id' => 1]) }}">
+        <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div>
+      </a>
+      <a href="{{ route('clan.montrer', ['id' => 2]) }}">
+        <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div>
+      </a>
+      <a href="{{ route('clan.montrer', ['id' => 3]) }}">
+        <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div>
+      </a>
+      <a href="{{ route('clan.montrer', ['id' => 4]) }}">
+        <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div>
+      </a>
+      <a href="{{ route('clan.montrer', ['id' => 5]) }}">
+        <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div>
+      </a>
+      <a href="{{ route('clan.montrer', ['id' => 6]) }}">
+        <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div>
+      </a>
+      <a href="{{ route('clan.montrer', ['id' => 7]) }}">
+        <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div>
+      </a>
+      <div class="w-16 text-center mb-4">
+        <div style="background: #444; color: white; padding: 5px; border-radius: 4px; margin-bottom: 4px;">
+          <a href="#" onclick="switchLanguage('en')" style="color: {{ app()->getLocale() == 'en' ? '#fff' : '#aaa' }}; text-decoration: none; display: block;">EN</a>
+        </div>
+        <div style="background: #444; color: white; padding: 5px; border-radius: 4px;">
+          <a href="#" onclick="switchLanguage('fr')" style="color: {{ app()->getLocale() == 'fr' ? '#fff' : '#aaa' }}; text-decoration: none; display: block;">FR</a>
+        </div>
+      </div>
       <form action="{{route('profil.deconnexion')}}" method="post">
         @csrf
         <button class="w-16 h-16 overflow-hidden" id="imgDeconnexion"><img src="{{ asset('img/logout.png') }}" class="object-cover w-full h-full"></button>
@@ -72,6 +97,29 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<script>
+  function switchLanguage(locale) {
+    // Create a form and submit it
+    var form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '/switch-language';
+
+    var csrfToken = document.createElement('input');
+    csrfToken.type = 'hidden';
+    csrfToken.name = '_token';
+    csrfToken.value = '{{ csrf_token() }}';
+
+    var localeInput = document.createElement('input');
+    localeInput.type = 'hidden';
+    localeInput.name = 'locale';
+    localeInput.value = locale;
+
+    form.appendChild(csrfToken);
+    form.appendChild(localeInput);
+    document.body.appendChild(form);
+    form.submit();
+  }
+</script>
 @yield('scripts')
 
 </html>

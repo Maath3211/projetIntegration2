@@ -6,6 +6,8 @@ use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Events\QueryExecuted;
+use Illuminate\Support\Facades\App; // Add this
+use Illuminate\Support\Facades\Session;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,17 +22,20 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot()
+    public function boot(): void
     {
+        if (Session::has('locale')) {
+            App::setLocale(Session::get('locale'));
+        }
         Livewire::component('global-leaderboard', \App\Http\Livewire\GlobalLeaderboard::class);
         Livewire::component('clan-leaderboard', \App\Http\Livewire\ClanLeaderboard::class);
         Livewire::component('test-component', \App\Http\Livewire\TestComponent::class);
         Livewire::component('leaderboard-switcher', \App\Http\Livewire\LeaderboardSwitcher::class);
         Livewire::component('sidebar-clans', \App\Http\Livewire\SidebarClans::class);
         Livewire::component('score-graph', \App\Http\Livewire\ScoreGraph::class);
-        
+
         //Schema::defaultStringLength(191);
-    
+
         /*
         if ($this->app->environment() === 'local') {
             DB::listen(function (QueryExecuted $query) {
@@ -41,6 +46,8 @@ class AppServiceProvider extends ServiceProvider
             });
 
         }*/
+
+        // Set the application locale from the session
+
     }
-    
 }
