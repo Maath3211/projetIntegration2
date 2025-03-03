@@ -642,14 +642,6 @@
     <script src="{{ asset('js/Conversations/chat.js') }}"></script>
 
         <script>
-            function formatMessage(message) {
-                const maxLength = 50; // Maximum length before adding a newline
-                let formattedMessage = '';
-                for (let i = 0; i < message.length; i += maxLength) {
-                    formattedMessage += message.substring(i, i + maxLength) + '\n';
-                }
-                return formattedMessage;
-            }
 
 
 
@@ -818,6 +810,7 @@
 
                     let avatarText = res.sender_email.substring(0, 2);
                     let messageContent = res.message ? `<p>${res.message}</p>` : "";
+
 
                     // Déterminer si c'est une image ou un fichier à télécharger
                     let fileExtension = res.fichier ? res.fichier.split('.').pop().toLowerCase() : "";

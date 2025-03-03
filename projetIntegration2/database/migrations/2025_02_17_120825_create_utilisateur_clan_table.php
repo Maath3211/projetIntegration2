@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('idEnvoyer');
             $table->unsignedBigInteger('idClan');
-            $table->text('message');
+            $table->text('message')->nullable();
             $table->string('fichier')->nullable();
             $table->timestamps();
             $table->foreign('idEnvoyer')->references('id')->on('users')->onDelete('cascade');

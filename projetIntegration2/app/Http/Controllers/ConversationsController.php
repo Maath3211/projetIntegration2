@@ -172,13 +172,18 @@ class ConversationsController extends Controller
         
     }
     
+
     public function broadcastClan(Request $request)
     {
-        //SI IL Y A UN BUG AVEC PHOTO C'EST ICI
         $request->validate([
             'message' => 'nullable|string',
             'fichier' => 'nullable|file|max:20480', // 20 Mo
         ]);
+        
+        if (!$request->filled('message') && !$request->hasFile('fichier')) {
+            return response()->json(['error' => 'Vous devez envoyer soit un message, soit un fichier, soit les deux.'], 422);
+        }
+        
     
         try {
             $fichierNom = null;
@@ -202,7 +207,7 @@ class ConversationsController extends Controller
                 'idEnvoyer' => auth()->id(),
                 'idClan'    => $request->to,
                 'message'   => $request->message,
-                'fichier'     => $fichierNom, // Stocke le chemin public
+                'fichier'   => $fichierNom, // Stocke le chemin public
                 'created_at'=> now(),
                 'updated_at'=> now()
             ]);
@@ -220,7 +225,7 @@ class ConversationsController extends Controller
             'last_id'      => $lastId,
             'sender_id'    => auth()->id(),
             'sender_email' => auth()->user()->email,
-            'fichier'        => $fichierNom ? asset($dossier . $fichierNom) : null // Retourne l'URL complète
+            'fichier'      => $fichierNom ? asset($dossier . $fichierNom) : null // Retourne l'URL complète
         ]);
     }
     
