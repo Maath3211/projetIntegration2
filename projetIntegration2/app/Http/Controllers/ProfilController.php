@@ -30,16 +30,37 @@ class ProfilController extends Controller
     public function connexion(ConnexionRequest $request)
     {
         $utilisateur = User::where('email', $request->email)->first();
-        if ($utilisateur->email_verified_at == null) {
-            return redirect()->back()->withErrors(['email' => 'Votre compte n\'a pas été vérifié']);
+
+        if (!$utilisateur || $utilisateur->email_verified_at === null) {
+            $errorMessage = 'Votre compte n\'a pas été vérifié';
+            if ($request->wantsJson()) {
+                return response()->json(['error' => $errorMessage], 403);
+            }
+            return redirect()->back()->withErrors(['email' => $errorMessage]);
         }
-        $reussi = Auth::guard()->attempt(['email' => $request->email, 'password' => $request->password]);
+
+        $credentials = $request->only('email', 'password');
+        $reussi = Auth::attempt($credentials);
+
         if ($reussi) {
+            // For API requests, return a token using Laravel Sanctum.
+            if ($request->wantsJson()) {
+                $token = $utilisateur->createToken('mobile-token')->plainTextToken;
+                return response()->json([
+                    'token' => $token,
+                    'user'  => $utilisateur
+                ], 200);
+            }
             return redirect()->route('profil.profil');
         } else {
-            return redirect()->back()->withErrors(['Informations invalides']);
+            $errorMessage = 'Informations invalides';
+            if ($request->wantsJson()) {
+                return response()->json(['error' => $errorMessage], 401);
+            }
+            return redirect()->back()->withErrors([$errorMessage]);
         }
     }
+
     public function creerCompte()
     {
         $countries = Cache::remember('countries_list_french', now()->addDay(), function () {
@@ -51,7 +72,7 @@ class ProfilController extends Controller
     public function storeCreerCompte(CreationCompteRequest $request)
     {
         if (User::where('email', $request->email)->exists()) {
-            return redirect()->route('profil.connexion')->withErrors( ['Un compte existe déjà avec cet email']);
+            return redirect()->route('profil.connexion')->withErrors(['Un compte existe déjà avec cet email']);
         }
         $utilisateur = new User();
         $utilisateur->email = $request->email;
@@ -213,7 +234,7 @@ class ProfilController extends Controller
     {
         $utilisateur = Auth::user();
         $clans = $utilisateur->clans; // Fetch all clans associated with the user
-        return view('profil.profil', compact('utilisateur', 'clans' ));
+        return view('profil.profil', compact('utilisateur', 'clans'));
     }
 
     public function profilPublic($email)

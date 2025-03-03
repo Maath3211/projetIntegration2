@@ -11,12 +11,8 @@ use App\Http\Requests\StoreMessage;
 use App\Events\PusherBroadcast;
 use App\Events\MessageGroup;
 
-
-
-
 class Conversations extends Controller
 {
-
     private $ConvRepository;
     private $ClanRepository;
 
@@ -28,46 +24,59 @@ class Conversations extends Controller
         $this->ClanRepository = $ClanRepository;
     }
 
+    public function index(Request $request)
+    {
+        $conversations = $this->ConvRepository->getConversations();
 
-    public function index(){
-
-        $users = User::select('email','id')->get();
-        return view('conversations.index',[
-            'users' => $this->ConvRepository->getConversations()
+        if ($request->wantsJson()) {
+            return response()->json(['conversations' => $conversations]);
+        }
+        
+        return view('conversations.index', [
+            'users' => $conversations
         ]);
-
     }
 
-    public function show(User $user){
-        dd($user);
-        //$users = auth()->id();
-        //dd($user);
-        return view('conversations.show',[
+    public function show(Request $request, User $user)
+    {
+        $messages = $this->ConvRepository
+            ->getMessageFor(auth()->id(), $user->id)
+            ->paginate(300);
+
+        if ($request->wantsJson()) {
+            return response()->json([
+                'conversations' => $this->ConvRepository->getConversations(),
+                'user' => $user,
+                'messages' => $messages
+            ]);
+        }
+        
+        return view('conversations.show', [
             'users' => $this->ConvRepository->getConversations(),
             'user' => $user,
-            'messages' => $this->ConvRepository->getMessageFor(auth()->id(), $user->id)->paginate(300)//Pagination des messages par 2
+            'messages' => $messages
         ]);
     }
 
-
-    public function store(User $user, StoreMessage $request){
+    public function store(Request $request, User $user, StoreMessage $formRequest)
+    {
         $senderId = auth()->id();
         $receiverId = $user->id;
 
         $message = $this->ConvRepository->createMessage(
-            $request->get('content'),
+            $formRequest->get('content'),
             $senderId,
             $receiverId
         );
 
-        // Envoi du message via Pusher
         broadcast(new PusherBroadcast($message->content, $senderId, $receiverId))->toOthers();
-        //\Log::info("📡 Message broadcasté : {$message->content}");
 
+        if ($request->wantsJson()) {
+            return response()->json(['message' => $message]);
+        }
+        
         return redirect()->route('conversations.show', [$user->id]);
     }
-
-
 
     public function broadcast(Request $request){
         //\Log::info('Message envoyé via Pusher', $request->all());
@@ -102,26 +111,6 @@ class Conversations extends Controller
         //\Log::info('Message received: ' . $request->message); // Debug
         return response()->json(['message' => $request->message]);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
 
     public function showClan(Clan $clans)
     {
@@ -170,13 +159,4 @@ class Conversations extends Controller
         //\Log::info('Message received: ' . $request->message); // Debug
         return response()->json(['message' => $request->message]);
     }
-
-
-
-
-
-
-
-
-    
 }
