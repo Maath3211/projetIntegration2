@@ -60,6 +60,17 @@ a:hover {
     cursor: pointer;
 }
 
+.categorieParametre.supprimer:hover {
+    background-color: rgb(219, 99, 99);
+    opacity: 0.8;
+    color: black;
+    cursor: pointer;
+}
+
+.categorieParametre.supprimer.actif {
+    background-color: rgb(219, 99, 99);
+}
+
 .categorieParametre:active {
   background-color: #A9FE77;  
 }
@@ -73,6 +84,19 @@ a:hover {
 .titreParametre, .nomClan label {
     font-weight: bold;
     font-size: 24px;
+}
+
+.parametresCanal {
+    overflow-y: auto;
+    height: 61vh;
+
+    /* cacher la barre de défilement pour les membres */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.parametresCanal::-webkit-scrollbar {
+    display: none;
 }
 
 .conteneurParametres {
@@ -114,7 +138,11 @@ a:hover {
 .barreEnregistrerConteneur {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: start;
+}
+
+.barreEnregistrerConteneur .col-md-10 {
+    margin-left: 50px;
 }
 
 .rangeeEnregistrer {
@@ -305,7 +333,7 @@ STYLE POUR LES CATÉGORIES DE CANAUX
     z-index: 1000;
 }
 
-#confirmerRenommage, #confirmerAjout, #confirmerSuppression {
+#confirmerRenommage, #confirmerAjout, #confirmerSuppression, #confirmerSuppressionClan {
     background-color: rgb(219, 82, 82);
     padding: 10px;
     padding-right: 25px;
@@ -315,7 +343,7 @@ STYLE POUR LES CATÉGORIES DE CANAUX
 }
 
 
-#confirmerRenommage:hover, #confirmerAjout:hover, #confirmerSuppression:hover {
+#confirmerRenommage:hover, #confirmerAjout:hover, #confirmerSuppression:hover, #confirmerSuppressionClan:hover {
     background-color: rgb(219, 99, 99);
 }
 
@@ -341,47 +369,77 @@ STYLE POUR LES CATÉGORIES DE CANAUX
     display: none;
 }
 
-#conteneurMessages {
-    position: fixed;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    z-index: 9999;
-    text-align: center;
+.membre {
+    margin-left: 50px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    cursor: default;
+    user-select: none;
 }
 
-.alert {
-    display: inline-block;
-    padding: 15px;
-    margin: 10px;
-    border-radius: 5px;
-    font-size: 16px;
-    max-width: 400px;
-    width: 100%;
-    color: #fff;
-    position: relative;
+.membre img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+    margin-left: 10px;
 }
 
-.close-btn {
-    position: absolute;
-    top: 5px;
-    right: 10px;
-    font-size: 20px;
-    background: none;
-    border: none;
-    color: #fff;
+.membre i {
     cursor: pointer;
 }
 
-#messageSucces{
-    background-color: #60c22c;
-    border: 2px solid rgba(71, 70, 70, 0.5);
+.membre i:hover {
+    color: #9b9a9a;
+}
+
+.rangeeInviter {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    background-color: #A9FE77;
+    padding-right: 30px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 30px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    width: 55%;
     color: black;
 }
 
-#messageErreur{
-    background-color: #c22c2c;
-    border: 2px solid rgba(71, 70, 70, 0.8);
-    color: black;
+.rangeeInviter div:first-child {
+    font-size: large;
+    font-weight: bold;
+    margin-right: 25px;
+}
+
+.rangeeInviter div:last-of-type {
+    display: inline-block;
+    justify-content: space-between;
+    background-color: #8CD262;
+    font-weight: bold;
+    font-size: small;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #636771;
+    border-radius: 5px;
+    width: 75%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+.rangeeInviter i {
+    font-size: large;
+    margin-left: 15px;
+    cursor: pointer;
+    color:#8CD262;
 }

@@ -42,25 +42,34 @@ Route::GET('/clan/{id}/parametres/canaux',
 Route::POST('/clan/{id}/enregistrerCanaux',
 [ClanController::class, 'miseAJourCanaux'])->name('clan.miseAJour.canaux');
 
+Route::GET('/clan/{id}/parametres/membres',
+[ClanController::class, 'parametres'])->name('clan.parametres.membres');
+
+Route::POST('/clan/{id}/enregistrerMembres',
+[ClanController::class, 'miseAJourMembres'])->name('clan.miseAJour.membres');
+
+Route::POST('/clan/creer',
+[ClanController::class, 'creerClan'])->name('clan.creer');
+
+Route::POST('/clan/{id}/supprimer',
+[ClanController::class, 'supprimer'])->name('clan.supprimer');
+
 Route::POST('/clan/{id}/televerser',
 [ClanController::class, 'televerserImage'])->name('clan.televerserImage');
-Route::GET(
-    '/clan/{id}/parametres',
-    [ClanController::class, 'parametres']
-)->name('clan.parametres');
 
-Route::POST(
-    '/clan/{id}/parametres',
-    [ClanController::class, 'parametres']
-)->name('clan.parametres.post');
+Route::GET('/clan/invitation/{clan}',
+[ClanController::class, 'accepterInvitation'])->name('invitation.accepter');
 
-Route::POST(
-    '/clan/{id}/televerser',
-    [ClanController::class, 'televerserImage']
-)->name('clan.televerserImage');
+// POUR XAVIER, METTRE LES ROUTES QUE TU AS BESOIN
+// Route::GET('/clan/{id}/canal/{canal}',
+// [ClanController::class, ''])->name('');
 
 
-Route::GET('/yup', [UserCommunication::class,'index'])->name('user.index');
+
+
+
+Route::GET('/yup',
+[UserCommunication::class,'index'])->name('user.index');
 
 Route::GET('/conversations/{user}', [ConversationsController::class,'show'])->name('conversations.show');
 Route::POST('/conversations/{user}', [ConversationsController::class,'store']);

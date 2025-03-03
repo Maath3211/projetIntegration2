@@ -113,7 +113,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
             // Règle 1 : le canal ne doit pas dépasser les 50 caractères
             if(valeur.length > 50){
-                messageErreur.textContent = "La catégorie ne doit pas dépasser 50 caractères.";
+                messageErreur.textContent = "Le canal ne doit pas dépasser 50 caractères.";
                 messageErreur.style.display = "block";
                 this.style.borderColor = 'red';
             }
