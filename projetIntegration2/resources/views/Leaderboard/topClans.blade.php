@@ -112,18 +112,19 @@
 @endsection
 
 @section('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const script = document.createElement('script');
-            script.src = "{{ asset('js/leaderboards/leaderboard.js') }}";
-            script.onload = function() {
-                console.log('Leaderboard script loaded');
-                if (typeof initLeaderboard === 'function') {
-                    initLeaderboard();
-                }
-            };
-            document.body.appendChild(script);
-        });
-    </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="{{ asset('js/standalone-export.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const script = document.createElement('script');
+        script.src = "{{ asset('js/leaderboards/leaderboard.js') }}";
+        script.onload = function() {
+            console.log('Leaderboard script loaded');
+            if (typeof initLeaderboard === 'function') {
+                initLeaderboard();
+            }
+        };
+        document.body.appendChild(script);
+    });
+</script>
 @endsection
