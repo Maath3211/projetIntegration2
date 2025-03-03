@@ -30,6 +30,9 @@ class ProfilController extends Controller
     public function connexion(ConnexionRequest $request)
     {
         $utilisateur = User::where('email', $request->email)->first();
+        if (!$utilisateur) {
+            return redirect()->back()->withErrors(['email' => 'Aucun compte trouvé avec cet email']);
+        }
         if ($utilisateur->email_verified_at == null) {
             return redirect()->back()->withErrors(['email' => 'Votre compte n\'a pas été vérifié']);
         }

@@ -41,6 +41,9 @@ mauve a650fc
     .google-btn {
         width: 100%;
     }
+    .conteneurErreur {
+        height: 20px !important;
+    }
 }
 
 @media screen and (max-width: 480px) {
@@ -50,6 +53,19 @@ mauve a650fc
 
     .conteneurForm {
         width: 100%;
+    }
+    .alert-erreur {
+        width: 70%;
+    }
+    
+    .alert-succes {
+        width: 70%;
+    }
+    .text-error{
+        font-size: 14px;
+    }
+    .conteneurErreur {
+        height: 40px !important;
     }
 }
 
@@ -69,8 +85,8 @@ mauve a650fc
 .conteneurErreur {
     display: flex !important;
     align-items: center !important;
-    height: 20px !important;
     font-size: 15px;
+    margin-bottom: 2px;
 }
 .conteneurForm {
     width: 70%;
@@ -190,6 +206,7 @@ select:focus {
     font-weight: 500;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     width: fit-content;
+    margin-top: 5px;
 }
 
 .google-btn img {

@@ -17,10 +17,10 @@
 </head>
 
 <body>
-
+    <img src="{{ asset('img/backgroundConnexion.png') }}" alt="Background" id="imgBackground">
     <div class="container-fluid">
         <div class="d-flex row justify-content-center">
-            <div class="col-md-10">
+            <div class="col-md-10 col-sm-10">
 
                 <form action="{{ route('profil.creerCompte') }}" method="post" enctype="multipart/form-data" id="formCreation">
                     @csrf
