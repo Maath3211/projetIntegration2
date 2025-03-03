@@ -9,26 +9,40 @@ use Illuminate\Support\Facades\Route;
 
 class ClanController extends Controller
 {
-    // Accueil d'un clan
-    public function index($id){
-        //$clan = Clan::findOrFail($id);
-        return View('Clans.accueilClans', compact('id'/*, $clan*/));
+    // Accueil d'un clan: return JSON if requested, otherwise a view
+    public function index(Request $request, $id){
+        // You might fetch clan data here in a real scenario.
+        if ($request->wantsJson()) {
+            return response()->json([
+                'id' => $id, 
+                'message' => 'Clan details',
+                // 'clan' => $clan
+            ]);
+        }
+        return View('Clans.accueilClans', compact('id'));
     }
 
     // Paramètres d'un clan
-    public function parametres($id){
-        // $clan = Clan::findOrFail($id);
+    public function parametres(Request $request, $id){
+        if ($request->wantsJson()) {
+            // Return JSON data for clan parameters
+            return response()->json([
+                'id' => $id,
+                'settings' => [
+                    'general' => 'general settings here',
+                    // additional settings...
+                ]
+            ]);
+        }
+        // Fall back to web view if not JSON:
         if(Route::currentRouteName() === "clan.parametres"){
-            //les paramètres généraux
-            return View('Clans.parametresClan', compact('id'/*, 'clan*/ ));
+            return View('Clans.parametresClan', compact('id'));
         }
         else if (Route::currentRouteName() === "clan.parametres.canaux") {
-            //les paramètres de catégories de canaux
-            return View('Clans.parametresClanCanaux', compact('id'/*, 'clan*/ ));
+            return View('Clans.parametresClanCanaux', compact('id'));
         }
-        else if (Route::currentRouteName() === ""){
-            // les paramètres des membres du clan
-            return View('Clans.parametresClan', compact('id'/*, 'clan*/ ));
+        else {
+            return View('Clans.parametresClan', compact('id'));
         }
     }
 
