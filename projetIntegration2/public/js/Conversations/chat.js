@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     searchInput.style.padding = "5px";
     searchInput.style.border = "1px solid #ccc";
     searchInput.style.borderRadius = "5px";
+    searchInput.style.color = "black";
     searchContainer.appendChild(searchInput);
     emojiPicker.prepend(searchContainer);
 
