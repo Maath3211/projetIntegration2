@@ -10,6 +10,7 @@ use App\Http\Controllers\GymController;
 use App\Http\Controllers\ClanController;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\AmisController;
 use App\Models\User;
 use App\Events\PusherBroadcast;
 use App\Http\Controllers\ObjectifController;
@@ -220,3 +221,22 @@ Route::get('/test-chart', [App\Http\Controllers\ScoresController::class, 'testCh
     ->name('test.chart');
 Route::get('/scores/chart-page', [App\Http\Controllers\ScoresController::class, 'showChart'])
     ->name('scores.chart-page');
+
+//Route pour l'ajout/recherche d'amis/clans
+Route::get('amis', [AmisController::class, 'index'])->name('amis.index');
+Route::match(['get','post'], 'amis/recherche', [AmisController::class, 'recherche'])->name('amis.recherche');
+Route::post('amis/ajouter', [AmisController::class, 'ajouter'])->name('amis.ajouter');
+Route::post('clans/recherche', [AmisController::class, 'rechercheClan'])->name('clans.recherche');
+
+// Affichage de la liste des demandes d'amis
+Route::get('amis/demandes', [AmisController::class, 'demandes'])->name('amis.demandes');
+
+// Traitement de l'acceptation d'une demande d'ami
+Route::post('amis/accepter', [AmisController::class, 'accepter'])->name('amis.accepter');
+
+// Traitement du refus d'une demande d'ami
+Route::post('amis/refuser', [AmisController::class, 'refuser'])->name('amis.refuser');
+
+// Routes pour la recherche et la gestion des clans
+Route::match(['get','post'], 'clans/recherche', [ClanController::class, 'rechercheClans'])->name('clans.recherche');
+Route::post('clans/rejoindre', [ClanController::class, 'rejoindre'])->name('clans.rejoindre');
