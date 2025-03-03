@@ -114,7 +114,7 @@
                     </div>
                 </div>
             </div>
-            <form action="{{ route('clan.supprimer', ['id' => $id]) }}" method="POST" enctype="multipart/form-data" id="formulaireSuppressionClan"></form>
+            <form action="{{ route('clan.supprimer', ['id' => $id]) }}" method="POST" enctype="multipart/form-data" id="formulaireSuppressionClan">@csrf</form>
 
         </div>
         </div>

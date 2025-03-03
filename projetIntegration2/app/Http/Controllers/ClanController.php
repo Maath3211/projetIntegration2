@@ -225,31 +225,47 @@ class ClanController extends Controller
         Log::info('clanId: '. $id);
         Log::info('action: '. $request->input('action'));
         Log::info('requete: '. $request->input('requete'));
+        $utilisateur = auth()->id();
+        if(!$utilisateur){
+            Log::info('Utilisateur pas connecté.');
+            return redirect()->back()->with('erreur', 'Une erreur est survenue lors des modifications. Assurez-vous d\'être connectés et d\'être l\'administrateur du clan');
+        }
+
+        $clan = Clan::findOrFail($id);
+        if(!$clan){
+            Log::info('Clan inexistant.');
+            return redirect()->back()->with('erreur', 'Une erreur est survenue lors des modifications. Veuillez réessayer plus tard.');
+        }
+
+        if($clan->adminId != $utilisateur){
+            Log::info('Utilisateur pas connecté.');
+            return redirect()->back()->with('erreur', 'Une erreur est survenue lors des modifications. Vous n\'êtes pas l\'administrateur de ce clan.');
+        }
 
         // obtenir la requête dans un format JSON
         $action = $request->input('action');
         $requete = json_decode($request->input('requete'), true);
 
         if(isset($requete['canal'])){
-            //$canal = Canal::findOrFail($requete['canal']);
+            $canal = Canal::findOrFail($requete['canal']);
 
             // pour renommer un canal
             if($action === 'renommer'){
                 if(strlen($requete['nouveauNom']) > 50){
                     return redirect()->back()->with('erreur', 'Les canaux ne doivent pas dépasser les 50 caractères.');
                 } 
-                else if(!preg_match('/^[A-Za-z\u00C0-\u00FF-]+$/', $requete['nouveauNom'])) {
+                else if(!preg_match('/^[\p{L}-]+$/u', $requete['nouveauNom'])) {
                     return redirect()->back()->with('erreur', 'Les canaux ne doivent pas contenir de chiffres ou de symboles. Seul les lettres UTF-8 et les traits (-) sont permis.');
                 }
 
-                //$canal->titre = $requete['nouveauNom'];
-                //$canal->save();
+                $canal->titre = $requete['nouveauNom'];
+                $canal->save();
                 
-                return redirect()->back()-with('message', 'modification faite avec succès!');
+                return redirect()->back()->with('message', 'modification faite avec succès!');
             } 
             // pour supprimer un canal
             else if($action === 'supprimer') {
-                //$canal->delete();
+                $canal->delete();
                 return redirect()->back()->with('message', 'suppression faite avec succès!');
             }
         }
@@ -258,17 +274,22 @@ class ClanController extends Controller
             if(strlen($requete['nouveauNom']) > 50){
                 return redirect()->back()->with('erreur', 'Les canaux ne doivent pas dépasser les 50 caractères.');
             } 
-            else if(!preg_match('/^[A-Za-z\u00C0-\u00FF-]+$/', $requete['nouveauNom'])) {
+            else if(!preg_match('/^[\p{L}-]+$/u', $requete['nouveauNom'])) {
                 return redirect()->back()->with('erreur', 'Les canaux ne doivent pas contenir de chiffres ou de symboles. Seul les lettres UTF-8 et les traits (-) sont permis.');
             }
 
             //Ajouter un nouveau Canal
-            // $canal = new Canal();
-            // $canal->titre = $requete['nouveauNom'];
-            // $canal->clanId = $id;
-            // $canal->categorieId = $requete['categorie'];
-            // $canal->save();
-            return redirect()->back()->with('message', 'ajout fait avec succès!');
+            $requete['nouveauNom'] = str_replace(' ', '-', $requete['nouveauNom']);
+            $canal = Canal::create([
+                'titre' => $requete['nouveauNom'],
+                'clanId' => $id,
+                'categorieId' => $requete['categorie']
+            ]);
+            
+            if($canal)
+                return redirect()->back()->with('message', 'ajout fait avec succès!');
+            else 
+                return redirect()->back()->with('erreur', 'Erreur lors de l\'ajout du canal. Veuillez réessayer plus tard.');
         }
         else {
             Log::info('ERREUR - Action interdite. Veuillez contacter le support');
@@ -413,16 +434,16 @@ class ClanController extends Controller
 
     // Supprimer un clan
     public function supprimer(string $id){
-        //$user = Auth::user();
+        $utilisateur = auth()->id();
         
-        //$clan = Clan::findOrFail($id);
-        //if(!$user || !$clan || $clan->adminId != $user){
-        //  return redirect()->back()->with('erreur', 'Une erreur est survenue lors de la suppression du clan. Assurez-vous d\'être connectés et d'être l'administrateur du clan')
-        //}
+        $clan = Clan::findOrFail($id);
+        if(!$utilisateur || !$clan || $clan->adminId != $utilisateur){
+            return redirect()->back()->with('erreur', 'Une erreur est survenue lors de la suppression du clan. Assurez-vous d\'être connectés et d\'être l\'administrateur du clan');
+        }
 
-        //$clan->delete();
+        $clan->delete();
         
-        // TODO - FAIRE RETOURNER À L'ACCUEIL
+        return redirect()->route('profil.profil')->with('message', 'Suppression faite avec succès!');
     }
 
     // Accepter une invitation a un clan

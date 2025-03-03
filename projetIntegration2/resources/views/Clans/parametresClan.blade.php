@@ -71,6 +71,23 @@
             </form>
           </div>
         </div>
+        <!-- Fenêtre contextuelle pour confirmer la suppression du clan -->
+        <div id="confirmationSuppressionClan" class="fenetreCategorie">
+          <div class="conteneurConfirmation">
+              <div class="titreConfirmation">
+                  <div>Supprimer le clan</div>
+              </div>
+              <div class="texteConfirmation">
+                  <div>Êtes-vous sur de vouloir supprimer le clan? Cette action est irréversible.</div>
+              </div>
+
+              <div class="boutonsConfirmation">
+                  <button class="annuler" type="button">Annuler</button>
+                  <button id="confirmerSuppressionClan" type="button">Supprimer</button>
+              </div>
+          </div>
+      </div>
+      <form action="{{ route('clan.supprimer', ['id' => $id]) }}" method="POST" enctype="multipart/form-data" id="formulaireSuppressionClan">@csrf</form>
       </div>
       <div id="conteneurMessages">
         @if(session('message'))

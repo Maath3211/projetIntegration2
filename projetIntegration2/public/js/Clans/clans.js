@@ -76,6 +76,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
             classe = canal.querySelector('a div').textContent.trim();
+            console.log(canal.querySelector('a').classList[0].split('canal_')[1]);
             _canal = canal.querySelector('a').classList[0].split('canal_')[1];
             _categorie = canal.parentElement.querySelector('div').classList[1].split('categorie_')[1];
             
@@ -101,8 +102,8 @@ document.addEventListener("DOMContentLoaded", function() {
     document.querySelectorAll('.titreCategorieCanal i.fa-plus').forEach(categorie => {
         categorie.addEventListener('click', function() {
             ajouter.style.display = 'flex';
-
-            _categorie = categorie.parentElement.querySelector('div').textContent.trim();
+            
+            _categorie = categorie.parentElement.classList[1].split('categorie_')[1].trim();
         })
     });
 
