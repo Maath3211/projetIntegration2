@@ -12,6 +12,7 @@ use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Log;
 use App\Models\User;
 use App\Events\PusherBroadcast;
+use App\Http\Controllers\ObjectifController;
 
 Route::get('/', function () {
     return redirect()->route('profil.pageConnexion');
@@ -163,6 +164,52 @@ Route::GET(
     [GymController::class, 'index']
 )->name('localisation.index');
 
+Route::GET('/graphiqueExercice/{exercice}',
+[StatistiqueController::class,'graphiqueExercice'])->name('statistique.graphiqueExercice');
+
+Route::GET('/thermique',
+[StatistiqueController::class,'thermique'])->name('statistique.thermique');
+
+Route::post('/statistique/storeThermique', [StatistiqueController::class, 'storeThermique'])->name('statistique.storeThermique');
+
+Route::post('/statistiques/save', [StatistiqueController::class, 'save'])->name('statistiques.save');
+
+Route::delete('/statistiques/{id}', [StatistiqueController::class, 'delete'])->name('statistiques.delete');
+
+Route::post('/statistiques/{id}/update-poids', [StatistiqueController::class, 'updatePoids'])->name('statistiques.updatePoids');
+
+
+Route::post('/ajouter-poids', [StatistiqueController::class, 'ajouterPoids'])->name('ajouter-poids');
+
+Route::post('/ajouter-score/{exercice}', [StatistiqueController::class, 'ajouterScoreExercice'])->name('ajouter-score');
+
+
+
+Route::GET('/objectif',
+[ObjectifController::class,'index'])->name('objectif.index');
+
+Route::GET('/objectif/ajouter',
+[ObjectifController::class,'create'])->name('objectif.create');
+
+
+Route::GET('/objectif/edit/{id}',
+[ObjectifController::class,'edit'])->name('objectif.edit');
+
+Route::post('/objectif',
+ [ObjectifController::class, 'store'])->name('objectif.store');
+
+Route::put('/objectif/{id}',
+ [ObjectifController::class, 'update'])->name('objectif.update');
+
+ Route::put('/objectif/update/{id}',
+ [ObjectifController::class, 'updateComplet'])->name('objectif.updateComplet');
+
+Route::delete('/objectif/{id}',
+ [ObjectifController::class, 'destroy'])->name('objectif.destroy');
+
+
+Route::GET('/localisation', 
+[GymController::class, 'index'])->name('localisation.index');
 Route::get('/export/top-users', [ScoresController::class, 'exportTopUsers'])->name('export.topUsers');
 Route::get('/export/top-clans', [ScoresController::class, 'exportTopClans'])->name('export.topClans');
 Route::get('/export/top-membres/{clanId}', [ScoresController::class, 'exportTopMembres'])->name('export.topMembres');
