@@ -17,7 +17,7 @@ use App\Events\SuppressionMessageGroup;
 
 
 
-class Conversations extends Controller
+class ConversationsController extends Controller
 {
 
     private $ConvRepository;
@@ -250,7 +250,8 @@ class Conversations extends Controller
 
     public function showModificationMessage(){
         $messages = \DB::table('utilisateur_clan')
-            ->where('idEnvoyer', auth()->id(), 'created_at')
+            ->select('id', 'message', 'created_at', 'fichier')
+            ->where('idEnvoyer', auth()->id())
             ->get();
 
         return view('conversations.modification',[

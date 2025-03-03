@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserCommunication;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\ScoresController;
-use App\Http\Controllers\Conversations;
+use App\Http\Controllers\ConversationsController;
 use App\Http\Controllers\StatistiqueController;
 use App\Http\Controllers\GymController;
 use App\Http\Controllers\ClanController;
@@ -57,17 +57,26 @@ Route::POST(
     [ClanController::class, 'televerserImage']
 )->name('clan.televerserImage');
 
-Route::GET('/yup', [UserCommunication::class, 'index'])->name('user.index');
 
-Route::GET('/conversations/{user}', [Conversations::class, 'show'])->name('conversations.show');
-Route::POST('/conversations/{user}', [Conversations::class, 'store']);
-Route::POST('/broadcast', [Conversations::class, 'broadcast']);
-Route::POST('/receive', [Conversations::class, 'receive']);
-Route::GET('/conversations', [Conversations::class, 'index'])->name('conversations');
+Route::GET('/yup', [UserCommunication::class,'index'])->name('user.index');
 
-Route::GET('/testClan/{clans}', [Conversations::class, 'showClan'])->name('conversations.showClan');
-Route::POST('/broadcastClan', [Conversations::class, 'broadcastClan']);
-Route::POST('/receiveClan', [Conversations::class, 'receiveClan']);
+Route::GET('/conversations/{user}', [ConversationsController::class,'show'])->name('conversations.show');
+Route::POST('/conversations/{user}', [ConversationsController::class,'store']);
+Route::POST('/broadcast', [ConversationsController::class,'broadcast']);
+Route::POST('/receive', [ConversationsController::class,'receive']);
+Route::GET('/conversations', [ConversationsController::class,'index'])->name('conversations');
+
+Route::GET('/testClan/{clans}', [ConversationsController::class,'showClan'])->name('conversations.showClan');
+Route::POST('/broadcastClan', [ConversationsController::class,'broadcastClan']);
+Route::POST('/receiveClan', [ConversationsController::class,'receiveClan']);
+Route::GET('/modificationMessage', [ConversationsController::class,'showModificationMessage'])->name('conversations.showModificationMessage');
+
+Route::delete('/messages/{message}', [ConversationsController::class, 'destroy'])->middleware('auth')->name('messages.destroy');
+Route::put('/messages/{id}', [ConversationsController::class, 'updateMessage'])->name('messages.update');
+
+
+
+
 
 Route::GET(
     '/connexion',
@@ -93,32 +102,36 @@ Route::POST('/creerCompteGoogle',
 
 Route::GET('/creerCompte',
 [ProfilController::class,'creerCompte'])->name('profil.creerCompte');
-Route::POST(
-    '/creerCompte',
-    [ProfilController::class, 'storeCreerCompte']
-)->name('profil.storeCreerCompte');
 
-Route::GET(
-    '/meilleursGroupes',
-    [ScoresController::class, 'meilleursGroupes']
+Route::POST('/creerCompte',
+[ProfilController::class, 'storeCreerCompte'])->name('profil.storeCreerCompte');
+
+Route::GET('/meilleursGroupes',
+[ScoresController::class, 'meilleursGroupes']
 )->name('scores.meilleursGroupes');
-Route::POST(
-    '/deconnexion',
-    [ProfilController::class, 'deconnexion']
-)->name('profil.deconnexion');
 
-Route::GET(
-    '/profil',
-    [ProfilController::class, 'profil']
-)->name('profil.profil')->middleware('auth');
+Route::POST('/deconnexion',
+[ProfilController::class, 'deconnexion'])->name('profil.deconnexion');
 
-Route::GET(
-    '/profil/modification',
-    [ProfilController::class, 'modification']
-)->name('profil.modification')->middleware('auth');
+Route::GET('/confirmation/{codeVerification}',
+[ProfilController::class,'confCourriel'])->name('profil.confirmation');
+
+Route::GET('/meilleursGroupes',
+[ScoresController::class,'meilleursGroupes'])->name('scores.meilleursGroupes');
+Route::POST('/deconnexion',
+[ProfilController::class,'deconnexion'])->name('profil.deconnexion');
+
+Route::GET('/profil',
+[ProfilController::class, 'profil'])->name('profil.profil')->middleware('auth');
+
+Route::GET('/profil/modification',
+[ProfilController::class,'modification'])->name('profil.modification')->middleware('auth');
 
 Route::POST('/profil/modification/update',
 [ProfilController::class,'updateModification'])->name('profil.updateModification')->middleware('auth');
+
+Route::GET('/profil/{email}',
+[ProfilController::class,'profilPublic'])->name('profil.profilPublic')->middleware('auth');
 
 Route::GET('/reinitialisation',
 [ProfilController::class,'pageMotDePasseOublie'])->name('profil.reinitialisation');

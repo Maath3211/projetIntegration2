@@ -60,3 +60,9 @@ Place-le dans un dossier sûr, par exemple : C:\php\cacert.pem ou dans le dossie
 Mets à jour la ligne curl.cainfo dans php.ini en indiquant ce chemin.
 3️⃣ Vérifier la configuration OpenSSL dans PHP
 Toujours dans php.ini, assure-toi que cette ligne est bien active (pas de ; au début) :
+
+
+
+
+pour les emojie
+npm install emoji-mart

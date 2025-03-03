@@ -7,6 +7,7 @@
             <p class="text-center msgErreur">{{ session('message') }}</p>
         </div>
     @endif
+    
     <div class="container-fluid">
         <div class="d-flex row justify-content-center">
             <div class="col-md-8 profile-container-mod">
