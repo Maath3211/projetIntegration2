@@ -2,8 +2,7 @@
 @section('contenu')
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link rel="stylesheet" style="text/css" href="\css\Statistique\graphiqueCss.css"> 
-
+<link rel="stylesheet" style="text/css" href="\css\Statistique\graphiqueExerciceCss.css"> 
 
 <div id="main">
     <a href="/stats"><button class="bouton">retour</button></a>
@@ -12,16 +11,16 @@
         <h1 id="titre">Vous êtes à la semaine {{$diffSemaines}}</h1>
    
 
-    <h1 id="titre">Amélioration de votre poids</h1>
+    <h1 id="titre">Amélioration de votre {{$exercice->nomStatistique}}</h1>
     <div class="uniteToggle">
         <button class="bouton" id="btnLbs">Lbs</button>
         <button class="bouton" id="btnKg">Kg</button>
     </div>
     <div class="form-container">
-    <form action="{{ route('ajouter-poids') }}" method="POST">
+    <form action="{{ route('ajouter-score', [$exercice->id]) }}" method="POST">
         @csrf
-        <label for="poids">Nouveau poids(lbs) :</label>
-        <input type="number" id="poids" name="poids" required>
+        <label for="score">Nouveau Score (Lbs) :</label>
+        <input type="number" id="score" name="score" required>
         <button type="submit" class="bouton">Ajouter/Modifier</button>
     </form>
 </div>
@@ -38,8 +37,8 @@
             data: {
                 labels: @json($semaines),
                 datasets: [{
-                    label: 'Poids (Lbs)',
-                    data: @json($poids),
+                    label: 'Score (Lbs)',
+                    data: @json($score),
                     borderColor: '#a9fe77',
                     borderWidth: 2,
                     pointBackgroundColor: '#e5e5e5',
@@ -65,7 +64,7 @@
                     y: {
                         title: {
                             display: true,
-                            text: 'Poids (Lbs)',
+                            text: 'Score (Lbs)',
                             color: '#e5e5e5',
                             font: { size: 16 }
                         },
@@ -89,7 +88,7 @@
             if (!isLbs) {
                 convertToLbs();
                 isLbs = true;
-                chart.options.scales.y.title.text = 'Poids (Lbs)';
+                chart.options.scales.y.title.text = 'Score (Lbs)';
                 chart.update();
             }
         });
@@ -98,7 +97,7 @@
             if (isLbs) {
                 convertToKg();
                 isLbs = false;
-                chart.options.scales.y.title.text = 'Poids (Kg)';
+                chart.options.scales.y.title.text = 'Score (Kg)';
                 chart.update();
             }
         });
@@ -116,3 +115,5 @@
 </div>
 
 @endsection
+
+
