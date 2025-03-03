@@ -1,5 +1,6 @@
 body {
     font-family: 'Open Sans', sans-serif;
+    user-select: none;
 }
 
 aside {
@@ -121,7 +122,7 @@ aside {
     margin-right: 15px;
 }
 
-.titreCategorieCanal i {
+.titreCategorieCanal i.fa-plus {
     cursor: pointer;
 }
 
@@ -355,4 +356,49 @@ a:hover {
 .messageErreur {
     color:rgb(219, 82, 82);
     display: none;
+}
+
+#conteneurMessages {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    z-index: 9999;
+    text-align: center;
+}
+
+.alert {
+    display: inline-block;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    max-width: 400px;
+    width: 100%;
+    color: #fff;
+    position: relative;
+}
+
+.close-btn {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    font-size: 20px;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+}
+
+#messageSucces{
+    background-color: #60c22c;
+    border: 2px solid rgba(71, 70, 70, 0.5);
+    color: black;
+}
+
+#messageErreur{
+    background-color: #c22c2c;
+    border: 2px solid rgba(71, 70, 70, 0.8);
+    color: black;
 }

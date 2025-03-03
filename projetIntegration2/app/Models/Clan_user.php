@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class Clan_user extends Pivot
 {
-    protected $table = 'clan_user';
+    protected $table = 'clan_users';
 
     protected $fillable = [
         'clan_id',
