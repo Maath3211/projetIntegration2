@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
+    const supprimerClan = document.getElementById('confirmationSuppressionClan');
     const categoriesASupprimer = [];
     const categoriesRenommees = {};
     const categoriesAAjouter = [];
@@ -14,6 +15,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 window.location.href = "general";
             } else if(categorie.classList.contains('membres')){
                 window.location.href = "membres";
+            }
+
+            if(categorie.classList.contains('supprimer')){
+                supprimerClan.style.display = 'flex';
             }
         });
     });
@@ -198,6 +203,10 @@ document.addEventListener("DOMContentLoaded", function() {
             // effacer la valeur entrée initialement
             this.parentElement.parentElement.querySelector('.entreeNomCategorie').value = '';
         }
+    });
+
+    supprimerClan.querySelector('#confirmerSuppressionClan').addEventListener('click', function() {
+        document.querySelector('#formulaireSuppressionClan').submit();
     });
     
     document.querySelectorAll('.close-btn').forEach(bouton => {

@@ -75,6 +75,17 @@ a:hover {
     font-size: 24px;
 }
 
+.categorieParametre.supprimer:hover {
+    background-color: rgb(219, 99, 99);
+    opacity: 0.8;
+    color: black;
+    cursor: pointer;
+}
+
+.categorieParametre.supprimer.actif {
+    background-color: rgb(219, 99, 99);
+}
+
 .conteneurParametres {
     display: flex;
     justify-content: space-between;
@@ -305,7 +316,7 @@ STYLE POUR LES CATÉGORIES DE CANAUX
     z-index: 1000;
 }
 
-#confirmerRenommage, #confirmerAjout, #confirmerSuppression {
+#confirmerRenommage, #confirmerAjout, #confirmerSuppression, #confirmerSuppressionClan {
     background-color: rgb(219, 82, 82);
     padding: 10px;
     padding-right: 25px;
@@ -315,7 +326,7 @@ STYLE POUR LES CATÉGORIES DE CANAUX
 }
 
 
-#confirmerRenommage:hover, #confirmerAjout:hover, #confirmerSuppression:hover {
+#confirmerRenommage:hover, #confirmerAjout:hover, #confirmerSuppression:hover, #confirmerSuppressionClan:hover {
     background-color: rgb(219, 99, 99);
 }
 

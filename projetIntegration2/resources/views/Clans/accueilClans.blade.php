@@ -32,8 +32,7 @@
                                             </div>
                                             <i class="fa-solid fa-plus fa-xs"></i>
                                         </div>
-                                    </div>
-                                    @if(isset($canauxParCategorie[$categorie->id]))
+                                        @if(isset($canauxParCategorie[$categorie->id]))
                                         @foreach($canauxParCategorie[$categorie->id] as $canal)
                                             <div class="canal">
                                                 <a href="/clan/{{ $id }}/canal/{{ $canal->id }}" class="canal_{{ $canal->id }}">
@@ -51,6 +50,7 @@
                                     @else
                                         <p>Aucun canal n'est créé pour ce clan. Veuillez en créer une pour commencer.</p>
                                     @endif
+                                    </div>
                                 @endforeach
                             @else
                                 <p>Aucune catégorie de canal n'a été créée pour ce clan. Veuillez en créer une pour ajout des canaux.</p>
