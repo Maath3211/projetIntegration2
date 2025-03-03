@@ -26,8 +26,8 @@ class UtilisateurSeeder extends Seeder
             'genre'=> 'homme',
             'dateNaissance'=> Carbon::create('2004', '12', '07'),
             'password' =>Hash::make('adminggg'),
-            'created_at' => now(),
         ]);
+
         DB::table('users')->insert([
             'id' => 2,
             'email'=> 'test2@test.com',
@@ -39,6 +39,7 @@ class UtilisateurSeeder extends Seeder
             'dateNaissance'=> Carbon::create('2000', '01', '01'),
             'password' =>Hash::make('adminggg')
         ]);
+
         DB::table('users')->insert([
             'id' => 3,
             'email'=> 'test3@test.com',
@@ -50,6 +51,7 @@ class UtilisateurSeeder extends Seeder
             'dateNaissance'=> Carbon::create('2000', '01', '01'),
             'password' =>Hash::make('adminggg')
         ]);
+
         DB::table('users')->insert([
             'id' => 4,
             'email' => 'test4@example.com',
@@ -60,8 +62,6 @@ class UtilisateurSeeder extends Seeder
             'genre' => 'homme',
             'dateNaissance' => Carbon::create('2000', '01', '01'),
             'password' => Hash::make('adminggg'),
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
 
         DB::table('users')->insert([
@@ -74,8 +74,6 @@ class UtilisateurSeeder extends Seeder
             'genre' => 'femme',
             'dateNaissance' => Carbon::create('2000', '01', '01'),
             'password' => Hash::make('adminggg'),
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
 
         DB::table('users')->insert([
@@ -88,8 +86,6 @@ class UtilisateurSeeder extends Seeder
             'genre' => 'homme',
             'dateNaissance' => Carbon::create('2000', '01', '01'),
             'password' => Hash::make('adminggg'),
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
 
         DB::table('users')->insert([
@@ -102,8 +98,6 @@ class UtilisateurSeeder extends Seeder
             'genre' => 'femme',
             'dateNaissance' => Carbon::create('2000', '01', '01'),
             'password' => Hash::make('adminggg'),
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
 
         DB::table('users')->insert([
@@ -116,8 +110,6 @@ class UtilisateurSeeder extends Seeder
             'genre' => 'homme',
             'dateNaissance' => Carbon::create('2000', '01', '01'),
             'password' => Hash::make('adminggg'),
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
 
         DB::table('users')->insert([
@@ -130,8 +122,6 @@ class UtilisateurSeeder extends Seeder
             'genre' => 'femme',
             'dateNaissance' => Carbon::create('2000', '01', '01'),
             'password' => Hash::make('adminggg'),
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
 
         DB::table('users')->insert([
@@ -144,8 +134,6 @@ class UtilisateurSeeder extends Seeder
             'genre' => 'homme',
             'dateNaissance' => Carbon::create('2000', '01', '01'),
             'password' => Hash::make('adminggg'),
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
 
         DB::table('users')->insert([
@@ -158,8 +146,6 @@ class UtilisateurSeeder extends Seeder
             'genre' => 'femme',
             'dateNaissance' => Carbon::create('2000', '01', '01'),
             'password' => Hash::make('adminggg'),
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
 
         DB::table('users')->insert([
@@ -172,8 +158,6 @@ class UtilisateurSeeder extends Seeder
             'genre' => 'homme',
             'dateNaissance' => Carbon::create('2000', '01', '01'),
             'password' => Hash::make('adminggg'),
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
 
         DB::table('users')->insert([
@@ -186,8 +170,6 @@ class UtilisateurSeeder extends Seeder
             'genre' => 'femme',
             'dateNaissance' => Carbon::create('2000', '01', '01'),
             'password' => Hash::make('adminggg'),
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
 
         DB::table('users')->insert([
@@ -200,8 +182,6 @@ class UtilisateurSeeder extends Seeder
             'genre' => 'homme',
             'dateNaissance' => Carbon::create('2000', '01', '01'),
             'password' => Hash::make('adminggg'),
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
 
         DB::table('users')->insert([
@@ -214,8 +194,6 @@ class UtilisateurSeeder extends Seeder
             'genre' => 'femme',
             'dateNaissance' => Carbon::create('2000', '01', '01'),
             'password' => Hash::make('adminggg'),
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
 
         DB::table('users')->insert([
@@ -228,8 +206,6 @@ class UtilisateurSeeder extends Seeder
             'genre' => 'homme',
             'dateNaissance' => Carbon::create('2000', '01', '01'),
             'password' => Hash::make('adminggg'),
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
 
         DB::table('users')->insert([
@@ -242,8 +218,6 @@ class UtilisateurSeeder extends Seeder
             'genre' => 'homme',
             'dateNaissance' => Carbon::create('2000', '01', '01'),
             'password' => Hash::make('adminggg'),
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
 
         DB::table('users')->insert([
@@ -256,8 +230,6 @@ class UtilisateurSeeder extends Seeder
             'genre' => 'homme',
             'dateNaissance' => Carbon::create('2000', '01', '01'),
             'password' => Hash::make('adminggg'),
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
 
         DB::table('users')->insert([
@@ -270,8 +242,6 @@ class UtilisateurSeeder extends Seeder
             'genre' => 'homme',
             'dateNaissance' => Carbon::create('2000', '01', '01'),
             'password' => Hash::make('adminggg'),
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
 
         DB::table('users')->insert([
@@ -284,8 +254,6 @@ class UtilisateurSeeder extends Seeder
             'genre' => 'homme',
             'dateNaissance' => Carbon::create('2000', '01', '01'),
             'password' => Hash::make('adminggg'),
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
     }
 }
