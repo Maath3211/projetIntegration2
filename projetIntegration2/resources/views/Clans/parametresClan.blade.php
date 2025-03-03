@@ -76,7 +76,7 @@
         @if(session('message'))
           <div class="alert" id="messageSucces">
             <span>{{session('message')}}</span>
-            <button class="close-btn" onclick="fermerAlerte("messageSuccess")">X</button>
+            <button class="close-btn">X</button>
           </div>
         @endif
 
@@ -86,10 +86,11 @@
             <ul>
               @if($errors->any())
                 @foreach($errors->all() as $erreur)
-                    <li>{{ $erreur }}</li>
+                  <li>{{ $erreur }}</li>
                 @endforeach
-              @elseif(session('erreur'))
-                    <li>{{session('erreur')}}</li>
+              @endif
+              @if(session('erreur'))
+                <li>{{ session('erreur') }}</li>
               @endif
             </ul>
             <button class="close-btn">X</button>

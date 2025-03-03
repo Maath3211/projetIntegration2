@@ -2,8 +2,8 @@
 @section('titre', 'Clans')
 
 @section('style')
-    <link rel="stylesheet" style="text/css" href="{{asset('css/Clans/clans.css')}}">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" style="text/css" href="{{asset('css/Clans/clans.css')}}">
 @endsection()
 
 @section('contenu')
@@ -16,7 +16,9 @@
                         @if(isset($clan))
                             <div class="conteneurImage" style="background-image: url('{{ asset($clan->image) }}');">
                                 <div class="texteSurImage">{{ $clan->nom }}</div>
+                                @if($utilisateur->id == $clan->adminId)
                                     <div><a href="{{ route('clan.parametres', ['id' => $clan->id]) }}"><i class="fa-solid fa-ellipsis"></i></a></div>
+                                @endif
                             </div>
                         @endif
                         <div class="conteneurCanaux">
@@ -149,12 +151,12 @@
         @if(session('message'))
           <div class="alert" id="messageSucces">
             <span>{{session('message')}}</span>
-            <button class="close-btn" onclick="fermerAlerte("messageSuccess")">X</button>
+            <button class="close-btn">X</button>
           </div>
         @endif
 
         <!--Obligé d'utiliser $errors ici c'est la facon que laravel gère ses erreurs-->
-        @if($errors->any())
+        @if($errors->any() || session('erreur'))
           <div class="alert" id="messageErreur">
             <ul>
               @if($errors->any())
@@ -162,11 +164,14 @@
                   <li>{{ $erreur }}</li>
                 @endforeach
               @endif
+              @if(session('erreur'))
+                <li>{{ session('erreur') }}</li>
+              @endif
             </ul>
             <button class="close-btn">X</button>
           </div>
         @endif
-        </div>
+    </div>
 
 </div>
 

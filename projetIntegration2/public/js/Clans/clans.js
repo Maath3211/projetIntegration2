@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // ajouter les événements pour ajouter un canal à une catégorie
-    document.querySelectorAll('.titreCategorieCanal').forEach(categorie => {
+    document.querySelectorAll('.titreCategorieCanal i.fa-plus').forEach(categorie => {
         categorie.addEventListener('click', function() {
             ajouter.style.display = 'flex';
 

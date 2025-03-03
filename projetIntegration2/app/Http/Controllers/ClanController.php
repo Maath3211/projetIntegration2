@@ -12,6 +12,7 @@ use App\Models\Clan;
 use App\Models\User;
 use App\Models\Canal;
 use App\Models\CategorieCanal;
+use App\Models\Clan_user;
 use Exception;
 
 class ClanController extends Controller
@@ -36,7 +37,7 @@ class ClanController extends Controller
         Log::info('CATEGORIES: ' . json_encode($categories->pluck('id')->toArray()));
         Log::info('CANAUX: ' . json_encode($canauxParCategorie->toArray()));
 
-        return View('Clans.accueilClans', compact('id', 'clans', 'clan', 'membres', 'categories', 'canauxParCategorie'));
+        return View('Clans.accueilClans', compact('id', 'clans', 'clan', 'membres', 'categories', 'canauxParCategorie', 'utilisateur'));
     }
 
     // Paramètres d'un clan
@@ -70,12 +71,12 @@ class ClanController extends Controller
         try {
             
             $request->validate([
-                'imageClan' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'imageClan' => 'image|mimes:jpeg,png,jpg,gif,svg|max:4096',
                 'nomClan' => 'string|max:50',
             ], [
                 'imageClan.image' => 'Erreur lors du chargement de l\'image.',
                 'imageClan.mimes' => 'Format d\'image invaide.',
-                'imageClan.max' => 'Image trop grande.',
+                'imageClan.max' => 'L\'image du clan ne doit pas dépasser 4MB.',
                 'nomClan.string' => 'Le nom du clan doit être du texte.',
                 'nomClan.max' => 'Le nom du clan ne doit pas dépasser les 50 caractères.',
             ]);
@@ -297,78 +298,117 @@ class ClanController extends Controller
 
     // Créer un clan
     public function creerClan(Request $request){
+        try {
+            Log::info($request);
+            // utiliser son id comme id d'administrateur du clan
+            $utilisateur = auth()->id();
 
-        Log::info($request);
-        // utiliser son id comme id d'administrateur du clan
-        $utilisateur = auth()->id();
+            // validation des entrees
+            $donneesValidees = $request->validate([
+                'nomClan' => [
+                    'required',
+                    'string',
+                    'max:50',
+                    'regex:/^[\p{L}\s\-]+$/u' // juste les lettres UTF-8, espaces & tirets
+                ],
+                'imageClan' => [
+                    'nullable',
+                    'image',
+                    'mimes:jpeg,png,jpg,gif,svg',
+                    'max:4096'
+                ],
+                'clanPublic' => 'string'
+            ],[
+                'nomClan.required' => 'Le nom du clan est obligatoire',
+                'nomClan.string' => 'Le nom du clan doit être de type string',
+                'nomClan.max' => 'Le nom du clan ne doit pas dépasser les 50 caractères',
+                'nomClan.regex' => 'Le nom du clan ne peut contenir que des lettres UTF-8, des espaces et des tirets (-)',
+                'imageClan.image' => 'L\image du clan doit être une image',
+                'imageClan.mimes' => 'L\'image du clan doit être un format valide (jpeg, png, jpg, gif, svg)',
+                'imageClan.max' => 'L\'image du clan ne doit pas dépasser 4MB',
+                'clanPublic.boolean' => 'Le clan doit être soit privé soit public. (boolean)'
+            ]);
 
-        // validation des entrees
-        $donneesValidees = $request->validate([
-            'nomClan' => [
-                'required',
-                'string',
-                'max:50',
-                'regex:/^[\p{L}\s\-]+$/u' // juste les lettres UTF-8, espaces & tirets
-            ],
-            'imageClan' => [
-                'nullable',
-                'image',
-                'mimes:jpeg,png,jpg,gif,svg'
-            ],
-            'clanPublic' => 'boolean'
-        ],[
-            'nomClan.required' => 'Le nom du clan est obligatoire',
-            'nomClan.string' => 'Le nom du clan doit être de type string',
-            'nomClan.max' => 'Le nom du clan ne doit pas dépasser les 50 caractères',
-            'nomClan.regex' => 'Le nom du clan ne peut contenir que des lettres UTF-8, des espaces et des tirets (-)',
-            'imageClan.image' => 'L\image du clan doit être une image',
-            'imageClan.mimes' => 'L\'image du clan doit être un format valide (jpeg, png, jpg, gif, svg)',
-            'clanPublic.boolean' => 'Le clan doit être soit privé soit public. (boolean)'
-        ]);
+            if(!isset($donneesValidees['clanPublic'])){
+                $donneesValidees['clanPublic'] = false;
+            }
 
-        
+            if($donneesValidees['clanPublic'] == 'checked'){
+                $donneesValidees['clanPublic'] = true;
+            } else {
+                $donneesValidees['clanPublic'] = false;
+            }
+
+            
 
 
-        // $clan = Clan::create([
-        //     'adminId' => $utilisateur,
-        //     'image' => null, // on défini l'image plus tard une fois qu'on a l'id
-        //     'nom' => $donneesValidees['nomClan'],
-        //     'public' => $donneesValidees['clanPublic'] ?? false
-        // ]);
+            $clan = Clan::create([
+                'adminId' => $utilisateur,
+                'image' => 'img/Clans/default.jpg', // on défini l'image plus tard une fois qu'on a l'id
+                'nom' => $donneesValidees['nomClan'],
+                'public' => $donneesValidees['clanPublic'] ?? false
+            ]);
 
-        // if ($clan){
-        //     if($request->hasFile('imageClan') && $request->file('imageClan')->isValid()) {
-        //         $image = $request->file('imageClan');
-        //         $chemin = $image->storeAs('public/img/Clans', 'clan_' . $clan->id . '.' . $image->getClientOriginalExtension());
-    
-        //         //mettre a jour l'image dans la bd
-        //         $clan->update(['image' => $chemin]);
-        //     }
+            if ($clan){
 
-        //     $categorie = CategorieCanal::create([
-        //         'categorie' => 'Général',
-        //         'clanId' => $clan->id
-        //     ]);
+                $admin = Clan_user::create([
+                    'clan_id'    => $clan->id,
+                    'user_id'    => $utilisateur,
+                    'joined_at' => now(),
+                ]);
+                
+                if($request->hasFile('imageClan') && $request->file('imageClan')->isValid()) {
 
-        //     if($categorie) {
-        //         $canal = Canal::create([
-        //             'titre' => 'bienvenue',
-        //             'clanId' => $clan->id,
-        //             'categorieId' => $categorie->id
-        //         ]);
+                    // supprimer les anciennes images si elles existent
+                    $imageOriginale = public_path('img/Clans/clan_'.$clan->id.'_.*');
+                    $images = glob($imageOriginale);
+                    if($images){
+                        foreach($images as $image) {
+                            if(File::exists($image)){
+                                File::delete($image);
+                                Log::info('Image supprimée: ' . $image);
+                            }
+                        }
+                    }
 
-        //         $canal = Canal::create([
-        //             'titre' => 'général',
-        //             'clanId' => $clan->id,
-        //             'categorieId' => $categorie->id
-        //         ]);
+                    $image = $request->file('imageClan');
+                    $nomImage = 'img/Clans/clan_' . $clan->id . '_.' . $image->getClientOriginalExtension();
 
-                return redirect()->back()->with('message', 'Clan créé avec succès!');
-        //     }
-        //     return redirect()->back()->with('message', 'Une erreur a été rencontrée lors de la création du clan mais le clan été créé avec succès.');
-        // }
+                    $image->move(public_path('img/Clans'), $nomImage);
 
-        // return redirect()->back()->with('erreur', 'Une erreur a été rencontrée lors de la création du clan. Veuillez réessayer plus tard');
+                    //mettre a jour l'image dans la bd
+                    $clan->update(['image' => $nomImage]);
+                }
+
+                $categorie = CategorieCanal::create([
+                    'categorie' => 'Général',
+                    'clanId' => $clan->id
+                ]);
+
+                if($categorie) {
+                    $canal = Canal::create([
+                        'titre' => 'bienvenue',
+                        'clanId' => $clan->id,
+                        'categorieId' => $categorie->id
+                    ]);
+
+                    $canal = Canal::create([
+                        'titre' => 'général',
+                        'clanId' => $clan->id,
+                        'categorieId' => $categorie->id
+                    ]);
+
+                    return redirect()->back()->with('message', 'Clan créé avec succès!');
+                }
+                return redirect()->back()->with('message', 'Une erreur a été rencontrée lors de la création du clan mais le clan été créé avec succès.');
+            }
+
+            return redirect()->back()->with('erreur', 'Une erreur a été rencontrée lors de la création du clan. Veuillez réessayer plus tard');
+        } catch (Exception $e) {
+            Log::error('Erreur création clan: ' . $e->getMessage());
+            return redirect()->back()->with('erreur', 'Une erreur a été rencontrée lors de la création du clan. Veuillez réessayer plus tard.');
+        }
+
     }
 
     // Supprimer un clan
