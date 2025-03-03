@@ -12,6 +12,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
 
+    <!-- Importation pour les fonctionnalité pusher et ajax -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+
   <link rel="stylesheet" style="text/css" href="\css\GabaritCss.css"> <!-- style du "layout" app.blade.css -->
   <script src="https://cdn.tailwindcss.com"></script> <!-- nous rajoute <aside> et <main> entre autres -->
   <script src="https://kit.fontawesome.com/55ec8bd5f8.js" crossorigin="anonymous"></script> <!-- importation de Font Awesome pour les icônes -->
