@@ -30,6 +30,9 @@ class ProfilController extends Controller
     public function connexion(ConnexionRequest $request)
     {
         $utilisateur = User::where('email', $request->email)->first();
+        if (!$utilisateur) {
+            return redirect()->back()->withErrors(['email' => 'Aucun compte trouvé avec cet email']);
+        }
         if ($utilisateur->email_verified_at == null) {
             return redirect()->back()->withErrors(['email' => 'Votre compte n\'a pas été vérifié']);
         }
@@ -57,7 +60,6 @@ class ProfilController extends Controller
         $utilisateur->email = $request->email;
         $utilisateur->prenom = $request->prenom;
         $utilisateur->nom = $request->nom;
-        $utilisateur->imageProfil = $request->imageProfil;
         $utilisateur->pays = $request->pays;
         $utilisateur->genre = $request->genre;
         $utilisateur->dateNaissance = $request->dateNaissance;
@@ -75,7 +77,7 @@ class ProfilController extends Controller
                 return redirect()->back()->withErrors(['imageProfil' => 'Erreur lors du téléversement de l\'image']);
             }
         } else {
-            return redirect()->back()->withErrors(['imageProfil' => 'Aucune image sélectionnée']);
+            $utilisateur->imageProfil = 'img/Utilisateurs/utilisateurParDefaut.jpg';
         }
 
         Mail::to($utilisateur->email)->send(new confirmation($utilisateur));
@@ -219,10 +221,21 @@ class ProfilController extends Controller
     public function profilPublic($email)
     {
         $utilisateur = User::where('email', $email)->first();
+        $clans = $utilisateur->clans;
         if (!$utilisateur) {
             return redirect()->route('profil.profil')->withErrors(['Utilisateur introuvable']);
         }
-        return View('profil.profilPublic', compact('utilisateur'));
+        return View('profil.profil', compact('utilisateur', 'clans'));
+    }
+
+    public function suppressionProfil()
+    {
+        $utilisateur = Auth::user();
+        if ($utilisateur->imageProfil && file_exists(public_path($utilisateur->imageProfil))) {
+            unlink(public_path($utilisateur->imageProfil));
+        }
+        $utilisateur->delete();
+        return redirect()->route('profil.pageConnexion')->with('message', 'Votre compte a été supprimé avec succès');
     }
 
 
@@ -351,6 +364,9 @@ class ProfilController extends Controller
     public function confCourriel($codeVerification)
     {
         $user = User::where('codeVerification', $codeVerification)->first();
+        if (!$user) {
+            return redirect()->route('profil.connexion')->withErrors(['message' => 'Code de vérification invalide']);
+        }
         $user->email_verified_at = now();
         $user->codeVerification = null;
         $user->save();

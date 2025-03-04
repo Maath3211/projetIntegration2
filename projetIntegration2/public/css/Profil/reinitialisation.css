@@ -1,0 +1,200 @@
+/*  
+bleu pale 86fffd
+bleu 28e6d3
+vert a9fe77
+mauve a650fc
+*/
+.conteneurForm {
+    width: 70%;
+    margin-bottom: 1.5rem;
+}
+.text-vert {
+    color: #94fa58;
+}
+.inputReinitialisation:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(44, 194, 187, 0.2);
+}
+
+input:focus {
+    background-color: #999999 !important;
+    color: rgb(255, 255, 255) !important;
+}
+.conteneurErreur {
+    display: flex !important;
+    align-items: center !important;
+    height: 20px !important;
+    font-size: 15px;
+}
+
+.alert-erreur {
+    background-color: #dc3545;
+    opacity: 90%;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.alert {
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin: 15px 0;
+    backdrop-filter: blur(5px);
+}
+
+.btn-confirmation,
+.unit-btn {
+    background: linear-gradient(135deg, #a9fe77, #60c22c);
+    border: none;
+    padding: 12px 30px;
+    cursor: pointer;
+    font-size: 18px;
+    color: black;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 2px 2px 10px rgba(169, 254, 119, 0.5);
+    text-transform: uppercase;
+    margin: 10px 5px;
+}
+
+.btn-confirmation:hover,
+.unit-btn:hover {
+    background: linear-gradient(135deg, #60c22c, #a9fe77);
+    transform: scale(1.05);
+}
+
+.btn-confirmation:active,
+.unit-btn:active {
+    transform: scale(0.95);
+    box-shadow: 1px 1px 5px rgba(169, 254, 119, 0.8);
+}
+
+.btn-retour {
+    background: linear-gradient(135deg, #fe7777, #c22c2c);
+    border: none;
+    padding: 12px 30px;
+    cursor: pointer;
+    font-size: 18px;
+    color: black;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 2px 2px 10px rgba(254, 119, 119, 0.5);
+    text-transform: uppercase;
+    margin: 10px 5px;
+}
+
+.btn-retour:hover,
+.unit-btn:hover {
+    background: linear-gradient(135deg, #c22c2c, #fe7777);
+    transform: scale(1.05);
+}
+
+.btn-retour:active,
+.unit-btn:active {
+    transform: scale(0.95);
+    box-shadow: 1px 1px 5px rgba(169, 254, 119, 0.8);
+}
+
+@media screen and (min-width: 481px) {
+    #formConnexion {
+        margin-top: 8vh;
+        margin-left: 25%;
+        margin-right: 25%;
+        padding: 2.5rem;
+        border-radius: 15px;
+        background-color: rgba(22, 28, 36, 0.7); /* Black background with transparency */
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .inputReinitialisation {
+        background-color: #707070 !important;
+        color: #ffffff;
+        border: 1px solid #a9fe77;
+        justify-content: center !important;
+        padding: 12px 15px !important;
+        border-radius: 10px !important;
+        transition: all 0.3s ease-in-out;
+    }
+    
+    .inputReinitialisation::placeholder {
+        color: #ffffff;
+    }
+    #titreConnexion {
+        margin-bottom: 2.5rem;
+        text-align: center;
+        font-size: 2.2rem;
+        font-weight: bold;
+        color: #94fa58;
+        letter-spacing: 1px;
+    }
+}
+
+
+@media screen and (max-width: 480px) {
+    #formConnexion {
+        margin: 15vh 15px;
+        padding: 1.5rem;
+        border-radius: 15px;
+        background-color: rgba(22, 28, 36, 0.7); /* Black background with transparency */
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .conteneurForm {
+        width: 100%;
+    }
+
+    #titreConnexion {
+        font-size: 1.8rem;
+    }
+
+    .inputReinitialisation {
+        background-color: #707070 !important;
+        color: #ffffff;
+        border: 1px solid #a9fe77;
+        justify-content: center !important;
+        padding: 12px 15px !important;
+        border-radius: 10px !important;
+        transition: all 0.3s ease-in-out;
+    }
+    .inputReinitialisation::placeholder {
+        color: #ffffff;
+    }
+    
+    .inputReinitialisation:focus {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(44, 194, 187, 0.2);
+    }
+
+    #titreConnexion {
+        margin-bottom: 1.5rem;
+        text-align: center;
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: #94fa58;
+    }
+}
+
+
+
+
+
+#imgBackground {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    opacity: 0.5;
+    filter: blur(5px);
+}
+
