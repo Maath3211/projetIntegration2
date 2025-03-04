@@ -467,7 +467,7 @@ class ClanController extends Controller
            return redirect()->route('clan.montrer', $clan->id)->with('message', 'Vous êtes déjà membre de ce clan.');
         }
         Log::info('CLAN_INVITE1: ' . $clan);
-        $clan->utilisateurs()->sync([$utilisateur->id => ['clan_id' => $clan->id]]);
+        $clan->utilisateurs()->attach($utilisateur->id, ['clan_id' => $clan->id]);
 
         return redirect()->route('clan.montrer', $clan->id)->with('message', 'Vous avez rejoint le clan avec succès.');
     }
