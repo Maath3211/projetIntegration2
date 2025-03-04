@@ -10,6 +10,7 @@ use App\Models\PoidsUtilisateur;
 use App\Models\ScoreExercice;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class StatistiqueController extends Controller
 {
@@ -28,13 +29,33 @@ class StatistiqueController extends Controller
     
             $poids = PoidsUtilisateur::where('user_id', Auth::id())->orderBy('poids', 'asc')->first()->poids;
             $scoreExercice = ScoreExercice::All();
+            $scoreHaut = ScoreExercice::select('statistique_id', \DB::raw('MAX(score) as max_score'))
+                ->groupBy('statistique_id')
+                ->get();
             $streak = Statistiques::where('user_id', Auth::id())->where('nomStatistique', 'Streak')->get();
             $foisGym = Statistiques::where('user_id', Auth::id())->where('nomStatistique', 'FoisGym')->get();
         }
         
-        return view("statistique.index", compact('statistiques', 'usager', 'poids', 'streak', 'foisGym', 'scoreExercice'));
+        return view("statistique.index", compact('statistiques', 'usager', 'poids', 'streak', 'foisGym', 'scoreExercice', 'scoreHaut'));
     }
 
+
+    public function ajouterFoisGym()
+    {
+        $user = Auth::user();
+        $statistique = Statistiques::where('user_id', $user->id)->where('nomStatistique', 'FoisGym')->first();
+        if ($statistique) {
+            $statistique->score += 1;
+            $statistique->save();
+        } else {
+            Statistiques::create([
+                'user_id' => $user->id,
+                'nomStatistique' => 'FoisGym',
+                'score' => 0
+            ]);
+        }
+        return redirect()->back()->with('success', 'FoisGym ajouté avec succès !');
+    }
 
     public function graphique()
     {

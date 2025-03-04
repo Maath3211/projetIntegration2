@@ -15,6 +15,7 @@
 
     
     <div class="flex flex-wrap justify-center space-x-4 mt-4">
+      <a href="/ajouterFoisGym">  <button class="bouton">ajouter compteur gym</button></a>
       <a href="/profil">  <button class="bouton">Profil</button></a>
       <a href="/objectif">  <button class="bouton">Voir mes objectifs</button></a>
     </div>
@@ -55,9 +56,7 @@
 
         @foreach($statistiques as $stat)
             <div class="statRow" id="exercise-{{ $stat->id }}">
-
-             <!-- Recuperer les plus haut stat (A FAIRE!!!!!) -->
-                <span>{{ $stat->nomStatistique }} : {{ $stat->score }} 
+                <span>Score le plus haut pour {{$stat->nomStatistique}}: {{ $scoreHaut->firstWhere('statistique_id', $stat->id)->max_score ?? 'N/A' }}
                 {{ in_array($stat->nomStatistique, ['course', 'run', 'marathon', 'marche', 'sprint', 'jogging', 'trail', 'velo', 'bike', 'cycling']) ? 'km' : 'lbs' }}
                 </span>
                 <div class="flex space-x-2">

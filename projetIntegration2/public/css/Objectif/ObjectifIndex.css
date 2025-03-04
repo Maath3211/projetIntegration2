@@ -1,6 +1,6 @@
 /* Style général */
 body {
-    background-color: #1a1a1a;
+    background-color: rgb(54, 54, 54);;
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
@@ -10,7 +10,7 @@ body {
 .container {
     width: 100%;
     min-height: 100vh;
-    background-color: #1a1a1a;
+    background-color: rgb(54, 54, 54);;
     padding: 2rem;
     border-radius: 0.5rem;
     display: flex;

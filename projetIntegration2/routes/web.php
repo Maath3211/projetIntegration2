@@ -177,6 +177,9 @@ Route::GET(
     [GymController::class, 'index']
 )->name('localisation.index');
 
+Route::get('/ajouterFoisGym',
+[StatistiqueController::class,'ajouterFoisGym'])->name('statistique.ajouterFoisGym');
+
 Route::GET('/graphiqueExercice/{exercice}',
 [StatistiqueController::class,'graphiqueExercice'])->name('statistique.graphiqueExercice');
 
