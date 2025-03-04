@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Clan;
 use App\Models\User;
 use App\Models\UtilisateurClan;
+use App\Models\Canal;
 use App\Repository\ConversationsRepository;
 use App\Repository\ConversationsClan;
 use App\Http\Requests\StoreMessage;
@@ -114,7 +115,7 @@ class ConversationsController extends Controller
 
 
 
-
+/*-----------------------------------Conversation Clan-----------------------------------*/
 
     public function destroy(UtilisateurClan $message)
     {

@@ -13,10 +13,26 @@ use App\Models\User;
 use App\Models\Canal;
 use App\Models\CategorieCanal;
 use App\Models\Clan_user;
+use App\Repository\ConversationsRepository;
+use App\Repository\ConversationsClan;
+use App\Events\MessageGroup;
 use Exception;
 
 class ClanController extends Controller
 {
+    // Xavier : creation des repository pour les conversations (code plus clean)
+    private $ConvRepository;
+    private $ClanRepository;
+
+    public function __construct(
+        ConversationsRepository $conversationRepository, 
+        ConversationsClan $ClanRepository
+    ) {
+        $this->ConvRepository = $conversationRepository;
+        $this->ClanRepository = $ClanRepository;
+    }
+
+
     // Accueil d'un clan
     public function index($id){
         $utilisateur = auth()->id();
@@ -533,4 +549,114 @@ class ClanController extends Controller
 
         return back()->with('success', 'Vous avez rejoint le clan !');
     }
+
+
+
+    /**
+     * Xavier : communication dans le clan
+     */
+
+
+    public function showCanalClan($id, $canal)
+    {
+
+        $utilisateur = auth()->id();
+        $utilisateur = User::findOrFail($utilisateur);
+
+        if (!$utilisateur){
+            Log::info('Utilisateur pas connecté.');
+            return redirect('/connexion')->with('erreur', 'Vous devez être connectés pour afficher les clans.');
+        }
+
+        $clans = $utilisateur->clans()->get();
+        $clan = Clan::findOrFail($id);
+        $membres = $clan->utilisateurs;
+        $categories = CategorieCanal::where('clanId', '=', $id)->get();
+        $canauxParCategorie = Canal::whereIn('categorieId', $categories->pluck('id'))->get()->groupBy('categorieId');
+        $messages = $this->ClanRepository->getMessageClanFor($id, $canal);
+
+
+        Log::info('CLANS: ' . json_encode($clans->toArray()));
+        Log::info('CATEGORIES: ' . json_encode($categories->pluck('id')->toArray()));
+        Log::info('CANAUX: ' . json_encode($canauxParCategorie->toArray()));
+        return View('Clans.canalClan', 
+        compact(
+        'id', 
+        'clans', 
+        'clan', 
+        'membres', 
+        'categories', 
+        'canauxParCategorie', 
+        'utilisateur',
+        'messages'
+    ));
+    }
+
+
+    // Xavier : communication dans le clan
+    public function broadcastClan(Request $request)
+    {
+        
+        $request->validate([
+            'message' => 'nullable|string',
+            'fichier' => 'nullable|file|max:20480', // 20 Mo 
+        ]);
+        
+        if (!$request->filled('message') && !$request->hasFile('fichier')) {
+            return response()->json(['error' => 'Vous devez envoyer soit un message, soit un fichier, soit les deux.'], 422);
+        }
+        
+    
+        try {
+            $fichierNom = null;
+            // Si un fichier est envoyé
+            if ($request->hasFile('fichier')) {
+                $fichier = $request->file('fichier');
+        
+                // Générer un nom unique avec horodatage
+                $fichierNom = time() . '_' . $fichier->getClientOriginalName();
+        
+                // Déterminer le dossier en fonction du type de fichier
+                $dossier = in_array($fichier->getClientOriginalExtension(), ['jpg', 'jpeg', 'png', 'gif'])
+                    ? 'img/conversations_photo/'
+                    : 'fichier/conversations_fichier/';
+        
+                // Stocker le fichier
+                $fichier->move(public_path($dossier), $fichierNom);
+            }
+    
+            // Insérer le message dans la base de données
+            $lastId = \DB::table('utilisateur_clan')->insertGetId([
+                'idEnvoyer' => auth()->id(),
+                'idClan'    => $request->to,
+                'idCanal'   => $request->canal,
+                'message'   => $request->message,
+                'fichier'   => $fichierNom, // Stocke le chemin public
+                'created_at'=> now(),
+                'updated_at'=> now()
+            ]);
+    
+            // Diffuser l’événement via Pusher
+            broadcast(new MessageGroup($request->message, auth()->id(), $request->canal ,$request->to, false, $lastId, $fichierNom))
+                ->toOthers();
+    
+        } catch (\Exception $e) {
+            \Log::error('❌ Erreur lors du broadcast: ' . $e->getMessage());
+        }
+    
+        return response()->json([
+            'message'      => $request->message,
+            'last_id'      => $lastId,
+            'sender_id'    => auth()->id(),
+            'sender_email' => auth()->user()->email,
+            'fichier'      => $fichierNom ? asset($dossier . $fichierNom) : null // Retourne l'URL complète
+        ]);
+    }
+
+
+
+
+
 }
+
+

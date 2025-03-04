@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('idEnvoyer');
             $table->unsignedBigInteger('idClan');
+            $table->unsignedBigInteger('idCanal');
             $table->text('message')->nullable();
             $table->string('fichier')->nullable();
             $table->timestamps();

@@ -61,8 +61,11 @@ Route::GET('/clan/invitation/{clan}',
 [ClanController::class, 'accepterInvitation'])->name('invitation.accepter');
 
 // POUR XAVIER, METTRE LES ROUTES QUE TU AS BESOIN
-// Route::GET('/clan/{id}/canal/{canal}',
-// [ClanController::class, ''])->name('');
+Route::GET('/clan/{id}/canal/{canal}',
+[ClanController::class, 'showCanalClan'])->name('clan.canal');
+//Envoyer un message dans un canal
+Route::POST('/broadcastClan', [ClanController::class,'broadcastClan']);
+Route::POST('/receiveClan', [ClanController::class,'receiveClan']);
 
 
 
@@ -78,8 +81,9 @@ Route::POST('/receive', [ConversationsController::class,'receive']);
 Route::GET('/conversations', [ConversationsController::class,'index'])->name('conversations');
 
 Route::GET('/testClan/{clans}', [ConversationsController::class,'showClan'])->name('conversations.showClan');
-Route::POST('/broadcastClan', [ConversationsController::class,'broadcastClan']);
-Route::POST('/receiveClan', [ConversationsController::class,'receiveClan']);
+//Test Clan Message
+//Route::POST('/broadcastClan', [ConversationsController::class,'broadcastClan']);
+//Route::POST('/receiveClan', [ConversationsController::class,'receiveClan']);
 Route::GET('/modificationMessage', [ConversationsController::class,'showModificationMessage'])->name('conversations.showModificationMessage');
 
 Route::delete('/messages/{message}', [ConversationsController::class, 'destroy'])->middleware('auth')->name('messages.destroy');

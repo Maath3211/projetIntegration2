@@ -298,11 +298,13 @@
                             </div>
                         </div>
                     </div>
+
+
+
+
+
+
                     <div class="col-md-8 colonneMessages2">
-
-
-
-
                         <!-- Contenu supprimé -->
                         <div class="chat-messages" id="chat-messages">
 
@@ -418,48 +420,11 @@
                         </u>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                     </div>
+
+
+
+
                     <div class="col-md-2 colonneMembres">
                         <div class="contenuScrollableMembres">
                             <div class="membre">
