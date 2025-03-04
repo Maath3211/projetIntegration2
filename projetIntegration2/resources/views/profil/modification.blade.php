@@ -12,8 +12,9 @@
         <div class="d-flex row justify-content-center">
             <div class="col-md-8 profile-container-mod">
                 <h1 class="mt-3 fs-1"><strong>Modifier le profil</strong></h1>
-                    <form action="{{ route('profil.updateModification') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
+                <form action="{{ route('profil.updateModification') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-scrollable-wrapper">
                         <div class="row justify-content-center">
 
                             <div class="row mb-4">
@@ -184,17 +185,17 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="row mb-4">
-                                <div class="col-md-4 offset-md-2 d-flex align-items-center">
-                                    <button type="submit" class="btn btn-save btn-green">Sauvegarder</button>
-                                    <p class="btn btn-retour" id="btRetour">Retour</p>
-                                    <p class="btn btn-suppression" data-bs-toggle="modal"
-                                        data-bs-target="#deleteConfirmationModal">Suppression</p>
-                                </div>
-                            </div>
-                    </form>
-
-
+                        </div>
+                    </div>
+                    <div class="row mb-4 form-buttons">
+                        <div class="col-md-4 offset-md-2 d-flex align-items-center">
+                            <button type="submit" class="btn btn-save btn-green">Sauvegarder</button>
+                            <p class="btn btn-retour" id="btRetour">Retour</p>
+                            <p class="btn btn-suppression" data-bs-toggle="modal"
+                                data-bs-target="#deleteConfirmationModal">Suppression</p>
+                        </div>
+                    </div>
+                </form>
 
                 <div class="modal fade" id="deleteConfirmationModal" tabindex="-1"
                     aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">

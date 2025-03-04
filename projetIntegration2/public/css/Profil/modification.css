@@ -1,5 +1,3 @@
-
-
 @media screen and (max-width: 767px) {
     .scrollable-form {
         max-height: 70vh;
@@ -9,6 +7,8 @@
     
     .profile-container-mod {
         padding: 15px;
+        position: relative;
+        padding-bottom: 80px; /* Space for fixed buttons */
     }
     
     /* Adjust button container for mobile */
@@ -21,6 +21,36 @@
     .btn-suppression {
         width: 100%;
         margin: 5px 0;
+    }
+    
+    .form-scrollable-wrapper {
+        max-height: 70vh;
+        overflow-y: auto;
+        padding-right: 10px;
+        padding-bottom: 20px;
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    }
+    
+    .form-buttons {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(41, 41, 41, 0.9);
+        padding: 15px;
+        border-radius: 0 0 10px 10px;
+        display: flex;
+        justify-content: center;
+    }
+    
+    .btn-save, .btn-retour, .btn-suppression {
+        width: 100%;
+        margin: 5px;
+    }
+    
+    .row.justify-content-center {
+        margin-right: 0;
+        margin-left: 0;
     }
 }
 @media screen and (max-width: 480px) {
@@ -176,4 +206,17 @@ select:focus {
 .fermerModal{
     color: #ffffff !important;
     background-color: #60c22c;
+}
+
+/* Desktop version - no scrolling */
+@media screen and (min-width: 768px) {
+    .form-scrollable-wrapper {
+        overflow-y: visible;
+        max-height: none;
+    }
+    
+    .form-buttons {
+        position: static;
+        background: none;
+    }
 }
