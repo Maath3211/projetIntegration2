@@ -22,4 +22,8 @@ class Clan extends Model
     public function users(){
         return $this->belongsToMany(User::class, 'clan_users', 'clan_id', 'user_id');
     }
+
+    public function utilisateurs(){
+        return $this->belongsToMany(User::class, 'clan_users');
+    }
 }

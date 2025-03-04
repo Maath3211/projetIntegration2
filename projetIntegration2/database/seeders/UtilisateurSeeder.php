@@ -26,30 +26,39 @@ class UtilisateurSeeder extends Seeder
             'genre'=> 'homme',
             'dateNaissance'=> Carbon::create('2004', '12', '07'),
             'password' =>Hash::make('adminggg'),
+            'email_verified_at' => now(),
             'created_at' => now(),
+            'updated_at' => now(),
         ]);
+
         DB::table('users')->insert([
             'id' => 2,
             'email'=> 'test2@test.com',
             'prenom'=> 'prenom',
             'nom'=> 'nom',
-            'imageProfil'=> 'lienImage',
+            'imageProfil'=> 'img/Utilisateurs/shrek.jpg',
             'pays'=> 'canada',
             'genre'=> 'homme',
             'dateNaissance'=> Carbon::create('2000', '01', '01'),
-            'password' =>Hash::make('adminggg')
+            'password' =>Hash::make('adminggg'),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
+
         DB::table('users')->insert([
             'id' => 3,
             'email'=> 'test3@test.com',
             'prenom'=> 'prenom',
             'nom'=> 'nom',
-            'imageProfil'=> 'lienImage',
+            'imageProfil'=> 'img/Utilisateurs/shrek.jpg',
             'pays'=> 'canada',
             'genre'=> 'homme',
             'dateNaissance'=> Carbon::create('2000', '01', '01'),
-            'password' =>Hash::make('adminggg')
+            'password' =>Hash::make('adminggg'),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
+
         DB::table('users')->insert([
             'id' => 4,
             'email' => 'test4@example.com',

@@ -76,6 +76,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
             classe = canal.querySelector('a div').textContent.trim();
+            console.log(canal.querySelector('a').classList[0].split('canal_')[1]);
             _canal = canal.querySelector('a').classList[0].split('canal_')[1];
             _categorie = canal.parentElement.querySelector('div').classList[1].split('categorie_')[1];
             
@@ -98,11 +99,11 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // ajouter les événements pour ajouter un canal à une catégorie
-    document.querySelectorAll('.titreCategorieCanal').forEach(categorie => {
+    document.querySelectorAll('.titreCategorieCanal i.fa-plus').forEach(categorie => {
         categorie.addEventListener('click', function() {
             ajouter.style.display = 'flex';
-
-            _categorie = categorie.parentElement.querySelector('div').textContent.trim();
+            
+            _categorie = categorie.parentElement.classList[1].split('categorie_')[1].trim();
         })
     });
 
@@ -113,13 +114,13 @@ document.addEventListener("DOMContentLoaded", function() {
     
             // Règle 1 : le canal ne doit pas dépasser les 50 caractères
             if(valeur.length > 50){
-                messageErreur.textContent = "La catégorie ne doit pas dépasser 50 caractères.";
+                messageErreur.textContent = "Le canal ne doit pas dépasser 50 caractères.";
                 messageErreur.style.display = "block";
                 this.style.borderColor = 'red';
             }
             // Règle 2 : pas de nombres ou de symboles, juste les caractères UTF-8 et les traits (-) sont acceptés.
-            else if (!/^[A-Za-z\u00C0-\u00FF-]+$/.test(valeur) && valeur.length !== 0){
-                messageErreur.textContent = "Seulement les lettre (UTF-8) et les traits (-) sont permis."
+            else if (!/^[A-Za-z\u00C0-\u00FF\s-]+$/.test(valeur) && valeur.length !== 0){
+                messageErreur.textContent = "Seulement les lettres (UTF-8) et les traits (-) sont permis."
                 messageErreur.style.display = "block";
                 this.style.borderColor = 'red';
             }

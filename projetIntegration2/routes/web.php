@@ -11,8 +11,10 @@ use App\Http\Controllers\ClanController;
 use App\Http\Controllers\TraductionController;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\AmisController;
 use App\Models\User;
 use App\Events\PusherBroadcast;
+use App\Http\Controllers\ObjectifController;
 
 Route::get('/', function () {
     return redirect()->route('profil.pageConnexion');
@@ -62,27 +64,33 @@ Route::POST(
     [ClanController::class, 'miseAJourCanaux']
 )->name('clan.miseAJour.canaux');
 
-Route::POST(
-    '/clan/{id}/televerser',
-    [ClanController::class, 'televerserImage']
-)->name('clan.televerserImage');
-Route::GET(
-    '/clan/{id}/parametres',
-    [ClanController::class, 'parametres']
-)->name('clan.parametres');
+Route::GET('/clan/{id}/parametres/membres', [ClanController::class, 'parametres'])->name('clan.parametres.membres');
 
-Route::POST(
-    '/clan/{id}/parametres',
-    [ClanController::class, 'parametres']
-)->name('clan.parametres.post');
+Route::POST('/clan/{id}/enregistrerMembres',
+[ClanController::class, 'miseAJourMembres'])->name('clan.miseAJour.membres');
 
-Route::POST(
-    '/clan/{id}/televerser',
-    [ClanController::class, 'televerserImage']
-)->name('clan.televerserImage');
+Route::POST('/clan/creer',
+[ClanController::class, 'creerClan'])->name('clan.creer');
+
+Route::POST('/clan/{id}/supprimer',
+[ClanController::class, 'supprimer'])->name('clan.supprimer');
+
+Route::POST('/clan/{id}/televerser',
+[ClanController::class, 'televerserImage'])->name('clan.televerserImage');
+
+Route::GET('/clan/invitation/{clan}',
+[ClanController::class, 'accepterInvitation'])->name('invitation.accepter');
+
+// POUR XAVIER, METTRE LES ROUTES QUE TU AS BESOIN
+// Route::GET('/clan/{id}/canal/{canal}',
+// [ClanController::class, ''])->name('');
 
 
-Route::GET('/yup', [UserCommunication::class, 'index'])->name('user.index');
+
+
+
+Route::GET('/yup',
+[UserCommunication::class,'index'])->name('user.index');
 
 Route::GET('/conversations/{user}', [ConversationsController::class, 'show'])->name('conversations.show');
 Route::POST('/conversations/{user}', [ConversationsController::class, 'store']);
@@ -226,6 +234,52 @@ Route::GET(
     [GymController::class, 'index']
 )->name('localisation.index');
 
+Route::GET('/graphiqueExercice/{exercice}',
+[StatistiqueController::class,'graphiqueExercice'])->name('statistique.graphiqueExercice');
+
+Route::GET('/thermique',
+[StatistiqueController::class,'thermique'])->name('statistique.thermique');
+
+Route::post('/statistique/storeThermique', [StatistiqueController::class, 'storeThermique'])->name('statistique.storeThermique');
+
+Route::post('/statistiques/save', [StatistiqueController::class, 'save'])->name('statistiques.save');
+
+Route::delete('/statistiques/{id}', [StatistiqueController::class, 'delete'])->name('statistiques.delete');
+
+Route::post('/statistiques/{id}/update-poids', [StatistiqueController::class, 'updatePoids'])->name('statistiques.updatePoids');
+
+
+Route::post('/ajouter-poids', [StatistiqueController::class, 'ajouterPoids'])->name('ajouter-poids');
+
+Route::post('/ajouter-score/{exercice}', [StatistiqueController::class, 'ajouterScoreExercice'])->name('ajouter-score');
+
+
+
+Route::GET('/objectif',
+[ObjectifController::class,'index'])->name('objectif.index');
+
+Route::GET('/objectif/ajouter',
+[ObjectifController::class,'create'])->name('objectif.create');
+
+
+Route::GET('/objectif/edit/{id}',
+[ObjectifController::class,'edit'])->name('objectif.edit');
+
+Route::post('/objectif',
+ [ObjectifController::class, 'store'])->name('objectif.store');
+
+Route::put('/objectif/{id}',
+ [ObjectifController::class, 'update'])->name('objectif.update');
+
+ Route::put('/objectif/update/{id}',
+ [ObjectifController::class, 'updateComplet'])->name('objectif.updateComplet');
+
+Route::delete('/objectif/{id}',
+ [ObjectifController::class, 'destroy'])->name('objectif.destroy');
+
+
+Route::GET('/localisation', 
+[GymController::class, 'index'])->name('localisation.index');
 Route::get('/export/top-users', [ScoresController::class, 'exportTopUsers'])->name('export.topUsers');
 Route::get('/export/top-clans', [ScoresController::class, 'exportTopClans'])->name('export.topClans');
 Route::get('/export/top-membres/{clanId}', [ScoresController::class, 'exportTopMembres'])->name('export.topMembres');
@@ -236,3 +290,22 @@ Route::get('/test-chart', [App\Http\Controllers\ScoresController::class, 'testCh
     ->name('test.chart');
 Route::get('/scores/chart-page', [App\Http\Controllers\ScoresController::class, 'showChart'])
     ->name('scores.chart-page');
+
+//Route pour l'ajout/recherche d'amis/clans
+Route::get('amis', [AmisController::class, 'index'])->name('amis.index');
+Route::match(['get','post'], 'amis/recherche', [AmisController::class, 'recherche'])->name('amis.recherche');
+Route::post('amis/ajouter', [AmisController::class, 'ajouter'])->name('amis.ajouter');
+Route::post('clans/recherche', [AmisController::class, 'rechercheClan'])->name('clans.recherche');
+
+// Affichage de la liste des demandes d'amis
+Route::get('amis/demandes', [AmisController::class, 'demandes'])->name('amis.demandes');
+
+// Traitement de l'acceptation d'une demande d'ami
+Route::post('amis/accepter', [AmisController::class, 'accepter'])->name('amis.accepter');
+
+// Traitement du refus d'une demande d'ami
+Route::post('amis/refuser', [AmisController::class, 'refuser'])->name('amis.refuser');
+
+// Routes pour la recherche et la gestion des clans
+Route::match(['get','post'], 'clans/recherche', [ClanController::class, 'rechercheClans'])->name('clans.recherche');
+Route::post('clans/rejoindre', [ClanController::class, 'rejoindre'])->name('clans.rejoindre');
