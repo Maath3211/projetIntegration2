@@ -8,6 +8,8 @@ use App\Http\Requests\CreationCompteGoogleRequest;
 use App\Http\Requests\CreationCompteRequest;
 use App\Http\Requests\ModificationRequest;
 use App\Models\User;
+use App\Models\Statistiques;
+use App\Models\PoidsUtilisateur;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Auth;
@@ -80,6 +82,21 @@ class ProfilController extends Controller
 
         Mail::to($utilisateur->email)->send(new confirmation($utilisateur));
         $utilisateur->save();
+        Statistiques::create([
+            'user_id' => $utilisateur->id,
+            'nomStatistique' => 'poids',
+            'score' => 0
+        ]);
+        Statistiques::create([
+            'user_id' => $utilisateur->id,
+            'nomStatistique' => 'FoisGym',
+            'score' => 0
+        ]);
+        PoidsUtilisateur::create([
+            'user_id' => $utilisateur->id,
+            'semaine' => 1,
+            'poids' => 0
+        ]);
         return redirect()->route('profil.connexion')->with('message', 'Votre compte a été créé avec succès! Un courriel de confirmation a été envoyé');
     }
 
