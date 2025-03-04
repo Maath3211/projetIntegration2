@@ -41,6 +41,7 @@ class UtilisateurSeeder extends Seeder
             'genre'=> 'homme',
             'dateNaissance'=> Carbon::create('2000', '01', '01'),
             'password' =>Hash::make('adminggg'),
+            'email_verified_at' => now(),
             'created_at' => now(),
             'updated_at' => now(),
         ]);
