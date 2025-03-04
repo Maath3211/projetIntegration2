@@ -15,7 +15,7 @@ class ClanUserSeeder extends Seeder
         DB::table('clan_users')->insert([
             [
                 'id'         => 1,
-                'clan_id'    => ((1 * 3) % 5) + 1,  // 4
+                'clan_id'    => 1,
                 'user_id'    => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
