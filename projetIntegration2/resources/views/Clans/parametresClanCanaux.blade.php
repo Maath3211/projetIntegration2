@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title> GymCord - Paramètres de clan </title>
+<title> GymCord - {{ __('clans.clan_settings') }} </title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
         <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js" integrity="sha384-3LK/3kTpDE/Pkp8gTNp2gR/2gOiwQ6QaO7Td0zV76UFJVhqLl4Vl3KL1We6q6wR9" crossorigin="anonymous"></script>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -132,15 +132,15 @@
             <div id="confirmationSuppressionClan" class="fenetreCategorie">
                 <div class="conteneurConfirmation">
                     <div class="titreConfirmation">
-                        <div>Supprimer le clan</div>
+                        <div>{{ __('clans.delete_clan') }}</div>
                     </div>
                     <div class="texteConfirmation">
-                        <div>Êtes-vous sur de vouloir supprimer le clan? Cette action est irréversible.</div>
+                        <div>{{ __('clans.delete_clan_warning') }}</div>
                     </div>
 
                     <div class="boutonsConfirmation">
-                        <button class="annuler" type="button">Annuler</button>
-                        <button id="confirmerSuppressionClan" type="button">Supprimer</button>
+                        <button class="annuler" type="button">{{ __('clans.cancel') }}</button>
+                        <button id="confirmerSuppressionClan" type="button">{{ __('clans.delete') }}</button>
                     </div>
                 </div>
             </div>

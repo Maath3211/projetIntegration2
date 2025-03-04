@@ -1,5 +1,5 @@
 @extends('Layouts.app')
-@section('titre', 'Conversation-Ami')
+@section('titre', {{ __('chat.friend_conversation_title') }})
 
 <body>
 

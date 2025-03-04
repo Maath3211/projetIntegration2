@@ -17,6 +17,9 @@ return [
     "emoji_search" => 'Search for an emoji...',
     'download' => 'Download',
     'submit' => 'Submit',
+    'index_title' => 'Conversation-Friends/index',
+    'new_message' => 'New message',
+    'friend_conversation_title' => 'Friend Conversation',
 
     // Files
     'error_upload' => 'Error during file upload',

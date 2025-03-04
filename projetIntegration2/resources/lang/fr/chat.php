@@ -17,6 +17,9 @@ return [
     "emoji_search" => "Recherche un emoji...",
     'download' => 'Télécharger',
     'submit' => 'Envoyer',
+    'index_title' => 'Conversation-Ami/index',
+    'new_message' => 'Nouveau message',
+    'friend_conversation_title' => 'Conversation-Ami',
 
     // Files
     'error_upload' => 'Erreur lors du téléversement du fichier',

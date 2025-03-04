@@ -1,5 +1,5 @@
 @extends('Layouts.app')
-@section('titre', 'Conversation-Ami/index')
+@section('titre', {{ __('chat.index_title') }})
 <body>
 
     <style>
@@ -147,8 +147,8 @@
                         <button class="btn btn-secondary me-2">😊</button>
 
                             <div class="form-group d-flex align-items-center w-100">
-                                <input type="textarea" class="message-input form-control flex-grow-1" name="content" placeholder="Écris un message...">
-                                <button class="btn btn-primary ms-2" type="submit">Submit</button>
+                                <input type="textarea" class="message-input form-control flex-grow-1" name="content" placeholder="{{ __('chat.write_message') }}">
+                                <button class="btn btn-primary ms-2" type="submit">{{ __('chat.submit') }}</button>
                             </div>
                         
                     </div>

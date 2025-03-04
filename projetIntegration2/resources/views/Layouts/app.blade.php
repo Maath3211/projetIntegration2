@@ -33,12 +33,12 @@
     <aside class="w-20 text-white h-screen flex flex-col items-center py-4 space-y-4 p-5">
 
       <!-- Navigation aux messages privés entre utilisateurs -->
-      <a href="#">
+      <a href="#" title="{{ __('layout.private_messages') }}">
         <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee"><i class="fa-solid fa-comment fa-2xl"></i></div>
       </a>
 
       <!-- Navigation aux classements -->
-      <a href="#">
+      <a href="#" title="{{ __('layout.rankings') }}">
         <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee"><i class="fa-solid fa-ranking-star fa-2xl"></i></div>
       </a>
 
@@ -46,14 +46,14 @@
       @if(isset($clans))
       @foreach($clans as $clan)
       <a href="{{ route('clan.montrer', ['id' => $clan->id]) }}">
-        <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset($clan->image) }}" class="object-cover w-full h-full"></div>
+        <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset($clan->image) }}" class="object-cover w-full h-full" alt="{{ $clan->nom }}"></div>
       </a>
       @endforeach
       @endif
 
 
-      <a id="creerClan">
-        <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee creerClan"><i class="fa-regular fa-square-plus fa-2xl"></i></i></div>
+      <a id="creerClan" title="{{ __('layout.create_clan') }}">
+        <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee creerClan"><i class="fa-regular fa-square-plus fa-2xl"></i></div>
       </a>
       <div class="w-16 text-center mb-4">
         <div style="background: #444; color: white; padding: 5px; border-radius: 4px; margin-bottom: 4px;">
@@ -65,7 +65,7 @@
       </div>
       <form action="{{route('profil.deconnexion')}}" method="post">
         @csrf
-        <button class="w-16 h-16 overflow-hidden" id="imgDeconnexion"><img src="{{ asset('img/logout.png') }}" class="object-cover w-full h-full"></button>
+        <button class="w-16 h-16 overflow-hidden" id="imgDeconnexion" title="{{ __('layout.logout') }}"><img src="{{ asset('img/logout.png') }}" class="object-cover w-full h-full" alt="{{ __('layout.logout') }}"></button>
       </form>
 
 
@@ -82,17 +82,17 @@
         <div id="fenetreAjoutClan" class="fenetreCategorie">
           <div class="conteneurConfirmation">
             <div class="titreConfirmation" style="display: flex; align-items: center;">
-              <img src="{{ asset('img/Clans/default.jpg') }}" alt="Image du clan" class="apercuImage" style="width: 50px; height: 50px; margin-right: 10px;">
-              <input type="text" name="nomClan" class="form-control entreeNomClan" placeholder="Nom du clan">
+              <img src="{{ asset('img/Clans/default.jpg') }}" alt="{{ __('layout.clan_image') }}" class="apercuImage" style="width: 50px; height: 50px; margin-right: 10px;">
+              <input type="text" name="nomClan" class="form-control entreeNomClan" placeholder="{{ __('layout.clan_name') }}">
             </div>
             <div class="optionsClan">
               <div class="televersementImage" style="margin-top: 10px;">
-                <button id="selectionnerImage" type="button">Choisir une image</button>
+                <button id="selectionnerImage" type="button">{{ __('layout.choose_image') }}</button>
                 <input type="file" id="entreeImageCachee" name="imageClan" accept="image/*">
               </div>
               <div class="optionPublic" style="margin-top: 10px;">
                 <label>
-                  Clan public
+                  {{ __('layout.public_clan') }}
                   <input type="checkbox" name="clanPublic" class="form-check-input">
                 </label>
               </div>
@@ -101,8 +101,8 @@
 
 
             <div class="boutonsConfirmation">
-              <button class="annuler" type="button">Annuler</button>
-              <button id="confirmerAjoutClan" type="submit">Confirmer</button>
+              <button class="annuler" type="button">{{ __('layout.cancel') }}</button>
+              <button id="confirmerAjoutClan" type="submit">{{ __('layout.confirm') }}</button>
             </div>
           </div>
         </div>

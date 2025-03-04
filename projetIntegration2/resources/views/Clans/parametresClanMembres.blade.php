@@ -22,12 +22,12 @@
         <div class="row">
         <div class="col-md-2 colonneNavigationParametres">
             <div class="conteneurNavigation">
-            <div class="titreNavigation">Paramètres</div>
+            <div class="titreNavigation">{{ __('clans.settings') }}</div>
             <div class="navigationParametres">
-                <div class="categorieParametre general" >Général</div>
-                <div class="categorieParametre canaux" >Canaux</div>
-                <div class="categorieParametre membres actif" >Membres</div>
-                <div class="categorieParametre supprimer">Supprimer le clan</div>
+                <div class="categorieParametre general" >{{ __('clans.general') }}</div>
+                <div class="categorieParametre canaux" >{{ __('clans.channels') }}</div>
+                <div class="categorieParametre membres actif" >{{ __('clans.members') }}</div>
+                <div class="categorieParametre supprimer">{{ __('clans.delete_clan') }}</div>
             </div>
             </div>
         </div>
@@ -35,11 +35,11 @@
         <div class="col-md-10 colonneParametres">
             <div class="conteneurParametres ">
 
-            <div class="titreParametre">Membres du clan</div>
+            <div class="titreParametre">{{ __('clans.clan_members') }}</div>
             <a href="{{ route('clan.montrer', ['id' => $id]) }}">
                 <div class="boutonRetour">
                 <i class="fa-regular fa-circle-xmark fa-3x"></i>
-                <div>QUITTER</div>
+                <div>{{ __('clans.quit') }}</div>
                 </div>
             </a>
             </div>
@@ -75,8 +75,8 @@
                     </div>
                     @endif
                     <div class="col-md-10 rangeeEnregistrer">
-                        <div>N'oubliez pas d'enregistrer vos modifications avant de quitter!</div>
-                        <button type="submit" class="btn btn-success">Enregistrer</button>
+                        <div>{{ __('clans.edit_save') }}</div>
+                        <button type="submit" class="btn btn-success">{{ __('clans.save') }}</button>
                     </div>
                 </div>
             </form>
@@ -85,15 +85,15 @@
             <div id="confirmationSuppressionMembre" class="fenetreCategorie">
                 <div class="conteneurConfirmation">
                     <div class="titreConfirmation">
-                        <div>Expulser le membre</div>
+                        <div>{{ __('clans.remove_member') }}</div>
                     </div>
                     <div class="texteConfirmation">
-                        <div>Êtes-vous sur de vouloir expulser ce membre?</div>
+                        <div>{{ __('clans.remove_member_warning') }}</div>
                     </div>
 
                     <div class="boutonsConfirmation">
-                        <button class="annuler" type="button">Annuler</button>
-                        <button id="confirmerSuppression" type="button">Expulser</button>
+                        <button class="annuler" type="button">{{ __('clans.cancel') }}</button>
+                        <button id="confirmerSuppression" type="button">{{ __('clans.kickout') }}</button>
                     </div>
                 </div>
             </div>
@@ -102,15 +102,15 @@
             <div id="confirmationSuppressionClan" class="fenetreCategorie">
                 <div class="conteneurConfirmation">
                     <div class="titreConfirmation">
-                        <div>Supprimer le clan</div>
+                        <div>{{ __('clans.delete_clan') }}</div>
                     </div>
                     <div class="texteConfirmation">
-                        <div>Êtes-vous sur de vouloir supprimer le clan? Cette action est irréversible.</div>
+                        <div>{{ __('clans.delete_clan_warning') }}</div>
                     </div>
 
                     <div class="boutonsConfirmation">
-                        <button class="annuler" type="button">Annuler</button>
-                        <button id="confirmerSuppressionClan" type="button">Supprimer</button>
+                        <button class="annuler" type="button">{{ __('clans.cancel') }}</button>
+                        <button id="confirmerSuppressionClan" type="button">{{ __('clans.delete') }}</button>
                     </div>
                 </div>
             </div>

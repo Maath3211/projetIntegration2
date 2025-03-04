@@ -65,7 +65,7 @@
                 <form action="{{ route('messages.update', $message->id) }}" method="POST" class="d-flex align-items-center">
                     @csrf
                     @method('PUT')
-                    <input type="text" name="new_message" class="form-control" placeholder="Nouveau message">
+                    <input type="text" name="new_message" class="form-control" placeholder="{{ __('chat.new_message') }}">
                     <button type="submit" class="btn btn-primary btn-sm">{{ __('messages.edit') }}</button>
                 </form>
             </li>
