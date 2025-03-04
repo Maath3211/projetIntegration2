@@ -9,13 +9,13 @@
     @endif
 
     <div class="container-fluid">
-        <div class="d-flex row justify-content-center">
+        <div class="row justify-content-center">
             <div class="col-md-8 profile-container-mod">
                 <h1 class="mt-3 fs-1"><strong>Modifier le profil</strong></h1>
                 <form action="{{ route('profil.updateModification') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-scrollable-wrapper">
-                        <div class="row justify-content-center">
+                        <div class="d-flex row justify-content-center">
 
                             <div class="row mb-4">
                                 <div class="col-md-4 offset-md-2 d-flex align-items-center">
@@ -27,7 +27,7 @@
                                 </div>
                             </div>
 
-                            <div class="row mb-4">
+                            <div class="row mb-1">
                                 <div class="col-md-4 offset-md-2 d-flex align-items-center">
                                     <p class="greenText h5 ">Image</p>
                                 </div>
@@ -47,7 +47,7 @@
                             </div>
 
 
-                            <div class="row mb-4">
+                            <div class="row mb-1">
                                 <div class="col-md-4 offset-md-2 d-flex align-items-center">
                                     <p class="greenText h5 ">Prénom</p>
                                 </div>
@@ -67,7 +67,7 @@
                                 </div>
                             </div>
 
-                            <div class="row mb-4">
+                            <div class="row mb-1">
                                 <div class="col-md-4 offset-md-2 d-flex align-items-center">
                                     <p class="greenText h5 ">Nom</p>
                                 </div>
@@ -86,8 +86,27 @@
                                     @enderror
                                 </div>
                             </div>
+                            <div class="row mb-1">
+                                <div class="col-md-4 offset-md-2 d-flex align-items-center">
+                                    <p class="greenText h5 ">A propos</p>
+                                </div>
+                                <div class="col-md-4 d-flex flex-column align-items-center">
+                                    <textarea class="inputModification form-control" 
+                                        placeholder="A propos de vous" name="aPropos" rows="3">{{ Auth::user()->aPropos }}</textarea>
+                                </div>
+                                <div class="conteneurErreur col-md-4 offset-md-6">
+                                    @error('aPropos')
+                                        <span class="text-danger">{{ $message }}&ensp;</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#dc3545"
+                                            class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
+                                            <path
+                                                d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
+                                        </svg>
+                                    @enderror
+                                </div>
+                            </div>
 
-                            <div class="row mb-4">
+                            <div class="row mb-1">
                                 <div class="col-md-4 offset-md-2 d-flex align-items-center">
                                     <p class="greenText h5">Adresse courriel</p>
                                 </div>
@@ -107,7 +126,7 @@
                                 </div>
                             </div>
 
-                            <div class="row mb-4">
+                            <div class="row mb-1">
                                 <div class="col-md-4 offset-md-2 d-flex align-items-center">
                                     <p class="greenText h5">Date de naissance</p>
                                 </div>
@@ -128,7 +147,7 @@
                                 </div>
                             </div>
 
-                            <div class="row mb-4">
+                            <div class="row mb-1">
                                 <div class="col-md-4 offset-md-2 d-flex align-items-center">
                                     <p class="greenText h5">Pays</p>
                                 </div>
@@ -154,7 +173,7 @@
                                 </div>
                             </div>
 
-                            <div class="row mb-4">
+                            <div class="row ">
                                 <div class="col-md-4 offset-md-2 d-flex align-items-center">
                                     <p class="greenText h5">Genre</p>
                                 </div>
@@ -188,7 +207,7 @@
                         </div>
                     </div>
                     <div class="row mb-4 form-buttons">
-                        <div class="col-md-4 offset-md-2 d-flex align-items-center">
+                        <div class="col-md-4 offset-md-2 align-items-center" id="divButton">
                             <button type="submit" class="btn btn-save btn-green">Sauvegarder</button>
                             <p class="btn btn-retour" id="btRetour">Retour</p>
                             <p class="btn btn-suppression" data-bs-toggle="modal"
