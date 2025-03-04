@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ app()->getLocale() }}">
 
 <head>
-    <title>Carte des Gyms</title>
+    <title>{{ __('gyms.page_title') }}</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
@@ -42,7 +42,8 @@
         #search-bar {
             flex: 1;
             padding: 10px;
-            padding-right: 35px; /* Pour laisser de la place au bouton */
+            padding-right: 35px;
+            /* Pour laisser de la place au bouton */
             border: 1px solid #A9FE77;
             border-radius: 5px;
             font-size: 16px;
@@ -127,7 +128,8 @@
             width: 70%;
             margin-top: 20px;
             margin-bottom: 20px;
-            height: calc(100vh - 80px); /* Hauteur totale moins les marges en haut et en bas */
+            height: calc(100vh - 80px);
+            /* Hauteur totale moins les marges en haut et en bas */
             position: relative;
         }
 
@@ -141,11 +143,16 @@
         }
 
         .custom-icon {
-            border: 2px solid black; /* Contour noir */
-            border-radius: 50%; /* Coins arrondis */
-            background-color: #A9FE77; /* Couleur de fond */
-            width: 35px; /* Largeur de l'icône */
-            height: 50px; /* Hauteur de l'icône */
+            border: 2px solid black;
+            /* Contour noir */
+            border-radius: 50%;
+            /* Coins arrondis */
+            background-color: #A9FE77;
+            /* Couleur de fond */
+            width: 35px;
+            /* Largeur de l'icône */
+            height: 50px;
+            /* Hauteur de l'icône */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -154,15 +161,19 @@
         .custom-icon img {
             width: 100%;
             height: 100%;
-            border-radius: 50%; /* Coins arrondis */
+            border-radius: 50%;
+            /* Coins arrondis */
         }
 
         .label {
-            background-color: transparent; /* Fond transparent */
-            border: none; /* Pas de contour */
+            background-color: transparent;
+            /* Fond transparent */
+            border: none;
+            /* Pas de contour */
             padding: 2px 5px;
             font-size: 12px;
-            color: #000000; /* Couleur du texte */
+            color: #000000;
+            /* Couleur du texte */
             white-space: nowrap;
             text-align: center;
             color: white;
@@ -173,7 +184,8 @@
         #current-location-btn {
             position: absolute;
             bottom: 10px;
-            left: 300px; /* Adjust this value so the button appears to the left of your legend */
+            left: 300px;
+            /* Adjust this value so the button appears to the left of your legend */
             z-index: 1000;
             padding: 10px;
             background-color: #A9FE77;
@@ -184,23 +196,24 @@
 
         /* Increase the size of the Font Awesome icon */
         #current-location-btn i {
-            font-size: 24px; /* Increase as needed */
+            font-size: 24px;
+            /* Increase as needed */
         }
     </style>
 </head>
 
 <body>
     <div id="search-container">
-        <h1>Position des gyms à proximité</h1>
+        <h1>{{ __('gyms.nearby_gyms') }}</h1>
         <div id="search-input-container">
-            <input type="text" id="search-bar" placeholder="Rechercher un gym (ex: Econofitness)">
+            <input type="text" id="search-bar" placeholder="{{ __('gyms.search_placeholder') }}">
             <button id="clear-search">x</button>
         </div>
         <div id="no-results-container">
-            Aucun résultat trouvé pour la recherche "<span id="search-term"></span>"
+            {{ __('gyms.no_results') }}<span id="search-term"></span>"
         </div>
         <div id="results-container">
-            <h2>Voici les résultats de recherche :</h2>
+            <h2>{{ __('gyms.search_results') }}</h2>
             <ul id="results-list"></ul>
         </div>
     </div>
@@ -208,11 +221,27 @@
         <div id="map"></div>
         <div style="position: absolute; top: 10px; right: 10px; z-index: 1000; background: rgba(0,0,0,0.5); padding: 5px; border-radius: 4px;">
             <input type="checkbox" id="toggle-circles" checked>
-            <label for="toggle-circles" style="color: white;">Afficher les cercles d'achalandage</label>
+            <label for="toggle-circles" style="color: white;">{{ __('gyms.show_traffic_circles') }}</label>
         </div>
         <button id="current-location-btn"><i class="fa-solid fa-location-crosshairs"></i></button>
     </div>
     <script>
+        const translations = {
+            youAreHere: "{{ __('gyms.you_are_here') }}",
+            geolocationNotSupported: "{{ __('gyms.geolocation_not_supported') }}",
+            address: "{{ __('gyms.address') }}",
+            phone: "{{ __('gyms.phone') }}",
+            website: "{{ __('gyms.website') }}",
+            email: "{{ __('gyms.email') }}",
+            traffic: "{{ __('gyms.traffic') }}",
+            legendTitle: "{{ __('gyms.legend_title') }}",
+            veryLowTraffic: "{{ __('gyms.very_low_traffic') }}",
+            lowTraffic: "{{ __('gyms.low_traffic') }}",
+            mediumTraffic: "{{ __('gyms.medium_traffic') }}",
+            highTraffic: "{{ __('gyms.high_traffic') }}",
+            veryHighTraffic: "{{ __('gyms.very_high_traffic') }}",
+            doubleClickTip: "{{ __('gyms.double_click_tip') }}"
+        };
         // Initialiser la carte avec les coordonnées du Cégep de Trois-Rivières---------------------------------------------------------------------
         var map = L.map('map').setView([46.35503515618501, -72.57240632483241], 13); // Coordonnées du Cégep de Trois-Rivières
 
@@ -254,7 +283,10 @@
             var hue = (1 - ratio) * 240;
             // L'opacité varie de 0.3 à 1.0
             var opacity = 0.3 + 0.7 * ratio;
-            return { color: `hsla(${hue}, 100%, 50%, ${opacity})`, opacity: opacity };
+            return {
+                color: `hsla(${hue}, 100%, 50%, ${opacity})`,
+                opacity: opacity
+            };
         }
 
         // Fonction pour obtenir les gymnases dans un rayon de 5 km
@@ -270,13 +302,17 @@
                     markers = [];
 
                     // Ajouter un marqueur pour la position actuelle avec un label
-                    var currentLocationMarker = L.marker([lat, lon], { icon: currentLocationIcon }).addTo(map);
+                    var currentLocationMarker = L.marker([lat, lon], {
+                        icon: currentLocationIcon
+                    }).addTo(map);
                     var currentLocationLabel = L.divIcon({
                         className: 'label',
                         iconSize: [100, 20],
                         iconAnchor: [50, 60]
                     });
-                    L.marker([lat, lon], { icon: currentLocationLabel }).addTo(map);
+                    L.marker([lat, lon], {
+                        icon: currentLocationLabel
+                    }).addTo(map);
                     markers.push(currentLocationMarker);
 
                     // Filtrer les gymnases
@@ -302,19 +338,19 @@
                             var edgeColor = '';
                             if (achalandage <= 20) {
                                 centerColor = 'hsla(210,100%,80%,1)'; // bleu pale
-                                edgeColor   = 'hsla(210,100%,80%,0)';
+                                edgeColor = 'hsla(210,100%,80%,0)';
                             } else if (achalandage <= 40) {
                                 centerColor = 'hsla(120,100%,50%,1)'; // vert
-                                edgeColor   = 'hsla(120,100%,50%,0)';
+                                edgeColor = 'hsla(120,100%,50%,0)';
                             } else if (achalandage <= 60) {
                                 centerColor = 'hsla(60,100%,50%,1)'; // jaune
-                                edgeColor   = 'hsla(60,100%,50%,0)';
+                                edgeColor = 'hsla(60,100%,50%,0)';
                             } else if (achalandage <= 80) {
                                 centerColor = 'hsla(30,100%,50%,1)'; // orange
-                                edgeColor   = 'hsla(30,100%,50%,0)';
+                                edgeColor = 'hsla(30,100%,50%,0)';
                             } else {
-                                centerColor = 'hsla(0,100%,50%,1)';  // rouge
-                                edgeColor   = 'hsla(0,100%,50%,0)';
+                                centerColor = 'hsla(0,100%,50%,1)'; // rouge
+                                edgeColor = 'hsla(0,100%,50%,0)';
                             }
 
                             // Taille de base pour le cercle (modifiable)
@@ -324,7 +360,7 @@
                             var gradientIcon = L.divIcon({
                                 className: 'gradient-circle',
                                 iconSize: [baseSize, baseSize],
-                                iconAnchor: [baseSize/2, baseSize/2],
+                                iconAnchor: [baseSize / 2, baseSize / 2],
                                 html: `<div style="
                                           width: ${baseSize}px;
                                           height: ${baseSize}px;
@@ -334,16 +370,16 @@
                             });
 
                             // Créer un marqueur (pin) pour le gym avec un grand zIndexOffset pour qu'il soit au-dessus
-                            var marker = L.marker([element.lat, element.lon], { 
-                                icon: customIcon,
-                                zIndexOffset: 1000
-                            }).addTo(map)
-                              .bindPopup(gymName || 'Gymnase');
+                            var marker = L.marker([element.lat, element.lon], {
+                                    icon: customIcon,
+                                    zIndexOffset: 1000
+                                }).addTo(map)
+                                .bindPopup(gymName || 'Gymnase');
                             markers.push(marker);
 
                             // Ajouter le gradient en tant que marker (non interactif) en dessous du pin
-                            var gradientMarker = L.marker([element.lat, element.lon], { 
-                                icon: gradientIcon, 
+                            var gradientMarker = L.marker([element.lat, element.lon], {
+                                icon: gradientIcon,
                                 interactive: false,
                                 zIndexOffset: 0
                             }).addTo(map);
@@ -357,7 +393,7 @@
                             });
 
                             // Lorsqu'on clique sur le marker, mettre le nom dans la barre de recherche et relancer la recherche
-                            marker.on('click', function () {
+                            marker.on('click', function() {
                                 document.getElementById('search-bar').value = gymName;
                                 getGyms(lat, lon, gymName);
                             });
@@ -428,7 +464,7 @@
 
         // Utiliser la géolocalisation pour centrer la carte et obtenir les gymnases
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function (position) {
+            navigator.geolocation.getCurrentPosition(function(position) {
                 var lat = position.coords.latitude;
                 var lon = position.coords.longitude;
                 map.setView([lat, lon], 13);
@@ -440,10 +476,10 @@
         }
 
         // Ajouter un écouteur d'événement pour la barre de recherche
-        document.getElementById('search-bar').addEventListener('input', function (e) {
+        document.getElementById('search-bar').addEventListener('input', function(e) {
             var filter = e.target.value;
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function (position) {
+                navigator.geolocation.getCurrentPosition(function(position) {
                     var lat = position.coords.latitude;
                     var lon = position.coords.longitude;
                     map.setView([lat, lon], 13);
@@ -462,7 +498,7 @@
                 var newIcon = L.divIcon({
                     className: 'gradient-circle',
                     iconSize: [newSize, newSize],
-                    iconAnchor: [newSize/2, newSize/2],
+                    iconAnchor: [newSize / 2, newSize / 2],
                     html: `<div style="
                               width: ${newSize}px;
                               height: ${newSize}px;
@@ -475,9 +511,9 @@
         });
 
         // Assuming gradientMarkers is an array storing all your gradient marker objects.
-        document.getElementById('toggle-circles').addEventListener('change', function (e) {
+        document.getElementById('toggle-circles').addEventListener('change', function(e) {
             var showCircles = e.target.checked;
-            gradientMarkers.forEach(function (item) {
+            gradientMarkers.forEach(function(item) {
                 if (showCircles) {
                     // If the circle was removed, add it back to the map
                     if (!map.hasLayer(item.marker)) {
@@ -493,7 +529,9 @@
         });
 
         // Create a legend control and add it to the map (bottom left)
-        var legend = L.control({position: 'bottomleft'});
+        var legend = L.control({
+            position: 'bottomleft'
+        });
 
         legend.onAdd = function(map) {
             var div = L.DomUtil.create('div', 'info legend');
@@ -503,15 +541,16 @@
             div.style.fontSize = '14px';
             div.style.color = '#333';
 
-            // Contenu de la légende en français
+            // Use translations for the legend
             div.innerHTML = 
-                "<div style='text-align: center;'><strong>Légende Achalandage</strong><br></div>" +
-                "<i style='background: hsla(210,100%,80%,1); width:18px; height:18px; display:inline-block; margin-right:5px;'></i> Très peu achalandé (<=20)<br>" +
-                "<i style='background: hsla(120,100%,50%,1); width:18px; height:18px; display:inline-block; margin-right:5px;'></i> Peu achalandé (<=40)<br>" +
-                "<i style='background: hsla(60,100%,50%,1); width:18px; height:18px; display:inline-block; margin-right:5px;'></i> Achalandage moyen (<=60)<br>" +
-                "<i style='background: hsla(30,100%,50%,1); width:18px; height:18px; display:inline-block; margin-right:5px;'></i> Très achalandé (<=80)<br>" +
-                "<i style='background: hsla(0,100%,50%,1); width:18px; height:18px; display:inline-block; margin-right:5px;'></i> Énormément achalandé (>80)<br>" +
-                "<br><em>Double-cliquez sur la carte pour relocaliser</em>";
+                "<div style='text-align: center;'><strong>" + translations.legendTitle + "</strong><br></div>" +
+                "<i style='background: hsla(210,100%,80%,1); width:18px; height:18px; display:inline-block; margin-right:5px;'></i> " + translations.veryLowTraffic + "<br>" +
+                "<i style='background: hsla(120,100%,50%,1); width:18px; height:18px; display:inline-block; margin-right:5px;'></i> " + translations.lowTraffic + "<br>" +
+                "<i style='background: hsla(60,100%,50%,1); width:18px; height:18px; display:inline-block; margin-right:5px;'></i> " + translations.mediumTraffic + "<br>" +
+                "<i style='background: hsla(30,100%,50%,1); width:18px; height:18px; display:inline-block; margin-right:5px;'></i> " + translations.highTraffic + "<br>" +
+                "<i style='background: hsla(0,100%,50%,1); width:18px; height:18px; display:inline-block; margin-right:5px;'></i> " + translations.veryHighTraffic + "<br>" +
+                "<br><em>" + translations.doubleClickTip + "</em>";
+            
             return div;
         };
 
@@ -538,20 +577,29 @@
 
         // Supposons que vous avez déjà créé et affiché le marqueur de position actuel, par exemple :
         var currentPosMarker;
-        
+
         // Si la géolocalisation a été utilisée, créez le marqueur initial
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function (position) {
+            navigator.geolocation.getCurrentPosition(function(position) {
                 var lat = position.coords.latitude;
                 var lon = position.coords.longitude;
                 var initialLatLng = [lat, lon];
                 map.setView(initialLatLng, 13);
-                currentPosMarker = L.marker(initialLatLng, { icon: currentLocationIcon, draggable: false }).addTo(map);
+                currentPosMarker = L.marker(initialLatLng, {
+                    icon: currentLocationIcon,
+                    draggable: false
+                }).addTo(map);
+                currentPosMarker.bindTooltip(translations.youAreHere, {
+                    permanent: true,
+                    direction: 'top',
+                    offset: [1, -37],
+                    className: 'current-position-tooltip'
+                }).openTooltip();
                 // Afficher les gyms autour de la position initiale
                 getGyms(lat, lon);
             });
         }
-        
+
         // Ajoutez un écouteur d'événement pour le double-clic sur la carte
         // Vous pouvez changer 'dblclick' en 'click' si vous préférez un simple clic
         map.on('dblclick', function(e) {
@@ -561,197 +609,245 @@
                 map.removeLayer(currentPosMarker);
             }
             // Add a new marker at the double-clicked location
-            currentPosMarker = L.marker(newLatLng, { icon: currentLocationIcon, draggable: false }).addTo(map);
+            currentPosMarker = L.marker(newLatLng, {
+                icon: currentLocationIcon,
+                draggable: false
+            }).addTo(map);
             map.setView(newLatLng, 13);
             getGyms(newLatLng.lat, newLatLng.lng);
         });
     </script>
     <script>
-  // Variable globale pour le marqueur de position (initial ou sélectionné)
-  var currentPosMarker;
+        // Variable globale pour le marqueur de position (initial ou sélectionné)
+        var currentPosMarker;
 
-  // Créer le marqueur initial avec le tooltip "Vous êtes ici"
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function (position) {
-      var lat = position.coords.latitude;
-      var lon = position.coords.longitude;
-      var initialLatLng = [lat, lon];
-      map.setView(initialLatLng, 13);
-      currentPosMarker = L.marker(initialLatLng, { icon: currentLocationIcon, draggable: false }).addTo(map);
-      currentPosMarker.bindTooltip("Vous êtes ici", {
-        permanent: true, direction: 'top', offset: [1, -37], className: 'current-position-tooltip'
-      }).openTooltip();
-      getGyms(lat, lon);
-    });
-  }
+        // Créer le marqueur initial avec le tooltip "Vous êtes ici"
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var lat = position.coords.latitude;
+                var lon = position.coords.longitude;
+                var initialLatLng = [lat, lon];
+                map.setView(initialLatLng, 13);
+                currentPosMarker = L.marker(initialLatLng, {
+                    icon: currentLocationIcon,
+                    draggable: false
+                }).addTo(map);
+                currentPosMarker.bindTooltip(translations.youAreHere, {
+                    permanent: true,
+                    direction: 'top',
+                    offset: [1, -37],
+                    className: 'current-position-tooltip'
+                }).openTooltip();
+                getGyms(lat, lon);
+            });
+        }
 
-  // Sur double-clic (ou clic) sur la carte, déplacez le marqueur et mettez à jour la tooltip
-  map.on('dblclick', function(e) {
-    var newLatLng = e.latlng;
-    if (currentPosMarker) {
-      currentPosMarker.setLatLng(newLatLng);
-      // Réactualiser la tooltip pour qu'elle suive le marqueur
-      currentPosMarker.bindTooltip("Vous êtes ici", {
-        permanent: true, direction: 'top', offset: [0, -15], className: 'current-position-tooltip'
-      }).openTooltip();
-    } else {
-      currentPosMarker = L.marker(newLatLng, { icon: currentLocationIcon, draggable: false }).addTo(map);
-      currentPosMarker.bindTooltip("Vous êtes ici", {
-        permanent: true, direction: 'top', offset: [0, -15], className: 'current-position-tooltip'
-      }).openTooltip();
-    }
-    map.setView(newLatLng);
-    getGyms(newLatLng.lat, newLatLng.lng);
-  });
-</script>
-<script>
-  // Variable globale pour le marqueur de position (initial ou sélectionné)
-  var currentPosMarker;
+        // Sur double-clic (ou clic) sur la carte, déplacez le marqueur et mettez à jour la tooltip
+        map.on('dblclick', function(e) {
+            var newLatLng = e.latlng;
+            if (currentPosMarker) {
+                currentPosMarker.setLatLng(newLatLng);
+                // Réactualiser la tooltip pour qu'elle suive le marqueur
+                currentPosMarker.bindTooltip(translations.youAreHere, {
+                    permanent: true,
+                    direction: 'top',
+                    offset: [0, -15],
+                    className: 'current-position-tooltip'
+                }).openTooltip();
+            } else {
+                currentPosMarker = L.marker(newLatLng, {
+                    icon: currentLocationIcon,
+                    draggable: false
+                }).addTo(map);
+                currentPosMarker.bindTooltip(translations.youAreHere, {
+                    permanent: true,
+                    direction: 'top',
+                    offset: [0, -15],
+                    className: 'current-position-tooltip'
+                }).openTooltip();
+            }
+            map.setView(newLatLng);
+            getGyms(newLatLng.lat, newLatLng.lng);
+        });
+    </script>
+    <script>
+        // Variable globale pour le marqueur de position (initial ou sélectionné)
+        var currentPosMarker;
 
-  // Créer le marqueur initial sans le tooltip "Vous êtes ici"
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function (position) {
-      var lat = position.coords.latitude;
-      var lon = position.coords.longitude;
-      var initialLatLng = [lat, lon];
-      map.setView(initialLatLng, 13);
-      currentPosMarker = L.marker(initialLatLng, { icon: currentLocationIcon, draggable: false }).addTo(map);
-      getGyms(lat, lon);
-    });
-  }
+        // Créer le marqueur initial sans le tooltip "Vous êtes ici"
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var lat = position.coords.latitude;
+                var lon = position.coords.longitude;
+                var initialLatLng = [lat, lon];
+                map.setView(initialLatLng, 13);
+                currentPosMarker = L.marker(initialLatLng, {
+                    icon: currentLocationIcon,
+                    draggable: false
+                }).addTo(map);
+                getGyms(lat, lon);
+            });
+        }
 
-  // Lors d'un double-clic sur la carte, supprimez le marqueur actuel
-  // et affichez un nouveau pin sans aucun tooltip
-  map.on('dblclick', function(e) {
-    var newLatLng = e.latlng;
-    // Supprimer le marqueur actuel s'il existe
-    if (currentPosMarker) {
-      map.removeLayer(currentPosMarker);
-    }
-    // Créer un nouveau marqueur et le stocker dans currentPosMarker
-    currentPosMarker = L.marker(newLatLng, { icon: currentLocationIcon, draggable: false }).addTo(map);
-    map.setView(newLatLng, 13);
-    getGyms(newLatLng.lat, newLatLng.lng);
-  });
-</script>
-<script>
-// Déclarer la variable globale pour enregistrer le dernier double-clic
-var currentPosMarker;
-var lastDoubleClickLatLng;
-
-// Créer le marqueur initial avec le tooltip "Vous êtes ici"
-if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function (position) {
-      var lat = position.coords.latitude;
-      var lon = position.coords.longitude;
-      var initialLatLng = [lat, lon];
-      map.setView(initialLatLng, 13);
-      currentPosMarker = L.marker(initialLatLng, { icon: currentLocationIcon, draggable: false }).addTo(map);
-      currentPosMarker.bindTooltip("Vous êtes ici", {
-        permanent: true, direction: 'top', offset: [1, -37], className: 'current-position-tooltip'
-      }).openTooltip();
-      getGyms(lat, lon);
-    });
-}
-
-// Sur double-clic (ou clic) sur la carte, déplacez le marqueur, enregistrez la position, et mettez à jour la tooltip
-map.on('dblclick', function(e) {
-    var newLatLng = e.latlng;
-    lastDoubleClickLatLng = newLatLng; // Enregistrer la dernière position double-clic
-    if (currentPosMarker) {
-      currentPosMarker.setLatLng(newLatLng);
-      currentPosMarker.bindTooltip("Vous êtes ici", {
-        permanent: true, direction: 'top', offset: [0, -15], className: 'current-position-tooltip'
-      }).openTooltip();
-    } else {
-      currentPosMarker = L.marker(newLatLng, { icon: currentLocationIcon, draggable: false }).addTo(map);
-      currentPosMarker.bindTooltip("Vous êtes ici", {
-        permanent: true, direction: 'top', offset: [0, -15], className: 'current-position-tooltip'
-      }).openTooltip();
-    }
-    map.setView(newLatLng);
-});
-
-// Lorsque l'utilisateur clique sur le bouton "x" de la barre de recherche, revenir à la dernière position double-cliquée
-document.getElementById('clear-search').addEventListener('click', function() {
-    // Réinitialiser la barre de recherche
-    document.getElementById('search-bar').value = '';
-    // Revenir à la dernière position double clic si définie
-    if (lastDoubleClickLatLng) {
-        map.setView(lastDoubleClickLatLng);
-    }
-});
-</script>
-<script>
-// Place this JavaScript code after your map/legend initialization code
-document.getElementById('current-location-btn').addEventListener('click', function() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            var lat = position.coords.latitude;
-            var lon = position.coords.longitude;
-            var currentLatLng = [lat, lon];
-            map.setView(currentLatLng, 13);
-
-            // Remove the old marker if it exists
+        // Lors d'un double-clic sur la carte, supprimez le marqueur actuel
+        // et affichez un nouveau pin sans aucun tooltip
+        map.on('dblclick', function(e) {
+            var newLatLng = e.latlng;
+            // Supprimer le marqueur actuel s'il existe
             if (currentPosMarker) {
                 map.removeLayer(currentPosMarker);
             }
-            // Add a new marker at the current location
-            currentPosMarker = L.marker(currentLatLng, { icon: currentLocationIcon, draggable: false }).addTo(map);
-
-            // Optionally update nearby gyms
-            getGyms(lat, lon);
+            // Créer un nouveau marqueur et le stocker dans currentPosMarker
+            currentPosMarker = L.marker(newLatLng, {
+                icon: currentLocationIcon,
+                draggable: false
+            }).addTo(map);
+            map.setView(newLatLng, 13);
+            getGyms(newLatLng.lat, newLatLng.lng);
         });
-    } else {
-        alert('La géolocalisation n\'est pas supportée par ce navigateur.');
-    }
-});
-</script>
-<script>
-  // Variables globales pour le marqueur et la dernière position double-clic
-  var currentPosMarker;
-  var lastDoubleClickLatLng;
+    </script>
+    <script>
+        // Déclarer la variable globale pour enregistrer le dernier double-clic
+        var currentPosMarker;
+        var lastDoubleClickLatLng;
 
-  // Créer le marqueur initial avec la géolocalisation
-  if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function (position) {
-          var lat = position.coords.latitude;
-          var lon = position.coords.longitude;
-          var initialLatLng = [lat, lon];
-          map.setView(initialLatLng, 13);
-          currentPosMarker = L.marker(initialLatLng, { icon: currentLocationIcon, draggable: false }).addTo(map);
-          // Afficher les gyms autour de la position initiale
-          getGyms(lat, lon);
-      });
-  }
-  
-  // Écouteur pour le double-clic sur la carte
-  map.on('dblclick', function(e) {
-      var newLatLng = e.latlng;
-      // Enregsitrer la dernière position double-clic
-      lastDoubleClickLatLng = newLatLng;
-      
-      // Supprimer l'ancien marqueur s'il existe, puis en ajouter un nouveau
-      if (currentPosMarker) {
-          map.removeLayer(currentPosMarker);
-      }
-      currentPosMarker = L.marker(newLatLng, { icon: currentLocationIcon, draggable: false }).addTo(map);
-      map.setView(newLatLng, 13);
-      getGyms(newLatLng.lat, newLatLng.lng);
-  });
-  
-  // Attendre que le DOM soit chargé pour ajouter l'événement au bouton "x"
-  window.addEventListener('DOMContentLoaded', function(){
-      document.getElementById('clear-search').addEventListener('click', function() {
-          // Réinitialiser la barre de recherche
-          document.getElementById('search-bar').value = '';
-          // Si une position double-clic a été enregistrée, recentrer la vue dessus
-          if (lastDoubleClickLatLng) {
-              map.setView(lastDoubleClickLatLng, 13);
-          }
-      });
-  });
-</script>
+        // Créer le marqueur initial avec le tooltip "Vous êtes ici"
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var lat = position.coords.latitude;
+                var lon = position.coords.longitude;
+                var initialLatLng = [lat, lon];
+                map.setView(initialLatLng, 13);
+                currentPosMarker = L.marker(initialLatLng, {
+                    icon: currentLocationIcon,
+                    draggable: false
+                }).addTo(map);
+                currentPosMarker.bindTooltip(translations.youAreHere, {
+                    permanent: true,
+                    direction: 'top',
+                    offset: [1, -37],
+                    className: 'current-position-tooltip'
+                }).openTooltip();
+                getGyms(lat, lon);
+            });
+        }
+
+        // Sur double-clic (ou clic) sur la carte, déplacez le marqueur, enregistrez la position, et mettez à jour la tooltip
+        map.on('dblclick', function(e) {
+            var newLatLng = e.latlng;
+            lastDoubleClickLatLng = newLatLng; // Enregistrer la dernière position double-clic
+            if (currentPosMarker) {
+                currentPosMarker.setLatLng(newLatLng);
+                currentPosMarker.bindTooltip(translations.youAreHere, {
+                    permanent: true,
+                    direction: 'top',
+                    offset: [0, -15],
+                    className: 'current-position-tooltip'
+                }).openTooltip();
+            } else {
+                currentPosMarker = L.marker(newLatLng, {
+                    icon: currentLocationIcon,
+                    draggable: false
+                }).addTo(map);
+                currentPosMarker.bindTooltip(translations.youAreHere, {
+                    permanent: true,
+                    direction: 'top',
+                    offset: [0, -15],
+                    className: 'current-position-tooltip'
+                }).openTooltip();
+            }
+            map.setView(newLatLng);
+        });
+
+        // Lorsque l'utilisateur clique sur le bouton "x" de la barre de recherche, revenir à la dernière position double-cliquée
+        document.getElementById('clear-search').addEventListener('click', function() {
+            // Réinitialiser la barre de recherche
+            document.getElementById('search-bar').value = '';
+            // Revenir à la dernière position double clic si définie
+            if (lastDoubleClickLatLng) {
+                map.setView(lastDoubleClickLatLng);
+            }
+        });
+    </script>
+    <script>
+        // Place this JavaScript code after your map/legend initialization code
+        document.getElementById('current-location-btn').addEventListener('click', function() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var lat = position.coords.latitude;
+                    var lon = position.coords.longitude;
+                    var currentLatLng = [lat, lon];
+                    map.setView(currentLatLng, 13);
+
+                    // Remove the old marker if it exists
+                    if (currentPosMarker) {
+                        map.removeLayer(currentPosMarker);
+                    }
+                    // Add a new marker at the current location
+                    currentPosMarker = L.marker(currentLatLng, {
+                        icon: currentLocationIcon,
+                        draggable: false
+                    }).addTo(map);
+
+                    // Optionally update nearby gyms
+                    getGyms(lat, lon);
+                });
+            } else {
+                alert(translations.geolocationNotSupported);
+            }
+        });
+    </script>
+    <script>
+        // Variables globales pour le marqueur et la dernière position double-clic
+        var currentPosMarker;
+        var lastDoubleClickLatLng;
+
+        // Créer le marqueur initial avec la géolocalisation
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var lat = position.coords.latitude;
+                var lon = position.coords.longitude;
+                var initialLatLng = [lat, lon];
+                map.setView(initialLatLng, 13);
+                currentPosMarker = L.marker(initialLatLng, {
+                    icon: currentLocationIcon,
+                    draggable: false
+                }).addTo(map);
+                // Afficher les gyms autour de la position initiale
+                getGyms(lat, lon);
+            });
+        }
+
+        // Écouteur pour le double-clic sur la carte
+        map.on('dblclick', function(e) {
+            var newLatLng = e.latlng;
+            // Enregsitrer la dernière position double-clic
+            lastDoubleClickLatLng = newLatLng;
+
+            // Supprimer l'ancien marqueur s'il existe, puis en ajouter un nouveau
+            if (currentPosMarker) {
+                map.removeLayer(currentPosMarker);
+            }
+            currentPosMarker = L.marker(newLatLng, {
+                icon: currentLocationIcon,
+                draggable: false
+            }).addTo(map);
+            map.setView(newLatLng, 13);
+            getGyms(newLatLng.lat, newLatLng.lng);
+        });
+
+        // Attendre que le DOM soit chargé pour ajouter l'événement au bouton "x"
+        window.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('clear-search').addEventListener('click', function() {
+                // Réinitialiser la barre de recherche
+                document.getElementById('search-bar').value = '';
+                // Si une position double-clic a été enregistrée, recentrer la vue dessus
+                if (lastDoubleClickLatLng) {
+                    map.setView(lastDoubleClickLatLng, 13);
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
