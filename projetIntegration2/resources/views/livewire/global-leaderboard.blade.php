@@ -1,4 +1,6 @@
 <div style="height: 100vh; overflow-y: auto; scrollbar-width: thin; scrollbar-color: transparent transparent;">
+    
+    
     @if(!$showingGraph)
     <!-- Leaderboard Content -->
     <div id="topClansContainer" style="scrollbar-width: thin; scrollbar-color: transparent transparent;">
@@ -6,13 +8,13 @@
             <div>
                 <div class="d-flex align-items-center">
                     <img src="{{ asset('img/ui/trophy.png') }}" alt="Trophy" style="width:30px; height:30px;" class="mr-2">
-                    <h2 class="mb-0" id="titreLeaderboard">Top 10 Meilleurs Groupes</h2>
+                    <h2 class="mb-0" id="titreLeaderboard">{{ __('leaderboard.top_10_clans') }}</h2>
                 </div>
-                <p class="text-muted mb-0">Découvrez les clans les plus performants et inspirants du moment</p>
+                <p class="text-muted mb-0">{{ __('leaderboard.discover_clans') }}</p>
             </div>
             <div class="d-flex align-items-center">
                 <button class="btn btn-graphique mr-2" wire:click="showClansGraph">
-                    <i class="fa-solid fa-chart-line"></i> Graphique Clans
+                    <i class="fa-solid fa-chart-line"></i> {{ __('leaderboard.chart_clans') }}
                 </button>
                 <div class="dropdown ml-2" wire:ignore>
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="exportDropdown" data-toggle="dropdown"
@@ -20,8 +22,8 @@
                         <i class="fa-solid fa-share-from-square fa-2x"></i>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="exportDropdown">
-                        <a class="dropdown-item" href="{{ route('export.topClans') }}">Exporter Liste</a>
-                        <a class="dropdown-item" href="#" id="exportClansImageBtn">Exporter Capture</a>
+                        <a class="dropdown-item" href="{{ route('export.topClans') }}">{{ __('leaderboard.export_list') }}</a>
+                        <a class="dropdown-item" href="#" id="exportClansImageBtn">{{ __('leaderboard.export_capture') }}</a>
                     </div>
                 </div>
             </div>
@@ -39,7 +41,7 @@
                             <span class="clan-nom ml-3">{{ $clan->clan_nom }}</span>
                         </a>
                     </div>
-                    <span class="score">{{ $clan->clan_total_score }} points</span>
+                    <span class="score">{{ $clan->clan_total_score }} {{ __('leaderboard.points') }}</span>
                 </div>
                 @endforeach
             </div>
@@ -53,7 +55,7 @@
                             <span class="clan-nom ml-3">{{ $clan->clan_nom }}</span>
                         </a>
                     </div>
-                    <span class="score">{{ $clan->clan_total_score }} points</span>
+                    <span class="score">{{ $clan->clan_total_score }} {{ __('leaderboard.points') }}</span>
                 </div>
                 @endforeach
             </div>
@@ -65,13 +67,13 @@
             <div>
                 <div class="d-flex align-items-center">
                     <img src="{{ asset('img/ui/trophy.png') }}" alt="Trophy" style="width:30px; height:30px;" class="mr-2">
-                    <h2 class="mb-0" id="titreLeaderboard">Top 10 Meilleurs Utilisateurs</h2>
+                    <h2 class="mb-0" id="titreLeaderboard">{{ __('leaderboard.top_10_users') }}</h2>
                 </div>
-                <p class="text-muted mb-0">Découvrez les utilisateurs les plus performants et inspirants du moment</p>
+                <p class="text-muted mb-0">{{ __('leaderboard.discover_users') }}</p>
             </div>
             <div class="d-flex align-items-center">
                 <button class="btn btn-graphique mr-2" wire:click="showUsersGraph">
-                    <i class="fa-solid fa-chart-line"></i> Graphique Utilisateurs
+                    <i class="fa-solid fa-chart-line"></i> {{ __('leaderboard.chart_users') }}
                 </button>
                 <div class="dropdown ml-2" wire:ignore>
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="exportDropdownUsers" data-toggle="dropdown"
@@ -79,8 +81,8 @@
                         <i class="fa-solid fa-share-from-square fa-2x"></i>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="exportDropdownUsers">
-                        <a class="dropdown-item" href="{{ route('export.topUsers') }}">Exporter Liste</a>
-                        <a class="dropdown-item" href="#" id="exportUsersImageBtn">Exporter Capture</a>
+                        <a class="dropdown-item" href="{{ route('export.topUsers') }}">{{ __('leaderboard.export_list') }}</a>
+                        <a class="dropdown-item" href="#" id="exportUsersImageBtn">{{ __('leaderboard.export_capture') }}</a>
                     </div>
                 </div>
             </div>
@@ -98,7 +100,7 @@
                             <span class="clan-nom ml-3">{{ $user->prenom }} {{ $user->nom }}</span>
                         </a>
                     </div>
-                    <span class="score">{{ $user->total_score }} points</span>
+                    <span class="score">{{ $user->total_score }} {{ __('leaderboard.points') }}</span>
                 </div>
                 @endforeach
             </div>
@@ -112,7 +114,7 @@
                             <span class="clan-nom ml-3">{{ $user->prenom }} {{ $user->nom }}</span>
                         </a>
                     </div>
-                    <span class="score">{{ $user->total_score }} points</span>
+                    <span class="score">{{ $user->total_score }} {{ __('leaderboard.points') }}</span>
                 </div>
                 @endforeach
             </div>

@@ -10,23 +10,23 @@
             <h4 class="mb-0">
                 @switch($showType)
                 @case('members')
-                Évolution des scores des membres
+                {{ __('leaderboard.evolution_member_scores') }}
                 @break
                 @case('improvements')
-                Progression des améliorations
+                {{ __('leaderboard.evolution_improvements') }}
                 @break
                 @case('clans')
-                Évolution des scores des clans
+                {{ __('leaderboard.evolution_clan_scores') }}
                 @break
                 @default
-                Évolution des scores des utilisateurs
+                {{ __('leaderboard.evolution_user_scores') }}
                 @endswitch
                 @if($selectedClanId && $selectedClanId != 'global')
                 - {{ \App\Models\Clan::find($selectedClanId)->nom ?? 'Clan' }}
                 @endif
             </h4>
-            <button wire:click="hideGraph" class="btn btn-secondary btn-sm">
-                <i class="fas fa-arrow-left"></i> Retour au classement
+            <button wire:click="closeGraph" class="btn btn-secondary btn-sm">
+                <i class="fas fa-arrow-left"></i> {{ __('leaderboard.back_to_leaderboard') }}
             </button>
         </div>
         <div class="card-body">
@@ -36,12 +36,32 @@
             const chartMonths = JSON.parse($refs.months.value);
             const showType = $refs.showType.value;
             
+            let chartTitle = '';
+            let chartLabel = '';
+            
+            // Get translations from data attributes
+            switch(showType) {
+                case 'clans': 
+                    chartTitle = '{{ __('leaderboard.evolution_clan_scores') }}';
+                    chartLabel = '{{ __('leaderboard.score_evolution') }}';
+                    break;
+                case 'members':
+                    chartTitle = '{{ __('leaderboard.evolution_member_scores') }}';
+                    chartLabel = '{{ __('leaderboard.score_evolution') }}';
+                    break;
+                case 'improvements':
+                    chartTitle = '{{ __('leaderboard.evolution_improvements') }}';
+                    chartLabel = '{{ __('leaderboard.score_evolution') }}';
+                    break;
+                default:
+                    chartTitle = '{{ __('leaderboard.evolution_user_scores') }}';
+                    chartLabel = '{{ __('leaderboard.score_evolution') }}';
+            }
+            
             let chartData = {
                 labels: chartMonths,
                 datasets: [{
-                    label: showType === 'clans' ? 'Score des Clans' : 
-                           showType === 'members' ? 'Score des Membres' :
-                           showType === 'improvements' ? 'Améliorations' : 'Score des Utilisateurs',
+                    label: chartLabel,
                     data: showType === 'clans' 
                         ? JSON.parse($refs.clanScores.value)
                         : JSON.parse($refs.userScores.value),
@@ -64,13 +84,25 @@
                     scales: {
                         y: { 
                             beginAtZero: true,
-                            title: { display: true, text: 'Score' }
+                            title: { 
+                                display: true, 
+                                text: '{{ __('leaderboard.score') }}'
+                            }
                         },
                         x: { 
-                            title: { display: true, text: 'Mois' } 
+                            title: { 
+                                display: true, 
+                                text: '{{ __('leaderboard.months') }}'
+                            } 
                         }
                     },
-                    plugins: { legend: { position: 'top' } }
+                    plugins: { 
+                        legend: { position: 'top' },
+                        title: {
+                            display: true,
+                            text: chartTitle
+                        }
+                    }
                 }
             });
         }">

@@ -6,6 +6,8 @@ use Livewire\Component;
 use App\Models\Clan;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Session;
 
 class ClanLeaderboard extends Component
 {
@@ -15,14 +17,26 @@ class ClanLeaderboard extends Component
     public $topScoreImprovement;
     public $showingGraph = false;
     public $chartType = 'members'; // Options: 'members', 'improvements'
+    public $refreshKey = 0; // Add this to force refreshes
 
-    protected $listeners = [
-        'clanSelected' => 'updateClan',
-        'closeGraph' => 'hideGraph'
-    ];
 
-    public function mount($selectedClanId)
+    protected function getListeners()
     {
+        return [
+            'localeChanged' => 'handleLocaleChanged',
+            'scoreGraphClosed' => 'hideGraph',
+            'clanSelected' => 'updateClan',
+            'closeGraph' => 'hideGraph'
+        ];
+    }
+
+    public function mount($selectedClanId = null)
+    {
+        // Set locale from session
+        if (Session::has('locale')) {
+            App::setLocale(Session::get('locale'));
+        }
+
         $this->updateClan($selectedClanId);
     }
 
@@ -69,7 +83,7 @@ class ClanLeaderboard extends Component
                 'users.prenom as user_prenom',
                 DB::raw('SUM(scores.score) as score_improvement')
             )
-            ->groupBy('users.id', 'users.imageProfil', 'users.nom', 'users.prenom') 
+            ->groupBy('users.id', 'users.imageProfil', 'users.nom', 'users.prenom')
             ->orderByDesc('score_improvement')
             ->limit(10)
             ->get();
@@ -92,12 +106,42 @@ class ClanLeaderboard extends Component
         $this->showingGraph = false;
     }
 
+    public function refreshComponent()
+    {
+        // Set locale from session
+        if (Session::has('locale')) {
+            App::setLocale(Session::get('locale'));
+        }
+
+        // Force a refresh of the component
+        $this->emit('$refresh');
+    }
+
+    public function handleLocaleChanged($params = null)
+    {
+        // Get locale from params array
+        $locale = is_array($params) && isset($params['locale']) ? $params['locale'] : null;
+
+        // Update locale if valid
+        if ($locale && in_array($locale, ['en', 'fr'])) {
+            Session::put('locale', $locale);
+            App::setLocale($locale);
+            $this->refreshKey = now()->timestamp; // Force refresh
+        }
+    }
+
     public function render()
     {
+        // Ensure the locale is set correctly before rendering
+        if (Session::has('locale')) {
+            App::setLocale(Session::get('locale'));
+        }
+
         return view('livewire.clan-leaderboard', [
             'selectedClan' => $this->selectedClan,
             'meilleursMembres' => $this->meilleursMembres,
             'topScoreImprovement' => $this->topScoreImprovement,
+            'refreshKey' => $this->refreshKey
         ]);
     }
 }

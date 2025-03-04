@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Réinitialisation de mot de passe</title>
+    <title>{{ __('emails.password_reset.subject') }}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,6 +12,7 @@
             margin: 0;
             padding: 20px;
         }
+
         .container {
             max-width: 600px;
             background: #ffffff;
@@ -19,6 +21,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
+
         .button {
             display: inline-block;
             background-color: #007bff;
@@ -29,6 +32,7 @@
             margin-top: 20px;
             font-size: 16px;
         }
+
         .footer {
             margin-top: 20px;
             font-size: 14px;
@@ -36,12 +40,14 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
-        <h2>Réinitialisation de votre mot de passe</h2>
-        <p>Vous avez demandé à réinitialiser votre mot de passe. Cliquez sur le bouton ci-dessous pour procéder.</p>
-        <a href="{{ route('profil.reinitialisation.token', $token) }}" class="button">Réinitialiser le mot de passe</a>
-        <p class="footer">Si vous n'avez pas demandé cette réinitialisation, ignorez cet email.</p>
+        <h2>{{ __('emails.password_reset.title') }}</h2>
+        <p>{{ __('emails.password_reset.message') }}</p>
+        <a href="{{ route('profil.reinitialisation.token', $token) }}" class="button">{{ __('emails.password_reset.button') }}</a>
+        <p class="footer">{{ __('emails.password_reset.footer') }}</p>
     </div>
 </body>
+
 </html>

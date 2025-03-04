@@ -22,6 +22,7 @@
   <script src="https://cdn.tailwindcss.com"></script> <!-- nous rajoute <aside> et <main> entre autres -->
   <script src="https://kit.fontawesome.com/55ec8bd5f8.js" crossorigin="anonymous"></script> <!-- importation de Font Awesome pour les icônes -->
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet"> <!-- famille de police -->
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   @livewireStyles
   @yield("style")
   <meta charset="UTF-8">
@@ -55,12 +56,13 @@
       <a id="creerClan" title="{{ __('layout.create_clan') }}">
         <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee creerClan"><i class="fa-regular fa-square-plus fa-2xl"></i></div>
       </a>
+      <!-- Language Switcher -->
       <div class="w-16 text-center mb-4">
-        <div style="background: #444; color: white; padding: 5px; border-radius: 4px; margin-bottom: 4px;">
-          <a href="#" onclick="switchLanguage('en')" style="color: {{ app()->getLocale() == 'en' ? '#fff' : '#aaa' }}; text-decoration: none; display: block;">EN</a>
+        <div style="background: #444; color: white; padding: 5px; border-radius: 4px; margin-bottom: 4px;" data-locale="en">
+          <a href="#" onclick="switchLanguageWithLivewire('en')" style="color: {{ app()->getLocale() == 'en' ? '#fff' : '#aaa' }}; text-decoration: none; display: block;">EN</a>
         </div>
-        <div style="background: #444; color: white; padding: 5px; border-radius: 4px;">
-          <a href="#" onclick="switchLanguage('fr')" style="color: {{ app()->getLocale() == 'fr' ? '#fff' : '#aaa' }}; text-decoration: none; display: block;">FR</a>
+        <div style="background: #444; color: white; padding: 5px; border-radius: 4px;" data-locale="fr">
+          <a href="#" onclick="switchLanguageWithLivewire('fr')" style="color: {{ app()->getLocale() == 'fr' ? '#fff' : '#aaa' }}; text-decoration: none; display: block;">FR</a>
         </div>
       </div>
       <form action="{{route('profil.deconnexion')}}" method="post">
@@ -117,32 +119,45 @@
 
 </body>
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4xFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 <script>
-  function switchLanguage(locale) {
-    // Create a form and submit it
-    var form = document.createElement('form');
-    form.method = 'POST';
-    form.action = '/switch-language';
+  // Replace the original switchLanguage function
+  function switchLanguageWithLivewire(locale) {
+    console.log('Switching language to:', locale);
 
-    var csrfToken = document.createElement('input');
-    csrfToken.type = 'hidden';
-    csrfToken.name = '_token';
-    csrfToken.value = '{{ csrf_token() }}';
+    // Update server locale
+    fetch('/switch-language', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: JSON.stringify({
+          locale: locale
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Language switch response:', data);
 
-    var localeInput = document.createElement('input');
-    localeInput.type = 'hidden';
-    localeInput.name = 'locale';
-    localeInput.value = locale;
+        // Notify all Livewire components with the correct parameter format
+        if (window.Livewire) {
+          window.Livewire.dispatch('localeChanged', {
+            locale: locale
+          });
+        }
 
-    form.appendChild(csrfToken);
-    form.appendChild(localeInput);
-    document.body.appendChild(form);
-    form.submit();
+        // Force page reload to apply changes globally
+        window.location.reload();
+      })
+      .catch(error => {
+        console.error('Error switching language:', error);
+      });
   }
 </script>
 @yield('scripts')

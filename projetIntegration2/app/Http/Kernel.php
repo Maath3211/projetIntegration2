@@ -1,5 +1,10 @@
 // ...existing code...
 
+protected $middleware = [
+    // Add to the $middleware array:
+    \App\Http\Middleware\SetLocale::class,
+];
+
 protected $middlewareGroups = [
     'web' => [
         // ...existing code...

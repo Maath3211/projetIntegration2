@@ -22,12 +22,13 @@ Route::get('/', function () {
 Route::post('/switch-language', function (\Illuminate\Http\Request $request) {
     $locale = $request->input('locale');
     if (in_array($locale, ['en', 'fr'])) {
-        \Illuminate\Support\Facades\Session::put('locale', $locale);
-        \Illuminate\Support\Facades\App::setLocale($locale);
+        session(['locale' => $locale]);
+        app()->setLocale($locale);
         Log::info('Switching language to: ' . $locale);
     }
-    return redirect()->back();
-});
+    
+    return response()->json(['success' => true, 'locale' => app()->getLocale()]);
+})->name('switchLanguage');
 
 Route::GET(
     '/clan/{id}',

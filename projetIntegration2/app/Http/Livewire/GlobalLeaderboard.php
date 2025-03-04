@@ -3,38 +3,60 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Session;
 
 class GlobalLeaderboard extends Component
 {
-    public $showingGraph = false;
     public $topClans;
     public $topUsers;
-    public $chartType = 'users'; // Default to showing user data
+    public $showingGraph = false;
+    public $chartType = 'clans';
+    public $refreshKey = 0; // Add this to force refreshes
 
-    protected $listeners = [
-        'closeGraph' => 'hideGraph'
-    ];
-
-    public function mount($topClans, $topUsers)
+    protected function getListeners()
     {
-        $this->topClans = $topClans;
-        $this->topUsers = $topUsers;
+        return [
+            'localeChanged' => 'handleLocaleChanged',
+            'scoreGraphClosed' => 'hideGraph'
+        ];
     }
 
-    public function showGraph($chartType = 'users')
+    public function mount($topClans = null, $topUsers = null)
     {
-        $this->chartType = $chartType;
-        $this->showingGraph = true;
+        // Your existing mount logic
+        $this->topClans = $topClans;
+        $this->topUsers = $topUsers;
+
+        // Set locale from session
+        if (Session::has('locale')) {
+            App::setLocale(Session::get('locale'));
+        }
+    }
+
+    public function handleLocaleChanged($params = null)
+    {
+        // Get locale from params array
+        $locale = is_array($params) && isset($params['locale']) ? $params['locale'] : null;
+
+        // Update locale if valid
+        if ($locale && in_array($locale, ['en', 'fr'])) {
+            Session::put('locale', $locale);
+            App::setLocale($locale);
+            $this->refreshKey = now()->timestamp; // Force refresh
+        }
     }
 
     public function showClansGraph()
     {
-        $this->showGraph('clans');
+        $this->showingGraph = true;
+        $this->chartType = 'clans';
     }
 
     public function showUsersGraph()
     {
-        $this->showGraph('users');
+        $this->showingGraph = true;
+        $this->chartType = 'users';
     }
 
     public function hideGraph()
@@ -44,6 +66,16 @@ class GlobalLeaderboard extends Component
 
     public function render()
     {
-        return view('livewire.global-leaderboard');
+        // Set locale from session before rendering
+        if (Session::has('locale')) {
+            App::setLocale(Session::get('locale'));
+        }
+
+        // Your existing render logic
+        return view('livewire.global-leaderboard', [
+            'topClans' => $this->topClans,
+            'topUsers' => $this->topUsers,
+            'refreshKey' => $this->refreshKey
+        ]);
     }
 }

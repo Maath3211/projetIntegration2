@@ -1,17 +1,18 @@
 <div style="height: 100vh; overflow-y: auto; scrollbar-width: thin; scrollbar-color: transparent transparent;">
+    
     @if(!$showingGraph)
     <div id="topMembresContainer" style="scrollbar-width: thin; scrollbar-color: transparent transparent;">
         <div class="leaderboard-header p-3 mb-3 border rounded d-flex justify-content-between align-items-center">
             <div>
                 <div class="d-flex align-items-center">
                     <img src="{{ asset('img/ui/trophy.png') }}" alt="Trophy" style="width:30px; height:30px;" class="mr-2">
-                    <h2 class="mb-0" id="titreLeaderboard">Top 10 Meilleurs Membres</h2>
+                    <h2 class="mb-0" id="titreLeaderboard">{{ __('leaderboard.top_10_members') }}</h2>
                 </div>
-                <p class="text-muted mb-0">Découvrez les membres les plus performants du groupe</p>
+                <p class="text-muted mb-0">{{ __('leaderboard.discover_members') }}</p>
             </div>
             <div class="d-flex align-items-center">
                 <button class="btn btn-graphique mr-2" wire:click="showMembersGraph">
-                    <i class="fa-solid fa-chart-line"></i> Graphique Membres
+                    <i class="fa-solid fa-chart-line"></i> {{ __('leaderboard.chart_members') }}
                 </button>
                 <div class="dropdown ml-2" wire:ignore>
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="exportDropdown" data-toggle="dropdown"
@@ -19,8 +20,8 @@
                         <i class="fa-solid fa-share-from-square fa-2x"></i>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="exportDropdown">
-                        <a class="dropdown-item" href="{{ route('export.topMembres', ['clanId' => $selectedClanId]) }}">Exporter Liste</a>
-                        <a class="dropdown-item" href="#" id="exportTopMembresImage">Exporter Capture</a>
+                        <a class="dropdown-item" href="{{ route('export.topMembres', ['clanId' => $selectedClanId]) }}">{{ __('leaderboard.export_list') }}</a>
+                        <a class="dropdown-item" href="#" id="exportTopMembresImage">{{ __('leaderboard.export_capture') }}</a>
                     </div>
                 </div>
             </div>
@@ -37,7 +38,7 @@
                             <span class="clan-nom ml-3">{{ $membre->user_prenom }} {{ $membre->user_nom }}</span>
                         </a>
                     </div>
-                    <span class="score">{{ $membre->user_total_score }} points</span>
+                    <span class="score">{{ $membre->user_total_score }} {{ __('leaderboard.points') }}</span>
                 </div>
                 @endforeach
             </div>
@@ -51,7 +52,7 @@
                             <span class="clan-nom ml-3">{{ $membre->user_prenom }} {{ $membre->user_nom }}</span>
                         </a>
                     </div>
-                    <span class="score">{{ $membre->user_total_score }} points</span>
+                    <span class="score">{{ $membre->user_total_score }} {{ __('leaderboard.points') }}</span>
                 </div>
                 @endforeach
             </div>
@@ -62,22 +63,22 @@
             <div>
                 <div class="d-flex align-items-center">
                     <img src="{{ asset('img/ui/trophy.png') }}" alt="Trophy" style="width:30px; height:30px;" class="mr-2">
-                    <h2 class="mb-0" id="titreLeaderboard">Top 10 Meilleure Amélioration</h2>
+                    <h2 class="mb-0" id="titreLeaderboard">{{ __('leaderboard.top_10_improvement') }}</h2>
                 </div>
-                <p class="text-muted mb-0">Découvrez les membres ayant la plus grande amélioration du groupe dans le dernier mois</p>
+                <p class="text-muted mb-0">{{ __('leaderboard.discover_improvement') }}</p>
             </div>
             <div class="d-flex align-items-center">
                 <!-- Chart button for improvement data -->
                 <button class="btn btn-graphique mr-2" wire:click="showImprovementsGraph">
-                    <i class="fa-solid fa-chart-line"></i> Graphique d'Amélioration
+                    <i class="fa-solid fa-chart-line"></i> {{ __('leaderboard.chart_improvement') }}
                 </button>
                 <div class="dropdown ml-2" wire:ignore>
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="exportDropdownUsers" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa-solid fa-share-from-square fa-2x"></i>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="exportDropdown">
-                        <a class="dropdown-item" href="{{ route('export.topAmelioration', ['clanId' => $selectedClanId]) }}">Exporter Liste</a>
-                        <a class="dropdown-item" href="#" id="exportTopAmeliorationImage">Exporter Capture</a>
+                        <a class="dropdown-item" href="{{ route('export.topAmelioration', ['clanId' => $selectedClanId]) }}">{{ __('leaderboard.export_list') }}</a>
+                        <a class="dropdown-item" href="#" id="exportTopAmeliorationImage">{{ __('leaderboard.export_capture') }}</a>
                     </div>
                 </div>
             </div>
@@ -94,7 +95,7 @@
                             <span class="clan-nom ml-3">{{ $user->user_prenom }} {{ $user->user_nom }}</span>
                         </a>
                     </div>
-                    <span class="score">{{ $user->score_improvement }} points</span>
+                    <span class="score">{{ $user->score_improvement }} {{ __('leaderboard.points') }}</span>
                 </div>
                 @endforeach
             </div>
@@ -109,7 +110,7 @@
                             <span class="clan-nom ml-3">{{ $user->user_prenom }} {{ $user->user_nom }}</span>
                         </a>
                     </div>
-                    <span class="score">{{ $user->score_improvement }} points</span>
+                    <span class="score">{{ $user->score_improvement }} {{ __('leaderboard.points') }}</span>
                 </div>
                 @endforeach
             </div>

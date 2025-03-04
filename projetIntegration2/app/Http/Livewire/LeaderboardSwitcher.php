@@ -6,6 +6,8 @@ use Livewire\Component;
 use Illuminate\Support\Facades\Log;
 use App\Models\Clan;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\App;
 
 class LeaderboardSwitcher extends Component
 {
@@ -14,7 +16,10 @@ class LeaderboardSwitcher extends Component
     public $topUsers;
     public $refreshKey;
     
-    protected $listeners = ['clanSelected' => 'updateSelectedClan'];
+    protected $listeners = [
+        'clanSelected' => 'updateSelectedClan',
+        'localeChanged' => 'handleLocaleChanged',
+    ];
 
     public function mount($topClans = null, $topUsers = null)
     {
@@ -64,6 +69,19 @@ class LeaderboardSwitcher extends Component
             }
 
             $this->dispatch('switchedClan', clanId: $clanId);
+        }
+    }
+
+    public function handleLocaleChanged($params = null)
+    {
+        // Get locale from params array
+        $locale = is_array($params) && isset($params['locale']) ? $params['locale'] : null;
+        
+        // Update locale if valid
+        if ($locale && in_array($locale, ['en', 'fr'])) {
+            Session::put('locale', $locale);
+            App::setLocale($locale);
+            $this->refreshKey = now()->timestamp; // Force refresh
         }
     }
 
