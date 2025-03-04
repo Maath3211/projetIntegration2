@@ -20,14 +20,17 @@ class VerifierAdminClan
         $utilisateur = Auth::user();
         $clan = Clan::find($request->route('id'));
 
+        // s'il n'est pas connecté
         if(!$utilisateur){
             return redirect('/')->with('erreur', 'Vous devez être connectés pour faire cette action.');
         }
 
+        // si le clan n'existe pas
         if(!$clan){
             return redirect('/profil')->with('erreur', 'Ce clan n\'existe pas.');
         }
 
+        // si l'utilisateur n'est pas l'admin
         if($clan->adminId != $utilisateur->id){
             return redirect('/profil')->with('erreur', 'Vous n\'êtes pas autorisé à faire cette action.');
         }
