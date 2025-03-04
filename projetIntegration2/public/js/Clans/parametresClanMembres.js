@@ -71,4 +71,13 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
+    document.addEventListener('keydown', function(event){
+        if (event.key === 'Escape'){
+            if(supprimer.style.display == 'flex')
+                supprimer.style.display = 'none';
+            if(supprimerClan.style.display == 'flex')
+                supprimerClan.style.display = 'none';
+        }
+    });
+
 });

@@ -131,4 +131,15 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
     })
+
+    document.addEventListener('keydown', function(event){
+        if (event.key === 'Escape'){
+            if(renommer.style.display == 'flex')
+                renommer.style.display = 'none';
+            if(supprimer.style.display == 'flex')
+                supprimer.style.display = 'none';
+            if(ajouter.style.display == 'flex')
+                ajouter.style.display = 'none';
+        }
+    });
 });
