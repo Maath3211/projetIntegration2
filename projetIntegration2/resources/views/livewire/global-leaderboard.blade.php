@@ -11,7 +11,7 @@
                 <p class="text-muted mb-0">Découvrez les clans les plus performants et inspirants du moment</p>
             </div>
             <div class="d-flex align-items-center">
-                <button class="btn btn-primary mr-2" wire:click="showClansGraph">
+                <button class="btn btn-graphique mr-2" wire:click="showClansGraph">
                     <i class="fa-solid fa-chart-line"></i> Graphique Clans
                 </button>
                 <div class="dropdown ml-2" wire:ignore>
@@ -20,7 +20,7 @@
                         <i class="fa-solid fa-share-from-square fa-2x"></i>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="exportDropdown">
-                        <a class="dropdown-item" href="{{ route('export.topClans') }}">Exporter Liste CSV</a>
+                        <a class="dropdown-item" href="{{ route('export.topClans') }}">Exporter Liste</a>
                         <a class="dropdown-item" href="#" id="exportClansImageBtn">Exporter Capture</a>
                     </div>
                 </div>
@@ -70,7 +70,7 @@
                 <p class="text-muted mb-0">Découvrez les utilisateurs les plus performants et inspirants du moment</p>
             </div>
             <div class="d-flex align-items-center">
-                <button class="btn btn-primary mr-2" wire:click="showUsersGraph">
+                <button class="btn btn-graphique mr-2" wire:click="showUsersGraph">
                     <i class="fa-solid fa-chart-line"></i> Graphique Utilisateurs
                 </button>
                 <div class="dropdown ml-2" wire:ignore>
@@ -79,7 +79,7 @@
                         <i class="fa-solid fa-share-from-square fa-2x"></i>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="exportDropdownUsers">
-                        <a class="dropdown-item" href="{{ route('export.topUsers') }}">Exporter Liste CSV</a>
+                        <a class="dropdown-item" href="{{ route('export.topUsers') }}">Exporter Liste</a>
                         <a class="dropdown-item" href="#" id="exportUsersImageBtn">Exporter Capture</a>
                     </div>
                 </div>
@@ -131,3 +131,4 @@
     </div>
     @endif
 </div>
+

@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
     const categoriesParametres = document.querySelectorAll('.categorieParametre');
+    const supprimerClan = document.getElementById('confirmationSuppressionClan');
 
     // pour naviguer entre les catégories de paramètres
     categoriesParametres.forEach(categorie => {
@@ -10,6 +11,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 window.location.href = "canaux";
             } else if(categorie.classList.contains('membres')){
                 window.location.href = "membres";
+            }
+
+            if(categorie.classList.contains('supprimer')){
+                supprimerClan.style.display = 'flex';
             }
         });
     });
@@ -30,5 +35,15 @@ document.addEventListener("DOMContentLoaded", function() {
             };
             liseur.readAsDataURL(fichier);
         }
+    });
+
+    supprimerClan.querySelector('#confirmerSuppressionClan').addEventListener('click', function() {
+        document.querySelector('#formulaireSuppressionClan').submit();
+    });
+
+    document.querySelectorAll('.close-btn').forEach(bouton => {
+        bouton.addEventListener('click', function(){
+            bouton.parentElement.style.display = 'none';
+        });
     });
 });
