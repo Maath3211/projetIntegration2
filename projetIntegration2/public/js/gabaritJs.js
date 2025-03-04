@@ -3,10 +3,12 @@ document.addEventListener('DOMContentLoaded', function(){
     const boutonTeleverserImage = creationClan.querySelector('#selectionnerImage');
     const entreeImageCachee = creationClan.querySelector('#entreeImageCachee');
     const apercuImage = creationClan.querySelector('.apercuImage');
+    const srcParDefaut = apercuImage.src;
 
     // afficher la fenêtre contextuelle
     document.querySelector('.creerClan').addEventListener('click', function(){
         creationClan.style.display = 'flex';
+        apercuImage.src = srcParDefaut;
     });
 
     // cacher la fenêtre contextuelle si il annule
@@ -60,6 +62,13 @@ document.addEventListener('DOMContentLoaded', function(){
         bouton.addEventListener('click', function(){
             bouton.parentElement.style.display = 'none';
         });
+    });
+
+    document.addEventListener('keydown', function(event){
+        if (event.key === 'Escape'){
+            if(creationClan.style.display == 'flex')
+                creationClan.style.display = 'none';
+        }
     });
 
 });
