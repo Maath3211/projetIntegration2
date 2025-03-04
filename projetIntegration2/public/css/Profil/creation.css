@@ -5,88 +5,66 @@ vert a9fe77
 mauve a650fc
 */
 
-#formConnexion {
-    margin-top: 13%;
-    margin-left: 25%;
-    margin-right: 25%;
-    padding: 20px;
-    border-radius: 10px;
-    background-color: rgba(41, 41, 41, 0.849);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
 
-@media screen and (max-width: 768px) {  
-    #formConnexion, #formCreation {
-        margin-left: 5%;
-        margin-right: 5%;
+@media screen and (min-width: 481px) {
+    #formCreation {
+        margin-top: 1%;
+        margin-left: 25%;
+        margin-right: 25%;
+        padding: 20px;
+        border-radius: 10px;
+        background-color: rgba(41, 41, 41, 0.849);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     .conteneurForm {
-        width: 90%;
-    }
-
-    .btn-connexion, .btn-retour {
-        width: 100%;
-        padding: 10px 15px;
-        font-size: 16px;
-    }
-
-    #titreConnexion {
-        font-size: 24px;
-    }
-
-    .google-btn {
         width: 100%;
     }
-    .conteneurErreur {
-        height: 20px !important;
+
+    .inputConnexion {
+        background-color: #707070 !important;
+        color: #ffffff;
+        border: 1px solid #a9fe77;
+        justify-content: center !important;
     }
 }
 
 @media screen and (max-width: 480px) {
-    #formConnexion {
-        margin-top: 20%;
+    #formCreation {
+        margin-top: 1%;
+        margin-left: 5%;
+        margin-right: 5%;
+        padding: 20px;
+        border-radius: 10px;
+        background-color: rgba(41, 41, 41, 0.5);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     .conteneurForm {
-        width: 100%;
+        width: 100% !important;
     }
-    .alert-erreur {
-        width: 70%;
-    }
-    
-    .alert-succes {
-        width: 70%;
-    }
-    .text-error{
-        font-size: 14px;
-    }
-    .conteneurErreur {
-        height: 40px !important;
+
+    .inputConnexion {
+        background-color: #707070 !important;
+        color: #ffffff;
+        border: 1px solid #a9fe77;
+        padding: 12px 15px !important;
     }
 }
 
-#formCreation {
-    margin-top: 1%;
-    margin-left: 25%;
-    margin-right: 25%;
-    padding: 20px;
-    border-radius: 10px;
-    background-color: rgba(41, 41, 41, 0.5);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+
 
 .conteneurErreur {
     display: flex !important;
     align-items: center !important;
+    height: 20px !important;
     font-size: 15px;
-    margin-bottom: 2px;
 }
 .conteneurForm {
     width: 70%;
@@ -95,12 +73,7 @@ mauve a650fc
     color: #94fa58;
 }
 
-.inputConnexion {
-    background-color: #707070 !important;
-    color: #ffffff;
-    border: 1px solid #a9fe77;
-    justify-content: center !important;
-}
+
 .inputConnexion::placeholder {
     color: #ffffff;
 }
@@ -191,33 +164,6 @@ select:focus {
     box-shadow: 1px 1px 5px rgba(169, 254, 119, 0.8);
 }
 
-.google-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 20px;
-    border: 1px solid #dadce0;
-    border-radius: 4px;
-    font-size: 16px;
-    color: #5f6368;
-    background-color: white;
-    text-decoration: none;
-    font-family: Arial, sans-serif;
-    font-weight: 500;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    width: fit-content;
-    margin-top: 5px;
-}
-
-.google-btn img {
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
-}
-
-.google-btn:hover {
-    background-color: #f8f9fa;
-}
 
 #imgBackground {
     position: fixed;
@@ -228,21 +174,4 @@ select:focus {
     height: 100%;
     opacity: 0.5;
     filter: blur(5px);
-}
-
-#divMessage {
-    background-color: #a9fe77;
-    border: 1px solid #c3e6cb;
-    border-radius: 8px;
-    color: black;
-    padding: 15px 20px;
-    margin: 20px 0;
-    box-shadow: 0 2px 4px #76bd4e;
-    animation: fadeIn 0.5s ease-in;
-}
-
-#pMessage {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 500;
 }

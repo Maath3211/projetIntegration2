@@ -119,8 +119,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 this.style.borderColor = 'red';
             }
             // Règle 2 : pas de nombres ou de symboles, juste les caractères UTF-8 et les traits (-) sont acceptés.
-            else if (!/^[A-Za-z\u00C0-\u00FF-]+$/.test(valeur) && valeur.length !== 0){
-                messageErreur.textContent = "Seulement les lettre (UTF-8) et les traits (-) sont permis."
+            else if (!/^[A-Za-z\u00C0-\u00FF\s-]+$/.test(valeur) && valeur.length !== 0){
+                messageErreur.textContent = "Seulement les lettres (UTF-8) et les traits (-) sont permis."
                 messageErreur.style.display = "block";
                 this.style.borderColor = 'red';
             }
@@ -131,4 +131,15 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
     })
+
+    document.addEventListener('keydown', function(event){
+        if (event.key === 'Escape'){
+            if(renommer.style.display == 'flex')
+                renommer.style.display = 'none';
+            if(supprimer.style.display == 'flex')
+                supprimer.style.display = 'none';
+            if(ajouter.style.display == 'flex')
+                ajouter.style.display = 'none';
+        }
+    });
 });

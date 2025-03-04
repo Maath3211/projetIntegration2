@@ -215,4 +215,17 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
+    document.addEventListener('keydown', function(event){
+        if (event.key === 'Escape'){
+            if(supprimerClan.style.display == 'flex')
+                supprimerClan.style.display = 'none';
+            if(document.getElementById('confirmationSuppression').style.display == 'flex')
+                document.getElementById('confirmationSuppression').style.display = 'none';
+            if(document.getElementById('modificationNomCategorie').style.display == 'flex')
+                document.getElementById('modificationNomCategorie').style.display = 'none';
+            if(document.getElementById('ajoutCategorie').style.display == 'flex')
+                document.getElementById('ajoutCategorie').style.display = 'none';
+        }
+    });
+
 });

@@ -46,4 +46,11 @@ document.addEventListener("DOMContentLoaded", function() {
             bouton.parentElement.style.display = 'none';
         });
     });
+    
+    document.addEventListener('keydown', function(event){
+        if (event.key === 'Escape'){
+            if(supprimerClan.style.display == 'flex')
+                supprimerClan.style.display = 'none';
+        }
+    });
 });
