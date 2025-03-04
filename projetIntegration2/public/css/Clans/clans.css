@@ -22,6 +22,7 @@ aside {
     justify-content: space-between;
     padding: 15px;
     border-bottom: 2px solid rgba(255, 255, 255, 1);
+    text-shadow: 1px 1px 0 black, -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black;
 }
 
 .colonneCanaux {

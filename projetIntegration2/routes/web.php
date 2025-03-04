@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\AuthMiddleware;
+use App\Http\Middleware\VerifierMembreClan;
+use App\Http\Middleware\VerifierAdminClan;
 use App\Http\Controllers\UserCommunication;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\ScoresController;
@@ -19,46 +22,28 @@ Route::get('/', function () {
     return redirect()->route('profil.pageConnexion');
 });
 
-Route::GET(
-    '/clan/{id}',
-    [ClanController::class, 'index']
-)->name('clan.montrer');
+Route::middleware([VerifierMembreClan::class])->group(function () {
+    Route::GET('/clan/{id}', [ClanController::class, 'index'])->name('clan.montrer');
+});
 
-Route::GET('/clan/{id}/parametres/general',
-[ClanController::class, 'parametres'])->name('clan.parametres');
+Route::middleware([AuthMiddleware::class])->group(function () {
+    Route::POST('/clan/creer', [ClanController::class, 'creerClan'])->name('clan.creer');
+    Route::GET('/clan/invitation/{clan}', [ClanController::class, 'accepterInvitation'])->name('invitation.accepter');
+});
 
-Route::POST('/clan/{id}/action/canal',
-[ClanController::class, 'actionsCanal'])->name('canal.actions');
+Route::middleware([VerifierAdminClan::class])->group(function () {
+    Route::GET('/clan/{id}/parametres/general', [ClanController::class, 'parametres'])->name('clan.parametres');
+    Route::POST('/clan/{id}/action/canal', [ClanController::class, 'actionsCanal'])->name('canal.actions');
+    Route::POST('/clan/{id}/parametres/general',  [ClanController::class, 'parametres'])->name('clan.parametres.post');
+    Route::GET('/clan/{id}/parametres/canaux', [ClanController::class, 'parametres'])->name('clan.parametres.canaux');
+    Route::POST('/clan/{id}/enregistrerCanaux', [ClanController::class, 'miseAJourCanaux'])->name('clan.miseAJour.canaux');
+    Route::POST('/clan/{id}/enregistrerGeneral', [ClanController::class, 'miseAJourGeneral'])->name('clan.miseAJour.general');
+    Route::GET('/clan/{id}/parametres/membres', [ClanController::class, 'parametres'])->name('clan.parametres.membres');
+    Route::POST('/clan/{id}/enregistrerMembres', [ClanController::class, 'miseAJourMembres'])->name('clan.miseAJour.membres');
+    Route::POST('/clan/{id}/supprimer', [ClanController::class, 'supprimer'])->name('clan.supprimer');
+    Route::POST('/clan/{id}/televerser', [ClanController::class, 'televerserImage'])->name('clan.televerserImage');
+});
 
-Route::POST('/clan/{id}/parametres/general', 
-[ClanController::class, 'parametres'])->name('clan.parametres.post');
-
-Route::POST('/clan/{id}/enregistrerGeneral',
-[ClanController::class, 'miseAJourGeneral'])->name('clan.miseAJour.general');
-
-Route::GET('/clan/{id}/parametres/canaux',
-[ClanController::class, 'parametres'])->name('clan.parametres.canaux');
-
-Route::POST('/clan/{id}/enregistrerCanaux',
-[ClanController::class, 'miseAJourCanaux'])->name('clan.miseAJour.canaux');
-
-Route::GET('/clan/{id}/parametres/membres',
-[ClanController::class, 'parametres'])->name('clan.parametres.membres');
-
-Route::POST('/clan/{id}/enregistrerMembres',
-[ClanController::class, 'miseAJourMembres'])->name('clan.miseAJour.membres');
-
-Route::POST('/clan/creer',
-[ClanController::class, 'creerClan'])->name('clan.creer');
-
-Route::POST('/clan/{id}/supprimer',
-[ClanController::class, 'supprimer'])->name('clan.supprimer');
-
-Route::POST('/clan/{id}/televerser',
-[ClanController::class, 'televerserImage'])->name('clan.televerserImage');
-
-Route::GET('/clan/invitation/{clan}',
-[ClanController::class, 'accepterInvitation'])->name('invitation.accepter');
 
 // POUR XAVIER, METTRE LES ROUTES QUE TU AS BESOIN
 // Route::GET('/clan/{id}/canal/{canal}',

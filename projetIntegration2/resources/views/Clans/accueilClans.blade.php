@@ -7,6 +7,7 @@
 @endsection()
 
 @section('contenu')
+<!-- TODO - VÉRIFIER SI LE FOCUS D'UN CANAL MARCHE APRÈS QUE XAVIER A IMPLÉMENTÉ LE CHAT POUR MEMBRE ET POUR ADMIN VÉRIFIER LES 2 -->
 <div class="contenuPrincipal">
     <div class="container-fluid">
         <div class="row">
@@ -30,26 +31,30 @@
                                                 <i class="fa-solid fa-minus"></i>
                                                 {{ $categorie->categorie }}
                                             </div>
-                                            <i class="fa-solid fa-plus fa-xs"></i>
+                                            @if($utilisateur->id == $clan->adminId)
+                                                <i class="fa-solid fa-plus fa-xs"></i>
+                                            @endif
                                         </div>
                                         @if(isset($canauxParCategorie[$categorie->id]))
-                                        @foreach($canauxParCategorie[$categorie->id] as $canal)
-                                            <div class="canal">
-                                                <a href="/clan/{{ $id }}/canal/{{ $canal->id }}" class="canal_{{ $canal->id }}">
-                                                    <div>
-                                                        <i class="fa-solid fa-hashtag"></i>
-                                                        {{ $canal->titre }}
+                                            @foreach($canauxParCategorie[$categorie->id] as $canal)
+                                                <div class="canal">
+                                                    <a href="/clan/{{ $id }}/canal/{{ $canal->id }}" class="canal_{{ $canal->id }}">
+                                                        <div>
+                                                            <i class="fa-solid fa-hashtag"></i>
+                                                            {{ $canal->titre }}
+                                                        </div>
+                                                    </a>
+                                                    @if($utilisateur->id == $clan->adminId)
+                                                    <div class="iconesModificationCanal">
+                                                        <i class="fa-solid fa-pen modifier"></i>
+                                                        <i class="fa-solid fa-x supprimer"></i>
                                                     </div>
-                                                </a>
-                                                <div class="iconesModificationCanal">
-                                                    <i class="fa-solid fa-pen modifier"></i>
-                                                    <i class="fa-solid fa-x supprimer"></i>
+                                                    @endif
                                                 </div>
-                                            </div>
-                                        @endforeach
-                                    @else
-                                        <p>Aucun canal n'est créé pour ce clan. Veuillez en créer une pour commencer.</p>
-                                    @endif
+                                            @endforeach
+                                        @else
+                                            <p>Aucun canal n'est créé pour ce clan. Veuillez en créer une pour commencer.</p>
+                                        @endif
                                     </div>
                                 @endforeach
                             @else
@@ -76,7 +81,7 @@
                                 <a href="">
                                     <img src="{{asset($membre->imageProfil)}}" > 
                                     <div>
-                                        {{$membre->prenom}} {{$membre->nom}}
+                                        @if($membre->id == $clan->adminId)ADMIN - @endif{{$membre->prenom}} {{$membre->nom}}
                                     </div>
                                 </a>
                             </div>
@@ -88,64 +93,66 @@
             </div>
         </div>
     </div>
-    <form id="formulaireClan" action="{{ route('canal.actions', ['id' => $id]) }}" method="POST">
-        @csrf
-        <input type="hidden" class="action" name="action">
-        <input type="hidden" class="requete" name="requete">
-    </form>
+    @if($utilisateur->id == $clan->adminId)
+        <form id="formulaireClan" action="{{ route('canal.actions', ['id' => $id]) }}" method="POST">
+            @csrf
+            <input type="hidden" class="action" name="action">
+            <input type="hidden" class="requete" name="requete">
+        </form>
 
-    <!-- Fenêtre contextuelle pour ajouter un canal -->
-    <div id="ajoutCanal" class="fenetreCategorie">
-        <div class="conteneurConfirmation">
-            <div class="titreConfirmation">
-                <div>Ajouter un canal</div>
-            </div>
-            <div class="texteConfirmation">
-                <input type="text" name="entreeNomCanal" class="form-control entreeNomCanal" placeholder="ex.: Cardio">
-                <span class="messageErreur"></span>
-            </div>
+        <!-- Fenêtre contextuelle pour ajouter un canal -->
+        <div id="ajoutCanal" class="fenetreCategorie">
+            <div class="conteneurConfirmation">
+                <div class="titreConfirmation">
+                    <div>Ajouter un canal</div>
+                </div>
+                <div class="texteConfirmation">
+                    <input type="text" name="entreeNomCanal" class="form-control entreeNomCanal" placeholder="ex.: Cardio">
+                    <span class="messageErreur"></span>
+                </div>
 
-            <div class="boutonsConfirmation">
-                <button class="annuler" type="button">Annuler</button>
-                <button id="confirmerAjout" type="button">Confirmer</button>
+                <div class="boutonsConfirmation">
+                    <button class="annuler" type="button">Annuler</button>
+                    <button id="confirmerAjout" type="button">Confirmer</button>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Fenêtre contextuelle pour renommer un canal -->
-    <div id="renommerCanal" class="fenetreCategorie">
-        <div class="conteneurConfirmation">
-            <div class="titreConfirmation">
-                <div>Renommer un canal</div>
-            </div>
-            <div class="texteConfirmation">
-                <input type="text" name="entreeNomCanal" class="form-control entreeNomCanal" placeholder="ex.: Cardio">
-                <span class="messageErreur"></span>
-            </div>
+        <!-- Fenêtre contextuelle pour renommer un canal -->
+        <div id="renommerCanal" class="fenetreCategorie">
+            <div class="conteneurConfirmation">
+                <div class="titreConfirmation">
+                    <div>Renommer un canal</div>
+                </div>
+                <div class="texteConfirmation">
+                    <input type="text" name="entreeNomCanal" class="form-control entreeNomCanal" placeholder="ex.: Cardio">
+                    <span class="messageErreur"></span>
+                </div>
 
-            <div class="boutonsConfirmation">
-                <button class="annuler" type="button">Annuler</button>
-                <button id="confirmerRenommage" type="button">Confirmer</button>
+                <div class="boutonsConfirmation">
+                    <button class="annuler" type="button">Annuler</button>
+                    <button id="confirmerRenommage" type="button">Confirmer</button>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Fenêtre contextuelle pour supprimer un canal -->
-    <div id="confirmationSuppression" class="fenetreCategorie">
-        <div class="conteneurConfirmation">
-            <div class="titreConfirmation">
-                <div>Supprimer le canal</div>
-            </div>
-            <div class="texteConfirmation">
-                <div>Êtes-vous sur de vouloir supprimer ce canal?</div>
-            </div>
+        <!-- Fenêtre contextuelle pour supprimer un canal -->
+        <div id="confirmationSuppression" class="fenetreCategorie">
+            <div class="conteneurConfirmation">
+                <div class="titreConfirmation">
+                    <div>Supprimer le canal</div>
+                </div>
+                <div class="texteConfirmation">
+                    <div>Êtes-vous sur de vouloir supprimer ce canal?</div>
+                </div>
 
-            <div class="boutonsConfirmation">
-                <button class="annuler" type="button">Annuler</button>
-                <button id="confirmerSuppression" type="button">Supprimer</button>
+                <div class="boutonsConfirmation">
+                    <button class="annuler" type="button">Annuler</button>
+                    <button id="confirmerSuppression" type="button">Supprimer</button>
+                </div>
             </div>
         </div>
-    </div>
+    @endif
 
 </div>
 

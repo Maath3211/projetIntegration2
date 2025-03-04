@@ -248,7 +248,30 @@ class ClanController extends Controller
         }
 
         if(isset($requete['canal'])){
-            if($requete['canal'] === 'ajouter'){
+            // pour ajouter un canal
+            if($action === 'ajouter') {
+                $requete['nouveauNom'] = str_replace(' ', '-', $requete['nouveauNom']);
+
+                if(strlen($requete['nouveauNom']) > 50){
+                    return redirect()->back()->with('erreur', 'Les canaux ne doivent pas dépasser les 50 caractères.');
+                } 
+                else if(!preg_match('/^[\p{L}-]+$/u', $requete['nouveauNom'])) {
+                    return redirect()->back()->with('erreur', 'Les canaux ne doivent pas contenir de chiffres ou de symboles. Seul les lettres UTF-8 et les traits (-) sont permis.');
+                }
+
+                //Ajouter un nouveau Canal
+                $canal = Canal::create([
+                    'titre' => $requete['nouveauNom'],
+                    'clanId' => $id,
+                    'categorieId' => $requete['categorie']
+                ]);
+
+                
+                if($canal)
+                    return redirect()->back()->with('message', 'ajout fait avec succès!');
+                else 
+                    return redirect()->back()->with('erreur', 'Erreur lors de l\'ajout du canal. Veuillez réessayer plus tard.');
+            } else {
                 $canal = Canal::findOrFail($requete['canal']);
 
                 // pour renommer un canal
@@ -271,31 +294,6 @@ class ClanController extends Controller
                     return redirect()->back()->with('message', 'suppression faite avec succès!');
                 }
             }
-        }
-
-        // pour ajouter un canal
-        if($action === 'ajouter') {
-            $requete['nouveauNom'] = str_replace(' ', '-', $requete['nouveauNom']);
-
-            if(strlen($requete['nouveauNom']) > 50){
-                return redirect()->back()->with('erreur', 'Les canaux ne doivent pas dépasser les 50 caractères.');
-            } 
-            else if(!preg_match('/^[\p{L}-]+$/u', $requete['nouveauNom'])) {
-                return redirect()->back()->with('erreur', 'Les canaux ne doivent pas contenir de chiffres ou de symboles. Seul les lettres UTF-8 et les traits (-) sont permis.');
-            }
-
-            //Ajouter un nouveau Canal
-            $canal = Canal::create([
-                'titre' => $requete['nouveauNom'],
-                'clanId' => $id,
-                'categorieId' => $requete['categorie']
-            ]);
-
-            
-            if($canal)
-                return redirect()->back()->with('message', 'ajout fait avec succès!');
-            else 
-                return redirect()->back()->with('erreur', 'Erreur lors de l\'ajout du canal. Veuillez réessayer plus tard.');
         }
 
         // Si il se rend jusque là il y a un problème
