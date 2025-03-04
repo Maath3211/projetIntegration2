@@ -68,6 +68,8 @@ main {
 
 .language-switcher a.active {
     font-weight: bold;
+}
+
 .creerClan {
     cursor: pointer;
 }
@@ -188,7 +190,7 @@ main {
 }
 
 .messageErreur {
-    color:rgb(219, 82, 82);
+    color: rgb(219, 82, 82);
     display: none;
 }
 
@@ -225,13 +227,13 @@ main {
     cursor: pointer;
 }
 
-#messageSucces{
+#messageSucces {
     background-color: #60c22c;
     border: 2px solid rgba(71, 70, 70, 0.5);
     color: black;
 }
 
-#messageErreur{
+#messageErreur {
     background-color: #c22c2c;
     border: 2px solid rgba(71, 70, 70, 0.8);
     color: black;
