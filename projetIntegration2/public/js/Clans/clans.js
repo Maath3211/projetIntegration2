@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Déroulement automatique jusqu'en bas des messages
     divScrollable.scrollTop = divScrollable.scrollHeight;
 
+    // pour annuler un formulaire (cacher la fenêtre contextuelle)
     document.querySelectorAll('.annuler').forEach(bouton => {
         bouton.addEventListener('click', function() {
             bouton.parentElement.parentElement.parentElement.style.display = 'none';
@@ -35,6 +36,7 @@ document.addEventListener("DOMContentLoaded", function() {
         formulaire.submit();
     });
 
+    // confirmer l'ajout d'un canal
     ajouter.querySelector('#confirmerAjout').addEventListener('click', function(){
         nouveauNom = ajouter.querySelector('input').value;
         formulaire.querySelector('.action').value = 'ajouter';
@@ -48,6 +50,7 @@ document.addEventListener("DOMContentLoaded", function() {
         formulaire.submit();
     });
 
+    // confirmer la suppression d'un canal
     supprimer.querySelector('#confirmerSuppression').addEventListener('click', function(){
         formulaire.querySelector('.action').value = 'supprimer';
         formulaire.querySelector('.requete').value = JSON.stringify({
@@ -60,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function() {
         formulaire.submit();
     });
 
-
+    // pour chaque canal
     canals.forEach(canal => {
 
         // Pour montrer quel canal est actif actuellement
@@ -107,6 +110,7 @@ document.addEventListener("DOMContentLoaded", function() {
         })
     });
 
+    // Vérification de l'input au fur et à mesure
     document.querySelectorAll('.entreeNomCanal').forEach(entree => {
         entree.addEventListener('input', function(){
             valeur = this.value;
@@ -132,6 +136,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     })
 
+    // pour fermer les fenêtres contextuelles lorsqu'il appuie sur Esc
     document.addEventListener('keydown', function(event){
         if (event.key === 'Escape'){
             if(renommer.style.display == 'flex')

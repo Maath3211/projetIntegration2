@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('categories_canal', function (Blueprint $table) {
@@ -20,11 +17,9 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
+        // supprimer les clés étrangères
         if(Schema::hasTable('categories_canal')) {
             Schema::table('categories_canal', function(Blueprint $table){
                 $table->dropForeign(['clanId']);

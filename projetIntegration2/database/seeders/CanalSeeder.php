@@ -8,12 +8,8 @@ use Illuminate\Support\Facades\DB;
 
 class CanalSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        \Log::info('Running CanalSeeder...');
 
         DB::table('canals')->insert([
             [
@@ -107,6 +103,5 @@ class CanalSeeder extends Seeder
                 'categorieId' => 3
             ],
         ]);
-        \Log::info('CanalSeeder done running!');
     }
 }

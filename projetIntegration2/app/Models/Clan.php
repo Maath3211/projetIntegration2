@@ -9,7 +9,7 @@ class Clan extends Model
 {
     use HasFactory;
 
-    protected $table = "clans"; // Ensure this matches the actual table name
+    protected $table = "clans";
 
     protected $fillable = [
         'adminId',
@@ -18,10 +18,6 @@ class Clan extends Model
         'public',
         'id'
     ];
-
-    public function users(){
-        return $this->belongsToMany(User::class, 'clan_users', 'clan_id', 'user_id');
-    }
 
     public function utilisateurs(){
         return $this->belongsToMany(User::class, 'clan_users', 'clan_id', 'user_id');
