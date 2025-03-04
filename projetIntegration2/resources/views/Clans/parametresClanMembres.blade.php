@@ -43,7 +43,6 @@
                 </div>
             </a>
             </div>
-            <!-- TODO - CHANGER L'IMAGE QUI APPARAIT POUR CELLE DU CLAN -->
             <form action="{{ route('clan.miseAJour.membres', ['id' => $id]) }}" method="POST" enctype="multipart/form-data" id="formulaireSoumission">
             @csrf
                 <div class="row">
@@ -119,6 +118,7 @@
         </div>
         </div>
     </div>
+    <!-- Affichage des erreurs -->
     <div id="conteneurMessages">
         @if(session('message'))
           <div class="alert" id="messageSucces">

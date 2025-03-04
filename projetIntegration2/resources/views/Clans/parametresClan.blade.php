@@ -19,6 +19,7 @@
 <body class=" flex h-screen" id="background">
     <main id="main">
       <div class="container-fluid">
+        <!-- Navigation -->
         <div class="row">
           <div class="col-md-2 colonneNavigationParametres">
             <div class="conteneurNavigation">
@@ -32,6 +33,7 @@
             </div>
           </div>
 
+          <!-- Paramètres -->
           <div class="col-md-10 colonneParametres">
             <div class="conteneurParametres ">
 
@@ -43,7 +45,6 @@
                 </div>
               </a>
             </div>
-            <!-- TODO - CHANGER L'IMAGE QUI APPARAIT POUR CELLE DU CLAN -->
             <form action="{{ route('clan.miseAJour.general', ['id' => $id]) }}" method="POST" enctype="multipart/form-data" id="formulaireSoumission">
               @csrf
               <div class="row">

@@ -23,6 +23,7 @@
                             </div>
                         @endif
                         <div class="conteneurCanaux">
+                            <!-- Afficher toutes les catégories ainsi que leurs canaux dans l'ordre -->
                             @if(isset($categories))
                                 @foreach($categories as $categorie)
                                     <div class="categorieCanal">
@@ -75,6 +76,7 @@
             </div>
             <div class="col-md-2 colonneMembres">
                 <div class="contenuScrollableMembres">
+                    <!-- Afficher tous les membres du clan, admin en premier-->
                     @if(isset($membres))
                         @foreach($membres as $membre)
                             <div class="membre">
@@ -94,6 +96,7 @@
         </div>
     </div>
     @if($utilisateur->id == $clan->adminId)
+        <!-- Les formulaires pour modifier/supprimer/ajouter sont dans la page seulement si l'utilisateur connecté est l'administrateur -->
         <form id="formulaireClan" action="{{ route('canal.actions', ['id' => $id]) }}" method="POST">
             @csrf
             <input type="hidden" class="action" name="action">

@@ -100,6 +100,7 @@
       </form>
       @livewireScripts
 
+      <!-- Affichage des erreurs -->
       <div id="conteneurMessages">
         @if(session('message'))
           <div class="alert" id="messageSucces">

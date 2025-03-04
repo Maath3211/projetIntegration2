@@ -149,10 +149,12 @@ document.addEventListener("DOMContentLoaded", function() {
     GESTION DU FRONT END DE L'AJOUT D'UNE CATÉGORIE DE CANAL
     */
 
+    // afficher la fenêtre contextuelle d'ajout d'une catégorie
     document.querySelector('.ajouterCategorie').addEventListener('click', function(){
         document.getElementById('ajoutCategorie').style.display = 'flex';
     });
 
+    // quand il confirme l'ajout d'une catégorie
     document.getElementById('confirmerAjout').addEventListener('click', function(){
         // si une valeur a été entrée
         if(this.parentElement.parentElement.querySelector('.entreeNomCategorie').value !== ''){
@@ -205,16 +207,19 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
+    // quand il confirme la suppression d'une catégorie
     supprimerClan.querySelector('#confirmerSuppressionClan').addEventListener('click', function() {
         document.querySelector('#formulaireSuppressionClan').submit();
     });
     
-    document.querySelectorAll('.close-btn').forEach(bouton => {
+    // pour fermer une fenêtre contextuelle de message d'erreur ou de succès
+    document.querySelectorAll('.close-btn').forEach(bouton => {
         bouton.addEventListener('click', function(){
             bouton.parentElement.style.display = 'none';
         });
     });
 
+    // pour fermer les fenêtres contextuelles lorsqu'il appuie sur Esc
     document.addEventListener('keydown', function(event){
         if (event.key === 'Escape'){
             if(supprimerClan.style.display == 'flex')

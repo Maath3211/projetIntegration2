@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function(){
     const apercuImage = creationClan.querySelector('.apercuImage');
     const srcParDefaut = apercuImage.src;
 
-    // afficher la fenêtre contextuelle
+    // afficher la fenêtre contextuelle pour créer un clan
     document.querySelector('.creerClan').addEventListener('click', function(){
         creationClan.style.display = 'flex';
         apercuImage.src = srcParDefaut;
@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function(){
         creationClan.style.display = 'none';
     })
 
+    // afficher au fur et à mesure si son nom de clan va être accepté
     creationClan.querySelector('.entreeNomClan').addEventListener('input', function() {
         valeur = this.value;
         messageErreur = creationClan.querySelector('.messageErreur');
@@ -58,12 +59,14 @@ document.addEventListener('DOMContentLoaded', function(){
         liseur.readAsDataURL(fichier);
     });
 
-    document.querySelectorAll('.close-btn').forEach(bouton => {
+    // pour pouvoir fermer les fenêtres contextuelles d'erreur ou de messages.
+    document.querySelectorAll('.close-btn').forEach(bouton => {
         bouton.addEventListener('click', function(){
             bouton.parentElement.style.display = 'none';
         });
     });
 
+    // pour pouvoir fermer les fenêtres contextuelles en appuyant sur Esc
     document.addEventListener('keydown', function(event){
         if (event.key === 'Escape'){
             if(creationClan.style.display == 'flex')
