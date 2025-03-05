@@ -30,61 +30,62 @@
     <canvas id="exerciceChart"></canvas>
     </div>
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const ctx = document.getElementById('exerciceChart').getContext('2d');
-        let isLbs = true; 
-        let chart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: @json($semaines),
-                datasets: [{
-                    label: 'Poids (Lbs)',
-                    data: @json($poids),
-                    borderColor: '#a9fe77',
-                    borderWidth: 2,
-                    pointBackgroundColor: '#e5e5e5',
-                    fill: false
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Semaines',
-                            color: '#e5e5e5',
-                            font: { size: 16 }
-                        },
-                        ticks: { 
-                            color: '#e5e5e5',
-                            font: { size: 14 }
-                        }
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'Poids (Lbs)',
-                            color: '#e5e5e5',
-                            font: { size: 16 }
-                        },
-                        ticks: { 
-                            color: '#e5e5e5',
-                            font: { size: 14 }
-                        }
-                    }
+    document.addEventListener("DOMContentLoaded", function () {
+      const ctx = document.getElementById('exerciceChart').getContext('2d');
+      let isLbs = true; 
+      let chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: @json($semaines),
+            datasets: [{
+              label: 'Poids (Lbs)',
+              data: @json($poids),
+              borderColor: '#a9fe77',
+              borderWidth: 2,
+              pointBackgroundColor: '#e5e5e5',
+              pointRadius: 6, // Increase the point size
+              fill: false
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              x: {
+                title: {
+                    display: true,
+                    text: 'Semaines',
+                    color: '#e5e5e5',
+                    font: { size: 16 }
                 },
-                plugins: {
-                    legend: { 
-                        display: false,
-                        labels: {
-                            font: { size: 16, weights: 'bold' },
-                        }
-                    }
+                ticks: { 
+                    color: '#e5e5e5',
+                    font: { size: 14 }
                 }
+              },
+              y: {
+                title: {
+                    display: true,
+                    text: 'Poids (Lbs)',
+                    color: '#e5e5e5',
+                    font: { size: 16 }
+                },
+                ticks: { 
+                    color: '#e5e5e5',
+                    font: { size: 14 }
+                }
+              }
+            },
+            plugins: {
+              legend: { 
+                display: false,
+                labels: {
+                    font: { size: 16, weights: 'bold' },
+                }
+              }
             }
-        });
+        }
+      });
         document.getElementById('btnLbs').addEventListener('click', function () {
             if (!isLbs) {
                 convertToLbs();

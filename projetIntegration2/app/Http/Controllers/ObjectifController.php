@@ -25,14 +25,19 @@ class ObjectifController extends Controller
             'titre' => 'required|string|max:255',
             'description' => 'required|string|max:1000',
         ]);
-    
-        Objectif::create([
+
+        $objectif = Objectif::create([
             'titre' => $request->input('titre'),
             'description' => $request->input('description'),
             'completer' => false,
             'user_id' => auth()->id(),
         ]);
-     
+
+        if ($objectif) {
+            return redirect()->route('objectif.index')->with('success', 'Objectif ajouté avec succès !');
+        } else {
+            return redirect()->route('objectif.index')->with('error', 'Erreur lors de l\'ajout de l\'objectif.');
+        }
         return redirect()->route('objectif.index')->with('success', 'Objectif ajouté avec succès !');
     }
 

@@ -42,6 +42,7 @@
                     borderColor: '#a9fe77',
                     borderWidth: 2,
                     pointBackgroundColor: '#e5e5e5',
+                    pointRadius: 6,
                     fill: false
                 }]
             },
