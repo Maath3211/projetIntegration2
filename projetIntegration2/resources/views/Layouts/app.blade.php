@@ -31,18 +31,17 @@
 <body class=" flex h-screen">
   <!-- Barre de navigation entre les clans et les messages privés entre autres -->
   <header>
-    <aside class="w-20 text-white h-screen flex flex-col items-center py-4 space-y-4 p-5">
-
+    <aside class="w-20 text-white h-screen flex flex-col items-center py-4 space-y-4 p-5 overflow-y-auto">
       <!-- Navigation aux messages privés entre utilisateurs -->
       <a href="#">
         <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee"><i class="fa-solid fa-comment fa-2xl"></i></div>
       </a>
-
+    
       <!-- Navigation aux classements -->
       <a href="#">
         <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee"><i class="fa-solid fa-ranking-star fa-2xl"></i></div>
       </a>
-
+    
       <!-- Tous les clans dont l'utilisateur actuel fait partie -->
       @if(isset($clans))
         @foreach($clans as $clan)
@@ -51,17 +50,18 @@
           </a>
         @endforeach
       @endif
-
-
-      <a id="creerClan"> <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee creerClan"><i class="fa-regular fa-square-plus fa-2xl"></i></i></div></a>
-
-        <form action="{{route('profil.deconnexion')}}" method="post">
-          @csrf
-          <button class="w-16 h-16 overflow-hidden" id="imgDeconnexion"><img src="{{ asset('img/logout.png') }}" class="object-cover w-full h-full"></button>
-        </form>
-      
-      
-      </aside>
+    
+      <a id="creerClan">
+        <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee creerClan"><i class="fa-regular fa-square-plus fa-2xl"></i></div>
+      </a>
+    
+      <form action="{{route('profil.deconnexion')}}" method="post">
+        @csrf
+        <button class="w-16 h-16 overflow-hidden" id="imgDeconnexion">
+          <img src="{{ asset('img/logout.png') }}" class="object-cover w-full h-full">
+        </button>
+      </form>
+    </aside>
     </header>
       
 
