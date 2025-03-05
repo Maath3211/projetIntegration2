@@ -32,6 +32,14 @@
   <!-- Barre de navigation entre les clans et les messages privés entre autres -->
   <header>
     <aside class="w-20 text-white h-screen flex flex-col items-center py-4 space-y-4 p-5 overflow-y-auto">
+  <button id="hamburgerBtn" class="hamburger-btn">
+    <span class="hamburger-line"></span>
+    <span class="hamburger-line"></span>
+    <span class="hamburger-line"></span>
+</button>
+
+<div id="mobileMenu" class="mobile-menu">
+    
       <!-- Navigation aux messages privés entre utilisateurs -->
       <a href="#">
         <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee"><i class="fa-solid fa-comment fa-2xl"></i></div>
@@ -61,6 +69,7 @@
           <img src="{{ asset('img/logout.png') }}" class="object-cover w-full h-full">
         </button>
       </form>
+      </div>
     </aside>
     </header>
       
@@ -144,5 +153,6 @@
 @yield('scripts')
 
 <script src="{{asset('js/gabaritJs.js')}}" crossorigin="anonymous"></script>
+<script src="{{asset('js/drawerGabarit.js')}}" crossorigin="anonymous"></script>
 
 </html>

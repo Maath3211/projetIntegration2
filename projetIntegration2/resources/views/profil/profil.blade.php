@@ -32,13 +32,23 @@
             </div>
             <div class="row">
                 <h4 class="mb-3"><strong>Groupes</strong></h4>
-                @foreach ($clans as $clan)
+                @if (Auth::user()->id !== $utilisateur->id)
+                @foreach ($clansAway as $clan)
                     <div class="col-md-2 text-center mb-5">
-                        <img src="{{ asset('img/clans/' . $clan->image) }}" alt="Clan Picture"
+                        <img src="{{ asset($clan->image) }}" alt="Clan Picture"
                             class="imgGroupe img-fluid mx-auto d-block">
                         <h3 class="greenText">{{ $clan->name }}</h3>
                     </div>
                 @endforeach
+                @else
+                @foreach ($clans as $clan)
+                    <div class="col-md-2 text-center mb-5">
+                        <img src="{{ asset($clan->image) }}" alt="Clan Picture"
+                            class="imgGroupe img-fluid mx-auto d-block">
+                        <h3 class="greenText">{{ $clan->name }}</h3>
+                    </div>
+                @endforeach
+                @endif
             </div>
         </div>
     </div>
