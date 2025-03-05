@@ -214,7 +214,7 @@ class ConversationsController extends Controller
             ]);
     
             // Diffuser l’événement via Pusher
-            broadcast(new MessageGroup($request->message, auth()->id(), $request->to, false, $lastId, $fichierNom))
+            broadcast(new MessageGroup($request->message, auth()->id(), $request->to, false, $lastId, $fichierNom, auth()->user()->email))
                 ->toOthers();
     
         } catch (\Exception $e) {
@@ -226,7 +226,9 @@ class ConversationsController extends Controller
             'last_id'      => $lastId,
             'sender_id'    => auth()->id(),
             'sender_email' => auth()->user()->email,
-            'fichier'      => $fichierNom ? asset($dossier . $fichierNom) : null // Retourne l'URL complète
+            'fichier'      => $fichierNom ? asset($dossier . $fichierNom) : null, // Retourne l'URL complète
+            'email'        => auth()->user()->email,
+
         ]);
     }
     
@@ -234,11 +236,21 @@ class ConversationsController extends Controller
     
 
 
-    public function receiveClan(Request $request){
-        //\Log::info('Receive method called with message: ' . $request->message);
-        //\Log::info('Message received: ' . $request->message); // Debug
-        return response()->json(['message' => $request->message]);
-    }
+public function receiveClan(Request $request)
+{
+
+    // Ajoute l'email dans la réponse WebSocket
+    return response()->json([
+        'message' => $request->message,
+        'sender_id' => $request->sender_id,
+        'group_id' => $request->group_id,
+        'canal_id' => $request->canal_id,
+        'deleted' => $request->deleted,
+        'last_id' => $request->last_id,
+        'photo' => $request->photo,
+        
+    ]);
+}
 
 
 
