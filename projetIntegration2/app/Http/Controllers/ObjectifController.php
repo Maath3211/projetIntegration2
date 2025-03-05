@@ -34,11 +34,11 @@ class ObjectifController extends Controller
         ]);
 
         if ($objectif) {
-            return redirect()->route('objectif.index')->with('success', 'Objectif ajouté avec succès !');
+            return redirect()->route('objectif.index')->with('message', 'Votre objectif a été créer !');
         } else {
-            return redirect()->route('objectif.index')->with('error', 'Erreur lors de l\'ajout de l\'objectif.');
+            return redirect()->route('objectif.index')->withErrors(['ErreurObjectif' => 'Il y a eu une erreur lors de la création de votre objectif.']);
         }
-        return redirect()->route('objectif.index')->with('success', 'Objectif ajouté avec succès !');
+        return redirect()->route('objectif.index')->with('message', 'Objectif ajouté avec succès !');
     }
 
     public function update(Request $request, $id)
@@ -58,7 +58,7 @@ class ObjectifController extends Controller
     ]);
 
 
-    return redirect()->route('objectif.index')->with('success', 'Objectif mis à jour avec succès !');
+    return redirect()->route('objectif.index')->with('message', 'Objectif mis à jour avec succès !');
     }
     
 
@@ -69,14 +69,24 @@ class ObjectifController extends Controller
         $objectif->update([
             'completer' => $request->input('completer'),
         ]);
-        return redirect()->route('objectif.index')->with('success', 'Objectif mis à jour avec succès !');
+        if ($objectif) {
+            return redirect()->route('objectif.index')->with('message', 'Vous avez complété votre objectif avec succès !');
+        } else {
+            return redirect()->route('objectif.index')->withErrors(['ErreurObjectif' => 'Il y a eu une erreur lors de votre complétion de votre objectif.']);
+        }
+        return redirect()->route('objectif.index')>with('message', 'Vous avez complété votre objectif avec succès !');
     }  
 
 
     public function destroy($id)
     {
-        Objectif::destroy($id);
-        return redirect()->route('objectif.index');
+        $objectif = Objectif::destroy($id);
+        if ($objectif) {
+            return redirect()->route('objectif.index')->with('message', 'Vous avez supprimer votre objectif avec succès !');
+        } else {
+            return redirect()->route('objectif.index')->withErrors(['ErreurObjectif' => 'Il y a eu une erreur lors de la suppresion de votre objectif.']);
+        }
+        return redirect()->route('objectif.index')->with('message', 'Vous avez supprimer votre objectif avec succès !');
     }
     /**
      * Show the form for creating a new resource.

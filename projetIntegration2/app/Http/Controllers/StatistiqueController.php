@@ -128,7 +128,7 @@ class StatistiqueController extends Controller
             $data
         );
         
-        return redirect()->back()->with('success', 'Score ajouté avec succès !');
+        return redirect()->back()->with('message', 'Score ajouté avec succès !');
     }
     
 
@@ -161,7 +161,7 @@ public function ajouterPoids(Request $request)
         $data
     );
     
-    return redirect()->back()->with('success', 'Poids ajouté avec succès !');
+    return redirect()->back()->with('message', 'Poids ajouté avec succès !');
 }
 
 
@@ -193,7 +193,7 @@ public function ajouterPoids(Request $request)
             );
         }
 
-        return redirect()->back()->with('success', 'Données sauvegardées avec succès !');
+        return redirect()->back()->with('message', 'Données sauvegardées avec succès !');
     }
 
 
@@ -219,7 +219,7 @@ public function ajouterPoids(Request $request)
             ]);
         }
     
-        return response()->json(['message' => 'Statistiques enregistrées avec succès !']);
+        return response()->json(['message' => 'Statistiques enregistrées avec succès !'], 200);
     }
 
     
