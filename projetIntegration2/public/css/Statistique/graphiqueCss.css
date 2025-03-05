@@ -75,11 +75,10 @@ outline: none;
 .bouton {
     display: block;
     margin: 20px auto;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
+    padding: 12px 24px; 
+    font-size: 18px;
+    border-radius: 8px;
 }
-
 .graphiqueContainer {
     width: 100%;
     max-width: 800px;
@@ -89,27 +88,28 @@ outline: none;
     align-items: center;
 }
 
-/* Responsive */
-@media (max-width: 600px) {
-    .bouton {
-        font-size: 14px;
-        padding: 8px 16px;
-    }
-}
-
-@media (max-width: 400px) {
-    .bouton {
-        font-size: 12px;
-        padding: 6px 12px;
-    }
-}
-
-
 
 canvas {
     width: 100% !important;
     height: 100% !important;
 }
+
+@media (max-width: 600px) {
+    .bouton {
+        font-size: 16px;
+        padding: 10px 22px;
+    }
+}
+
+@media (max-width: 400px) {
+    .bouton {
+        font-size: 14px;
+        padding: 8px 18px;
+    }
+}
+
+
+
 
 /* Responsive */
 @media (max-width: 768px) {
