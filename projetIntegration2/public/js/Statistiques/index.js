@@ -27,16 +27,30 @@ function saveExercise() {
         let formData = new FormData();
         formData.append('stats[0][nomStatistique]', name);
         formData.append('stats[0][score]', score);
+        
+        const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
+        const csrfToken = csrfTokenMeta ? csrfTokenMeta.getAttribute('content') : '';
+
+        // Add the CSRF token to the FormData instead of headers
+        if (csrfToken) {
+            formData.append('_token', csrfToken);
+        }
 
         fetch('/statistiques/save', {
             method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
             body: formData,
+            headers: {
+                'X-CSRF-TOKEN': csrfToken // Ajout du token dans les headers
+            }
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Server responded with status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
+            console.log('Success:', data);
             if (data.message) {
                 // Détecter si c'est un exercice de course
                 let isRunning = name.includes('course') || name.includes('run') || name.includes('marathon') || name.includes('marche') || 
@@ -46,17 +60,17 @@ function saveExercise() {
                 let unitOptions = isRunning
                     ? `<button class="bouton" onclick="convertRunUnit(this, 'km')">Km</button>
                        <button class="bouton" onclick="convertRunUnit(this, 'Miles')">Miles</button>`
-                    : `<button class="bouton" onclick="convertWeight('lbs')">Lbs</button>
-                       <button class="bouton" onclick="convertWeight('kg')">Kg</button>`;
+                    : `<button class="bouton" onclick="convertWeightUnit(this, 'lbs')">Lbs</button>
+                       <button class="bouton" onclick="convertWeightUnit(this, 'kg')">Kg</button>`;
 
                 let newExercise = document.createElement('div');
                 newExercise.classList.add('statRow');
+                newExercise.id = `exercise-${data.id}`;
                 newExercise.innerHTML = `
                     <span>${name} : ${score} ${isRunning ? 'km' : 'lbs'}</span>
                     <div class="flex space-x-2">
                         ${unitOptions}
-                        <button class="bouton" onclick="deleteExercise(${data.id})">🗑️</button>
-                        <a href="{{route('statistique.graphiqueExercice', [$stat->id])}}" class="text-gray-400">Voir mon graphique</a>
+                        <a href="/statistique/graphiqueExercice/${data.id}" class="text-gray-400">Voir mon graphique</a>
                     </div>
                 `;
 
@@ -64,7 +78,12 @@ function saveExercise() {
                 document.getElementById('exerciseName').value = '';
                 document.getElementById('exerciseScore').value = '';
                 document.getElementById('addExerciseForm').classList.add('hidden');
-                location.reload(); // Reload the page
+                console.log('Exercise added successfully');
+                
+                // Wait a moment before reloading to ensure data is saved
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
             } else {
                 alert('Erreur lors de l\'ajout de l\'exercice');
             }
