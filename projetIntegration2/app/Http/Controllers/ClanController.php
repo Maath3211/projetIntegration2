@@ -94,7 +94,7 @@ class ClanController extends Controller
             
             // la validation du formulaire
             $request->validate([
-                'imageClan' => 'image|mimes:jpeg,png,jpg,gif,svg|max:4096',
+                'imageClan' => 'image|mimes:jpeg,png,jpg,gif,webp|max:4096',
                 'nomClan' => 'string|max:50',
             ], [
                 'imageClan.image' => 'Erreur lors du chargement de l\'image.',
@@ -385,7 +385,7 @@ class ClanController extends Controller
                 'imageClan' => [
                     'nullable',
                     'image',
-                    'mimes:jpeg,png,jpg,gif,svg',
+                    'mimes:jpeg,png,jpg,gif,webp',
                     'max:4096'
                 ],
                 'clanPublic' => 'string'
@@ -395,7 +395,7 @@ class ClanController extends Controller
                 'nomClan.max' => 'Le nom du clan ne doit pas dépasser les 50 caractères',
                 'nomClan.regex' => 'Le nom du clan ne peut contenir que des lettres UTF-8, des espaces et des tirets (-)',
                 'imageClan.image' => 'L\image du clan doit être une image',
-                'imageClan.mimes' => 'L\'image du clan doit être un format valide (jpeg, png, jpg, gif, svg)',
+                'imageClan.mimes' => 'L\'image du clan doit être un format valide (jpeg, png, jpg, gif, webp)',
                 'imageClan.max' => 'L\'image du clan ne doit pas dépasser 4MB',
                 'clanPublic.boolean' => 'Le clan doit être soit privé soit public. (boolean)'
             ]);
