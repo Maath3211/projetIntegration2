@@ -223,3 +223,48 @@ body {
         padding: 5px 10px;
     }
 }
+
+@media (max-width: 280px) {
+    .heatmap {
+        grid-template-columns: repeat(7, 1fr);
+        gap: 1px;
+    }
+
+    .titre {
+        font-size: 14px;
+    }
+
+    .moisTitre {
+        font-size: 10px;
+    }
+
+    .boutonContainer {
+        flex-direction: column;
+        gap: 3px;
+    }
+
+    .back-button, .nav-button {
+        font-size: 8px;
+        padding: 4px 8px;
+    }
+
+    .jour {
+        width: 30px;
+        height: 30px;
+        font-size: 12px;
+    }
+
+    .heatmapContainer {
+        padding: 10px;
+    }
+
+    .legende {
+        padding: 8px;
+    }
+
+    .legende .color-box {
+        width: 15px;
+        height: 15px;
+        margin-right: 5px;
+    }
+}

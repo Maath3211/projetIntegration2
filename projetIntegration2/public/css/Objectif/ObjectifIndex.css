@@ -97,4 +97,17 @@ ul.list-group li {
         flex-direction: column;
         align-items: flex-start;
     }
+    .btn {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+}
+
+
+
+@media (max-width: 400px) {
+    .btn {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
 }

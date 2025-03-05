@@ -71,3 +71,61 @@ background-color: #222;
 color: #fff;
 outline: none;
 }
+
+.bouton {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.graphiqueContainer {
+    width: 100%;
+    max-width: 800px;
+    height: 400px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .bouton {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+}
+
+@media (max-width: 400px) {
+    .bouton {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+}
+
+
+
+canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .graphiqueContainer {
+        height: 300px; 
+    }
+}
+
+@media (max-width: 480px) {
+    .graphiqueContainer {
+        height: 250px; 
+    }
+}
+
+@media (max-width: 320px) {
+    .graphiqueContainer {
+        height: 200px; 
+    }
+}
