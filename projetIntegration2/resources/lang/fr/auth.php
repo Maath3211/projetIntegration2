@@ -2,51 +2,59 @@
 
 return [
     // Common elements
-    'email_address' => 'Adresse courriel',
-    'password' => 'Mot de passe',
-    'confirm_password' => 'Confirmer le mot de passe',
-    'first_name' => 'Prénom',
-    'last_name' => 'Nom',
-    'birth_date' => 'Date de naissance',
-    'country' => 'Pays',
-    'gender' => 'Genre',
-    'profile_image' => 'Image de profil',
+    'adresse_courriel' => 'Adresse courriel',
+    'mot_de_passe' => 'Mot de passe',
+    'confirm_motdepasse' => 'Confirmer le mot de passe',
+    'prenom' => 'Prénom',
+    'nom_de_famille' => 'Nom',
+    'date_naissance' => 'Date de naissance',
+    'pays' => 'Pays',
+    'genre' => 'Genre',
+    'image_profil' => 'Image de profil',
 
     // Gender options
-    'choose' => 'Choisir',
-    'male' => 'Homme',
-    'female' => 'Femme',
-    'prefer_not_say' => 'Préfère ne pas dire',
+    'choisir' => 'Choisir',
+    'homme' => 'Homme',
+    'femme' => 'Femme',
+    'pas_indiquer' => 'Préfère ne pas dire',
 
     // Buttons
-    'login' => 'Connexion',
-    'create' => 'Créer',
-    'back' => 'Retour',
-    'save' => 'Sauvegarder',
+    'connexion' => 'Connexion',
+    'creation' => 'Créer',
+    'precedent' => 'Retour',
+    'sauvegarder' => 'Sauvegarder',
 
     // Page titles
-    'login_title' => 'Connexion ou création de compte Gymcord',
-    'create_account_title' => 'Création de compte Gymcord',
-    'create_google_account_title' => 'Création de compte Gymcord',
-    'modify_profile_title' => 'Modifier le profil',
+    'titre_connexion' => 'Connexion ou création de compte Gymcord',
+    'creation_titre_compte' => 'Création de compte Gymcord',
+    'creation_compte_google_titre' => 'Création de compte Gymcord',
+    'modification_profil_titre' => 'Modifier le profil',
 
     // Login page
-    'forgot_password' => 'Mot de passe oublié?',
-    'create_account' => 'Créer un compte',
-    'continue_with_google' => 'Continuer avec Google',
-    'invalid' => 'Les données fournies ne sont pas valides.',
+    'motdepasse_perdu' => 'Mot de passe oublié?',
+    'creation_compte' => 'Créer un compte',
+    'continuer_avec_google' => 'Continuer avec Google',
+    'invalide' => 'Les données fournies ne sont pas valides.',
 
     // Google account creation
-    'google_profile_image' => 'Image de profil provenant de Google',
+    'image_profil_google' => 'Image de profil provenant de Google',
 
     // Errors
-    'invalid_info' => 'Informations invalides',
-    'account_not_verified' => 'Votre compte n\'a pas été vérifié',
+    'info_invalide' => 'Informations invalides',
+    'compte_non_verifie' => 'Votre compte n\'a pas été vérifié',
 
     // Success messages
-    'profile_updated' => 'Profil mis à jour avec succès',
+    'profil_misajour' => 'Profil mis à jour avec succès',
 
     // File upload
-    'no_change' => 'Aucun changement',
-    'choose_file' => 'Choisir un fichier',
+    'aucun_changement' => 'Aucun changement',
+    'choisir_fichier' => 'Choisir un fichier',
+
+    'compte_verifie' => 'Votre compte a été vérifié avec succès',
+    'courriel_existe' => 'Un compte existe déjà avec cet email',
+    'aucune_image' => 'Aucune image sélectionnée',
+    'echec_connexion_google' => 'La connexion avec Google a échoué',
+    'echec_connextion_a_google' => 'La connexion avec Google a échoué',
+    'compte_non_verifie' => 'Votre compte n\'a pas été vérifié',
+    'info_invalide' => 'Informations invalides'
 ];

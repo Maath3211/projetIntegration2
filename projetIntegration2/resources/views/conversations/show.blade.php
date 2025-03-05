@@ -128,7 +128,7 @@
                                 </div>
                                 <div class="conteneurCanaux">
                                     <!-- Afficher amis  -->
-                                    <h1>{{ __('chat.friends') }}</h1>
+                                    <h1>{{ __('chat.amis') }}</h1>
                                     @include('conversations.utilisateurs', ['users' => $users])
                                 </div>
                             </div>
@@ -145,7 +145,7 @@
                             @if ($messages->hasMorePages())
                                 <div class="div text-center">
                                     <a href="{{ $messages->nextPageUrl() }}" class="btn btn-light">
-                                        {{ __('chat.see_previous_messages') }}
+                                        {{ __('chat.voir_messages_precedents') }}
                                     </a>
                                 </div>
                             @endif
@@ -168,7 +168,7 @@
                             @if ($messages->previousPageUrl())
                                 <div class="div text-center">
                                     <a href="{{ $messages->previousPageUrl() }}" class="btn btn-light">
-                                        {{ __('chat.see_next_messages') }}
+                                        {{ __('chat.voir_messages_suivants') }}
                                     </a>
                                 </div>
                             @endif
@@ -176,14 +176,14 @@
                         </div>
 
                         <div class="d-flex align-items-center mt-3">
-                            <button class="btn btn-secondary me-2">{{ __('chat.add') }}</button>
+                            <button class="btn btn-secondary me-2">{{ __('chat.ajout') }}</button>
                             <button class="btn btn-secondary me-2">{{ __('chat.emoji') }}</button>
                             <form action="" method="post" class="d-flex flex-grow-1">
                                 @csrf
                                 <div class="form-group d-flex align-items-center w-100">
                                     <input type="textarea" class="message-input form-control flex-grow-1" name="content"
-                                        placeholder="{{ __('chat.write_message') }}">
-                                    <button class="btn btn-primary ms-2" type="submit">{{ __('chat.submit') }}</button>
+                                        placeholder="{{ __('chat.ecrire_message') }}">
+                                    <button class="btn btn-primary ms-2" type="submit">{{ __('chat.soumettre') }}</button>
                                 </div>
                             </form>
                         </div>
@@ -395,12 +395,12 @@
         <div class="container chat-container mt-4">
             <div class="chat-header d-flex justify-content-between">
                 <h4>{{ $user->email }}</h4>
-                <div>{{ __('chat.members', ['count' => 1, 'total' => 25]) }}</div>
+                <div>{{ __('chat.membres', ['count' => 1, 'total' => 25]) }}</div>
             </div>
 
             <div class="row mt-3">
                 <div class="col-md-3 chat-sidebar">
-                    <p>{{ __('chat.friends_groups_list') }}</p>
+                    <p>{{ __('chat.amis_groups_list') }}</p>
                     @include('conversations.utilisateurs', ['users' => $users])
                 </div>
                 <div class="col-md-9">
@@ -409,7 +409,7 @@
                         @if ($messages->hasMorePages())
                             <div class="div text-center">
                                 <a href="{{ $messages->nextPageUrl() }}" class="btn btn-light">
-                                    {{ __('chat.see_previous_messages') }}
+                                    {{ __('chat.voir_messages_precedents') }}
                                 </a>
                             </div>
                         @endif
@@ -431,7 +431,7 @@
                         @if ($messages->previousPageUrl())
                             <div class="div text-center">
                                 <a href="{{ $messages->previousPageUrl() }}" class="btn btn-light">
-                                    {{ __('chat.see_next_messages') }}
+                                    {{ __('chat.voir_messages_suivants') }}
                                 </a>
                             </div>
                         @endif
@@ -439,14 +439,14 @@
                     </div>
 
                     <div class="d-flex align-items-center mt-3">
-                        <button class="btn btn-secondary me-2">{{ __('chat.add') }}</button>
+                        <button class="btn btn-secondary me-2">{{ __('chat.ajout') }}</button>
                         <button class="btn btn-secondary me-2">{{ __('chat.emoji') }}</button>
                         <form action="" method="post" class="d-flex flex-grow-1">
                             @csrf
                             <div class="form-group d-flex align-items-center w-100">
                                 <input type="textarea" class="message-input form-control flex-grow-1" name="content"
-                                    placeholder="{{ __('chat.write_message') }}">
-                                <button class="btn btn-primary ms-2" type="submit">{{ __('chat.submit') }}</button>
+                                    placeholder="{{ __('chat.ecrire_message') }}">
+                                <button class="btn btn-primary ms-2" type="submit">{{ __('chat.soumettre') }}</button>
                             </div>
                         </form>
                     </div>

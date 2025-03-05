@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr-ca">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     <meta charset="UTF-8">
@@ -9,7 +9,6 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" style="text/css" href="\css\GabaritCss.css">
 
@@ -27,56 +26,56 @@
                 <form action="{{ route('profil.resetPassword') }}" method="post" id="formConnexion">
                     @csrf
                     <input type="text" value="{{ $token }}" name="token" hidden>
-                    <h1 class="h1" id="titreConnexion">Réinitialisation de mot de passe</h1>
+                    <h1 class="h1" id="titreConnexion">{{ __('profile.password_reset') }}</h1>
                     <div class="conteneurForm">
-                        <label for="email" class="text-vert">Adresse courriel</label>
+                        <label for="email" class="text-vert">{{ __('profile.adresse_courriel') }}</label>
                         <input type="email" class="form-control inputConnexion" id="email"
                             value="{{ $email }}" name="email" readonly>
                     </div>
 
                     <div class="conteneurForm">
-                        <label for="password" class="text-vert">Mot de passe</label>
+                        <label for="password" class="text-vert">{{ __('profile.password') }}</label>
                         <input type="password" class="form-control inputConnexion" id="password"
-                            placeholder="Mot de passe" name="password">
+                            placeholder="{{ __('profile.password') }}" name="password">
                         @error('password')
-                            <span class="text-danger">{{ $message }}&ensp;</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#dc3545"
-                                class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
-                                <path
-                                    d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
-                            </svg>
+                        <span class="text-danger">{{ $message }}&ensp;</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#dc3545"
+                            class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
+                            <path
+                                d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
+                        </svg>
                         @enderror
                     </div>
                     <div class="conteneurForm">
-                        <label for="password_confirmation" class="text-vert">Confirmation mot de passe</label>
+                        <label for="password_confirmation" class="text-vert">{{ __('profile.password_confirmation') }}</label>
                         <input type="password" class="form-control inputConnexion" id="password_confirmation"
-                            placeholder="Confirmation mot de passe" name="password_confirmation">
+                            placeholder="{{ __('profile.password_confirmation') }}" name="password_confirmation">
                         @error('password_confirmation')
-                            <span class="text-danger">{{ $message }}&ensp;</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#dc3545"
-                                class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
-                                <path
-                                    d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
-                            </svg>
+                        <span class="text-danger">{{ $message }}&ensp;</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#dc3545"
+                            class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
+                            <path
+                                d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
+                        </svg>
                         @enderror
                     </div>
                     <br>
                     @if (session('message'))
-                        <div class="alert alert-succes">
-                            <p class="text-center">{{ session('message') }}</p>
-                        </div>
+                    <div class="alert alert-succes">
+                        <p class="text-center">{{ session('message') }}</p>
+                    </div>
                     @endif
                     @if (session('errors'))
-                        @foreach ($errors->all() as $error)
-                            @if ($error !== 'L\'adresse courriel est requise' && $error !== 'Le mot de passe est requis')
-                                <div class="alert alert-erreur">
-                                    <p>{{ $error }}</p>
-                                </div>
-                            @endif
-                        @endforeach
+                    @foreach ($errors->all() as $error)
+                    @if ($error !== __('validation.required', ['attribute' => __('profile.adresse_courriel')]) && $error !== __('validation.required', ['attribute' => __('profile.password')]))
+                    <div class="alert alert-erreur">
+                        <p>{{ $error }}</p>
+                    </div>
                     @endif
-                    <button type="submit" class="btn btn-connexion">Réinitialisation</button>
-                    <a href="{{ route('profil.connexion') }}" class="btn btn-retour">Retour</a>
+                    @endforeach
+                    @endif
+                    <button type="submit" class="btn btn-connexion">{{ __('profile.reset') }}</button>
+                    <a href="{{ route('profil.connexion') }}" class="btn btn-retour">{{ __('profile.back') }}</a>
                 </form>
 
             </div>

@@ -16,10 +16,10 @@
                 {{ __('leaderboard.evolution_improvements') }}
                 @break
                 @case('clans')
-                {{ __('leaderboard.evolution_clan_scores') }}
+                {{ __('leaderboard.evolution_pointages_clan') }}
                 @break
                 @default
-                {{ __('leaderboard.evolution_user_scores') }}
+                {{ __('leaderboard.evolution_pointages_utilisateurs') }}
                 @endswitch
                 @if($selectedClanId && $selectedClanId != 'global')
                 - {{ \App\Models\Clan::find($selectedClanId)->nom ?? 'Clan' }}
@@ -42,7 +42,7 @@
             // Get translations from data attributes
             switch(showType) {
                 case 'clans': 
-                    chartTitle = '{{ __('leaderboard.evolution_clan_scores') }}';
+                    chartTitle = '{{ __('leaderboard.evolution_pointages_clan') }}';
                     chartLabel = '{{ __('leaderboard.score_evolution') }}';
                     break;
                 case 'members':
@@ -54,7 +54,7 @@
                     chartLabel = '{{ __('leaderboard.score_evolution') }}';
                     break;
                 default:
-                    chartTitle = '{{ __('leaderboard.evolution_user_scores') }}';
+                    chartTitle = '{{ __('leaderboard.evolution_pointages_utilisateurs') }}';
                     chartLabel = '{{ __('leaderboard.score_evolution') }}';
             }
             

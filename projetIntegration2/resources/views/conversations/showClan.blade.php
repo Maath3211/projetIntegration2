@@ -1,5 +1,5 @@
 @extends('Layouts.app')
-@section('titre', {{ __('chat.friend_conversation_title') }})
+@section('titre', {{ __('chat.titre_conversation_ami') }})
 
 <body>
 
@@ -288,7 +288,7 @@
                         </div>
                         <div class="conteneurCanaux">
                             <!-- Afficher amis  -->
-                            <h1>{{ __('chat.friends') }}</h1>
+                            <h1>{{ __('chat.amis') }}</h1>
                             @include('conversations.utilisateurs', ['users' => $users])
                         </div>
                     </div>
@@ -305,7 +305,7 @@
                     @if ($messages->hasMorePages())
                     <div class="div text-center">
                         <a href="{{ $messages->nextPageUrl() }}" class="btn btn-light">
-                            {{ __('chat.see_previous_messages') }}
+                            {{ __('chat.voir_messages_precedents') }}
                         </a>
                     </div>
                     @endif
@@ -316,7 +316,7 @@
                             class="message {{ $message->idEnvoyer == auth()->id() ? 'own-message' : 'received-message' }}">
                             @if ($message->idEnvoyer == auth()->id())
                             <!-- Bouton de suppression visible uniquement pour l'auteur -->
-                            <button class="delete-btn" data-id="{{ $message->id }}">{{ __('chat.delete_btn') }}</button>
+                            <button class="delete-btn" data-id="{{ $message->id }}">{{ __('chat.btn_suppression') }}</button>
                             @else
                             <div class="avatar bg-primary text-white rounded-circle p-2">
                                 {{ substr($message->user->email, 0, 2) }}
@@ -344,7 +344,7 @@
                                 @else
                                 <a href="{{ asset($dossier . $message->fichier) }}" target="_blank"
                                     class="text-blue-500">
-                                    {{ __('chat.download_file') }} {{ $message->fichier }}
+                                    {{ __('chat.telecharger_file') }} {{ $message->fichier }}
                                 </a>
                                 @endif
                                 @endif
@@ -371,7 +371,7 @@
                     @if ($messages->previousPageUrl())
                     <div class="div text-center">
                         <a href="{{ $messages->previousPageUrl() }}" class="btn btn-light">
-                            {{ __('chat.see_next_messages') }}
+                            {{ __('chat.voir_messages_suivants') }}
                         </a>
                     </div>
                     @endif
@@ -393,13 +393,13 @@
                                 <div class="file-upload-wrapper me-2">
                                     <input type="file" class="file-upload-input" name="fichier"
                                         id="fichierInput" />
-                                    <label for="fichierInput" class="file-upload-btn text-white">{{ __('chat.file_btn') }}</label>
+                                    <label for="fichierInput" class="file-upload-btn text-white">{{ __('chat.btn_fichier') }}</label>
                                 </div>
                                 <div id="emoji-picker-container" class="emoji-picker-container"></div>
                                 <button type="button" id="emoji-btn" name="emoji" class="btn btn-secondary me-2">{{ __('chat.emoji_btn') }}</button>
                                 <input id="message" type="textarea" class="message-input form-control flex-grow-1"
-                                    name="content" placeholder="{{ __('chat.write_message') }}">
-                                <button class="btn btn-primary ms-2" type="submit">{{ __('chat.submit') }}</button>
+                                    name="content" placeholder="{{ __('chat.ecrire_message') }}">
+                                <button class="btn btn-primary ms-2" type="submit">{{ __('chat.soumettre') }}</button>
                             </div>
                         </div>
                     </form>
@@ -633,12 +633,12 @@
     <script>
         // Add translations for JavaScript
         const translations = {
-            deleteBtn: "{{ __('chat.delete_btn') }}",
-            downloadFile: "{{ __('chat.download_file') }}",
-            errorDeleting: "{{ __('chat.error_deleting') }}",
-            errorSending: "{{ __('chat.error_sending') }}",
-            selectedImagePreview: "{{ __('chat.selected_image_preview') }}",
-            emojiSearch: "{{ __('chat.emoji_search') }}",
+            deleteBtn: "{{ __('chat.btn_suppression') }}",
+            downloadFile: "{{ __('chat.telecharger_file') }}",
+            errorDeleting: "{{ __('chat.erreur_deleting') }}",
+            errorSending: "{{ __('chat.erreur_sending') }}",
+            selectedImagePreview: "{{ __('chat.apercu_image_selection') }}",
+            emojiSearch: "{{ __('chat.recherche_emoji') }}",
         };
 
         function formatMessage(message) {

@@ -53,7 +53,7 @@
       @endif
 
 
-      <a id="creerClan" title="{{ __('layout.create_clan') }}">
+      <a id="creerClan" title="{{ __('layout.creation_clan') }}">
         <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee creerClan"><i class="fa-regular fa-square-plus fa-2xl"></i></div>
       </a>
       <!-- Language Switcher -->
@@ -85,7 +85,7 @@
           <div class="conteneurConfirmation">
             <div class="titreConfirmation" style="display: flex; align-items: center;">
               <img src="{{ asset('img/Clans/default.jpg') }}" alt="{{ __('layout.clan_image') }}" class="apercuImage" style="width: 50px; height: 50px; margin-right: 10px;">
-              <input type="text" name="nomClan" class="form-control entreeNomClan" placeholder="{{ __('layout.clan_name') }}">
+              <input type="text" name="nomClan" class="form-control entreeNomClan" placeholder="{{ __('layout.nom_clan') }}">
             </div>
             <div class="optionsClan">
               <div class="televersementImage" style="margin-top: 10px;">

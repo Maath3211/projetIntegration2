@@ -31,27 +31,26 @@ class ProfilController extends Controller
     {
         $utilisateur = User::where('email', $request->email)->first();
         if ($utilisateur->email_verified_at == null) {
-            return redirect()->back()->withErrors(['email' => 'Votre compte n\'a pas été vérifié']);
+            return redirect()->back()->withErrors(['email' => __('auth.compte_non_verifie')]);
         }
         $reussi = Auth::guard()->attempt(['email' => $request->email, 'password' => $request->password]);
         if ($reussi) {
             return redirect()->route('profil.profil');
         } else {
-            return redirect()->back()->withErrors(['Informations invalides']);
+            return redirect()->back()->withErrors([__('auth.invalide_info')]);
         }
     }
+
     public function creerCompte()
     {
-        $countries = Cache::remember('countries_list_french', now()->addDay(), function () {
-            return $this->listePays();
-        });
+        $countries = $this->listePays();
         return View('profil.creerCompte', compact('countries'));
     }
 
     public function storeCreerCompte(CreationCompteRequest $request)
     {
         if (User::where('email', $request->email)->exists()) {
-            return redirect()->route('profil.connexion')->withErrors( ['Un compte existe déjà avec cet email']);
+            return redirect()->route('profil.connexion')->withErrors([__('auth.courriel_existe')]);
         }
         $utilisateur = new User();
         $utilisateur->email = $request->email;
@@ -71,23 +70,21 @@ class ProfilController extends Controller
                 $uploadedFile->move(public_path('img/Utilisateurs'), $nomFichierUnique);
                 $utilisateur->imageProfil = $nomFichierUnique;
             } catch (\Exception $e) {
-                Log::error("Erreur lors du téléversement du fichier.", [$e]);
-                return redirect()->back()->withErrors(['imageProfil' => 'Erreur lors du téléversement de l\'image']);
+                Log::error(__('profile.image_upload_error'), [$e]);
+                return redirect()->back()->withErrors(['imageProfil' => __('profile.image_upload_error')]);
             }
         } else {
-            return redirect()->back()->withErrors(['imageProfil' => 'Aucune image sélectionnée']);
+            return redirect()->back()->withErrors(['imageProfil' => __('auth.aucune_image')]);
         }
 
         Mail::to($utilisateur->email)->send(new confirmation($utilisateur));
         $utilisateur->save();
-        return redirect()->route('profil.connexion')->with('message', 'Votre compte a été créé avec succès! Un courriel de confirmation a été envoyé');
+        return redirect()->route('profil.connexion')->with('message', __('profile.profile_confirmation'));
     }
 
     public function creerCompteGoogle()
     {
-        $countries = Cache::remember('countries_list_french', now()->addDay(), function () {
-            return $this->listePays();
-        });
+        $countries = $this->listePays();
         return view('profil.creerCompteGoogle', compact('countries'));
     }
 
@@ -107,7 +104,7 @@ class ProfilController extends Controller
 
             if ($existingUser) {
                 if ($existingUser->email_verified_at == null) {
-                    return redirect()->route('profil.connexion')->withErrors(['email' => 'Votre compte n\'a pas été vérifié']);
+                    return redirect()->route('profil.connexion')->withErrors(['email' => __('auth.compte_non_verifie')]);
                 }
                 Auth::login($existingUser);
                 return redirect()->route('profil.profil');
@@ -139,9 +136,9 @@ class ProfilController extends Controller
             if ($profile->getGenders()) {
                 $gender = $profile->getGenders()[0]->getValue();
                 $gender = match ($gender) {
-                    'male' => 'Homme',
-                    'female' => 'Femme',
-                    default => 'Prefere ne pas dire'
+                    'male' => __('auth.homme'),
+                    'female' => __('auth.femme'),
+                    default => __('auth.pas_indiquer')
                 };
             }
 
@@ -159,9 +156,9 @@ class ProfilController extends Controller
 
             return redirect()->route('profil.creerCompteGoogle');
         } catch (\Exception $e) {
-            Log::error('Google login failed', ['error' => $e->getMessage()]);
+            Log::error(__('auth.echec_connexion_google'), ['error' => $e->getMessage()]);
             return redirect()->route('profil.pageConnexion')
-                ->withErrors(['La connexion avec Google a échoué']);
+                ->withErrors([__('auth.echec_connextion_a_google')]);
         }
     }
 
@@ -187,15 +184,15 @@ class ProfilController extends Controller
                 if (file_put_contents(public_path($nomFichierUnique), $imageContent)) {
                     $utilisateur->imageProfil = $nomFichierUnique;
                 } else {
-                    Log::error("Erreur lors de la sauvegarde de l'image Google");
-                    return redirect()->back()->withErrors(['imageProfil' => "Erreur lors de la sauvegarde de l'image"]);
+                    Log::error(__('profile.google_image_save'));
+                    return redirect()->back()->withErrors(['imageProfil' => __('profile.image_save_error')]);
                 }
             } catch (\Exception $e) {
-                Log::error("Erreur lors du téléchargement de l'image Google", [$e]);
-                return redirect()->back()->withErrors(['imageProfil' => "Erreur lors du téléchargement de l'image"]);
+                Log::error(__('profile.google_image_download'), [$e]);
+                return redirect()->back()->withErrors(['imageProfil' => __('profile.image_upload_error')]);
             }
         } else {
-            return redirect()->back()->withErrors(['imageProfil' => 'Aucune image Google trouvée']);
+            return redirect()->back()->withErrors(['imageProfil' => __('profile.google_image_error')]);
         }
 
         $utilisateur->save();
@@ -205,26 +202,24 @@ class ProfilController extends Controller
         }
 
         Mail::to($utilisateur->email)->send(new confirmation($utilisateur));
-        return redirect()->route('profil.connexion')->with('message', 'Votre compte a été créé avec succès! Un courriel de confirmation a été envoyé');
+        return redirect()->route('profil.connexion')->with('message', __('profile.profile_confirmation'));
     }
-
 
     public function profil()
     {
         $utilisateur = Auth::user();
-        $clans = $utilisateur->clans; // Fetch all clans associated with the user
-        return view('profil.profil', compact('utilisateur', 'clans' ));
+        $clans = $utilisateur->clans;
+        return view('profil.profil', compact('utilisateur', 'clans'));
     }
 
     public function profilPublic($email)
     {
         $utilisateur = User::where('email', $email)->first();
         if (!$utilisateur) {
-            return redirect()->route('profil.profil')->withErrors(['Utilisateur introuvable']);
+            return redirect()->route('profil.profil')->withErrors([__('profile.user_notfound')]);
         }
         return View('profil.profilPublic', compact('utilisateur'));
     }
-
 
     public function deconnexion()
     {
@@ -234,10 +229,7 @@ class ProfilController extends Controller
 
     public function modification()
     {
-        // Cache the countries for 1 day
-        $countries = Cache::remember('countries_list_french', now()->addDay(), function () {
-            return $this->listePays();
-        });
+        $countries = $this->listePays();
         return View('profil.modification', compact('countries'));
     }
 
@@ -261,13 +253,13 @@ class ProfilController extends Controller
                 $uploadedFile->move(public_path('img/Utilisateurs'), $nomFichierUnique);
                 $utilisateur->imageProfil = $nomFichierUnique;
             } catch (\Exception $e) {
-                Log::error("Erreur lors du téléversement du fichier.", [$e]);
-                return redirect()->back()->withErrors(['imageProfil' => 'Erreur lors du téléversement de l\'image']);
+                Log::error(__('profile.image_upload_error'), [$e]);
+                return redirect()->back()->withErrors(['imageProfil' => __('profile.image_upload_error')]);
             }
         }
 
         $utilisateur->save();
-        return redirect()->route('profil.profil')->with('message', 'Votre profil a été mis à jour avec succès');
+        return redirect()->route('profil.profil')->with('message', __('profile.profile_update_success'));
     }
 
     public function pageMotDePasseOublie()
@@ -286,7 +278,7 @@ class ProfilController extends Controller
 
         $user = User::where('email', $request->email)->first();
         if (!$user) {
-            return redirect()->route('profil.connexion')->with('message', 'Un courriel de reinitialisation a été envoyé si le compte existe');
+            return redirect()->route('profil.connexion')->with('message', __('profile.success_message'));
         }
 
         $token = Str::random(64);
@@ -303,14 +295,14 @@ class ProfilController extends Controller
         ]);
 
         Mail::to($request->email)->send(new reinitialisation($token));
-        return redirect()->route('profil.connexion')->with('message', 'Un courriel de reinitialisation a été envoyé si le compte existe');
+        return redirect()->route('profil.connexion')->with('message', __('profile.success_message'));
     }
 
     public function showResetPasswordForm(string $token)
     {
         $tokenData = DB::table('password_reset_tokens')->where('token', $token)->first();
         if (!$tokenData) {
-            return redirect('/connexion')->withErrors(['token' => 'Token invalide!']);
+            return redirect('/connexion')->withErrors(['token' => __('profile.invalid_token')]);
         }
         return view('profil.reinitialisationMDP', ['token' => $token, 'email' => $tokenData->email]);
     }
@@ -322,12 +314,12 @@ class ProfilController extends Controller
             'password' => 'required|min:8|confirmed',
             'token' => 'required'
         ], [
-            'email.required' => 'Le courriel est requis',
-            'email.email' => 'Le format du courriel est invalide',
-            'password.required' => 'Le mot de passe est requis',
-            'password.min' => 'Le mot de passe doit contenir au moins 8 caractères',
-            'password.confirmed' => 'La confirmation du mot de passe ne correspond pas',
-            'token.required' => 'Le jeton de réinitialisation est requis'
+            'email.required' => __('profile.email_required'),
+            'email.email' => __('profile.email_email'),
+            'password.required' => __('profile.password_required'),
+            'password.min' => __('profile.password_min'),
+            'password.confirmed' => __('profile.password_confirmed'),
+            'token.required' => __('profile.token_required')
         ]);
 
         $updatePassword = DB::table('password_reset_tokens')
@@ -337,7 +329,7 @@ class ProfilController extends Controller
             ])->first();
 
         if (!$updatePassword) {
-            return back()->withErrors(['email' => 'Token invalide!']);
+            return back()->withErrors(['email' => __('profile.invalid_token')]);
         }
 
         User::where('email', $request->email)
@@ -345,7 +337,7 @@ class ProfilController extends Controller
 
         DB::table('password_reset_tokens')->where(['email' => $request->email])->delete();
 
-        return redirect('/connexion')->with('message', 'Mot de passe mis à jour!');
+        return redirect('/connexion')->with('message', __('profile.password_update_success'));
     }
 
     public function confCourriel($codeVerification)
@@ -354,33 +346,37 @@ class ProfilController extends Controller
         $user->email_verified_at = now();
         $user->codeVerification = null;
         $user->save();
-        return redirect()->route('profil.connexion')->with('message', 'Votre compte a été vérifié avec succès');
+        return redirect()->route('profil.connexion')->with('message', __('auth.compte_verifie'));
     }
-
-
-
-
-
-
-
-
-
 
     public function listePays()
     {
+        // Get current locale
+        $locale = app()->getLocale();
+        $cacheKey = 'countries_list_' . $locale;
 
-        $response = Http::withoutVerifying()->get('https://restcountries.com/v3.1/all');
-        // !! remettre après verification !!         $response = Http::get('https://restcountries.com/v3.1/all');
+        // Use locale-specific cache key
+        return Cache::remember($cacheKey, now()->addDay(), function () use ($locale) {
+            $response = Http::withoutVerifying()->get('https://restcountries.com/v3.1/all');
+            // !! remettre après verification !!         $response = Http::get('https://restcountries.com/v3.1/all');
 
-        if ($response->successful()) {
-            return collect($response->json())->map(function ($country) {
-                return [
-                    'name' => $country['translations']['fra']['common'] ?? $country['name']['common'],
-                    'code' => $country['cca2'],
-                ];
-            })->sortBy('name')->values()->all();
-        }
+            if ($response->successful()) {
+                return collect($response->json())->map(function ($country) use ($locale) {
+                    // Get country name in current locale
+                    if ($locale === 'fr') {
+                        $name = $country['translations']['fra']['common'] ?? $country['name']['common'];
+                    } else {
+                        // Default to English
+                        $name = $country['name']['common'];
+                    }
 
-        return [];
+                    return [
+                        'name' => $name,
+                        'code' => $country['cca2'],
+                    ];
+                })->sortBy('name')->values()->all();
+            }
+            return [];
+        });
     }
 }

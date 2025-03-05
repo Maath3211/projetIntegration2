@@ -1,45 +1,45 @@
 <?php
 
 return [
-    'group_name' => 'Group Name',
-    'members' => ':count/:total',
-    'friends_list' => 'Friends / Friend Groups List',
-    'audio_message' => '🔊 Audio',
+    'nom_groupe' => 'Group Name',
+    'membres' => ':count/:total',
+    'liste_amis' => 'Friends / Friend Groups List',
+    'message_audio' => '🔊 Audio',
     'nice_body' => 'Nice body',
     'settings' => 'Settings',
 
     // Chat Interface
-    'friends' => 'Friends',
-    'see_previous_messages' => 'See previous messages',
-    'see_next_messages' => 'See next messages',
-    'friends_groups_list' => 'Friends / Friend groups list',
-    'write_message' => 'Write a message...',
-    "emoji_search" => 'Search for an emoji...',
-    'download' => 'Download',
-    'submit' => 'Submit',
-    'index_title' => 'Conversation-Friends/index',
-    'new_message' => 'New message',
-    'friend_conversation_title' => 'Friend Conversation',
+    'amis' => 'Friends',
+    'voir_messages_precedents' => 'See previous messages',
+    'voir_messages_suivants' => 'See next messages',
+    'liste_groupes_amis' => 'Friends / Friend groups list',
+    'ecrire_message' => 'Write a message...',
+    "recherche_emoji" => 'Search for an emoji...',
+    'telecharger' => 'Download',
+    'soumettre' => 'Submit',
+    'titre_index' => 'Conversation-Friends/index',
+    'nouveau_message' => 'New message',
+    'titre_conversation_ami' => 'Friend Conversation',
 
     // Files
-    'error_upload' => 'Error during file upload',
-    'download_file' => '📄 Download',
-    'selected_image_preview' => 'Preview of selected image',
+    'erreur_televersement' => 'Error during file upload',
+    'telecharger_fichier' => '📄 Download',
+    'apercu_image_selection' => 'Preview of selected image',
 
     // Members section
     'admin' => 'ADMIN',
 
     // Error messages
-    'error' => 'Error',
-    'error_deleting' => 'Error deleting message.',
+    'erreur' => 'Error',
+    'erreur_suppression' => 'Error deleting message.',
     'errors' => 'Errors',
     'error_sending' => 'Error sending message.',
 
 
     // Buttons
-    'add' => '➕',
+    'ajout' => '➕',
     'emoji' => '😊',
-    'delete_btn' => '🗑️',
-    'file_btn' => '📁',
+    'btn_suppression' => '🗑️',
+    'btn_fichier' => '📁',
     'emoji_btn' => '😊',
 ];

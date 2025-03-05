@@ -72,13 +72,13 @@
 
     <div class="container chat-container mt-4">
         <div class="chat-header d-flex justify-content-between">
-            <h4>{{ __('chat.group_name') }}</h4>
-            <div>{{ __('chat.members', ['count' => 1, 'total' => 25]) }}</div>
+            <h4>{{ __('chat.nom_groupe') }}</h4>
+            <div>{{ __('chat.membres', ['count' => 1, 'total' => 25]) }}</div>
         </div>
 
         <div class="row mt-3">
             <div class="col-md-3 chat-sidebar">
-                <p>{{ __('chat.friends_list') }}</p>
+                <p>{{ __('chat.liste_amis') }}</p>
             </div>
             <div class="col-md-9">
                 <div class="chat-messages">
@@ -86,7 +86,7 @@
                         <div class="avatar bg-primary text-white rounded-circle p-2">SS</div>
                         <div class="bubble">
                             <strong>Sam Sulek</strong> <span class="text-muted">14:34</span><br>
-                            {{ __('chat.audio_message') }}
+                            {{ __('chat.message_audio') }}
                         </div>
                     </div>
                     <div class="message">

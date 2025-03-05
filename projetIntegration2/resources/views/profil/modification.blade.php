@@ -11,14 +11,14 @@
     <div class="container-fluid">
         <div class="d-flex row justify-content-center">
             <div class="col-md-8 profile-container-mod">
-                <h1 class="mt-3 fs-1"><strong>{{ __('auth.modify_profile_title') }}</strong></h1>
+                <h1 class="mt-3 fs-1"><strong>{{ __('profile.profile_settings') }}</strong></h1>
                 <form action="{{ route('profil.updateModification') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="row justify-content-center">
 
                         <div class="row mb-4">
                             <div class="col-md-4 offset-md-2 d-flex align-items-center">
-                                <p class="greenText h5">{{ __('auth.profile_image') }}</p>
+                                <p class="greenText h5">{{ __('profile.image_profil') }}</p>
                             </div>
                             <div class="col-md-4 d-flex flex-column align-items-center">
                                 <img src="{{ asset(Auth::user()->imageProfil) }}" alt="Profile Picture"
@@ -183,7 +183,7 @@
                         </div>
                         <div class="row mb-4">
                             <div class="col-md-4 offset-md-2 d-flex align-items-center">
-                                <button class="btn btn-save btn-green">{{ __('auth.save') }}</button>
+                                <button class="btn btn-save btn-green">{{ __('profile.save') }}</button>
                             </div>
                         </div>
                 </form>

@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title> GymCord - {{ __('clans.clan_settings') }} </title>
+  <title> GymCord - {{ __('clans.parametres_clan') }} </title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js" integrity="sha384-3LK/3kTpDE/Pkp8gTNp2gR/2gOiwQ6QaO7Td0zV76UFJVhqLl4Vl3KL1We6q6wR9" crossorigin="anonymous"></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -23,12 +23,12 @@
       <div class="row">
         <div class="col-md-2 colonneNavigationParametres">
           <div class="conteneurNavigation">
-            <div class="titreNavigation">{{ __('clans.settings') }}</div>
+            <div class="titreNavigation">{{ __('clans.parametres') }}</div>
             <div class="navigationParametres">
               <div class="categorieParametre general actif">{{ __('clans.general') }}</div>
-              <div class="categorieParametre canaux">{{ __('clans.channels') }}</div>
-              <div class="categorieParametre membres">{{ __('clans.members') }}</div>
-              <div class="categorieParametre supprimer">{{ __('clans.delete_clan') }}</div>
+              <div class="categorieParametre canaux">{{ __('clans.canaux') }}</div>
+              <div class="categorieParametre membres">{{ __('clans.membres') }}</div>
+              <div class="categorieParametre supprimer">{{ __('clans.supprimer_clan') }}</div>
             </div>
           </div>
         </div>
@@ -36,11 +36,11 @@
         <div class="col-md-10 colonneParametres">
           <div class="conteneurParametres ">
 
-            <div class="titreParametre">{{ __('clans.general_settings') }}</div>
+            <div class="titreParametre">{{ __('clans.parametres_generaux') }}</div>
             <a href="{{ route('clan.montrer', ['id' => $id]) }}">
               <div class="boutonRetour">
                 <i class="fa-regular fa-circle-xmark fa-3x"></i>
-                <div>{{ __('clans.quit') }}</div>
+                <div>{{ __('clans.quitter') }}</div>
               </div>
             </a>
           </div>
@@ -51,22 +51,22 @@
               <div class="col-md-12 parametresGeneraux">
                 <img src="{{asset($clan->image)}}" alt="erreur lors de l'affichage de votre image.">
                 <div class="formulaireAjoutImage">
-                  <div>{{ __('clans.image_recommendation') }}</div>
+                  <div>{{ __('clans.recommendation_image') }}</div>
                   <div class="form-group">
-                    <label for="imageClan" class="televerser">{{ __('clans.upload_image') }}</label>
+                    <label for="imageClan" class="televerser">{{ __('clans.televerser_image') }}</label>
                     <input type="file" class="form-control-file" id="imageClan" name="imageClan" accept="image/*">
                   </div>
                 </div>
                 <div class="nomClan">
-                  <label for="nomClan">{{ __('clans.clan_name') }}</label>
+                  <label for="nomClan">{{ __('clans.nom_clan') }}</label>
                   <input type="text" class="form-control" id="nomClan" name="nomClan" value="{{$clan->nom}}">
                 </div>
               </div>
             </div>
             <div class="row barreEnregistrerConteneur">
               <div class="col-md-10 rangeeEnregistrer">
-                <div>{{ __('clans.save_reminder') }}</div>
-                <button type="submit" class="btn btn-success">{{ __('clans.save') }}</button>
+                <div>{{ __('clans.rappel_sauvegarde') }}</div>
+                <button type="submit" class="btn btn-success">{{ __('clans.sauvegarde') }}</button>
               </div>
             </div>
           </form>
@@ -76,15 +76,15 @@
       <div id="confirmationSuppressionClan" class="fenetreCategorie">
         <div class="conteneurConfirmation">
           <div class="titreConfirmation">
-            <div>{{ __('clans.delete_clan') }}</div>
+            <div>{{ __('clans.supprimer_clan') }}</div>
           </div>
           <div class="texteConfirmation">
-            <div>{{ __('clans.delete_clan_warning') }}.</div>
+            <div>{{ __('clans.supprimer_clan_warning') }}.</div>
           </div>
 
           <div class="boutonsConfirmation">
-            <button class="annuler" type="button">{{ __('clans.cancel') }}</button>
-            <button id="confirmerSuppressionClan" type="button">{{ __('clans.delete') }}</button>
+            <button class="annuler" type="button">{{ __('clans.annuler') }}</button>
+            <button id="confirmerSuppressionClan" type="button">{{ __('clans.supprimer') }}</button>
           </div>
         </div>
       </div>

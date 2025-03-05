@@ -9,8 +9,8 @@
                 <img src="{{ asset($utilisateur->imageProfil) }}" alt="Profile Picture" class="profile-pic me-3">
                 <div class="text-start">
                     <h2 class="greenText">{{ $utilisateur->prenom . ' ' . $utilisateur->nom }}</h2>
-                    <p><strong>A propos: </strong>{{ $utilisateur->aPropos }}</p>
-                    <p><strong>Membre depuis:</strong> {{ $utilisateur->created_at->format('d/m/Y') }}</p>
+                    <p><strong>{{ __('profile.about') }} </strong>{{ $utilisateur->aPropos }}</p>
+                    <p><strong>{{ __('profile.member_since') }}</strong> {{ $utilisateur->created_at->format('d/m/Y') }}</p>
                 </div>
             </div>
             
@@ -21,15 +21,14 @@
             <div class="d-flex justify-content-between mt-3">
                 <form action="{{ route('statistique.index') }}" method="get">
                     @csrf
-                    <button class="btn bouton">Statistique</button>
+                    <button class="btn bouton">{{ __('profile.statistics') }}</button>
                 </form>
-
             </div>
             <div class="mt-3">
-                <p>Ami(s) en commun: <span class="badge bg-purple">P</span></p>
+                <p>{{ __('profile.common_friends') }} <span class="badge bg-purple">P</span></p>
             </div>
             <div class="row">
-                <h4 class="mb-3"><strong>Groupes</strong></h4>
+                <h4 class="mb-3"><strong>{{ __('profile.groups') }}</strong></h4>
                 @foreach($clans as $clan)
                     <div class="col-md-2 text-center mb-5">
                         <img src="{{ asset('img/clans/'.$clan->image) }}" alt="Clan Picture" class="imgGroupe img-fluid mx-auto d-block">

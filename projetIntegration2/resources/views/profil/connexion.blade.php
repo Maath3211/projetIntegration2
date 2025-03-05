@@ -25,15 +25,15 @@
             <div class="col-md-10">
 
                 <form action="{{ route('profil.connexion') }}" method="post" id="formConnexion">
-                    <h1 class="h1" id="titreConnexion">{{ __('auth.login_title') }}</h1>
+                    <h1 class="h1" id="titreConnexion">{{ __('auth.connexion_title') }}</h1>
                     <div class="conteneurForm">
                         @csrf
-                        <label for="email" class="text-vert">{{ __('auth.email_address') }}</label>
+                        <label for="email" class="text-vert">{{ __('auth.adresse_courriel') }}</label>
                         <input type="email" class="form-control inputConnexion" id="email"
-                            placeholder="{{ __('auth.email_address') }}" name="email" value="{{ old('email') }}">
+                            placeholder="{{ __('auth.adresse_courriel') }}" name="email" value="{{ old('email') }}">
                         <div class="conteneurErreur">
                             @error('email')
-                            @if($message !== __('auth.account_not_verified'))
+                            @if($message !== __('auth.compte_non_verifie'))
                             <span class="text-danger">{{ $message }}&ensp;</span>
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#dc3545"
                                 class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
@@ -45,9 +45,9 @@
                         </div>
                     </div>
                     <div class="conteneurForm">
-                        <label for="password" class="text-vert">{{ __('auth.password') }}</label>
+                        <label for="password" class="text-vert">{{ __('auth.mot_de_passe') }}</label>
                         <input type="password" class="form-control inputConnexion" id="password"
-                            placeholder="{{ __('auth.password') }}" name="password">
+                            placeholder="{{ __('auth.mot_de_passe') }}" name="password">
                         <div class="conteneurErreur">
                             @error('password')
                             <span class="text-danger">{{ $message }}&ensp;</span>
@@ -69,7 +69,7 @@
                     @endif
                     @if (session('errors'))
                     @foreach ($errors->all() as $error)
-                    @if ($error !== __('validation.required', ['attribute' => __('auth.email_address')]) && $error !== __('validation.required', ['attribute' => __('auth.password')]))
+                    @if ($error !== __('validation.required', ['attribute' => __('auth.adresse_courriel')]) && $error !== __('validation.required', ['attribute' => __('auth.mot_de_passe')]))
                     <div class="alert alert-erreur">
                         <p>{{ $error }}</p>
                     </div>
@@ -78,11 +78,11 @@
                     @endif
                     <a href="{{ route('profil.connexionGoogle') }}" class="google-btn">
                         <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google logo">
-                        {{ __('auth.continue_with_google') }}
+                        {{ __('auth.continuer_avec_google') }}
                     </a>
-                    <a href='{{ route('profil.reinitialisation') }}' class="text-vert" id="btMotDePasseOublie">{{ __('auth.forgot_password') }}</a>
-                    <a href="{{ route('profil.creerCompte') }}" class="text-vert" id="btCreerCompte">{{ __('auth.create_account') }}</a>
-                    <button type="submit" class="btn btn-connexion">{{ __('auth.login') }}</button>
+                    <a href='{{ route('profil.reinitialisation') }}' class="text-vert" id="btMotDePasseOublie">{{ __('auth.motdepasse_perdu') }}</a>
+                    <a href="{{ route('profil.creerCompte') }}" class="text-vert" id="btCreerCompte">{{ __('auth.creation_account') }}</a>
+                    <button type="submit" class="btn btn-connexion">{{ __('auth.connexion') }}</button>
                 </form>
 
             </div>

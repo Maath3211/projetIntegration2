@@ -6,10 +6,10 @@ return [
     'rankings' => 'Rankings',
     
     // Clan creation
-    'create_clan' => 'Create Clan',
+    'creation_clan' => 'Create Clan',
     'cancel' => 'Cancel',
     'confirm' => 'Confirm',
-    'clan_name' => 'Clan name',
+    'nom_clan' => 'Clan name',
     'choose_image' => 'Choose an image',
     'public_clan' => 'Public clan',
     'clan_image' => 'Clan image',

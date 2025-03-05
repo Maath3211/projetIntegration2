@@ -106,8 +106,8 @@
             </div>
 
             <div class="boutonsConfirmation">
-                <button class="annuler" type="button">{{ __('clans.cancel') }}</button>
-                <button id="confirmerAjout" type="button">{{ __('clans.confirm') }}</button>
+                <button class="annuler" type="button">{{ __('clans.annuler') }}</button>
+                <button id="confirmerAjout" type="button">{{ __('clans.confirmer') }}</button>
             </div>
         </div>
     </div>
@@ -124,8 +124,8 @@
             </div>
 
             <div class="boutonsConfirmation">
-                <button class="annuler" type="button">{{ __('clans.cancel') }}</button>
-                <button id="confirmerRenommage" type="button">{{ __('clans.confirm') }}</button>
+                <button class="annuler" type="button">{{ __('clans.annuler') }}</button>
+                <button id="confirmerRenommage" type="button">{{ __('clans.confirmer') }}</button>
             </div>
         </div>
     </div>
@@ -134,15 +134,15 @@
     <div id="confirmationSuppression" class="fenetreCategorie">
         <div class="conteneurConfirmation">
             <div class="titreConfirmation">
-                <div>{{ __('clans.delete_channel') }}</div>
+                <div>{{ __('clans.supprimer_channel') }}</div>
             </div>
             <div class="texteConfirmation">
-                <div>{{ __('clans.delete_channel_warning') }}</div>
+                <div>{{ __('clans.supprimer_channel_warning') }}</div>
             </div>
 
             <div class="boutonsConfirmation">
-                <button class="annuler" type="button">{{ __('clans.cancel') }}</button>
-                <button id="confirmerSuppression" type="button">{{ __('clans.delete') }}</button>
+                <button class="annuler" type="button">{{ __('clans.annuler') }}</button>
+                <button id="confirmerSuppression" type="button">{{ __('clans.supprimer') }}</button>
             </div>
         </div>
     </div>

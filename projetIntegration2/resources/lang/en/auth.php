@@ -2,51 +2,57 @@
 
 return [
     // Common elements
-    'email_address' => 'Email address',
-    'password' => 'Password',
-    'confirm_password' => 'Confirm password',
-    'first_name' => 'First name',
-    'last_name' => 'Last name',
-    'birth_date' => 'Birth date',
-    'country' => 'Country',
-    'gender' => 'Gender',
-    'profile_image' => 'Profile image',
+    'adresse_courriel' => 'Email address',
+    'mot_de_passe' => 'Password',
+    'confirm_motdepasse' => 'Confirm password',
+    'prenom' => 'First name',
+    'nom_de_famille' => 'Last name',
+    'date_naissance' => 'Birth date',
+    'pays' => 'Country',
+    'genre' => 'Gender',
+    'image_profil' => 'Profile image',
 
     // Gender options
-    'choose' => 'Choose',
-    'male' => 'Male',
-    'female' => 'Female',
-    'prefer_not_say' => 'Prefer not to say',
+    'choisire' => 'Choose',
+    'homme' => 'Male',
+    'femme' => 'Female',
+    'pas_indiquer' => 'Prefer not to say',
 
     // Buttons
-    'login' => 'Login',
-    'create' => 'Create',
-    'back' => 'Back',
-    'save' => 'Save',
+    'connexion' => 'Login',
+    'creation' => 'Create',
+    'precedent' => 'Back',
+    'sauvegarder' => 'Save',
 
     // Page titles
-    'login_title' => 'Login or create GymCord account',
-    'create_account_title' => 'Create GymCord account',
-    'create_google_account_title' => 'Create GymCord account',
-    'modify_profile_title' => 'Modify profile',
+    'titre_connexion' => 'Login or create GymCord account',
+    'creation_titre_compte' => 'Create GymCord account',
+    'creation_compte_google_titre' => 'Create GymCord account',
+    'modification_profil_titre' => 'Modify profile',
 
     // Login page
-    'forgot_password' => 'Forgot password?',
-    'create_account' => 'Create an account',
-    'continue_with_google' => 'Continue with Google',
-    'invalid' => 'The given data was invalid.',
+    'motdepasse_perdu' => 'Forgot password?',
+    'creation_compte' => 'Create an account',
+    'continuer_avec_google' => 'Continue with Google',
+    'invalide' => 'The given data was invalid.',
 
     // Google account creation
-    'google_profile_image' => 'Profile image from Google',
+    'image_profil_google' => 'Profile image from Google',
 
     // Errors
-    'invalid_info' => 'Invalid information',
-    'account_not_verified' => 'Your account has not been verified',
+    'info_invalide' => 'Invalid information',
+    'compte_non_verifie' => 'Your account has not been verified',
 
     // Success messages
-    'profile_updated' => 'Profile updated successfully',
+    'profil_misajour' => 'Profile updated successfully',
 
     // File upload
-    'no_change' => 'No change',
-    'choose_file' => 'Choose file',
+    'aucun_changement' => 'No change',
+    'choisir_fichier' => 'Choose file',
+
+    'compte_verifie' => 'Your account has been successfully verified',
+    'courriel_existe' => 'An account already exists with this email',
+    'aucune_image' => 'No image selected',
+    'echec_connexion_google' => 'Google login failed',
+    'echec_connextion_a_google' => 'Connection with Google failed',
 ];

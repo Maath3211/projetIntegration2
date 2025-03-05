@@ -9,18 +9,18 @@
                 <img src="{{ asset($utilisateur->imageProfil) }}" alt="Profile Picture" class="profile-pic me-3">
                 <div class="text-start">
                     <h2 class="greenText">{{ $utilisateur->prenom . ' ' . $utilisateur->nom }}</h2>
-                    <p><strong>A propos: </strong>{{ $utilisateur->aPropos }}</p>
-                    <p><strong>Membre depuis:</strong> {{ $utilisateur->created_at->format('d/m/Y') }}</p>
+                    <p><strong>{{ __('profile.about') }} </strong>{{ $utilisateur->aPropos }}</p>
+                    <p><strong>{{ __('profile.member_since') }}</strong> {{ $utilisateur->created_at->format('d/m/Y') }}</p>
                 </div>
             </div>
 
-            <button class="btn bouton-ami">Ajouter en ami</button>
+            <button class="btn bouton-ami">{{ __('profile.add_friend') }}</button>
             
             <div class="mt-3">
-                <p>Ami(s) en commun: <span class="badge bg-purple">P</span></p>
+                <p>{{ __('profile.common_friends') }} <span class="badge bg-purple">P</span></p>
             </div>
-            <div class=" row">
-                <h4 class="mb-3"><strong>Groupe</strong> <small>(1 en commun)</small></h4>
+            <div class="row">
+                <h4 class="mb-3"><strong>{{ __('profile.groups') }}</strong> <small>(1 {{ __('profile.common_groups') }})</small></h4>
 
                 <div class="col-md-2 text-center">
                     <img src="{{ asset('img/workoutMasterLogo.jpg') }}" alt="Gym Picture"
