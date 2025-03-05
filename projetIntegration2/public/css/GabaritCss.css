@@ -7,6 +7,14 @@ main{
     width:100% ;
 }
 
+aside::-webkit-scrollbar {
+    display: none;
+}
+
+aside {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
 
 .bullePersonnalisee {
     display: flex;
@@ -52,8 +60,10 @@ main{
 
 #imgDeconnexion{
     position: absolute;
-    bottom: 10px;
+    bottom: 0;
     left: 10px;
+    width: 8vh;
+    background-color: #303030;
 }
 
 .creerClan {
@@ -237,7 +247,7 @@ main{
 
 /* Updated Mobile - hide navbar, show hamburger */
 @media screen and (max-width: 991px) {
-    #navBar {
+    header {
         display: none;
     }
     

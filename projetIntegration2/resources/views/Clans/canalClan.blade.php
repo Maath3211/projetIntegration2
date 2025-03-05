@@ -6,255 +6,7 @@
 @section('style')
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" style="text/css" href="{{ asset('css/Clans/clans.css') }}">
-    <style>
-        body {
-
-        }
-
-        .chat-container {
-            max-width: 900px;
-            margin: auto;
-            border-radius: 10px;
-            background: #333;
-            padding: 20px;
-        }
-
-        .chat-header {
-            background: #aaa;
-            padding: 10px;
-            border-radius: 10px;
-        }
-
-        .chat-sidebar {
-            background: #544C4C;
-            padding: 15px;
-            border-radius: 10px;
-            color: white;
-        }
-
-        .chat-messages {
-            flex-grow: 1;
-            min-height: 0;
-            /* Permet au flexbox de bien fonctionner */
-            height: auto;
-            background: #414141;
-            padding: 15px;
-            height: 400px;
-            overflow-y: auto;
-            border-radius: 10px;
-        }
-
-        .message {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .message img {
-            / max-width: 100px;
-            border-radius: 5px;
-        }
-
-        .bubble {
-            background: white;
-            padding: 10px;
-            border-radius: 10px;
-            margin-left: 10px;
-            color: black;
-        }
-
-        .own-message {
-            justify-content: flex-end;
-        }
-
-        .own-message .bubble {
-            background: #A9FE77;
-        }
-
-        .received-message {
-            justify-content: flex-start;
-        }
-
-        .received-message .bubble {
-            background: #A9FE77;
-        }
-
-        .message-input {
-            background: pink;
-            padding: 10px;
-            border-radius: 20px;
-            width: 100%;
-            border: none;
-            outline: none;
-        }
-        .message-text {
-
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            max-width: 500px; /* Ajuste la largeur selon ton design */
-
-        }
-
-        .separator {
-            display: block;
-            /* Pour qu'il se comporte comme un bloc */
-            flex-basis: 100%;
-            /* Dans un conteneur flex, occupe toute la ligne */
-            width: 100%;
-            /* S'assure qu'il prend toute la largeur disponible */
-            border-top: 1px solid #ccc;
-            /* Définit la ligne */
-            margin: 20px 0;
-            /* Espacement avant et après */
-        }
-
-
-
-        .colonneMessages2 {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            /* Take full screen height */
-        }
-
-        /* Message image styling */
-        .message-image {
-            text-align: center;
-            margin: 8px 0;
-            max-width: 300px;
-            /* Limit maximum width */
-        }
-
-        .message-img {
-            width: 100%;
-            max-height: 100%;
-            object-fit: cover;
-            /* Maintain aspect ratio while covering area */
-
-            /* Rounded corners */
-
-            /* Subtle shadow */
-            transition: transform 0.2s;
-            /* Smooth hover effect */
-        }
-
-        .message-img:hover {
-            transform: scale(1.02);
-            /* Slight zoom on hover */
-        }
-
-        .message img {
-            min-width: 60px;
-            max-width: 60px;
-            min-height: 60px;
-            max-height: 60px;
-            border-radius: 0px;
-            margin: 10px;
-        }
-
-        /* File upload styling */
-        .file-upload-input {
-            position: absolute;
-            opacity: 0;
-            z-index: -1;
-        }
-
-
-
-        /* Changer la couleur du bouton au survol */
-        .file-upload-label:hover {
-            background-color: #0056b3;
-            /* Couleur plus foncée au survol */
-        }
-
-
-
-
-
-        #preview-container {
-            margin-bottom: 10px;
-            text-align: center;
-        }
-
-        .preview-img {
-            max-width: 100%;
-            height: 250px;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-
-
-
-
-
-
-
-
-
-
-
-        .emoji-picker-container {
-    position: absolute;
-    width: 300px;
-    height: 400px;
-    background: #fff;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    display: none;
-    flex-direction: column;
-    padding: 10px;
-    z-index: 1000;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    opacity: 0;
-    transform: translateY(10px); /* Décalage initial */
-    transition: opacity 0.2s ease, transform 0.2s ease;
-}
-
-.emoji-picker-container.active {
-    display: flex;
-    opacity: 1;
-    transform: translateY(0); /* Retourne à sa position normale */
-}
-
-
-#emoji-picker-container {
-    position: absolute;
-    bottom: 60px; /* Ajuste selon la hauteur de ton champ texte */
-    left: 15%;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    width: 250px;
-    max-height: 300px;
-    overflow: hidden;
-    z-index: 1000;
-}
-                .emoji-search-container {
-                    margin-bottom: 10px;
-                }
-            
-                .emoji-search-container input {
-                    width: 100%;
-                    padding: 5px;
-                    border: 1px solid #ccc;
-                    border-radius: 5px;
-                }
-            
-                #emoji-list {
-                    flex-grow: 1;
-                    overflow-y: auto;
-                }
-            
-                .emoji-item {
-                    display: inline-block;
-                    padding: 5px;
-                    font-size: 24px;
-                    cursor: pointer;
-                }
-
-
-    </style>
+    <link rel="stylesheet" style="text/css" href="{{ asset('css/Clans/canalClan.css') }}">
 @endsection()
 
 @section('contenu')
@@ -449,10 +201,10 @@
                         @if (isset($membres))
                             @foreach ($membres as $membre)
                                 <div class="membre">
-                                    <a href="">
+                                    <a href="{{ route('profil.profilPublic', ['email' => $membre->email]) }}">
                                         <img src="{{ asset($membre->imageProfil) }}">
                                         <div>
-                                            {{ $membre->prenom }} {{ $membre->nom }}
+                                            @if($membre->id == $clan->adminId)ADMIN - @endif{{ $membre->prenom }} {{ $membre->nom }}
                                         </div>
                                     </a>
                                 </div>
@@ -588,6 +340,7 @@
     <script src="{{ asset('js/Conversations/chat.js') }}"></script>
 
 
+    <!-- Script directement dans la page car on doit référencer une librairie Laravel depuis la page (config) -->
     <script>
 
 
@@ -694,149 +447,149 @@
 
                 // Ajouter le message au chat
                 $("#chat-messages").append(`
-    <div class="messageTotal" id="message-${data.last_id}">
-        <div class="message received-message">
-            <div class="avatar bg-primary text-white rounded-circle p-2">
-                <!-- Affiche la première lettre de l'email -->
-                {{ isset($message) ? substr($message->user->email, 0, 2) : 'rien' }}
-            </div>
-            <div class="bubble">
-                <strong>{{ isset($message) ? $message->user->email : 'rien' }}</strong>
-                <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
-                <br>
-                <div class="message-text">
-                    ${messageContent}
+        <div class="messageTotal" id="message-${data.last_id}">
+            <div class="message received-message">
+                <div class="avatar bg-primary text-white rounded-circle p-2">
+                    <!-- Affiche la première lettre de l'email -->
+                    {{ isset($message) ? substr($message->user->email, 0, 2) : 'rien' }}
                 </div>
-                ${fileContent}
+                <div class="bubble">
+                    <strong>{{ isset($message) ? $message->user->email : 'rien' }}</strong>
+                    <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
+                    <br>
+                    <div class="message-text">
+                        ${messageContent}
+                    </div>
+                    ${fileContent}
+                </div>
             </div>
+            <div class="separator"></div>
         </div>
-        <div class="separator"></div>
-    </div>
-`);
+    `);
 
-                // Scroll au bas des messages
-                $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
-            }
-        });
+                    // Scroll au bas des messages
+                    $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
+                }
+            });
 
 
 
 
 
 
-        $("form").submit(function(e) {
-            e.preventDefault();
+            $("form").submit(function(e) {
+                e.preventDefault();
 
-            let formData = new FormData();
-            formData.append("_token", "{{ csrf_token() }}");
-            formData.append("message", $("input[name='content']").val());
-            formData.append("from", userId);
-            formData.append("to", friendId);
-            formData.append("canal", canal);
-
-
-            let fileInput = $("input[name='fichier']")[0]; // Assurez-vous que l'input file a name='fichier'
-            if (fileInput.files.length > 0) {
-                formData.append("fichier", fileInput.files[0]); // Ajoute l'image ou le fichier si présent
-            }
-
-            $.ajax({
-                type: "POST",
-                url: "/broadcastClan",
-                headers: {
-                    "X-Socket-Id": pusher.connection.socket_id,
-                },
-                data: formData,
-                processData: false, // Ne pas traiter les données
-                contentType: false, // Ne pas définir de type de contenu
-            }).done(function(res) {
+                let formData = new FormData();
+                formData.append("_token", "{{ csrf_token() }}");
+                formData.append("message", $("input[name='content']").val());
+                formData.append("from", userId);
+                formData.append("to", friendId);
+                formData.append("canal", canal);
 
 
-                $("#preview-container").html("");
-                $("input[name='fichier']").val(""); // Réinitialiser l'input file
+                let fileInput = $("input[name='fichier']")[0]; // Assurez-vous que l'input file a name='fichier'
+                if (fileInput.files.length > 0) {
+                    formData.append("fichier", fileInput.files[0]); // Ajoute l'image ou le fichier si présent
+                }
 
-                let avatarText = res.sender_email.substring(0, 2);
-                let messageContent = res.message ? `<p>${res.message}</p>` : "";
+                $.ajax({
+                    type: "POST",
+                    url: "/broadcastClan",
+                    headers: {
+                        "X-Socket-Id": pusher.connection.socket_id,
+                    },
+                    data: formData,
+                    processData: false, // Ne pas traiter les données
+                    contentType: false, // Ne pas définir de type de contenu
+                }).done(function(res) {
 
 
-                // Déterminer si c'est une image ou un fichier à télécharger
-                let fileExtension = res.fichier ? res.fichier.split('.').pop().toLowerCase() : "";
-                let isImage = ["jpg", "jpeg", "png", "gif"].includes(fileExtension);
-                let fileContent = "";
+                    $("#preview-container").html("");
+                    $("input[name='fichier']").val(""); // Réinitialiser l'input file
 
-                if (res.fichier) {
-                    if (isImage) {
-                        fileContent =
-                            `<img src="${res.fichier}" class="message-image" alt="Image envoyée">`;
-                    } else {
-                        fileContent = `<a href="../${res.fichier}" target="_blank" class="text-blue-500">
-            📄 Télécharger ${res.fichier.split('/').pop()}
-        </a>`;
+                    let avatarText = res.sender_email.substring(0, 2);
+                    let messageContent = res.message ? `<p>${res.message}</p>` : "";
+
+
+                    // Déterminer si c'est une image ou un fichier à télécharger
+                    let fileExtension = res.fichier ? res.fichier.split('.').pop().toLowerCase() : "";
+                    let isImage = ["jpg", "jpeg", "png", "gif"].includes(fileExtension);
+                    let fileContent = "";
+
+                    if (res.fichier) {
+                        if (isImage) {
+                            fileContent =
+                                `<img src="${res.fichier}" class="message-image" alt="Image envoyée">`;
+                        } else {
+                            fileContent = `<a href="../${res.fichier}" target="_blank" class="text-blue-500">
+                📄 Télécharger ${res.fichier.split('/').pop()}
+            </a>`;
+                        }
                     }
-                }
 
-                $("#chat-messages").append(`
-    <div class="messageTotal" id="message-${res.last_id}">
-        <div class="message own-message">
-            <button class="delete-btn" data-id="${res.last_id}">🗑️</button>
-            <div class="bubble">
-                <strong>${res.sender_email}</strong>
-                <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
-                <br>
-                <div class="message-text">
-                    ${messageContent}
+                    $("#chat-messages").append(`
+        <div class="messageTotal" id="message-${res.last_id}">
+            <div class="message own-message">
+                <button class="delete-btn" data-id="${res.last_id}">🗑️</button>
+                <div class="bubble">
+                    <strong>${res.sender_email}</strong>
+                    <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
+                    <br>
+                    <div class="message-text">
+                        ${messageContent}
+                    </div>
+                    ${fileContent}
                 </div>
-                ${fileContent}
+                <div class="ml-4 avatar bg-primary text-white rounded-circle p-2">${avatarText}</div>
             </div>
-            <div class="ml-4 avatar bg-primary text-white rounded-circle p-2">${avatarText}</div>
+            <div class="separator"></div>
         </div>
-        <div class="separator"></div>
-    </div>
-`);
+    `);
 
-                $("input[name='content']").val("");
-                $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
-            }).fail(function(xhr, status, error) {
-                console.error("Erreur d'envoi :", error);
+                    $("input[name='content']").val("");
+                    $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
+                }).fail(function(xhr, status, error) {
+                    console.error("Erreur d'envoi :", error);
+                });
             });
-        });
 
 
 
 
 
-        // ---------------------------
-        // Gestion de la suppression des messages
-        // ---------------------------
+            // ---------------------------
+            // Gestion de la suppression des messages
+            // ---------------------------
 
-        // Lorsqu'un utilisateur clique sur le bouton de suppression
-        $(document).on('click', '.delete-btn', function(e) {
-            e.preventDefault();
-            let messageId = $(this).data('id');
-            $.ajax({
-                type: "DELETE",
-                url: `/messages/${messageId}`,
-                data: {
-                    _token: "{{ csrf_token() }}"
-                }
-            }).done(function(res) {
-                if (res.success) {
-                    // Supprime le message du DOM
-                    $(`#message-${messageId}`).remove();
-                } else {
+            // Lorsqu'un utilisateur clique sur le bouton de suppression
+            $(document).on('click', '.delete-btn', function(e) {
+                e.preventDefault();
+                let messageId = $(this).data('id');
+                $.ajax({
+                    type: "DELETE",
+                    url: `/messages/${messageId}`,
+                    data: {
+                        _token: "{{ csrf_token() }}"
+                    }
+                }).done(function(res) {
+                    if (res.success) {
+                        // Supprime le message du DOM
+                        $(`#message-${messageId}`).remove();
+                    } else {
+                        alert("Erreur lors de la suppression du message.");
+                    }
+                }).fail(function() {
                     alert("Erreur lors de la suppression du message.");
-                }
-            }).fail(function() {
-                alert("Erreur lors de la suppression du message.");
+                });
             });
-        });
 
-        // Écouter l'événement de suppression spécifique diffusé par Pusher
-        channel.bind('message-deleted', function(data) {
-            console.log("Message supprimé:", data); // Affiche l'ID du message supprimé pour le débogage
-            // Supprime le message correspondant du DOM
-            $(`#message-${data.messageId}`).remove();
-        });
+            // Écouter l'événement de suppression spécifique diffusé par Pusher
+            channel.bind('message-deleted', function(data) {
+                console.log("Message supprimé:", data); // Affiche l'ID du message supprimé pour le débogage
+                // Supprime le message correspondant du DOM
+                $(`#message-${data.messageId}`).remove();
+            });
     </script>
 
 

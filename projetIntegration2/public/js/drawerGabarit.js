@@ -1,5 +1,6 @@
 // drawerGabarit.js
-navBar = document.getElementById("navBar");
+navBar = document.querySelector("header");
+console.log(navBar);
 const hamburgerBtn = document.getElementById("hamburgerBtn");
 const mobileMenu = document.getElementById("mobileMenu");
 
