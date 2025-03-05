@@ -6,10 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    //A qui appartien cette migration
     public function up(): void
     {
         Schema::create('clan_users', function (Blueprint $table) {
@@ -23,11 +19,16 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
+        // supprimer les clés étrangères
+        if(Schema::hasTable('clan_users')) {
+            Schema::table('clan_users', function(Blueprint $table){
+                $table->dropForeign(['clan_id']);
+                $table->dropForeign(['user_id']);
+            });
+        }
+
         Schema::dropIfExists('clan_users');
     }
 };

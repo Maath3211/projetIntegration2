@@ -19,6 +19,7 @@
 <body class=" flex h-screen" id="background">
     <main id="main">
       <div class="container-fluid">
+        <!-- Navigation -->
         <div class="row">
           <div class="col-md-2 colonneNavigationParametres">
             <div class="conteneurNavigation">
@@ -32,6 +33,7 @@
             </div>
           </div>
 
+          <!-- Paramètres -->
           <div class="col-md-10 colonneParametres">
             <div class="conteneurParametres ">
 
@@ -43,12 +45,11 @@
                 </div>
               </a>
             </div>
-            <!-- TODO - CHANGER L'IMAGE QUI APPARAIT POUR CELLE DU CLAN -->
             <form action="{{ route('clan.miseAJour.general', ['id' => $id]) }}" method="POST" enctype="multipart/form-data" id="formulaireSoumission">
               @csrf
               <div class="row">
                 <div class="col-md-12 parametresGeneraux">
-                  <img src="{{asset('img/Clans/clan_' . $id . '_.png')}}" alt="erreur lors de l'affichage de votre image.">
+                  <img src="{{asset($clan->image)}}" alt="erreur lors de l'affichage de votre image.">
                   <div class="formulaireAjoutImage">
                     <div>Une image de forme carrée est recommendée pour le clan.</div>
                       <div class="form-group">
@@ -58,7 +59,7 @@
                     </div>
                     <div class="nomClan">
                         <label for="nomClan">Nom du clan</label>
-                        <input type="text" class="form-control" id="nomClan" name="nomClan" value="Workout Master">
+                        <input type="text" class="form-control" id="nomClan" name="nomClan" value="{{$clan->nom}}">
                     </div>
                 </div>
               </div>
@@ -71,7 +72,49 @@
             </form>
           </div>
         </div>
+        <!-- Fenêtre contextuelle pour confirmer la suppression du clan -->
+        <div id="confirmationSuppressionClan" class="fenetreCategorie">
+          <div class="conteneurConfirmation">
+              <div class="titreConfirmation">
+                  <div>Supprimer le clan</div>
+              </div>
+              <div class="texteConfirmation">
+                  <div>Êtes-vous sur de vouloir supprimer le clan? Cette action est irréversible.</div>
+              </div>
+
+              <div class="boutonsConfirmation">
+                  <button class="annuler" type="button">Annuler</button>
+                  <button id="confirmerSuppressionClan" type="button">Supprimer</button>
+              </div>
+          </div>
       </div>
+      <form action="{{ route('clan.supprimer', ['id' => $id]) }}" method="POST" enctype="multipart/form-data" id="formulaireSuppressionClan">@csrf</form>
+      </div>
+      <div id="conteneurMessages">
+        @if(session('message'))
+          <div class="alert" id="messageSucces">
+            <span>{{session('message')}}</span>
+            <button class="close-btn">X</button>
+          </div>
+        @endif
+
+        <!--Obligé d'utiliser $errors ici c'est la facon que laravel gère ses erreurs-->
+        @if($errors->any() || session('erreur'))
+          <div class="alert" id="messageErreur">
+            <ul>
+              @if($errors->any())
+                @foreach($errors->all() as $erreur)
+                  <li>{{ $erreur }}</li>
+                @endforeach
+              @endif
+              @if(session('erreur'))
+                <li>{{ session('erreur') }}</li>
+              @endif
+            </ul>
+            <button class="close-btn">X</button>
+          </div>
+        @endif
+    </div>
     </main>
  <footer>
 </footer>

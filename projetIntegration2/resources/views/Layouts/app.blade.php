@@ -44,40 +44,89 @@
       </a>
 
       <!-- Tous les clans dont l'utilisateur actuel fait partie -->
-      <a href="{{ route('clan.montrer', ['id' => 1]) }}">
-        <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div>
-      </a>
-      <a href="{{ route('clan.montrer', ['id' => 2]) }}">
-        <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div>
-      </a>
-      <a href="{{ route('clan.montrer', ['id' => 3]) }}">
-        <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div>
-      </a>
-      <a href="{{ route('clan.montrer', ['id' => 4]) }}">
-        <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div>
-      </a>
-      <a href="{{ route('clan.montrer', ['id' => 5]) }}">
-        <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div>
-      </a>
-      <a href="{{ route('clan.montrer', ['id' => 6]) }}">
-        <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div>
-      </a>
-      <a href="{{ route('clan.montrer', ['id' => 7]) }}">
-        <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset('img/workoutMasterLogo.jpg') }}" class="object-cover w-full h-full"></div>
-      </a>
+      @if(isset($clans))
+        @foreach($clans as $clan)
+          <a href="{{ route('clan.montrer', ['id' => $clan->id]) }}">
+            <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset($clan->image) }}" class="object-cover w-full h-full"></div>
+          </a>
+        @endforeach
+      @endif
 
-      <form action="{{route('profil.deconnexion')}}" method="post">
-        @csrf
-        <button class="w-16 h-16 overflow-hidden" id="imgDeconnexion"><img src="{{ asset('img/logout.png') }}" class="object-cover w-full h-full"></button>
-      </form>
-    </aside>
-  </header>
+
+      <a id="creerClan"> <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee creerClan"><i class="fa-regular fa-square-plus fa-2xl"></i></i></div></a>
+
+        <form action="{{route('profil.deconnexion')}}" method="post">
+          @csrf
+          <button class="w-16 h-16 overflow-hidden" id="imgDeconnexion"><img src="{{ asset('img/logout.png') }}" class="object-cover w-full h-full"></button>
+        </form>
+      
+      
+      </aside>
+    </header>
+      
 
   <!-- Contenu principal -->
   <main>
     <div>
       @yield('contenu')
+      <form action="{{ route('clan.creer') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        <div id="fenetreAjoutClan" class="fenetreCategorie">
+          <div class="conteneurConfirmation">
+              <div class="titreConfirmation" style="display: flex; align-items: center;">
+                  <img src="{{ asset('img/Clans/default.jpg') }}" alt="Image du clan" class="apercuImage" style="width: 50px; height: 50px; margin-right: 10px;">
+                  <input type="text" name="nomClan" class="form-control entreeNomClan" placeholder="Nom du clan">
+              </div>
+              <div class="optionsClan">
+                  <div class="televersementImage" style="margin-top: 10px;">
+                    <button id="selectionnerImage" type="button">Choisir une image</button>
+                    <input type="file" id="entreeImageCachee" name="imageClan" accept="image/*">
+                  </div>
+                  <div class="optionPublic" style="margin-top: 10px;">
+                    <label>
+                        Clan public
+                        <input type="checkbox" name="clanPublic" class="form-check-input">
+                    </label>
+                </div>
+              </div>
+              <span class="messageErreur"></span>
+
+      
+              <div class="boutonsConfirmation">
+                  <button class="annuler" type="button">Annuler</button>
+                  <button id="confirmerAjoutClan" type="submit">Confirmer</button>
+              </div>
+          </div>
+        </div>
+      </form>
       @livewireScripts
+
+      <!-- Affichage des erreurs -->
+      <div id="conteneurMessages">
+        @if(session('message'))
+          <div class="alert" id="messageSucces">
+            <span>{{session('message')}}</span>
+            <button class="close-btn">X</button>
+          </div>
+        @endif
+
+        <!--Obligé d'utiliser $errors ici c'est la facon que laravel gère ses erreurs-->
+        @if($errors->any() || session('erreur'))
+          <div class="alert" id="messageErreur">
+            <ul>
+              @if($errors->any())
+                @foreach($errors->all() as $erreur)
+                  <li>{{ $erreur }}</li>
+                @endforeach
+              @endif
+              @if(session('erreur'))
+                <li>{{ session('erreur') }}</li>
+              @endif
+            </ul>
+            <button class="close-btn">X</button>
+          </div>
+        @endif
+    </div>
     </div>
   </main>
 
@@ -87,11 +136,13 @@
 
 </body>
 <script src="https://cdn.tailwindcss.com"></script>
-<!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>-->
+
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 @yield('scripts')
+
+<script src="{{asset('js/gabaritJs.js')}}" crossorigin="anonymous"></script>
 
 </html>

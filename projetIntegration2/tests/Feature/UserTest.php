@@ -6,6 +6,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Models\User;
+use Illuminate\Support\Carbon;
 
 class UserTest extends TestCase
 {
@@ -17,6 +18,7 @@ class UserTest extends TestCase
         $user = User::factory()->create([
             'email' => 'test@test.com',
             'password' => bcrypt($password = 'adminggg'),
+            'email_verified_at' => Carbon::now(),
         ]);
 
         $response = $this->post('/connexion', [

@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\AuthMiddleware;
+use App\Http\Middleware\VerifierMembreClan;
+use App\Http\Middleware\VerifierAdminClan;
 use App\Http\Controllers\UserCommunication;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\ScoresController;
@@ -10,6 +13,7 @@ use App\Http\Controllers\GymController;
 use App\Http\Controllers\ClanController;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\AmisController;
 use App\Models\User;
 use App\Events\PusherBroadcast;
 use App\Http\Controllers\ObjectifController;
@@ -18,48 +22,42 @@ Route::get('/', function () {
     return redirect()->route('profil.pageConnexion');
 });
 
-Route::GET(
-    '/clan/{id}',
-    [ClanController::class, 'index']
-)->name('clan.montrer');
+Route::middleware([VerifierMembreClan::class])->group(function () {
+    Route::GET('/clan/{id}', [ClanController::class, 'index'])->name('clan.montrer');
+});
 
-Route::GET('/clan/{id}/parametres/general',
-[ClanController::class, 'parametres'])->name('clan.parametres');
+Route::middleware([AuthMiddleware::class])->group(function () {
+    Route::POST('/clan/creer', [ClanController::class, 'creerClan'])->name('clan.creer');
+    Route::GET('/clan/invitation/{clan}', [ClanController::class, 'accepterInvitation'])->name('invitation.accepter');
+});
 
-Route::POST('/clan/{id}/action/canal',
-[ClanController::class, 'actionsCanal'])->name('canal.actions');
-
-Route::POST('/clan/{id}/parametres/general', 
-[ClanController::class, 'parametres'])->name('clan.parametres.post');
-
-Route::POST('/clan/{id}/enregistrerGeneral',
-[ClanController::class, 'miseAJourGeneral'])->name('clan.miseAJour.general');
-
-Route::GET('/clan/{id}/parametres/canaux',
-[ClanController::class, 'parametres'])->name('clan.parametres.canaux');
-
-Route::POST('/clan/{id}/enregistrerCanaux',
-[ClanController::class, 'miseAJourCanaux'])->name('clan.miseAJour.canaux');
-
-Route::POST('/clan/{id}/televerser',
-[ClanController::class, 'televerserImage'])->name('clan.televerserImage');
-Route::GET(
-    '/clan/{id}/parametres',
-    [ClanController::class, 'parametres']
-)->name('clan.parametres');
-
-Route::POST(
-    '/clan/{id}/parametres',
-    [ClanController::class, 'parametres']
-)->name('clan.parametres.post');
-
-Route::POST(
-    '/clan/{id}/televerser',
-    [ClanController::class, 'televerserImage']
-)->name('clan.televerserImage');
+Route::middleware([VerifierAdminClan::class])->group(function () {
+    Route::GET('/clan/{id}/parametres/general', [ClanController::class, 'parametres'])->name('clan.parametres');
+    Route::POST('/clan/{id}/action/canal', [ClanController::class, 'actionsCanal'])->name('canal.actions');
+    Route::POST('/clan/{id}/parametres/general',  [ClanController::class, 'parametres'])->name('clan.parametres.post');
+    Route::GET('/clan/{id}/parametres/canaux', [ClanController::class, 'parametres'])->name('clan.parametres.canaux');
+    Route::POST('/clan/{id}/enregistrerCanaux', [ClanController::class, 'miseAJourCanaux'])->name('clan.miseAJour.canaux');
+    Route::POST('/clan/{id}/enregistrerGeneral', [ClanController::class, 'miseAJourGeneral'])->name('clan.miseAJour.general');
+    Route::GET('/clan/{id}/parametres/membres', [ClanController::class, 'parametres'])->name('clan.parametres.membres');
+    Route::POST('/clan/{id}/enregistrerMembres', [ClanController::class, 'miseAJourMembres'])->name('clan.miseAJour.membres');
+    Route::POST('/clan/{id}/supprimer', [ClanController::class, 'supprimer'])->name('clan.supprimer');
+    Route::POST('/clan/{id}/televerser', [ClanController::class, 'televerserImage'])->name('clan.televerserImage');
+});
 
 
-Route::GET('/yup', [UserCommunication::class,'index'])->name('user.index');
+// POUR XAVIER, METTRE LES ROUTES QUE TU AS BESOIN
+Route::GET('/clan/{id}/canal/{canal}',
+[ClanController::class, 'showCanalClan'])->name('clan.canal');
+//Envoyer un message dans un canal
+Route::POST('/broadcastClan', [ClanController::class,'broadcastClan']);
+Route::POST('/receiveClan', [ClanController::class,'receiveClan']);
+
+
+
+
+
+Route::GET('/yup',
+[UserCommunication::class,'index'])->name('user.index');
 
 Route::GET('/conversations/{user}', [ConversationsController::class,'show'])->name('conversations.show');
 Route::POST('/conversations/{user}', [ConversationsController::class,'store']);
@@ -68,8 +66,9 @@ Route::POST('/receive', [ConversationsController::class,'receive']);
 Route::GET('/conversations', [ConversationsController::class,'index'])->name('conversations');
 
 Route::GET('/testClan/{clans}', [ConversationsController::class,'showClan'])->name('conversations.showClan');
-Route::POST('/broadcastClan', [ConversationsController::class,'broadcastClan']);
-Route::POST('/receiveClan', [ConversationsController::class,'receiveClan']);
+//Test Clan Message
+//Route::POST('/broadcastClan', [ConversationsController::class,'broadcastClan']);
+//Route::POST('/receiveClan', [ConversationsController::class,'receiveClan']);
 Route::GET('/modificationMessage', [ConversationsController::class,'showModificationMessage'])->name('conversations.showModificationMessage');
 
 Route::delete('/messages/{message}', [ConversationsController::class, 'destroy'])->middleware('auth')->name('messages.destroy');
@@ -127,6 +126,9 @@ Route::GET('/profil',
 
 Route::GET('/profil/modification',
 [ProfilController::class,'modification'])->name('profil.modification')->middleware('auth');
+
+Route::POST('/profil/suppressionProfil',
+[ProfilController::class,'suppressionProfil'])->name('profil.suppressionProfil')->middleware('auth');
 
 Route::POST('/profil/modification/update',
 [ProfilController::class,'updateModification'])->name('profil.updateModification')->middleware('auth');
@@ -223,3 +225,22 @@ Route::get('/test-chart', [App\Http\Controllers\ScoresController::class, 'testCh
     ->name('test.chart');
 Route::get('/scores/chart-page', [App\Http\Controllers\ScoresController::class, 'showChart'])
     ->name('scores.chart-page');
+
+//Route pour l'ajout/recherche d'amis/clans
+Route::get('amis', [AmisController::class, 'index'])->name('amis.index');
+Route::match(['get','post'], 'amis/recherche', [AmisController::class, 'recherche'])->name('amis.recherche');
+Route::post('amis/ajouter', [AmisController::class, 'ajouter'])->name('amis.ajouter');
+Route::post('clans/recherche', [AmisController::class, 'rechercheClan'])->name('clans.recherche');
+
+// Affichage de la liste des demandes d'amis
+Route::get('amis/demandes', [AmisController::class, 'demandes'])->name('amis.demandes');
+
+// Traitement de l'acceptation d'une demande d'ami
+Route::post('amis/accepter', [AmisController::class, 'accepter'])->name('amis.accepter');
+
+// Traitement du refus d'une demande d'ami
+Route::post('amis/refuser', [AmisController::class, 'refuser'])->name('amis.refuser');
+
+// Routes pour la recherche et la gestion des clans
+Route::match(['get','post'], 'clans/recherche', [ClanController::class, 'rechercheClans'])->name('clans.recherche');
+Route::post('clans/rejoindre', [ClanController::class, 'rejoindre'])->name('clans.rejoindre');

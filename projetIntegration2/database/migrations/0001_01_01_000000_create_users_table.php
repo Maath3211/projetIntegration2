@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('prenom');
             $table->string('nom');
-            $table->string('imageProfil'); // !! Ajouter défauts
+            $table->string('imageProfil')->default('img/Utilisateurs/utilisateurParDefaut.jpg');
             $table->string('aPropos')->nullable();
             $table->string('pays');
             $table->string('genre');

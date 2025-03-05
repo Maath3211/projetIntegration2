@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
+    const supprimerClan = document.getElementById('confirmationSuppressionClan');
     const categoriesASupprimer = [];
     const categoriesRenommees = {};
     const categoriesAAjouter = [];
@@ -15,6 +16,17 @@ document.addEventListener("DOMContentLoaded", function() {
             } else if(categorie.classList.contains('membres')){
                 window.location.href = "membres";
             }
+
+            if(categorie.classList.contains('supprimer')){
+                supprimerClan.style.display = 'flex';
+            }
+        });
+    });
+
+    // pour fermer une fenêtre contextuelle de notification
+    document.querySelectorAll('.close-btn').forEach(bouton => {
+        bouton.addEventListener('click', function(){
+            bouton.parentElement.style.display = 'none';
         });
     });
 
@@ -137,10 +149,12 @@ document.addEventListener("DOMContentLoaded", function() {
     GESTION DU FRONT END DE L'AJOUT D'UNE CATÉGORIE DE CANAL
     */
 
+    // afficher la fenêtre contextuelle d'ajout d'une catégorie
     document.querySelector('.ajouterCategorie').addEventListener('click', function(){
         document.getElementById('ajoutCategorie').style.display = 'flex';
     });
 
+    // quand il confirme l'ajout d'une catégorie
     document.getElementById('confirmerAjout').addEventListener('click', function(){
         // si une valeur a été entrée
         if(this.parentElement.parentElement.querySelector('.entreeNomCategorie').value !== ''){
@@ -192,6 +206,31 @@ document.addEventListener("DOMContentLoaded", function() {
             this.parentElement.parentElement.querySelector('.entreeNomCategorie').value = '';
         }
     });
+
+    // quand il confirme la suppression d'une catégorie
+    supprimerClan.querySelector('#confirmerSuppressionClan').addEventListener('click', function() {
+        document.querySelector('#formulaireSuppressionClan').submit();
+    });
     
+    // pour fermer une fenêtre contextuelle de message d'erreur ou de succès
+    document.querySelectorAll('.close-btn').forEach(bouton => {
+        bouton.addEventListener('click', function(){
+            bouton.parentElement.style.display = 'none';
+        });
+    });
+
+    // pour fermer les fenêtres contextuelles lorsqu'il appuie sur Esc
+    document.addEventListener('keydown', function(event){
+        if (event.key === 'Escape'){
+            if(supprimerClan.style.display == 'flex')
+                supprimerClan.style.display = 'none';
+            if(document.getElementById('confirmationSuppression').style.display == 'flex')
+                document.getElementById('confirmationSuppression').style.display = 'none';
+            if(document.getElementById('modificationNomCategorie').style.display == 'flex')
+                document.getElementById('modificationNomCategorie').style.display = 'none';
+            if(document.getElementById('ajoutCategorie').style.display == 'flex')
+                document.getElementById('ajoutCategorie').style.display = 'none';
+        }
+    });
 
 });

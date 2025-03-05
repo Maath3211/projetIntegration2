@@ -85,6 +85,13 @@
             border: none;
             outline: none;
         }
+        .message-text {
+
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            max-width: 500px; /* Ajuste la largeur selon ton design */
+
+        }
 
         .separator {
             display: block;
@@ -291,11 +298,13 @@
                             </div>
                         </div>
                     </div>
+
+
+
+
+
+
                     <div class="col-md-8 colonneMessages2">
-
-
-
-
                         <!-- Contenu supprimé -->
                         <div class="chat-messages" id="chat-messages">
 
@@ -324,7 +333,9 @@
                                             <strong>{{ $message->user->email }}</strong>
                                             <span class="text-muted">{{ substr($message->created_at, 11, 5) }}</span>
                                             <br>
-                                            <p>{!! nl2br(e($message->message)) !!}</p>
+                                            <div class="message-text">
+                                                <p>{!! nl2br(e($message->message)) !!}</p>  
+                                            </div>
 
                                             @if ($message->fichier)
                                                 @php
@@ -409,48 +420,11 @@
                         </u>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                     </div>
+
+
+
+
                     <div class="col-md-2 colonneMembres">
                         <div class="contenuScrollableMembres">
                             <div class="membre">
@@ -633,14 +607,6 @@
     <script src="{{ asset('js/Conversations/chat.js') }}"></script>
 
         <script>
-            function formatMessage(message) {
-                const maxLength = 50; // Maximum length before adding a newline
-                let formattedMessage = '';
-                for (let i = 0; i < message.length; i += maxLength) {
-                    formattedMessage += message.substring(i, i + maxLength) + '\n';
-                }
-                return formattedMessage;
-            }
 
 
 
@@ -755,10 +721,12 @@
                         {{ isset($message) ? substr($message->user->email, 0, 2) : 'rien' }}
                     </div>
                     <div class="bubble">
-                        <strong>${data.sender_email ? data.sender_email : ''}</strong>
+                        <strong>{{ isset($message) ? $message->user->email : 'rien' }}</strong>
                         <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
                         <br>
-                        ${messageContent}
+                        <div class="message-text">
+                            ${messageContent}
+                        </div>
                         ${fileContent}
                     </div>
                 </div>
@@ -808,6 +776,7 @@
                     let avatarText = res.sender_email.substring(0, 2);
                     let messageContent = res.message ? `<p>${res.message}</p>` : "";
 
+
                     // Déterminer si c'est une image ou un fichier à télécharger
                     let fileExtension = res.fichier ? res.fichier.split('.').pop().toLowerCase() : "";
                     let isImage = ["jpg", "jpeg", "png", "gif"].includes(fileExtension);
@@ -832,7 +801,9 @@
                         <strong>${res.sender_email}</strong>
                         <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
                         <br>
-                        ${messageContent}
+                        <div class="message-text">
+                            ${messageContent}
+                        </div>
                         ${fileContent}
                     </div>
                     <div class="ml-4 avatar bg-primary text-white rounded-circle p-2">${avatarText}</div>
