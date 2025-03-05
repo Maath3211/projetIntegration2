@@ -115,7 +115,7 @@
   <main>
     <div>
       @yield('contenu')
-      <form action="{{ route('clan.creer') }}" method="POST" enctype="multipart/form-data">
+      <form action="{{ route('clan.creer') }}" method="POST" enctype="multipart/form-data" id="formulaireCreationClan">
         @csrf
         <div id="fenetreAjoutClan" class="fenetreCategorie">
           <div class="conteneurConfirmation">
@@ -140,7 +140,7 @@
       
               <div class="boutonsConfirmation">
                   <button class="annuler" type="button">Annuler</button>
-                  <button id="confirmerAjoutClan" type="submit">Confirmer</button>
+                  <button id="confirmerAjoutClan" type="button">Confirmer</button>
               </div>
           </div>
         </div>
