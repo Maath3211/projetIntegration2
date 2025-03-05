@@ -80,9 +80,9 @@
         }
 
         .message-input {
-            background: pink;
+            background: #f0f0f0;
             padding: 10px;
-            border-radius: 20px;
+            border-radius: 5px;
             width: 100%;
             border: none;
             outline: none;
@@ -411,7 +411,7 @@
                                 <div class="d-flex align-items-center mt-3">
                                     <div class="file-upload-wrapper me-2">
                                         <input type="file" class="file-upload-input" name="fichier" id="fichierInput" />
-                                        <label for="fichierInput" class="file-upload-btn text-white">📁</label>
+                                        <label for="fichierInput" class="btn btn-secondary me-2 file-upload-btn text-white">📁</label>
                                     </div>
                                     <div id="emoji-picker-container" class="emoji-picker-container"></div>
                                     <button type="button" id="emoji-btn"
@@ -638,6 +638,8 @@
         const friendId = "{{ request()->id }}"; // ID de l'ami avec qui il discute :: Plutot le clan avec qui il discute
         const canal = "{{ request()->canal }}";
 
+        console.log("User ID:", userId);
+
 
 
         const channelName = "chat-" + friendId + "-" + canal;
@@ -701,7 +703,7 @@
                 {{ isset($message) ? substr($message->user->email, 0, 2) : 'rien' }}
             </div>
             <div class="bubble">
-                <strong>{{ isset($message) ? $message->user->email : 'rien' }}</strong>
+                <strong>${data.email}</strong>
                 <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
                 <br>
                 <div class="message-text">

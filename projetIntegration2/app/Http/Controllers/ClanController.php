@@ -670,7 +670,7 @@ class ClanController extends Controller
             ]);
     
             // Diffuser l’événement via Pusher
-            broadcast(new MessageGroup($request->message, auth()->id(), $request->canal ,$request->to, false, $lastId, $fichierNom))
+            broadcast(new MessageGroup($request->message, auth()->id(), $request->canal ,$request->to, false, $lastId, $fichierNom, auth()->user()->email))
                 ->toOthers();
     
         } catch (\Exception $e) {
