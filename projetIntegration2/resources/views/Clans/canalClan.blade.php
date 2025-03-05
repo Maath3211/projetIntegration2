@@ -456,7 +456,7 @@
                     {{ isset($message) ? substr($message->user->email, 0, 2) : 'rien' }}
                 </div>
                 <div class="bubble">
-                    <strong>{{ isset($message) ? $message->user->email : 'rien' }}</strong>
+                    <strong>${data.email ?? 'Email inconnu'}</strong>
                     <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
                     <br>
                     <div class="message-text">
