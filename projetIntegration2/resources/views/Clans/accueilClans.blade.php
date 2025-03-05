@@ -80,7 +80,7 @@
                     @if(isset($membres))
                         @foreach($membres as $membre)
                             <div class="membre">
-                                <a href="">
+                                <a href="{{ route('profil.profilPublic', ['email' => $membre->email]) }}">
                                     <img src="{{asset($membre->imageProfil)}}" > 
                                     <div>
                                         @if($membre->id == $clan->adminId)ADMIN - @endif{{$membre->prenom}} {{$membre->nom}}

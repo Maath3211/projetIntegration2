@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function(){
     const creationClan = document.querySelector('#fenetreAjoutClan');
     const boutonTeleverserImage = creationClan.querySelector('#selectionnerImage');
+    const boutonConfirmerCreationClan = document.getElementById('confirmerAjoutClan');
     const entreeImageCachee = creationClan.querySelector('#entreeImageCachee');
     const apercuImage = creationClan.querySelector('.apercuImage');
     const srcParDefaut = apercuImage.src;
@@ -28,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function(){
             this.style.borderColor = 'red';
         }
         // Règle 2 : pas de nombres ou de symboles, juste les caractères UTF-8 et les traits (-) sont acceptés.
-        else if (!/^[A-Za-z\u00C0-\u00FF-]+$/.test(valeur) && valeur.length !== 0){
+        else if (!/^[A-Za-z\u00C0-\u00FF-\s]+$/.test(valeur) && valeur.length !== 0){
             messageErreur.textContent = "Seulement les lettre (UTF-8) et les traits (-) sont permis."
             messageErreur.style.display = "block";
             this.style.borderColor = 'red';
@@ -57,6 +58,12 @@ document.addEventListener('DOMContentLoaded', function(){
         }
 
         liseur.readAsDataURL(fichier);
+    });
+
+    // Soumettre le formulaire lorsqu'il confirme le tout. 
+    // Obligé de le soumettre ainsi car on a plusieurs formulaires et ça soumets un autre lorsqu'on appuie dessus sinon.
+    boutonConfirmerCreationClan.addEventListener('click', function() {
+        document.getElementById('formulaireCreationClan').submit();
     });
 
     // pour pouvoir fermer les fenêtres contextuelles d'erreur ou de messages.

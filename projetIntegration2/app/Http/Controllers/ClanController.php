@@ -52,6 +52,11 @@ class ClanController extends Controller
         $membres = $clan->utilisateurs;
         $categories = CategorieCanal::where('clanId', '=', $id)->get();
         $canauxParCategorie = Canal::whereIn('categorieId', $categories->pluck('id'))->get()->groupBy('categorieId');
+        Log::info($canauxParCategorie);
+
+        if(!$canauxParCategorie->isEmpty()){
+            return redirect()->route('clan.canal', ['id' => $id, 'canal' => $canauxParCategorie->first()->first()->id]);
+        }
 
         return View('Clans.accueilClans', compact('id', 'clans', 'clan', 'membres', 'categories', 'canauxParCategorie', 'utilisateur'));
     }
@@ -203,7 +208,7 @@ class ClanController extends Controller
                 return redirect()->back()->with('erreur', 'Les catégories ne doivent pas dépasser les 50 caractères.');
             } 
             // Critère 2: Les catégoires de canal ne doivent pas contenir de chiffres ou de symboles. Juste UTF-8, espaces & tirets.
-            else if(!preg_match('/^[\p{L}-]+$/u', $categorie)) {
+            else if(!preg_match('/^[\p{L}\s-]+$/u', $categorie)) {
                 return redirect()->back()->with('erreur', 'Les catégories ne doivent pas contenir de chiffres ou de symboles. Seul les lettres UTF-8 et les traits (-) sont permis.');
             }
 
@@ -237,7 +242,7 @@ class ClanController extends Controller
                 return redirect()->back()->with('erreur', 'Les catégories ne doivent pas dépasser les 50 caractères.');
             } 
             // Critère 2: Les catégoires de canal ne doivent pas contenir de chiffres ou de symboles. Juste UTF-8, espaces & tirets.
-            else if(!preg_match('/^[\p{L}-]+$/u', $valeurs[1])) {
+            else if(!preg_match('/^[\p{L}\s-]+$/u', $valeurs[1])) {
                 return redirect()->back()->with('erreur', 'Les catégories ne doivent pas contenir de chiffres ou de symboles. Seul les lettres UTF-8 et les traits (-) sont permis.');
             }
 
@@ -288,11 +293,11 @@ class ClanController extends Controller
             if($action === 'ajouter') {
                 $requete['nouveauNom'] = str_replace(' ', '-', $requete['nouveauNom']);
 
-                // Critère 1: Les catégories de canal de doivent pas dépasser les 50 caractères.
+                // Critère 1: Les canaux de doivent pas dépasser les 50 caractères.
                 if(strlen($requete['nouveauNom']) > 50){
                     return redirect()->back()->with('erreur', 'Les canaux ne doivent pas dépasser les 50 caractères.');
                 } 
-                // Critère 2: Les catégoires de canal ne doivent pas contenir de chiffres ou de symboles. Juste UTF-8, espaces & tirets.
+                // Critère 2: Les canaux ne doivent pas contenir de chiffres ou de symboles. Juste UTF-8, espaces & tirets.
                 else if(!preg_match('/^[\p{L}-]+$/u', $requete['nouveauNom'])) {
                     return redirect()->back()->with('erreur', 'Les canaux ne doivent pas contenir de chiffres ou de symboles. Seul les lettres UTF-8 et les traits (-) sont permis.');
                 }
