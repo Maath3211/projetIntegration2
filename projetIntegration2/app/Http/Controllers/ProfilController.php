@@ -56,7 +56,7 @@ class ProfilController extends Controller
     public function storeCreerCompte(CreationCompteRequest $request)
     {
         if (User::where('email', $request->email)->exists()) {
-            return redirect()->route('profil.connexion')->withErrors( ['Un compte existe déjà avec cet email']);
+            return redirect()->route('profil.connexion')->withErrors(['Un compte existe déjà avec cet email']);
         }
         $utilisateur = new User();
         $utilisateur->email = $request->email;
@@ -232,17 +232,20 @@ class ProfilController extends Controller
     {
         $utilisateur = Auth::user();
         $clans = $utilisateur->clans; // Fetch all clans associated with the user
-        return view('profil.profil', compact('utilisateur', 'clans' ));
+        return view('profil.profil', compact('utilisateur', 'clans'));
     }
 
     public function profilPublic($email)
     {
-        $utilisateur = User::where('email', $email)->first();
+        $utilisateur = Auth::user();
         $clans = $utilisateur->clans;
+        $utilisateur = User::where('email', $email)->first();
+        $clansAway = $utilisateur->clans;
+        
         if (!$utilisateur) {
             return redirect()->route('profil.profil')->withErrors(['Utilisateur introuvable']);
         }
-        return View('profil.profil', compact('utilisateur', 'clans'));
+        return View('profil.profil', compact('utilisateur', 'clansAway', 'clans'));
     }
 
     public function suppressionProfil()
@@ -268,7 +271,9 @@ class ProfilController extends Controller
         $countries = Cache::remember('countries_list_french', now()->addDay(), function () {
             return $this->listePays();
         });
-        return View('profil.modification', compact('countries'));
+        $utilisateur = Auth::user();
+        $clans = $utilisateur->clans;
+        return View('profil.modification', compact('countries', 'clans'));
     }
 
     public function updateModification(ModificationRequest $request)
@@ -279,6 +284,8 @@ class ProfilController extends Controller
         $utilisateur->pays = $request->input('pays');
         $utilisateur->genre = $request->input('genre');
         $utilisateur->dateNaissance = $request->input('dateNaissance');
+        $utilisateur->aPropos = $request->input('aPropos');
+
 
         if ($request->hasFile('imageProfil')) {
             if ($utilisateur->imageProfil && file_exists(public_path($utilisateur->imageProfil))) {

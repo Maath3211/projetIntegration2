@@ -1,5 +1,3 @@
-
-
 body {
     background-color: rgb(54, 54, 54);
     color: aliceblue;
@@ -225,4 +223,107 @@ main{
     background-color: #c22c2c;
     border: 2px solid rgba(71, 70, 70, 0.8);
     color: black;
+}
+
+/* Desktop - show navbar, hide hamburger */
+@media screen and (min-width: 992px) {
+    #navBar {
+        display: block;
+    }
+    #hamburgerBtn, .mobile-menu {
+        display: none;
+    }
+}
+
+/* Updated Mobile - hide navbar, show hamburger */
+@media screen and (max-width: 991px) {
+    #navBar {
+        display: none;
+    }
+    
+    #hamburgerBtn {
+        display: block;
+        position: fixed;
+        top: 15px;
+        left: 15px; /* Changed from right to left */
+        z-index: 1000;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 10px;
+    }
+    
+    .hamburger-line {
+        display: block;
+        width: 30px;
+        height: 3px;
+        margin: 6px auto;
+        background-color: #a9fe77;
+        transition: all 0.3s ease-in-out;
+    }
+    
+    /* Hamburger animation */
+    #hamburgerBtn.is-active .hamburger-line:nth-child(1) {
+        transform: translateY(9px) rotate(45deg);
+    }
+    
+    #hamburgerBtn.is-active .hamburger-line:nth-child(2) {
+        opacity: 0;
+    }
+    
+    #hamburgerBtn.is-active .hamburger-line:nth-child(3) {
+        transform: translateY(-9px) rotate(-45deg);
+    }
+    
+    /* Mobile menu styling */
+    .mobile-menu {
+        position: fixed;
+        top: 0;
+        left: -100px; /* Changed from -300px to -100px */
+        width: 100px; /* Changed from 80% to match the desktop navbar width */
+        max-width: 100px; /* Changed from 300px */
+        height: 100vh;
+        background-color: rgba(22, 28, 36, 0.95);
+        z-index: 999;
+        transition: left 0.3s ease-in-out;
+        padding-top: 70px;
+        box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .show-mobile-menu {
+        left: 0; /* Changed from right to left */
+    }
+    
+    /* Style menu items to match main navbar */
+    .mobile-menu a {
+        margin-bottom: 20px;
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .mobile-menu .bullePersonnalisee {
+        margin-bottom: 15px;
+    }
+    
+    /* Copy of main navbar styling for mobile */
+    .mobile-menu .w-16 {
+        width: 4rem;
+    }
+    
+    .mobile-menu .h-16 {
+        height: 4rem;
+    }
+    
+    .mobile-menu .rounded-full {
+        border-radius: 9999px;
+    }
+    
+    .mobile-menu .overflow-hidden {
+        overflow: hidden;
+    }
 }
