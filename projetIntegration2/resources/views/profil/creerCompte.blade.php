@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr-ca">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     <meta charset="UTF-8">
@@ -24,11 +24,11 @@
 
                 <form action="{{ route('profil.creerCompte') }}" method="post" enctype="multipart/form-data" id="formCreation">
                     @csrf
-                    <h1 class="h1" id="titreConnexion">Création de compte Gymcord</h1>
+                    <h1 class="h1" id="titreConnexion">{{ __('auth.create_account_title') }}</h1>
                     <div class="conteneurForm">
-                        <label for="email" class="text-vert">Adresse courriel</label>
+                        <label for="email" class="text-vert">{{ __('auth.email_address') }}</label>
                         <input type="email" class="form-control inputConnexion" id="email"
-                            placeholder="Adresse courriel" name="email" value="{{ old('email') }}">
+                            placeholder="{{ __('auth.email_address') }}" name="email" value="{{ old('email') }}">
                         <div class="conteneurErreur">
                             @error('email')
                                 <span class="text-danger">{{ $message }}&ensp;</span>
@@ -42,9 +42,9 @@
                     </div>
 
                     <div class="conteneurForm">
-                        <label for="prenom" class="text-vert">Prénom</label>
+                        <label for="prenom" class="text-vert">{{ __('auth.first_name') }}</label>
                         <input type="text" class="form-control inputConnexion" name="prenom" id="prenom"
-                            placeholder="Prénom" value="{{ old('prenom') }}">
+                            placeholder="{{ __('auth.first_name') }}" value="{{ old('prenom') }}">
                         <div class="conteneurErreur">
                             @error('prenom')
                                 <span class="text-danger">{{ $message }}&ensp;</span>
@@ -57,9 +57,9 @@
                         </div>
                     </div>
                     <div class="conteneurForm">
-                        <label for="nom" class="text-vert">Nom</label>
+                        <label for="nom" class="text-vert">{{ __('auth.last_name') }}</label>
                         <input type="text" class="form-control inputConnexion" name="nom" id="nom"
-                            placeholder="Nom" value="{{ old('nom') }}">
+                            placeholder="{{ __('auth.last_name') }}" value="{{ old('nom') }}">
                         <div class="conteneurErreur">
                             @error('nom')
                                 <span class="text-danger">{{ $message }}&ensp;</span>
@@ -72,9 +72,9 @@
                         </div>
                     </div>
                     <div class="conteneurForm">
-                        <label for="imageProfil" class="text-vert">Image de profil</label>
+                        <label for="imageProfil" class="text-vert">{{ __('auth.profile_image') }}</label>
                         <input type="file" class="form-control inputConnexion" id="imageProfil" name="imageProfil">
-                        <label for="imageProfil" class="custom-file-upload" id="filename">Aucun changement</label>
+                        <label for="imageProfil" class="custom-file-upload" id="filename">{{ __('auth.no_change') }}</label>
                         
                         <div class="conteneurErreur">
                             @error('imageProfil')
@@ -88,9 +88,9 @@
                         </div>
                     </div>
                     <div class="conteneurForm">
-                        <label for="pays" class="text-vert">Pays</label>
+                        <label for="pays" class="text-vert">{{ __('auth.country') }}</label>
                         <select class="form-select inputConnexion form-control" name="pays">
-                            <option>Choisir</option>
+                            <option>{{ __('auth.choose') }}</option>
                             @foreach ($countries as $country)
                                 <option value="{{ $country['name'] }}"
                                     {{ old('pays') == $country['name'] ? 'selected' : '' }}>{{ $country['name'] }}
@@ -109,13 +109,13 @@
                         </div>
                     </div>
                     <div class="conteneurForm">
-                        <label for="genre" class="text-vert">Genre</label>
+                        <label for="genre" class="text-vert">{{ __('auth.gender') }}</label>
                         <select class="form-select form-control inputConnexion" name="genre" id="genre">
-                            <option value="Choisir" {{ old('genre') == 'Choisir' ? 'selected' : '' }}>Choisir</option>
-                            <option value="Homme" {{ old('genre') == 'Homme' ? 'selected' : '' }}>Homme</option>
-                            <option value="Femme" {{ old('genre') == 'Femme' ? 'selected' : '' }}>Femme</option>
+                            <option value="Choisir" {{ old('genre') == 'Choisir' ? 'selected' : '' }}>{{ __('auth.choose') }}</option>
+                            <option value="Homme" {{ old('genre') == 'Homme' ? 'selected' : '' }}>{{ __('auth.male') }}</option>
+                            <option value="Femme" {{ old('genre') == 'Femme' ? 'selected' : '' }}>{{ __('auth.female') }}</option>
                             <option value="Prefere ne pas dire"
-                                {{ old('genre') == 'Prefere ne pas dire' ? 'selected' : '' }}>Prefere ne pas dire
+                                {{ old('genre') == 'Prefere ne pas dire' ? 'selected' : '' }}>{{ __('auth.prefer_not_to_say') }}
                             </option>
                         </select>
                         <div class="conteneurErreur">
@@ -130,9 +130,9 @@
                         </div>
                     </div>
                     <div class="conteneurForm">
-                        <label for="dateNaissance" class="text-vert">Date de naissance</label>
+                        <label for="dateNaissance" class="text-vert">{{ __('auth.birth_date') }}</label>
                         <input type="date" class="form-control inputConnexion" name="dateNaissance"
-                            id="dateNaissance" placeholder="Date de naissance" value="{{ old('dateNaissance') }}"
+                            id="dateNaissance" placeholder="{{ __('auth.birth_date') }}" value="{{ old('dateNaissance') }}"
                             max="{{ date('Y-m-d') }}" min="1900-01-01">
                         <div class="conteneurErreur">
                             @error('dateNaissance')
@@ -146,9 +146,9 @@
                         </div>
                     </div>
                     <div class="conteneurForm">
-                        <label for="password" class="text-vert">Mot de passe</label>
+                        <label for="password" class="text-vert">{{ __('auth.password') }}</label>
                         <input type="password" name="password" class="form-control inputConnexion" id="password"
-                            placeholder="Mot de passe">
+                            placeholder="{{ __('auth.password') }}">
                         <div class="conteneurErreur">
                             @error('password')
                                 <span class="text-danger">{{ $message }}&ensp;</span>
@@ -161,9 +161,9 @@
                         </div>
                     </div>
                     <div class="conteneurForm">
-                        <label for="password_confirmation" class="text-vert">Confirmer le mot de passe</label>
+                        <label for="password_confirmation" class="text-vert">{{ __('auth.confirm_password') }}</label>
                         <input type="password" name="password_confirmation" class="form-control inputConnexion"
-                            id="password_confirmation" placeholder="Confirmer le mot de passe">
+                            id="password_confirmation" placeholder="{{ __('auth.confirm_password') }}">
                         <div class="conteneurErreur">
                             @error('password_confirmation')
                                 <span class="text-danger">{{ $message }}&ensp;</span>
@@ -185,8 +185,8 @@
                         @endforeach
                     @endif
                     <div>
-                        <button type="submit" class="btn btn-connexion">Créer</button>
-                        <a href="{{ route('profil.connexion') }}" class="btn btn-retour">Retour</a>
+                        <button type="submit" class="btn btn-connexion">{{ __('auth.create') }}</button>
+                        <a href="{{ route('profil.connexion') }}" class="btn btn-retour">{{ __('auth.back') }}</a>
                     </div>
                 </form>
 
