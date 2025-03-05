@@ -2,7 +2,6 @@
 document.addEventListener("DOMContentLoaded", function() {
 
     const canals = document.querySelectorAll('.canal');
-    const divScrollable = document.querySelector(".contenuScrollable");
     const renommer = document.getElementById('renommerCanal');
     const ajouter = document.getElementById('ajoutCanal');
     const supprimer = document.getElementById('confirmationSuppression')
@@ -11,9 +10,6 @@ document.addEventListener("DOMContentLoaded", function() {
     let canalARenommer = "";
     let _canal = '';
     let _categorie = '';
-
-    // Déroulement automatique jusqu'en bas des messages
-    divScrollable.scrollTop = divScrollable.scrollHeight;
 
     // pour annuler un formulaire (cacher la fenêtre contextuelle)
     document.querySelectorAll('.annuler').forEach(bouton => {
@@ -70,9 +66,6 @@ document.addEventListener("DOMContentLoaded", function() {
         canal.addEventListener('click', function() {
             canals.forEach(c => c.classList.remove('active'));
             canal.classList.add('active');
-
-            // Quand on change de canal de chat, on scroll jusqu'en bas automatiquement
-            divScrollable.scrollTop = divScrollable.scrollHeight;
         });
 
         canal.querySelector('.modifier').addEventListener('click', function() {

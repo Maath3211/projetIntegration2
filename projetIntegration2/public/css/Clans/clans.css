@@ -96,6 +96,10 @@ aside {
     cursor: pointer;
 }
 
+.canal a:hover {
+    color:#303030;
+}
+
 .canal a:first-child {
     overflow: hidden;
     white-space: nowrap;

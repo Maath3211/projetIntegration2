@@ -30,19 +30,66 @@
 
 <body class=" flex h-screen">
   <!-- Barre de navigation entre les clans et les messages privés entre autres -->
-  <header>
-    <aside class="w-20 text-white h-screen flex flex-col items-center py-4 space-y-4 p-5">
+  <button id="hamburgerBtn" class="hamburger-btn">
+    <span class="hamburger-line"></span>
+    <span class="hamburger-line"></span>
+    <span class="hamburger-line"></span>
+</button>
 
+  <div id="mobileMenu" class="mobile-menu">
       <!-- Navigation aux messages privés entre utilisateurs -->
       <a href="#">
-        <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee"><i class="fa-solid fa-comment fa-2xl"></i></div>
+          <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee">
+              <i class="fa-solid fa-comment fa-2xl"></i>
+          </div>
       </a>
 
       <!-- Navigation aux classements -->
       <a href="#">
-        <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee"><i class="fa-solid fa-ranking-star fa-2xl"></i></div>
+          <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee">
+              <i class="fa-solid fa-ranking-star fa-2xl"></i>
+          </div>
       </a>
 
+      <!-- Tous les clans dont l'utilisateur actuel fait partie -->
+      @if(isset($clans))
+          @foreach($clans as $clan)
+          <a href="{{ route('clan.montrer', ['id' => $clan->id]) }}">
+              <div class="w-16 h-16 rounded-full overflow-hidden">
+                  <img src="{{ asset($clan->image) }}" class="object-cover w-full h-full">
+              </div>
+          </a>
+          @endforeach
+      @endif
+
+      <a id="creerClanMobile"> 
+          <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee creerClan">
+              <i class="fa-regular fa-square-plus fa-2xl"></i>
+          </div>
+      </a>
+
+      <form action="{{route('profil.deconnexion')}}" method="post" style="margin-top: auto; margin-bottom: 20px;">
+          @csrf
+          <button class="w-16 h-16 overflow-hidden">
+              <img src="{{ asset('img/logout.png') }}" class="object-cover w-full h-full">
+          </button>
+      </form>
+  </div>
+
+
+  
+  <header id="navbar">
+    <aside class="w-20 text-white h-screen flex flex-col items-center py-4 space-y-4 p-5 overflow-y-auto">
+      <!-- Navigation aux messages privés entre utilisateurs -->
+      <a href="#">
+        <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee"><i class="fa-solid fa-comment fa-2xl"></i></div>
+      </a>
+    
+      <!-- Navigation aux classements -->
+      <a href="#">
+        <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee"><i class="fa-solid fa-ranking-star fa-2xl"></i></div>
+      </a>
+    
       <!-- Tous les clans dont l'utilisateur actuel fait partie -->
       @if(isset($clans))
         @foreach($clans as $clan)
@@ -51,16 +98,18 @@
           </a>
         @endforeach
       @endif
-
-
-      <a id="creerClan"> <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee creerClan"><i class="fa-regular fa-square-plus fa-2xl"></i></i></div></a>
-
-        <form action="{{route('profil.deconnexion')}}" method="post">
-          @csrf
-          <button class="w-16 h-16 overflow-hidden" id="imgDeconnexion"><img src="{{ asset('img/logout.png') }}" class="object-cover w-full h-full"></button>
-        </form>
       
-      
+    
+      <a id="creerClan">
+        <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee creerClan"><i class="fa-regular fa-square-plus fa-2xl"></i></div>
+      </a>
+    
+      <form action="{{route('profil.deconnexion')}}" method="post">
+        @csrf
+        <button class="w-16 h-16 overflow-hidden" id="imgDeconnexion">
+          <img src="{{ asset('img/logout.png') }}" class="object-cover w-full h-full">
+        </button>
+      </form>
       </aside>
     </header>
       
@@ -69,7 +118,7 @@
   <main>
     <div>
       @yield('contenu')
-      <form action="{{ route('clan.creer') }}" method="POST" enctype="multipart/form-data">
+      <form action="{{ route('clan.creer') }}" method="POST" enctype="multipart/form-data" id="formulaireCreationClan">
         @csrf
         <div id="fenetreAjoutClan" class="fenetreCategorie">
           <div class="conteneurConfirmation">
@@ -94,7 +143,7 @@
       
               <div class="boutonsConfirmation">
                   <button class="annuler" type="button">Annuler</button>
-                  <button id="confirmerAjoutClan" type="submit">Confirmer</button>
+                  <button id="confirmerAjoutClan" type="button">Confirmer</button>
               </div>
           </div>
         </div>
@@ -144,5 +193,6 @@
 @yield('scripts')
 
 <script src="{{asset('js/gabaritJs.js')}}" crossorigin="anonymous"></script>
+<script src="{{asset('js/drawerGabarit.js')}}" crossorigin="anonymous"></script>
 
 </html>
