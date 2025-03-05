@@ -247,7 +247,7 @@ aside {
 
 /* Updated Mobile - hide navbar, show hamburger */
 @media screen and (max-width: 991px) {
-    #navBar {
+    header {
         display: none;
     }
     
