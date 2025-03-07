@@ -20,122 +20,162 @@
     <main id="main">
     <div class="container-fluid">
         <div class="row">
-        <div class="col-md-2 colonneNavigationParametres">
-            <div class="conteneurNavigation">
-            <div class="titreNavigation">Paramètres</div>
-            <div class="navigationParametres">
-                <div class="categorieParametre general" >Général</div>
-                <div class="categorieParametre canaux actif" >Canaux</div>
-                <div class="categorieParametre membres" >Membres</div>
-                <div class="categorieParametre supprimer" >Supprimer le clan</div>
+            <!-- Navigation -->
+            <div class="col-md-2 colonneNavigationParametres">
+                <div class="conteneurNavigation">
+                    <div class="titreNavigation">Paramètres</div>
+                    <div class="navigationParametres">
+                        <div class="categorieParametre general" >Général</div>
+                        <div class="categorieParametre canaux actif" >Canaux</div>
+                        <div class="categorieParametre membres" >Membres</div>
+                        <div class="categorieParametre supprimer" >Supprimer le clan</div>
+                    </div>
+                </div>
             </div>
+
+            <!-- Paramètres de catégories de canaux -->
+            <div class="col-md-10 colonneParametres">
+                <div class="conteneurParametres ">
+
+                <div class="titreParametre">Catégories de canaux</div>
+                <a href="{{ route('clan.montrer', ['id' => $id]) }}">
+                    <div class="boutonRetour">
+                    <i class="fa-regular fa-circle-xmark fa-3x"></i>
+                    <div>QUITTER</div>
+                    </div>
+                </a>
+                </div>
+                <form action="{{ route('clan.miseAJour.canaux', ['id' => $id]) }}" method="POST" enctype="multipart/form-data" id="formulaireSoumission">
+                @csrf
+                    <div class="row">
+                        <div class="col-md-12 parametresCanal">
+                            <!-- Montrer les catégories de canaux -->
+                            @if(isset($categories))
+                                @foreach($categories as $cat)
+                                    <div class="categorie {{$cat->categorie}}">
+                                        <i class="fa-solid fa-x supprimer"></i>
+                                        <i class="fa-solid fa-pen renommer"></i>
+                                        <div>{{$cat->categorie}}</div>
+                                    </div>
+                                @endforeach
+                            @endif
+                        </div>
+                        <div>
+                            <button type="button" class="ajouterCategorie">Ajouter une catégorie</button>
+                        </div>
+                    </div>
+                    <!-- entrée caché pour enregistrer les modifications à faire. -->
+                    <input type="hidden" name="categoriesASupprimer" id="categoriesASupprimer">
+                    <input type="hidden" name="categoriesAAjouter" id="categoriesAAjouter">
+                    <input type="hidden" name="categoriesARenommer" id="categoriesARenommer">
+
+                    <div class="row barreEnregistrerConteneur">
+                        <div class="col-md-10 rangeeEnregistrer">
+                            <div>N'oubliez pas d'enregistrer vos modifications avant de quitter!</div>
+                            <button type="submit" class="btn btn-success">Enregistrer</button>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Fenêtre contextuelle pour confirmer la suppression d'une catégorie de canal -->
+                <div id="confirmationSuppression" class="fenetreCategorie">
+                    <div class="conteneurConfirmation">
+                        <div class="titreConfirmation">
+                            <div>Supprimer la catégorie de canal</div>
+                        </div>
+                        <div class="texteConfirmation">
+                            <div>Êtes-vous sur de vouloir supprimer cette catégorie et tous ses canaux?</div>
+                        </div>
+
+                        <div class="boutonsConfirmation">
+                            <button class="annuler" type="button">Annuler</button>
+                            <button id="confirmerSuppression" type="button">Supprimer</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fenêtre contextuelle pour renommer une catégorie de canal -->
+                <div id="modificationNomCategorie" class="fenetreCategorie">
+                    <div class="conteneurConfirmation">
+                        <div class="titreConfirmation">
+                            <div>Renommer la catégorie de canal</div>
+                        </div>
+                        <div class="texteConfirmation">
+                            <input type="text" name="entreeNomCategorie" class="form-control entreeNomCategorie">
+                            <span class="messageErreur"></span>
+                        </div>
+
+                        <div class="boutonsConfirmation">
+                            <button class="annuler" type="button">Annuler</button>
+                            <button id="confirmerRenommage" type="button">Confirmer</button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Fenêtre contextuelle pour ajouter une catégorie de canal -->
+                <div id="ajoutCategorie" class="fenetreCategorie">
+                    <div class="conteneurConfirmation">
+                        <div class="titreConfirmation">
+                            <div>Ajouter une catégorie de canal</div>
+                        </div>
+                        <div class="texteConfirmation">
+                            <input type="text" name="entreeNomCategorie" class="form-control entreeNomCategorie" placeholder="ex.: Cardio">
+                            <span class="messageErreur"></span>
+                        </div>
+
+                        <div class="boutonsConfirmation">
+                            <button class="annuler" type="button">Annuler</button>
+                            <button id="confirmerAjout" type="button">Confirmer</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fenêtre contextuelle pour confirmer la suppression du clan -->
+                <div id="confirmationSuppressionClan" class="fenetreCategorie">
+                    <div class="conteneurConfirmation">
+                        <div class="titreConfirmation">
+                            <div>Supprimer le clan</div>
+                        </div>
+                        <div class="texteConfirmation">
+                            <div>Êtes-vous sur de vouloir supprimer le clan? Cette action est irréversible.</div>
+                        </div>
+
+                        <div class="boutonsConfirmation">
+                            <button class="annuler" type="button">Annuler</button>
+                            <button id="confirmerSuppressionClan" type="button">Supprimer</button>
+                        </div>
+                    </div>
+                </div>
+                <form action="{{ route('clan.supprimer', ['id' => $id]) }}" method="POST" enctype="multipart/form-data" id="formulaireSuppressionClan">@csrf</form>
             </div>
         </div>
+    </div>
+    <!-- Affichage des erreurs -->
+    <div id="conteneurMessages">
+        @if(session('message'))
+          <div class="alert" id="messageSucces">
+            <span>{{session('message')}}</span>
+            <button class="close-btn">X</button>
+          </div>
+        @endif
 
-        <div class="col-md-10 colonneParametres">
-            <div class="conteneurParametres ">
-
-            <div class="titreParametre">Catégories de canaux</div>
-            <a href="{{ route('clan.montrer', ['id' => $id]) }}">
-                <div class="boutonRetour">
-                <i class="fa-regular fa-circle-xmark fa-3x"></i>
-                <div>QUITTER</div>
-                </div>
-            </a>
-            </div>
-            <!-- TODO - CHANGER L'IMAGE QUI APPARAIT POUR CELLE DU CLAN -->
-            <form action="{{ route('clan.miseAJour.canaux', ['id' => $id]) }}" method="POST" enctype="multipart/form-data" id="formulaireSoumission">
-            @csrf
-                <div class="row">
-                    <div class="col-md-12 parametresCanal">
-                        <div class="categorie Général">
-                            <i class="fa-solid fa-x supprimer"></i>
-                            <i class="fa-solid fa-pen renommer"></i>
-                            <div>Général</div>
-                        </div>
-                        <div class="categorie Aide">
-                            <i class="fa-solid fa-x supprimer"></i>
-                            <i class="fa-solid fa-pen renommer"></i>
-                            <div>Aide</div>
-                        </div>
-                        <div class="categorie Compétition">
-                            <i class="fa-solid fa-x supprimer"></i>
-                            <i class="fa-solid fa-pen renommer"></i>
-                            <div>Compétition</div>
-                        </div>
-                    </div>
-                    <div>
-                        <button type="button" class="ajouterCategorie">Ajouter une catégorie</button>
-                    </div>
-                </div>
-                <!-- Input caché pour enregistrer les modifications à faire. -->
-                <input type="hidden" name="categoriesASupprimer" id="categoriesASupprimer">
-                <input type="hidden" name="categoriesAAjouter" id="categoriesAAjouter">
-                <input type="hidden" name="categoriesARenommer" id="categoriesARenommer">
-
-                <div class="row barreEnregistrerConteneur">
-                    <div class="col-md-10 rangeeEnregistrer">
-                        <div>N'oubliez pas d'enregistrer vos modifications avant de quitter!</div>
-                        <button type="submit" class="btn btn-success">Enregistrer</button>
-                    </div>
-                </div>
-            </form>
-
-            <!-- Fenêtre contextuelle pour confirmer la suppression d'une catégorie de canal -->
-            <div id="confirmationSuppression" class="fenetreCategorie">
-                <div class="conteneurConfirmation">
-                    <div class="titreConfirmation">
-                        <div>Supprimer la catégorie de canal</div>
-                    </div>
-                    <div class="texteConfirmation">
-                        <div>Êtes-vous sur de vouloir supprimer cette catégorie et tous ses canaux?</div>
-                    </div>
-
-                    <div class="boutonsConfirmation">
-                        <button class="annuler" type="button">Annuler</button>
-                        <button id="confirmerSuppression" type="button">Supprimer</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Fenêtre contextuelle pour renommer une catégorie de canal -->
-            <div id="modificationNomCategorie" class="fenetreCategorie">
-                <div class="conteneurConfirmation">
-                    <div class="titreConfirmation">
-                        <div>Renommer la catégorie de canal</div>
-                    </div>
-                    <div class="texteConfirmation">
-                        <input type="text" name="entreeNomCategorie" class="form-control entreeNomCategorie">
-                        <span class="messageErreur"></span>
-                    </div>
-
-                    <div class="boutonsConfirmation">
-                        <button class="annuler" type="button">Annuler</button>
-                        <button id="confirmerRenommage" type="button">Confirmer</button>
-                    </div>
-                </div>
-            </div>
-
-
-            <!-- Fenêtre contextuelle pour ajouter une catégorie de canal -->
-            <div id="ajoutCategorie" class="fenetreCategorie">
-                <div class="conteneurConfirmation">
-                    <div class="titreConfirmation">
-                        <div>Ajouter une catégorie de canal</div>
-                    </div>
-                    <div class="texteConfirmation">
-                        <input type="text" name="entreeNomCategorie" class="form-control entreeNomCategorie" placeholder="ex.: Cardio">
-                        <span class="messageErreur"></span>
-                    </div>
-
-                    <div class="boutonsConfirmation">
-                        <button class="annuler" type="button">Annuler</button>
-                        <button id="confirmerAjout" type="button">Confirmer</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        </div>
+        <!--Obligé d'utiliser $errors ici c'est la facon que laravel gère ses erreurs-->
+        @if($errors->any() || session('erreur'))
+          <div class="alert" id="messageErreur">
+            <ul>
+              @if($errors->any())
+                @foreach($errors->all() as $erreur)
+                  <li>{{ $erreur }}</li>
+                @endforeach
+              @endif
+              @if(session('erreur'))
+                <li>{{ session('erreur') }}</li>
+              @endif
+            </ul>
+            <button class="close-btn">X</button>
+          </div>
+        @endif
     </div>
     </main>
 <footer>

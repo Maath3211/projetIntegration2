@@ -19,17 +19,28 @@ class MessageGroup implements ShouldBroadcastNow
     public $message;
     public $senderId;
     public $groupId;
+    public $canalId;
+    public $deleted; // Ajout du flag de suppression
+    public $lastId;
+    public $photo;
+    public $email;
 
 
     /**
      * Create a new event instance.
      */
-    public function __construct($message, $senderId, $groupId)
+    public function __construct($message, $senderId, $groupId, $canalId ,$deleted = false, $lastId, $photo = null, $email)
     {
         $this->message = $message;
         $this->senderId = $senderId;
         $this->groupId = $groupId;
+        $this->canalId = $canalId;
+        $this->deleted = $deleted; // Défaut à false
+        $this->lastId = $lastId;
+        $this->photo = $photo;
+        $this->email = $email;
     }
+
 
     /**
      * Get the channels the event should broadcast on.
@@ -38,9 +49,8 @@ class MessageGroup implements ShouldBroadcastNow
      */
     public function broadcastOn(): array
     {
-        $channelName = "chat-" . $this->groupId;
+        $channelName = "chat-" . $this->groupId . "-" . $this->canalId;
         return [new Channel($channelName)];
-
     }
 
     public function broadcastAs(): string
@@ -53,9 +63,12 @@ class MessageGroup implements ShouldBroadcastNow
         return [
             'message' => $this->message,
             'sender_id' => $this->senderId,
-            'group_id' => $this->groupId
+            'group_id' => $this->groupId,
+            'canal_id' => $this->canalId,
+            'deleted' => $this->deleted,
+            'last_id' => $this->lastId,
+            'photo' => $this->photo,
+            'email' => $this->email
         ];
     }
-
-
 }

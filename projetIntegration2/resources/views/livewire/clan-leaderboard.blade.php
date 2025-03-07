@@ -10,7 +10,7 @@
                 <p class="text-muted mb-0">Découvrez les membres les plus performants du groupe</p>
             </div>
             <div class="d-flex align-items-center">
-                <button class="btn btn-primary mr-2" wire:click="showMembersGraph">
+                <button class="btn btn-graphique mr-2" wire:click="showMembersGraph">
                     <i class="fa-solid fa-chart-line"></i> Graphique Membres
                 </button>
                 <div class="dropdown ml-2" wire:ignore>
@@ -19,7 +19,7 @@
                         <i class="fa-solid fa-share-from-square fa-2x"></i>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="exportDropdown">
-                        <a class="dropdown-item" href="{{ route('export.topMembres', ['clanId' => $selectedClanId]) }}">Exporter Liste CSV</a>
+                        <a class="dropdown-item" href="{{ route('export.topMembres', ['clanId' => $selectedClanId]) }}">Exporter Liste</a>
                         <a class="dropdown-item" href="#" id="exportTopMembresImage">Exporter Capture</a>
                     </div>
                 </div>
@@ -68,7 +68,7 @@
             </div>
             <div class="d-flex align-items-center">
                 <!-- Chart button for improvement data -->
-                <button class="btn btn-primary mr-2" wire:click="showImprovementsGraph">
+                <button class="btn btn-graphique mr-2" wire:click="showImprovementsGraph">
                     <i class="fa-solid fa-chart-line"></i> Graphique d'Amélioration
                 </button>
                 <div class="dropdown ml-2" wire:ignore>
@@ -76,7 +76,7 @@
                         <i class="fa-solid fa-share-from-square fa-2x"></i>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="exportDropdown">
-                        <a class="dropdown-item" href="{{ route('export.topAmelioration', ['clanId' => $selectedClanId]) }}">Exporter Liste CSV</a>
+                        <a class="dropdown-item" href="{{ route('export.topAmelioration', ['clanId' => $selectedClanId]) }}">Exporter Liste</a>
                         <a class="dropdown-item" href="#" id="exportTopAmeliorationImage">Exporter Capture</a>
                     </div>
                 </div>

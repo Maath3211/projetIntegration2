@@ -13,11 +13,13 @@
                     <p><strong>Membre depuis:</strong> {{ $utilisateur->created_at->format('d/m/Y') }}</p>
                 </div>
             </div>
-            
-            <form action="{{ route('profil.modification') }}" method="get">
-                @csrf
-                <button><span id="engrenage">&#9881;</span></button>
-            </form>
+            @if (Auth::user()->id == $utilisateur->id)
+                <form action="{{ route('profil.modification') }}" method="get">
+                    @csrf
+                    <button><span id="engrenage">&#9881;</span></button>
+                </form>
+            @endif
+
             <div class="d-flex justify-content-between mt-3">
                 <form action="{{ route('statistique.index') }}" method="get">
                     @csrf
@@ -30,12 +32,23 @@
             </div>
             <div class="row">
                 <h4 class="mb-3"><strong>Groupes</strong></h4>
-                @foreach($clans as $clan)
+                @if (Auth::user()->id !== $utilisateur->id)
+                @foreach ($clansAway as $clan)
                     <div class="col-md-2 text-center mb-5">
-                        <img src="{{ asset('img/clans/'.$clan->image) }}" alt="Clan Picture" class="imgGroupe img-fluid mx-auto d-block">
+                        <img src="{{ asset($clan->image) }}" alt="Clan Picture"
+                            class="imgGroupe img-fluid mx-auto d-block">
                         <h3 class="greenText">{{ $clan->name }}</h3>
                     </div>
                 @endforeach
+                @else
+                @foreach ($clans as $clan)
+                    <div class="col-md-2 text-center mb-5">
+                        <img src="{{ asset($clan->image) }}" alt="Clan Picture"
+                            class="imgGroupe img-fluid mx-auto d-block">
+                        <h3 class="greenText">{{ $clan->name }}</h3>
+                    </div>
+                @endforeach
+                @endif
             </div>
         </div>
     </div>

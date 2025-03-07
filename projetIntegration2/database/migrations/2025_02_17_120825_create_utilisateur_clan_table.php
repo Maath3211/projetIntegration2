@@ -13,10 +13,14 @@ return new class extends Migration
     {
         Schema::create('utilisateur_clan', function (Blueprint $table) {
             $table->id();
-            $table->integer('idEnvoyer');
-            $table->integer('idClan');
-            $table->text('message');
+            $table->unsignedBigInteger('idEnvoyer');
+            $table->unsignedBigInteger('idClan');
+            $table->unsignedBigInteger('idCanal');
+            $table->text('message')->nullable();
+            $table->string('fichier')->nullable();
             $table->timestamps();
+            $table->foreign('idEnvoyer')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('idClan')->references('id')->on('clans')->onDelete('cascade');
         });
     }
 

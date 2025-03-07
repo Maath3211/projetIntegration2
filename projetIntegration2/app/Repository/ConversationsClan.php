@@ -51,10 +51,11 @@ class ConversationsClan{
     }
 
 
-    public function getMessageClanFor($clanId)
+    public function getMessageClanFor($clanId, $canalId)
     {
         return $this->message->newQuery()
             ->where('idClan', $clanId) // On récupère tous les messages du clan
+            ->where('idCanal', $canalId)
             ->orderBy('created_at', 'ASC')
             ->with([
                 'user' => function($query) { // Assurez-vous que 'sender' est bien défini dans le modèle Message

@@ -2,7 +2,6 @@
 document.addEventListener("DOMContentLoaded", function() {
 
     const canals = document.querySelectorAll('.canal');
-    const divScrollable = document.querySelector(".contenuScrollable");
     const renommer = document.getElementById('renommerCanal');
     const ajouter = document.getElementById('ajoutCanal');
     const supprimer = document.getElementById('confirmationSuppression')
@@ -12,9 +11,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let _canal = '';
     let _categorie = '';
 
-    // Déroulement automatique jusqu'en bas des messages
-    divScrollable.scrollTop = divScrollable.scrollHeight;
-
+    // pour annuler un formulaire (cacher la fenêtre contextuelle)
     document.querySelectorAll('.annuler').forEach(bouton => {
         bouton.addEventListener('click', function() {
             bouton.parentElement.parentElement.parentElement.style.display = 'none';
@@ -35,6 +32,7 @@ document.addEventListener("DOMContentLoaded", function() {
         formulaire.submit();
     });
 
+    // confirmer l'ajout d'un canal
     ajouter.querySelector('#confirmerAjout').addEventListener('click', function(){
         nouveauNom = ajouter.querySelector('input').value;
         formulaire.querySelector('.action').value = 'ajouter';
@@ -48,6 +46,7 @@ document.addEventListener("DOMContentLoaded", function() {
         formulaire.submit();
     });
 
+    // confirmer la suppression d'un canal
     supprimer.querySelector('#confirmerSuppression').addEventListener('click', function(){
         formulaire.querySelector('.action').value = 'supprimer';
         formulaire.querySelector('.requete').value = JSON.stringify({
@@ -60,22 +59,20 @@ document.addEventListener("DOMContentLoaded", function() {
         formulaire.submit();
     });
 
-
+    // pour chaque canal
     canals.forEach(canal => {
 
         // Pour montrer quel canal est actif actuellement
         canal.addEventListener('click', function() {
             canals.forEach(c => c.classList.remove('active'));
             canal.classList.add('active');
-
-            // Quand on change de canal de chat, on scroll jusqu'en bas automatiquement
-            divScrollable.scrollTop = divScrollable.scrollHeight;
         });
 
         canal.querySelector('.modifier').addEventListener('click', function() {
 
 
             classe = canal.querySelector('a div').textContent.trim();
+            console.log(canal.querySelector('a').classList[0].split('canal_')[1]);
             _canal = canal.querySelector('a').classList[0].split('canal_')[1];
             _categorie = canal.parentElement.querySelector('div').classList[1].split('categorie_')[1];
             
@@ -98,14 +95,15 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // ajouter les événements pour ajouter un canal à une catégorie
-    document.querySelectorAll('.titreCategorieCanal').forEach(categorie => {
+    document.querySelectorAll('.titreCategorieCanal i.fa-plus').forEach(categorie => {
         categorie.addEventListener('click', function() {
             ajouter.style.display = 'flex';
-
-            _categorie = categorie.parentElement.querySelector('div').textContent.trim();
+            
+            _categorie = categorie.parentElement.classList[1].split('categorie_')[1].trim();
         })
     });
 
+    // Vérification de l'input au fur et à mesure
     document.querySelectorAll('.entreeNomCanal').forEach(entree => {
         entree.addEventListener('input', function(){
             valeur = this.value;
@@ -113,13 +111,13 @@ document.addEventListener("DOMContentLoaded", function() {
     
             // Règle 1 : le canal ne doit pas dépasser les 50 caractères
             if(valeur.length > 50){
-                messageErreur.textContent = "La catégorie ne doit pas dépasser 50 caractères.";
+                messageErreur.textContent = "Le canal ne doit pas dépasser 50 caractères.";
                 messageErreur.style.display = "block";
                 this.style.borderColor = 'red';
             }
             // Règle 2 : pas de nombres ou de symboles, juste les caractères UTF-8 et les traits (-) sont acceptés.
-            else if (!/^[A-Za-z\u00C0-\u00FF-]+$/.test(valeur) && valeur.length !== 0){
-                messageErreur.textContent = "Seulement les lettre (UTF-8) et les traits (-) sont permis."
+            else if (!/^[A-Za-z\u00C0-\u00FF\s-]+$/.test(valeur) && valeur.length !== 0){
+                messageErreur.textContent = "Seulement les lettres (UTF-8) et les traits (-) sont permis."
                 messageErreur.style.display = "block";
                 this.style.borderColor = 'red';
             }
@@ -130,4 +128,16 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
     })
+
+    // pour fermer les fenêtres contextuelles lorsqu'il appuie sur Esc
+    document.addEventListener('keydown', function(event){
+        if (event.key === 'Escape'){
+            if(renommer.style.display == 'flex')
+                renommer.style.display = 'none';
+            if(supprimer.style.display == 'flex')
+                supprimer.style.display = 'none';
+            if(ajouter.style.display == 'flex')
+                ajouter.style.display = 'none';
+        }
+    });
 });

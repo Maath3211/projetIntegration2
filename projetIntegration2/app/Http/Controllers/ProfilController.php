@@ -8,6 +8,8 @@ use App\Http\Requests\CreationCompteGoogleRequest;
 use App\Http\Requests\CreationCompteRequest;
 use App\Http\Requests\ModificationRequest;
 use App\Models\User;
+use App\Models\Statistiques;
+use App\Models\PoidsUtilisateur;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Auth;
@@ -30,18 +32,13 @@ class ProfilController extends Controller
     public function connexion(ConnexionRequest $request)
     {
         $utilisateur = User::where('email', $request->email)->first();
-
-        if (!$utilisateur || $utilisateur->email_verified_at === null) {
-            $errorMessage = 'Votre compte n\'a pas été vérifié';
+        if ($utilisateur->email_verified_at == null) {
             if ($request->wantsJson()) {
-                return response()->json(['error' => $errorMessage], 403);
+                return response()->json(['error' => 'Votre compte n\'a pas été vérifié'], 403);
             }
-            return redirect()->back()->withErrors(['email' => $errorMessage]);
+            return redirect()->back()->withErrors(['email' => 'Votre compte n\'a pas été vérifié']);
         }
-
-        $credentials = $request->only('email', 'password');
-        $reussi = Auth::attempt($credentials);
-
+        $reussi = Auth::guard()->attempt(['email' => $request->email, 'password' => $request->password]);
         if ($reussi) {
             // For API requests, return a token using Laravel Sanctum.
             if ($request->wantsJson()) {
@@ -78,7 +75,6 @@ class ProfilController extends Controller
         $utilisateur->email = $request->email;
         $utilisateur->prenom = $request->prenom;
         $utilisateur->nom = $request->nom;
-        $utilisateur->imageProfil = $request->imageProfil;
         $utilisateur->pays = $request->pays;
         $utilisateur->genre = $request->genre;
         $utilisateur->dateNaissance = $request->dateNaissance;
@@ -96,11 +92,26 @@ class ProfilController extends Controller
                 return redirect()->back()->withErrors(['imageProfil' => 'Erreur lors du téléversement de l\'image']);
             }
         } else {
-            return redirect()->back()->withErrors(['imageProfil' => 'Aucune image sélectionnée']);
+            $utilisateur->imageProfil = 'img/Utilisateurs/utilisateurParDefaut.jpg';
         }
 
         Mail::to($utilisateur->email)->send(new confirmation($utilisateur));
         $utilisateur->save();
+        Statistiques::create([
+            'user_id' => $utilisateur->id,
+            'nomStatistique' => 'poids',
+            'score' => 0
+        ]);
+        Statistiques::create([
+            'user_id' => $utilisateur->id,
+            'nomStatistique' => 'FoisGym',
+            'score' => 0
+        ]);
+        PoidsUtilisateur::create([
+            'user_id' => $utilisateur->id,
+            'semaine' => 1,
+            'poids' => 0
+        ]);
         return redirect()->route('profil.connexion')->with('message', 'Votre compte a été créé avec succès! Un courriel de confirmation a été envoyé');
     }
 
@@ -239,11 +250,25 @@ class ProfilController extends Controller
 
     public function profilPublic($email)
     {
+        $utilisateur = Auth::user();
+        $clans = $utilisateur->clans;
         $utilisateur = User::where('email', $email)->first();
+        $clansAway = $utilisateur->clans;
+
         if (!$utilisateur) {
             return redirect()->route('profil.profil')->withErrors(['Utilisateur introuvable']);
         }
-        return View('profil.profilPublic', compact('utilisateur'));
+        return View('profil.profil', compact('utilisateur', 'clansAway', 'clans'));
+    }
+
+    public function suppressionProfil()
+    {
+        $utilisateur = Auth::user();
+        if ($utilisateur->imageProfil && file_exists(public_path($utilisateur->imageProfil))) {
+            unlink(public_path($utilisateur->imageProfil));
+        }
+        $utilisateur->delete();
+        return redirect()->route('profil.pageConnexion')->with('message', 'Votre compte a été supprimé avec succès');
     }
 
 
@@ -259,7 +284,9 @@ class ProfilController extends Controller
         $countries = Cache::remember('countries_list_french', now()->addDay(), function () {
             return $this->listePays();
         });
-        return View('profil.modification', compact('countries'));
+        $utilisateur = Auth::user();
+        $clans = $utilisateur->clans;
+        return View('profil.modification', compact('countries', 'clans'));
     }
 
     public function updateModification(ModificationRequest $request)
@@ -270,6 +297,8 @@ class ProfilController extends Controller
         $utilisateur->pays = $request->input('pays');
         $utilisateur->genre = $request->input('genre');
         $utilisateur->dateNaissance = $request->input('dateNaissance');
+        $utilisateur->aPropos = $request->input('aPropos');
+
 
         if ($request->hasFile('imageProfil')) {
             if ($utilisateur->imageProfil && file_exists(public_path($utilisateur->imageProfil))) {
@@ -372,6 +401,9 @@ class ProfilController extends Controller
     public function confCourriel($codeVerification)
     {
         $user = User::where('codeVerification', $codeVerification)->first();
+        if (!$user) {
+            return redirect()->route('profil.connexion')->withErrors(['message' => 'Code de vérification invalide']);
+        }
         $user->email_verified_at = now();
         $user->codeVerification = null;
         $user->save();

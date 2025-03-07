@@ -173,7 +173,7 @@
         #current-location-btn {
             position: absolute;
             bottom: 10px;
-            left: 250px; /* Adjust this value so the button appears to the left of your legend */
+            left: 300px; /* Adjust this value so the button appears to the left of your legend */
             z-index: 1000;
             padding: 10px;
             background-color: #A9FE77;
@@ -318,7 +318,7 @@
                             }
 
                             // Taille de base pour le cercle (modifiable)
-                            var baseSize = 60;
+                            var baseSize = 50;
 
                             // Créer un icône gradient centré sur le pin
                             var gradientIcon = L.divIcon({
@@ -505,12 +505,13 @@
 
             // Contenu de la légende en français
             div.innerHTML = 
-                "<strong>Légende Achalandage</strong><br>" +
+                "<div style='text-align: center;'><strong>Légende Achalandage</strong><br></div>" +
                 "<i style='background: hsla(210,100%,80%,1); width:18px; height:18px; display:inline-block; margin-right:5px;'></i> Très peu achalandé (<=20)<br>" +
                 "<i style='background: hsla(120,100%,50%,1); width:18px; height:18px; display:inline-block; margin-right:5px;'></i> Peu achalandé (<=40)<br>" +
                 "<i style='background: hsla(60,100%,50%,1); width:18px; height:18px; display:inline-block; margin-right:5px;'></i> Achalandage moyen (<=60)<br>" +
                 "<i style='background: hsla(30,100%,50%,1); width:18px; height:18px; display:inline-block; margin-right:5px;'></i> Très achalandé (<=80)<br>" +
-                "<i style='background: hsla(0,100%,50%,1); width:18px; height:18px; display:inline-block; margin-right:5px;'></i> Énormément achalandé (>80)<br>";
+                "<i style='background: hsla(0,100%,50%,1); width:18px; height:18px; display:inline-block; margin-right:5px;'></i> Énormément achalandé (>80)<br>" +
+                "<br><em>Double-cliquez sur la carte pour relocaliser</em>";
             return div;
         };
 
@@ -634,6 +635,54 @@
   });
 </script>
 <script>
+// Déclarer la variable globale pour enregistrer le dernier double-clic
+var currentPosMarker;
+var lastDoubleClickLatLng;
+
+// Créer le marqueur initial avec le tooltip "Vous êtes ici"
+if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      var lat = position.coords.latitude;
+      var lon = position.coords.longitude;
+      var initialLatLng = [lat, lon];
+      map.setView(initialLatLng, 13);
+      currentPosMarker = L.marker(initialLatLng, { icon: currentLocationIcon, draggable: false }).addTo(map);
+      currentPosMarker.bindTooltip("Vous êtes ici", {
+        permanent: true, direction: 'top', offset: [1, -37], className: 'current-position-tooltip'
+      }).openTooltip();
+      getGyms(lat, lon);
+    });
+}
+
+// Sur double-clic (ou clic) sur la carte, déplacez le marqueur, enregistrez la position, et mettez à jour la tooltip
+map.on('dblclick', function(e) {
+    var newLatLng = e.latlng;
+    lastDoubleClickLatLng = newLatLng; // Enregistrer la dernière position double-clic
+    if (currentPosMarker) {
+      currentPosMarker.setLatLng(newLatLng);
+      currentPosMarker.bindTooltip("Vous êtes ici", {
+        permanent: true, direction: 'top', offset: [0, -15], className: 'current-position-tooltip'
+      }).openTooltip();
+    } else {
+      currentPosMarker = L.marker(newLatLng, { icon: currentLocationIcon, draggable: false }).addTo(map);
+      currentPosMarker.bindTooltip("Vous êtes ici", {
+        permanent: true, direction: 'top', offset: [0, -15], className: 'current-position-tooltip'
+      }).openTooltip();
+    }
+    map.setView(newLatLng);
+});
+
+// Lorsque l'utilisateur clique sur le bouton "x" de la barre de recherche, revenir à la dernière position double-cliquée
+document.getElementById('clear-search').addEventListener('click', function() {
+    // Réinitialiser la barre de recherche
+    document.getElementById('search-bar').value = '';
+    // Revenir à la dernière position double clic si définie
+    if (lastDoubleClickLatLng) {
+        map.setView(lastDoubleClickLatLng);
+    }
+});
+</script>
+<script>
 // Place this JavaScript code after your map/legend initialization code
 document.getElementById('current-location-btn').addEventListener('click', function() {
     if (navigator.geolocation) {
@@ -657,6 +706,51 @@ document.getElementById('current-location-btn').addEventListener('click', functi
         alert('La géolocalisation n\'est pas supportée par ce navigateur.');
     }
 });
+</script>
+<script>
+  // Variables globales pour le marqueur et la dernière position double-clic
+  var currentPosMarker;
+  var lastDoubleClickLatLng;
+
+  // Créer le marqueur initial avec la géolocalisation
+  if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function (position) {
+          var lat = position.coords.latitude;
+          var lon = position.coords.longitude;
+          var initialLatLng = [lat, lon];
+          map.setView(initialLatLng, 13);
+          currentPosMarker = L.marker(initialLatLng, { icon: currentLocationIcon, draggable: false }).addTo(map);
+          // Afficher les gyms autour de la position initiale
+          getGyms(lat, lon);
+      });
+  }
+  
+  // Écouteur pour le double-clic sur la carte
+  map.on('dblclick', function(e) {
+      var newLatLng = e.latlng;
+      // Enregsitrer la dernière position double-clic
+      lastDoubleClickLatLng = newLatLng;
+      
+      // Supprimer l'ancien marqueur s'il existe, puis en ajouter un nouveau
+      if (currentPosMarker) {
+          map.removeLayer(currentPosMarker);
+      }
+      currentPosMarker = L.marker(newLatLng, { icon: currentLocationIcon, draggable: false }).addTo(map);
+      map.setView(newLatLng, 13);
+      getGyms(newLatLng.lat, newLatLng.lng);
+  });
+  
+  // Attendre que le DOM soit chargé pour ajouter l'événement au bouton "x"
+  window.addEventListener('DOMContentLoaded', function(){
+      document.getElementById('clear-search').addEventListener('click', function() {
+          // Réinitialiser la barre de recherche
+          document.getElementById('search-bar').value = '';
+          // Si une position double-clic a été enregistrée, recentrer la vue dessus
+          if (lastDoubleClickLatLng) {
+              map.setView(lastDoubleClickLatLng, 13);
+          }
+      });
+  });
 </script>
 </body>
 

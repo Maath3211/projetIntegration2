@@ -68,7 +68,8 @@ aside {
 
 .conteneurImage {
     background-image: url('../img/ui/leaderboard.png');
-    background-size: contain;  /* Ensures the full image is visible */
+    background-size: contain;
+    /* Ensures the full image is visible */
     background-repeat: no-repeat;
     background-position: center;
     width: 100%;
@@ -294,4 +295,25 @@ a:hover {
     overflow-x: hidden;
     scrollbar-width: none;
     flex-grow: 1;
+}
+
+.btn-graphique {
+    background-color: #A9FE77;
+    /* Match your sidebar background color */
+    color: black;
+    border: none;
+}
+
+.btn-graphique:hover {
+    background-color: #6EFF18;
+    /* Slightly lighter on hover */
+    color: black;
+}
+
+/* If your sidebar has a specific active color, you can add it here */
+.btn-graphique:active,
+.btn-graphique:focus {
+    background-color: #6EFF18;
+    color: black;
+    box-shadow: none;
 }

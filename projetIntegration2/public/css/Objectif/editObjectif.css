@@ -1,0 +1,149 @@
+/* Style général pour la page */
+body {
+    background-color: rgb(54, 54, 54);;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;  /* Ajouté pour éviter le défilement de la page */
+}
+
+/* Conteneur du formulaire */
+.form-container {
+    background-color: #222;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+    margin: 0 auto; /* Centrer horizontalement */
+}
+
+/* Titre */
+h1 {
+    font-size: 32px;
+    font-weight: bold;
+    color: #a9fe77;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    margin-bottom: 20px;
+}
+
+/* Espacement entre les champs */
+.mb-3 {
+    margin-bottom: 1.5rem;
+}
+
+/* Champs de saisie */
+.input, .textarea {
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #666;
+    padding: 0.75rem;
+    border-radius: 0.25rem;
+    width: 100%;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+.input:focus, .textarea:focus {
+    outline: none;
+    border-color: #a9fe77;
+}
+
+/* Textarea spécifique */
+.textarea {
+    height: 120px;
+    resize: none;
+}
+
+/* Case à cocher */
+.form-check-input {
+    margin-right: 0.5rem;
+}
+
+/* Bouton de soumission */
+.btn {
+    background-color: #a9fe77;
+    color: black;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+    cursor: pointer;
+    width: 100%;
+}
+
+.btn:hover {
+    background-color: #7bdb5b;
+}
+
+/* Bouton retour */
+.bouton-retour {
+    display: inline-block;
+    margin-top: 1rem;
+    background-color: #666;
+    text-align: center;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    color: white;
+    width: 100%;
+}
+
+.bouton-retour:hover {
+    background-color: #444;
+    color: black;
+}
+
+.alert {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    text-align: center;
+}
+
+.alert a {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+.alert a:hover {
+    color: #003366;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .form-container {
+        width: 90%;
+        padding: 1.5rem;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    .input, .textarea, .btn, .bouton-retour {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-container {
+        width: 95%;
+        padding: 1.2rem;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    .input, .textarea, .btn, .bouton-retour {
+        font-size: 0.85rem;
+    }
+}
