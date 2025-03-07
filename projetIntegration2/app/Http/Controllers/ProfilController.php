@@ -32,30 +32,49 @@ class ProfilController extends Controller
     public function connexion(ConnexionRequest $request)
     {
         $utilisateur = User::where('email', $request->email)->first();
-        if ($utilisateur->email_verified_at == null) {
+
+        // Check if user exists
+        if (!$utilisateur) {
+            $errorMessage = 'Utilisateur non trouvé';
             if ($request->wantsJson()) {
-                return response()->json(['error' => 'Votre compte n\'a pas été vérifié'], 403);
+                return response()->json(['error' => $errorMessage], 401);
             }
-            return redirect()->back()->withErrors(['email' => 'Votre compte n\'a pas été vérifié']);
+            return redirect()->back()->withErrors(['email' => $errorMessage]);
         }
-        $reussi = Auth::guard()->attempt(['email' => $request->email, 'password' => $request->password]);
-        if ($reussi) {
-            // For API requests, return a token using Laravel Sanctum.
-            if ($request->wantsJson()) {
-                $token = $utilisateur->createToken('mobile-token')->plainTextToken;
-                return response()->json([
-                    'token' => $token,
-                    'user'  => $utilisateur
-                ], 200);
-            }
-            return redirect()->route('profil.profil');
-        } else {
+
+        // Verify credentials before checking email verification
+        $reussi = Auth::attempt(['email' => $request->email, 'password' => $request->password]);
+
+        if (!$reussi) {
             $errorMessage = 'Informations invalides';
             if ($request->wantsJson()) {
                 return response()->json(['error' => $errorMessage], 401);
             }
             return redirect()->back()->withErrors([$errorMessage]);
         }
+
+        // Check email verification after validating credentials
+        if ($utilisateur->email_verified_at == null) {
+            if ($request->wantsJson()) {
+                return response()->json(['error' => 'Votre compte n\'a pas été vérifié'], 403);
+            }
+            return redirect()->back()->withErrors(['email' => 'Votre compte n\'a pas été vérifié']);
+        }
+
+        // For API requests, return a token using Laravel Sanctum
+        if ($request->wantsJson()) {
+            // Revoke old tokens if needed
+            // $utilisateur->tokens()->delete();
+
+            $token = $utilisateur->createToken('mobile-token')->plainTextToken;
+            return response()->json([
+                'token' => $token,
+                'user'  => $utilisateur
+            ], 200);
+        }
+
+        // For web requests
+        return redirect()->route('profil.profil');
     }
 
     public function creerCompte()
