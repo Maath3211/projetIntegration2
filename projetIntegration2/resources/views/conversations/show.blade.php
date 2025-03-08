@@ -390,6 +390,40 @@
 
 
 
+            
+            // ---------------------------
+            // Gestion de la suppression des messages
+            // ---------------------------
+
+            // Lorsqu'un utilisateur clique sur le bouton de suppression
+            $(document).on('click', '.delete-btn', function(e) {
+                e.preventDefault();
+                let messageId = $(this).data('id');
+                $.ajax({
+                    type: "DELETE",
+                    url: `/messages/${messageId}`,
+                    data: {
+                        _token: "{{ csrf_token() }}"
+                    }
+                }).done(function(res) {
+                    if (res.success) {
+                        // Supprime le message du DOM
+                        $(`#message-${messageId}`).remove();
+                    } else {
+                        alert("Erreur lors de la suppression du message.");
+                    }
+                }).fail(function() {
+                    alert("Erreur lors de la suppression du message.");
+                });
+            });
+
+            // Écouter l'événement de suppression spécifique diffusé par Pusher
+            channel.bind('message-deleted', function(data) {
+                console.log("Message supprimé:", data); // Affiche l'ID du message supprimé pour le débogage
+                // Supprime le message correspondant du DOM
+                $(`#message-${data.messageId}`).remove();
+            });
+
         </script>
 
 
