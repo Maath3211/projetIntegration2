@@ -37,17 +37,25 @@ class ConversationsController extends Controller
 
         $users = User::select('email','id')->get();
         return view('conversations.index',[
-            'users' => $this->ConvRepository->getConversations()
+            'users' => \DB::table('demande_amis')
+            ->join('users', 'requested_id', '=', 'users.id')
+            ->select('users.email', 'users.id')
+            ->where('demande_amis.status', 'accepted')
+            ->get(),
         ]);
 
     }
 
     public function show(User $user){
-        dd($user);
+        
         //$users = auth()->id();
         //dd($user);
         return view('conversations.show',[
-            'users' => $this->ConvRepository->getConversations(),
+            'users' => \DB::table('demande_amis')
+            ->join('users', 'requested_id', '=', 'users.id')
+            ->select('users.email', 'users.id')
+            ->where('demande_amis.status', 'accepted')
+            ->get(),
             'user' => $user,
             'messages' => $this->ConvRepository->getMessageFor(auth()->id(), $user->id)->paginate(300)//Pagination des messages par 2
         ]);
