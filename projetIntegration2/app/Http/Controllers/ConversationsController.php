@@ -53,7 +53,7 @@ class ConversationsController extends Controller
         return view('conversations.show',[
             'users' => \DB::table('demande_amis')
             ->join('users', 'requested_id', '=', 'users.id')
-            ->select('users.email', 'users.id')
+            ->select('users.email', 'users.id', 'users.email')
             ->where('demande_amis.status', 'accepted')
             ->get(),
             'user' => $user,
@@ -61,7 +61,7 @@ class ConversationsController extends Controller
         ]);
     }
 
-
+    /* ------------------Non utiliser 
     public function store(User $user, StoreMessage $request){
         $senderId = auth()->id();
         $receiverId = $user->id;
@@ -78,41 +78,79 @@ class ConversationsController extends Controller
 
         return redirect()->route('conversations.show', [$user->id]);
     }
+*/
 
-
-
-    public function broadcast(Request $request){
-        //\Log::info('Message envoyé via Pusher', $request->all());
-        //\Log::info('📡 Tentative de broadcast avec message: ' . $request->message);
+    public function broadcast(Request $request)
+    {
+        $request->validate([
+            'message' => 'nullable|string',
+            'fichier' => 'nullable|file|max:20480', // 20 Mo
+        ]);
+        
+        if (!$request->filled('message') && !$request->hasFile('fichier')) {
+            return response()->json(['error' => 'Vous devez envoyer soit un message, soit un fichier, soit les deux.'], 422);
+        }
+        
+    
         try {
-            broadcast(new PusherBroadcast($request->message, auth()->id(), $request->to))
-                ->toOthers();
-            //\Log::info('✅ Message broadcasté avec succès');
-            
-            // Enregistrement des informations dans la table user_ami
-            \DB::table('user_ami')->insert([
+            $fichierNom = null;
+            if ($request->hasFile('fichier')) {
+                $fichier = $request->file('fichier');
+        
+                // Générer un nom unique avec horodatage
+                $fichierNom = time() . '_' . $fichier->getClientOriginalName();
+        
+                // Déterminer le dossier en fonction du type de fichier
+                $dossier = in_array($fichier->getClientOriginalExtension(), ['jpg', 'jpeg', 'png', 'gif'])
+                    ? 'img/conversations_photo/'
+                    : 'fichier/conversations_fichier/';
+        
+                // Stocker le fichier
+                $fichier->move(public_path($dossier), $fichierNom);
+            }
+    
+            // Insérer le message dans la base de données
+            $lastId = \DB::table('user_ami')->insertGetId([
                 'idEnvoyer' => auth()->id(),
-                'idReceveur' => $request->to,
-                'message' => $request->message,
-                'created_at' => now(),
-                'updated_at' => now()
+                'idReceveur'    => $request->to,
+                'message'   => $request->message,
+                'fichier'   => $fichierNom, // Stocke le chemin public
+                'created_at'=> now(),
+                'updated_at'=> now()
             ]);
-            //\Log::info('✅ Message Enregistrer avec succès');
-
-            
-
-
+    
+            // Diffuser l’événement via Pusher
+            broadcast(new PusherBroadcast($request->message, auth()->id(), $request->to, false, $lastId, $fichierNom, auth()->user()->email))
+                ->toOthers();
+    
         } catch (\Exception $e) {
             \Log::error('❌ Erreur lors du broadcast: ' . $e->getMessage());
         }
-        return response()->json(['message' => $request->message]);
+    
+        return response()->json([
+            'message'      => $request->message,
+            'last_id'      => $lastId,
+            'sender_id'    => auth()->id(),
+            'sender_email' => auth()->user()->email,
+            'fichier'      => $fichierNom ? asset($dossier . $fichierNom) : null, // Retourne l'URL complète
+            'email'        => auth()->user()->email,
+
+        ]);
     }
     
 
     public function receive(Request $request){
-        //\Log::info('Receive method called with message: ' . $request->message);
-        //\Log::info('Message received: ' . $request->message); // Debug
-        return response()->json(['message' => $request->message]);
+
+    return response()->json([
+        'message' => $request->message,
+        'sender_id' => $request->sender_id,
+        'group_id' => $request->group_id,
+        'canal_id' => $request->canal_id,
+        'deleted' => $request->deleted,
+        'last_id' => $request->last_id,
+        'photo' => $request->photo,
+        
+    ]);
     }
 
 
@@ -247,7 +285,7 @@ class ConversationsController extends Controller
 public function receiveClan(Request $request)
 {
 
-    // Ajoute l'email dans la réponse WebSocket
+
     return response()->json([
         'message' => $request->message,
         'sender_id' => $request->sender_id,
