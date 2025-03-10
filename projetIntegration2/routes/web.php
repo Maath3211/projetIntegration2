@@ -24,7 +24,7 @@ Route::fallback(function() {
 });
 
 Route::get('/', function () {
-    return redirect()->route('profil.pageConnexion');
+    return redirect()->route('profil.profil');
 });
 
 Route::middleware([VerifierMembreClan::class])->group(function () {
