@@ -2,24 +2,24 @@
 
 return [
     // Navigation
-    'private_messages' => 'Messages Privés',
-    'rankings' => 'Classements',
+    'messages_prives' => 'Messages Privés',
+    'classements' => 'Classements',
     
     // Clan creation
     'creation_clan' => 'Créer un clan',
-    'cancel' => 'Annuler',
-    'confirm' => 'Confirmer',
+    'annuler' => 'Annuler',
+    'confirmer' => 'Confirmer',
     'nom_clan' => 'Nom du clan',
-    'choose_image' => 'Choisir une image',
-    'public_clan' => 'Clan public',
+    'choisir_image' => 'Choisir une image',
+    'clan_publique' => 'Clan public',
     'clan_image' => 'Image du clan',
     
     // User actions
-    'logout' => 'Déconnexion',
+    'deconnexion' => 'Déconnexion',
     
     // Modal titles
-    'add_clan' => 'Ajouter un nouveau clan',
+    'ajouter_clan' => 'Ajouter un nouveau clan',
     
     // Error messages
-    'error_message' => 'Message d\'erreur',
+    'message_erreur' => 'Message d\'erreur',
 ];

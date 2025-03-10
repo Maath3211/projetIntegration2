@@ -3,7 +3,7 @@
 return [
     // General profile information
     'about' => 'About:',
-    'member_since' => 'Member since:',
+    'membre_depuis' => 'Member since:',
     'settings' => 'Settings',
     'statistics' => 'Statistics',
     'common_friends' => 'Common friend(s):',

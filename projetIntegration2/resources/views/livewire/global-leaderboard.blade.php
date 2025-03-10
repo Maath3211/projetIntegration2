@@ -10,11 +10,11 @@
                     <img src="{{ asset('img/ui/trophy.png') }}" alt="Trophy" style="width:30px; height:30px;" class="mr-2">
                     <h2 class="mb-0" id="titreLeaderboard">{{ __('leaderboard.top_10_clans') }}</h2>
                 </div>
-                <p class="text-muted mb-0">{{ __('leaderboard.discover_clans') }}</p>
+                <p class="text-muted mb-0">{{ __('leaderboard.decouvrir_clans') }}</p>
             </div>
             <div class="d-flex align-items-center">
                 <button class="btn btn-graphique mr-2" wire:click="showClansGraph">
-                    <i class="fa-solid fa-chart-line"></i> {{ __('leaderboard.chart_clans') }}
+                    <i class="fa-solid fa-chart-line"></i> {{ __('leaderboard.graphique_clans') }}
                 </button>
                 <div class="dropdown ml-2" wire:ignore>
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="exportDropdown" data-toggle="dropdown"
@@ -22,8 +22,8 @@
                         <i class="fa-solid fa-share-from-square fa-2x"></i>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="exportDropdown">
-                        <a class="dropdown-item" href="{{ route('export.topClans') }}">{{ __('leaderboard.export_list') }}</a>
-                        <a class="dropdown-item" href="#" id="exportClansImageBtn">{{ __('leaderboard.export_capture') }}</a>
+                        <a class="dropdown-item" href="{{ route('export.topClans') }}">{{ __('leaderboard.exporter_liste') }}</a>
+                        <a class="dropdown-item" href="#" id="exportClansImageBtn">{{ __('leaderboard.exporter_capture') }}</a>
                     </div>
                 </div>
             </div>
@@ -67,13 +67,13 @@
             <div>
                 <div class="d-flex align-items-center">
                     <img src="{{ asset('img/ui/trophy.png') }}" alt="Trophy" style="width:30px; height:30px;" class="mr-2">
-                    <h2 class="mb-0" id="titreLeaderboard">{{ __('leaderboard.top_10_users') }}</h2>
+                    <h2 class="mb-0" id="titreLeaderboard">{{ __('leaderboard.top_10_usagers') }}</h2>
                 </div>
-                <p class="text-muted mb-0">{{ __('leaderboard.discover_users') }}</p>
+                <p class="text-muted mb-0">{{ __('leaderboard.decouvrir_usagers') }}</p>
             </div>
             <div class="d-flex align-items-center">
                 <button class="btn btn-graphique mr-2" wire:click="showUsersGraph">
-                    <i class="fa-solid fa-chart-line"></i> {{ __('leaderboard.chart_users') }}
+                    <i class="fa-solid fa-chart-line"></i> {{ __('leaderboard.graphique_usagers') }}
                 </button>
                 <div class="dropdown ml-2" wire:ignore>
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="exportDropdownUsers" data-toggle="dropdown"
@@ -81,8 +81,8 @@
                         <i class="fa-solid fa-share-from-square fa-2x"></i>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="exportDropdownUsers">
-                        <a class="dropdown-item" href="{{ route('export.topUsers') }}">{{ __('leaderboard.export_list') }}</a>
-                        <a class="dropdown-item" href="#" id="exportUsersImageBtn">{{ __('leaderboard.export_capture') }}</a>
+                        <a class="dropdown-item" href="{{ route('export.topUsers') }}">{{ __('leaderboard.exporter_liste') }}</a>
+                        <a class="dropdown-item" href="#" id="exportUsersImageBtn">{{ __('leaderboard.exporter_capture') }}</a>
                     </div>
                 </div>
             </div>

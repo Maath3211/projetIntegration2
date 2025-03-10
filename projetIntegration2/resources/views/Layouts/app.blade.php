@@ -34,12 +34,12 @@
     <aside class="w-20 text-white h-screen flex flex-col items-center py-4 space-y-4 p-5">
 
       <!-- Navigation aux messages privés entre utilisateurs -->
-      <a href="#" title="{{ __('layout.private_messages') }}">
+      <a href="#" title="{{ __('layout.messages_prives') }}">
         <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee"><i class="fa-solid fa-comment fa-2xl"></i></div>
       </a>
 
       <!-- Navigation aux classements -->
-      <a href="#" title="{{ __('layout.rankings') }}">
+      <a href="#" title="{{ __('layout.classements') }}">
         <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee"><i class="fa-solid fa-ranking-star fa-2xl"></i></div>
       </a>
 
@@ -67,7 +67,7 @@
       </div>
       <form action="{{route('profil.deconnexion')}}" method="post">
         @csrf
-        <button class="w-16 h-16 overflow-hidden" id="imgDeconnexion" title="{{ __('layout.logout') }}"><img src="{{ asset('img/logout.png') }}" class="object-cover w-full h-full" alt="{{ __('layout.logout') }}"></button>
+        <button class="w-16 h-16 overflow-hidden" id="imgDeconnexion" title="{{ __('layout.deconnexion') }}"><img src="{{ asset('img/logout.png') }}" class="object-cover w-full h-full" alt="{{ __('layout.deconnexion') }}"></button>
       </form>
 
 
@@ -89,12 +89,12 @@
             </div>
             <div class="optionsClan">
               <div class="televersementImage" style="margin-top: 10px;">
-                <button id="selectionnerImage" type="button">{{ __('layout.choose_image') }}</button>
+                <button id="selectionnerImage" type="button">{{ __('layout.choisir_image') }}</button>
                 <input type="file" id="entreeImageCachee" name="imageClan" accept="image/*">
               </div>
               <div class="optionPublic" style="margin-top: 10px;">
                 <label>
-                  {{ __('layout.public_clan') }}
+                  {{ __('layout.clan_publique') }}
                   <input type="checkbox" name="clanPublic" class="form-check-input">
                 </label>
               </div>
@@ -103,8 +103,8 @@
 
 
             <div class="boutonsConfirmation">
-              <button class="annuler" type="button">{{ __('layout.cancel') }}</button>
-              <button id="confirmerAjoutClan" type="submit">{{ __('layout.confirm') }}</button>
+              <button class="annuler" type="button">{{ __('layout.annuler') }}</button>
+              <button id="confirmerAjoutClan" type="submit">{{ __('layout.confirmer') }}</button>
             </div>
           </div>
         </div>

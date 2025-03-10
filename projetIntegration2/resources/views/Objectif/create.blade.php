@@ -4,21 +4,21 @@
 <link rel="stylesheet" style="text/css" href="\css\Objectif\createObjectif.css">
 <div class="container">
     <div class="form-box">
-        <h1>{{ __('objectives.create_title') }}</h1>
+        <h1>{{ __('objectives.creer_titre') }}</h1>
 
         <form action="{{ route('objectif.store') }}" method="POST">
             @csrf
 
-            <label for="titre" class="label">{{ __('objectives.objective_title') }}</label>
-            <input type="text" id="titre" name="titre" class="input" placeholder="{{ __('objectives.title_placeholder') }}" required>
+            <label for="titre" class="label">{{ __('objectives.titre_objectif') }}</label>
+            <input type="text" id="titre" name="titre" class="input" placeholder="{{ __('objectives.titre_placeholder') }}" required>
 
-            <label for="description" class="label">{{ __('objectives.objective_description') }}</label>
-            <textarea id="description" name="description" class="input textarea" placeholder="{{ __('objectives.description_placeholder') }}" required></textarea>
+            <label for="description" class="label">{{ __('objectives.description_objectif') }}</label>
+            <textarea id="description" name="description" class="input textarea" placeholder="{{ __('objectives.description_exemple') }}" required></textarea>
 
-            <button type="submit" class="bouton">{{ __('objectives.add_button') }}</button>
+            <button type="submit" class="bouton">{{ __('objectives.ajout_button') }}</button>
         </form>
 
-        <a href="{{ route('objectif.index') }}" class="bouton bouton-retour">{{ __('objectives.back') }}</a>
+        <a href="{{ route('objectif.index') }}" class="bouton bouton-retour">{{ __('objectives.retour') }}</a>
     </div>
 </div>
 @endsection

@@ -48,12 +48,12 @@
                                 </div>
                                 @endforeach
                                 @else
-                                <p>{{ __('clans.no_channel_clan') }}</p>
+                                <p>{{ __('clans.clan_sans_canal') }}</p>
                                 @endif
                             </div>
                             @endforeach
                             @else
-                            <p>{{ __('clans.no_category') }}</p>
+                            <p>{{ __('clans.sans_categorie') }}</p>
                             @endif
                         </div>
                     </div>
@@ -64,7 +64,7 @@
                     <!-- COLONNE POUR LES MESSAGES POUR XAVIER -->
                 </div>
                 <div class="entreeFixe">
-                    <input type="text" placeholder="{{ __('clans.message_input) }}" maxlength="1000">
+                    <input type="text" placeholder="{{ __('clans.entrer_message) }}" maxlength="1000">
                     <i class="fa-solid fa-play aly fa-xl"></i>
                 </div>
             </div>
@@ -82,7 +82,7 @@
                     </div>
                     @endforeach
                     @else
-                    <p>{{ __('clans.invite_show') }}</p>
+                    <p>{{ __('clans.invitation_vue') }}</p>
                     @endif
                 </div>
             </div>
@@ -98,7 +98,7 @@
     <div id="ajoutCanal" class="fenetreCategorie">
         <div class="conteneurConfirmation">
             <div class="titreConfirmation">
-                <div>{{ __('clans.add_channel') }}</div>
+                <div>{{ __('clans.ajout_canal') }}</div>
             </div>
             <div class="texteConfirmation">
                 <input type="text" name="entreeNomCanal" class="form-control entreeNomCanal" placeholder="ex.: Cardio">
@@ -116,7 +116,7 @@
     <div id="renommerCanal" class="fenetreCategorie">
         <div class="conteneurConfirmation">
             <div class="titreConfirmation">
-                <div>{{ __('clans.rename_channel') }}</div>
+                <div>{{ __('clans.renommer_canal') }}</div>
             </div>
             <div class="texteConfirmation">
                 <input type="text" name="entreeNomCanal" class="form-control entreeNomCanal" placeholder="ex.: Cardio">

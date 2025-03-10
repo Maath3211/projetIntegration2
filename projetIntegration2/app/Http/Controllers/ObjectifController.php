@@ -33,7 +33,7 @@ class ObjectifController extends Controller
             'user_id' => auth()->id(),
         ]);
      
-        return redirect()->route('objectif.index')->with('success', __('objectives.created_successfully'));
+        return redirect()->route('objectif.index')->with('success', __('objectives.cree_avec_success'));
     }
 
     public function update(Request $request, $id)
@@ -53,7 +53,7 @@ class ObjectifController extends Controller
     ]);
 
 
-    return redirect()->route('objectif.index')->with('success', __('objectives.updated_successfully'));
+    return redirect()->route('objectif.index')->with('success', __('objectives.mis_a_jourd_successfully'));
     }
     
 
@@ -71,7 +71,7 @@ class ObjectifController extends Controller
     public function destroy($id)
     {
         Objectif::destroy($id);
-        return redirect()->route('objectif.index')->with('success', __('objectives.deleted_successfully'));
+        return redirect()->route('objectif.index')->with('success', __('objectives.supprimer_avec_success'));
     }
     /**
      * Show the form for creating a new resource.

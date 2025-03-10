@@ -2,33 +2,33 @@
 
 return [
     // Navigation buttons
-    'search_friends' => 'Search Friends',
-    'friend_requests_list' => 'Friend Requests List',
+    'recherche_amis' => 'Search Friends',
+    'liste_demandes_amis' => 'Friend Requests List',
     
     // Search form
-    'search_placeholder' => 'Username',
-    'search_button' => 'Search',
+    'recherche_exemple' => 'Username',
+    'bouton_recherche' => 'Search',
     
     // Messages
-    'no_users_found' => 'No users found.',
-    'search_results' => 'Search Results:',
-    'success_request_sent' => 'Friend request sent successfully!',
+    'aucun_utilisateurs_trouves' => 'No users found.',
+    'resultats_recherche' => 'Search Results:',
+    'succes_requete_envoyer' => 'Friend request sent successfully!',
     
     // Profile modal
-    'profile_of' => 'Profile of :name',
-    'full_name' => 'Full name:',
+    'profil_de' => 'Profile of :name',
+    'nom_complet' => 'Full name:',
     'email' => 'Email:',
-    'member_since' => 'Member since:',
-    'close' => 'Close',
+    'membre_depuis' => 'Member since:',
+    'fermer' => 'Close',
     
     // Buttons
-    'accept' => '✓',
-    'decline' => '✕',
+    'accepter' => '✓',
+    'refuser' => '✕',
     'add_friend' => 'Add',
     
     // Profile elements
-    'default_avatar' => 'Default Avatar',
-    'profile_avatar' => 'Profile Avatar',
+    'avatar_defaut' => 'Default Avatar',
+    'avatar_profil' => 'Profile Avatar',
     
     // Alt text for images
     'avatar' => 'Avatar',

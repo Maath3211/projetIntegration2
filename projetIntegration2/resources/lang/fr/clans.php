@@ -38,25 +38,25 @@ return [
     //Traductions accueilClans.blade.php
     'clan' => 'Clan',
     'creation_clan' => 'Créer un clan',
-    'join_clan' => 'Rejoindre un clan',
-    'no_channel_clan' => 'Aucun canal n\'est créé pour ce clan. Veuillez en créer une pour commencer.',
-    'no_category' => 'Aucune catégorie de canal n\'a été créée pour ce clan. Veuillez en créer une pour ajout des canaux.',
-    'message_input' => 'Entrez votre message içi...',
-    'invite_show' => 'Invitez quelqu\'un au clan pour afficher les membres!',
-    'add_channel' => 'Ajouter un canal',
-    'rename_channel' => 'Renommer un canal',
-    'delete_channel' => 'Supprimer le canal',
-    'delete_channel_warning' => 'Êtes-vous sûr de vouloir supprimer ce canal?',
+    'joindre_clan' => 'Rejoindre un clan',
+    'clan_sans_canal' => 'Aucun canal n\'est créé pour ce clan. Veuillez en créer une pour commencer.',
+    'sans_categorie' => 'Aucune catégorie de canal n\'a été créée pour ce clan. Veuillez en créer une pour ajout des canaux.',
+    'entrer_message' => 'Entrez votre message içi...',
+    'invitation_vue' => 'Invitez quelqu\'un au clan pour afficher les membres!',
+    'ajout_canal' => 'Ajouter un canal',
+    'renommer_canal' => 'Renommer un canal',
+    'supprimer_canal' => 'Supprimer le canal',
+    'supprimer_canal_avertissement' => 'Êtes-vous sûr de vouloir supprimer ce canal?',
 
     // Traductions rechercheClans.blade.php
 
-    'search_clan' => 'Rechercher un clan',
-    'search_placeholder' => 'Nom du clan',
-    'search_button' => 'Rechercher',
-    'no_clans_found' => 'Aucun clan trouvé.',
-    'search_results' => 'Résultats de recherche :',
-    'success_request_sent' => 'Demande de clan envoyée avec succès !',
-    'join' => 'Rejoindre',
+    'recherche_clan' => 'Rechercher un clan',
+    'recherche_exemple' => 'Nom du clan',
+    'bouton_recherche' => 'Rechercher',
+    'aucun_clans_trouve' => 'Aucun clan trouvé.',
+    'resultats_recherche' => 'Résultats de recherche :',
+    'succes_requete_envoyer' => 'Demande de clan envoyée avec succès !',
+    'joindre' => 'Rejoindre',
 
 
 ];

@@ -6,13 +6,13 @@
             <div>
                 <div class="d-flex align-items-center">
                     <img src="{{ asset('img/ui/trophy.png') }}" alt="Trophy" style="width:30px; height:30px;" class="mr-2">
-                    <h2 class="mb-0" id="titreLeaderboard">{{ __('leaderboard.top_10_members') }}</h2>
+                    <h2 class="mb-0" id="titreLeaderboard">{{ __('leaderboard.top_10_membres') }}</h2>
                 </div>
-                <p class="text-muted mb-0">{{ __('leaderboard.discover_members') }}</p>
+                <p class="text-muted mb-0">{{ __('leaderboard.decouvrir_membres') }}</p>
             </div>
             <div class="d-flex align-items-center">
                 <button class="btn btn-graphique mr-2" wire:click="showMembersGraph">
-                    <i class="fa-solid fa-chart-line"></i> {{ __('leaderboard.chart_members') }}
+                    <i class="fa-solid fa-chart-line"></i> {{ __('leaderboard.graphique_membres') }}
                 </button>
                 <div class="dropdown ml-2" wire:ignore>
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="exportDropdown" data-toggle="dropdown"
@@ -20,8 +20,8 @@
                         <i class="fa-solid fa-share-from-square fa-2x"></i>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="exportDropdown">
-                        <a class="dropdown-item" href="{{ route('export.topMembres', ['clanId' => $selectedClanId]) }}">{{ __('leaderboard.export_list') }}</a>
-                        <a class="dropdown-item" href="#" id="exportTopMembresImage">{{ __('leaderboard.export_capture') }}</a>
+                        <a class="dropdown-item" href="{{ route('export.topMembres', ['clanId' => $selectedClanId]) }}">{{ __('leaderboard.exporter_liste') }}</a>
+                        <a class="dropdown-item" href="#" id="exportTopMembresImage">{{ __('leaderboard.exporter_capture') }}</a>
                     </div>
                 </div>
             </div>
@@ -63,22 +63,22 @@
             <div>
                 <div class="d-flex align-items-center">
                     <img src="{{ asset('img/ui/trophy.png') }}" alt="Trophy" style="width:30px; height:30px;" class="mr-2">
-                    <h2 class="mb-0" id="titreLeaderboard">{{ __('leaderboard.top_10_improvement') }}</h2>
+                    <h2 class="mb-0" id="titreLeaderboard">{{ __('leaderboard.top_10_amelioration') }}</h2>
                 </div>
-                <p class="text-muted mb-0">{{ __('leaderboard.discover_improvement') }}</p>
+                <p class="text-muted mb-0">{{ __('leaderboard.decouvrir_amelioration') }}</p>
             </div>
             <div class="d-flex align-items-center">
                 <!-- Chart button for improvement data -->
                 <button class="btn btn-graphique mr-2" wire:click="showImprovementsGraph">
-                    <i class="fa-solid fa-chart-line"></i> {{ __('leaderboard.chart_improvement') }}
+                    <i class="fa-solid fa-chart-line"></i> {{ __('leaderboard.graphique_amelioration') }}
                 </button>
                 <div class="dropdown ml-2" wire:ignore>
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="exportDropdownUsers" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa-solid fa-share-from-square fa-2x"></i>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="exportDropdown">
-                        <a class="dropdown-item" href="{{ route('export.topAmelioration', ['clanId' => $selectedClanId]) }}">{{ __('leaderboard.export_list') }}</a>
-                        <a class="dropdown-item" href="#" id="exportTopAmeliorationImage">{{ __('leaderboard.export_capture') }}</a>
+                        <a class="dropdown-item" href="{{ route('export.topAmelioration', ['clanId' => $selectedClanId]) }}">{{ __('leaderboard.exporter_liste') }}</a>
+                        <a class="dropdown-item" href="#" id="exportTopAmeliorationImage">{{ __('leaderboard.exporter_capture') }}</a>
                     </div>
                 </div>
             </div>

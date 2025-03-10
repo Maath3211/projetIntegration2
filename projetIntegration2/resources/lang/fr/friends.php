@@ -2,8 +2,8 @@
 
 return [
     // Navigation buttons
-    'search_friends' => 'Rechercher des amis',
-    'friend_requests_list' => 'Liste des demandes d\'amis',
+    'recherche_amis' => 'Rechercher des amis',
+    'liste_demandes_amis' => 'Liste des demandes d\'amis',
     
     // Page titles and messages
     'received_requests' => 'Demandes d\'amis reçues:',
@@ -13,29 +13,29 @@ return [
     'success_sent' => 'Demande d\'ami envoyée avec succès !',
     
     // Search form
-    'search_placeholder' => 'Nom d\'utilisateur',
-    'search_button' => 'Rechercher',
+    'recherche_exemple' => 'Nom d\'utilisateur',
+    'bouton_recherche' => 'Rechercher',
     
     // Messages
-    'no_users_found' => 'Aucun utilisateur trouvé.',
-    'search_results' => 'Résultats de recherche :',
-    'success_request_sent' => 'Demande d\'ami envoyée avec succès !',
+    'aucun_utilisateurs_trouves' => 'Aucun utilisateur trouvé.',
+    'resultats_recherche' => 'Résultats de recherche :',
+    'succes_requete_envoyer' => 'Demande d\'ami envoyée avec succès !',
     
     // Profile modal
-    'profile_of' => 'Profil de :name',
-    'full_name' => 'Nom complet:',
+    'profil_de' => 'Profil de :name',
+    'nom_complet' => 'Nom complet:',
     'email' => 'Email:',
-    'member_since' => 'Membre depuis:',
-    'close' => 'Fermer',
+    'membre_depuis' => 'Membre depuis:',
+    'fermer' => 'Fermer',
     
     // Buttons
-    'accept' => '✓',
-    'decline' => '✕',
+    'accepter' => '✓',
+    'refuser' => '✕',
     'add_friend' => 'Ajouter',
     
     // Profile elements
-    'default_avatar' => 'Avatar par défaut',
-    'profile_avatar' => 'Avatar de profil',
+    'avatar_defaut' => 'Avatar par défaut',
+    'avatar_profil' => 'Avatar de profil',
     
     // Alt text for images
     'avatar' => 'Avatar',

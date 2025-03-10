@@ -17,14 +17,14 @@
     <!-- Formulaire de recherche de clans -->
     <form action="{{ route('clans.recherche') }}" method="POST" style="margin-bottom:20px;">
         @csrf
-        <input type="text" name="q" placeholder="{{ __('chat.search_placeholder') }}" required style="padding:10px; width:300px; color:#000;">
+        <input type="text" name="q" placeholder="{{ __('chat.recherche_exemple') }}" required style="padding:10px; width:300px; color:#000;">
         <button type="submit" class="search-button"
-            style="padding: 10px 20px; background-color: #a9fe77; color:#000; border:1px solid #999; border-radius:5px; cursor:pointer;">{{ __('clans.search_button') }}</button>
+            style="padding: 10px 20px; background-color: #a9fe77; color:#000; border:1px solid #999; border-radius:5px; cursor:pointer;">{{ __('clans.bouton_recherche') }}</button>
     </form>
 
     @isset($clans)
         @if($clans->isEmpty())
-            <p>{{ __('clans.no_clans_found') }}</p>
+            <p>{{ __('clans.aucun_clans_trouve') }}</p>
         @else
             <ul class="result-list" style="list-style:none; padding:0;">
                 @foreach($clans as $clan)
@@ -45,7 +45,7 @@
                             @csrf
                             <input type="hidden" name="clan_id" value="{{ $clan->id }}">
                             <button type="submit" class="join-button"
-                                style="background-color: #a9fe77; color: #000; border:1px solid #999; padding:10px 20px; border-radius:5px; cursor:pointer;">{{ __('clans.join') }}</button>
+                                style="background-color: #a9fe77; color: #000; border:1px solid #999; padding:10px 20px; border-radius:5px; cursor:pointer;">{{ __('clans.joindre') }}</button>
                         </form>
                     </li>
                 @endforeach

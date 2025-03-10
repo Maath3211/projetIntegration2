@@ -128,10 +128,10 @@
 
     <div class="top-buttons" style="margin-bottom: 20px;">
         <a href="{{ route('amis.index') }}" class="search-button" style="text-decoration: none; padding: 10px 20px; background-color: #a9fe77; color: #000; border: 1px solid #999; border-radius: 5px; margin-right: 10px;">
-            {{ __('friends.search_friends') }}
+            {{ __('friends.recherche_amis') }}
         </a>
         <a href="{{ route('amis.demandes') }}" class="add-button" style="text-decoration: none; padding: 10px 20px; background-color: #a9fe77; color: #000; border: 1px solid #999; border-radius: 5px;">
-            {{ __('friends.friend_requests_list') }}
+            {{ __('friends.liste_demandes_amis') }}
         </a>
     </div>
 
@@ -151,16 +151,16 @@
     <div class="search-bar">
         <form action="{{ route('amis.recherche') }}" method="POST">
             @csrf
-            <input type="text" name="q" placeholder="{{ __('friends.search_placeholder') }}" required class="search-input">
-            <button type="submit" class="search-button">{{ __('friends.search_button') }}</button>
+            <input type="text" name="q" placeholder="{{ __('friends.recherche_exemple') }}" required class="search-input">
+            <button type="submit" class="search-button">{{ __('friends.bouton_recherche') }}</button>
         </form>
     </div>
 
     @isset($utilisateurs)
         @if($utilisateurs->isEmpty())
-            <p>{{ __('friends.no_users_found') }}</p>
+            <p>{{ __('friends.aucun_utilisateurs_trouves') }}</p>
         @else
-            <h2>{{ __('friends.search_results') }}</h2>
+            <h2>{{ __('friends.resultats_recherche') }}</h2>
             <ul class="result-list">
                 @foreach($utilisateurs as $utilisateur)
                     <li class="result-item" data-target="#profileModal{{ $utilisateur->id }}">
@@ -168,7 +168,7 @@
                             @if($utilisateur->avatar)
                                 <img src="{{ asset('images/avatars/' . $utilisateur->avatar) }}" alt="{{ __('friends.avatar') }}" class="avatar" style="width:40px;height:40px;border-radius:50%;">
                             @else
-                                <img src="{{ asset('images/avatars/default-avatar.jpg') }}" alt="{{ __('friends.default_avatar') }}" class="avatar" style="width:40px;height:40px;border-radius:50%;">
+                                <img src="{{ asset('images/avatars/default-avatar.jpg') }}" alt="{{ __('friends.avatar_defaut') }}" class="avatar" style="width:40px;height:40px;border-radius:50%;">
                             @endif
                             <span class="username">{{ $utilisateur->username }}</span>
                         </div>
@@ -188,7 +188,7 @@
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="profileModalLabel{{ $utilisateur->id }}">{{ __('friends.profile_of', ['name' => $utilisateur->username]) }}</h5>
+                                    <h5 class="modal-title" id="profileModalLabel{{ $utilisateur->id }}">{{ __('friends.profil_de', ['name' => $utilisateur->username]) }}</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -197,14 +197,14 @@
                                     @if($utilisateur->avatar)
                                         <img src="{{ asset('images/avatars/' . $utilisateur->avatar) }}" alt="{{ __('friends.avatar') }}" class="profile-avatar">
                                     @else
-                                        <img src="{{ asset('images/avatars/default-avatar.jpg') }}" alt="{{ __('friends.default_avatar') }}" class="profile-avatar">
+                                        <img src="{{ asset('images/avatars/default-avatar.jpg') }}" alt="{{ __('friends.avatar_defaut') }}" class="profile-avatar">
                                     @endif
-                                    <p><strong>{{ __('friends.full_name') }}</strong> {{ $utilisateur->name }}</p>
+                                    <p><strong>{{ __('friends.nom_complet') }}</strong> {{ $utilisateur->name }}</p>
                                     <p><strong>{{ __('friends.email') }}</strong> {{ $utilisateur->email }}</p>
-                                    <p><strong>{{ __('friends.member_since') }}</strong> {{ $utilisateur->created_at->format('d M Y') }}</p>
+                                    <p><strong>{{ __('friends.membre_depuis') }}</strong> {{ $utilisateur->created_at->format('d M Y') }}</p>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('friends.close') }}</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('friends.fermer') }}</button>
                                 </div>
                             </div>
                         </div>

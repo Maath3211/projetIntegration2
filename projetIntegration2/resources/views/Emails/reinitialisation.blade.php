@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ __('emails.password_reset.subject') }}</title>
+    <title>{{ __('emails.reinitialisation_mdp.subject') }}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -43,10 +43,10 @@
 
 <body>
     <div class="container">
-        <h2>{{ __('emails.password_reset.title') }}</h2>
-        <p>{{ __('emails.password_reset.message') }}</p>
-        <a href="{{ route('profil.reinitialisation.token', $token) }}" class="button">{{ __('emails.password_reset.button') }}</a>
-        <p class="footer">{{ __('emails.password_reset.footer') }}</p>
+        <h2>{{ __('emails.reinitialisation_mdp.title') }}</h2>
+        <p>{{ __('emails.reinitialisation_mdp.message') }}</p>
+        <a href="{{ route('profil.reinitialisation.token', $token) }}" class="button">{{ __('emails.reinitialisation_mdp.button') }}</a>
+        <p class="footer">{{ __('emails.reinitialisation_mdp.footer') }}</p>
     </div>
 </body>
 

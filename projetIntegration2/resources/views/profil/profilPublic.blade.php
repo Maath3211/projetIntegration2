@@ -10,7 +10,7 @@
                 <div class="text-start">
                     <h2 class="greenText">{{ $utilisateur->prenom . ' ' . $utilisateur->nom }}</h2>
                     <p><strong>{{ __('profile.about') }} </strong>{{ $utilisateur->aPropos }}</p>
-                    <p><strong>{{ __('profile.member_since') }}</strong> {{ $utilisateur->created_at->format('d/m/Y') }}</p>
+                    <p><strong>{{ __('profile.membre_depuis') }}</strong> {{ $utilisateur->created_at->format('d/m/Y') }}</p>
                 </div>
             </div>
 

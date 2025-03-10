@@ -102,7 +102,7 @@ class AmisController extends Controller
             'updated_at'   => now(),
         ]);
 
-        return redirect()->back()->with('success', __('friends.success_request_sent'));
+        return redirect()->back()->with('success', __('friends.succes_requete_envoyer'));
     }
 
     // Affiche les demandes d'amis destinées à l'utilisateur connecté (ou 999 en test)

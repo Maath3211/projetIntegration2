@@ -3,37 +3,37 @@
 return [
     // Global leaderboard translations
     'top_10_clans' => 'Top 10 Clans',
-    'discover_clans' => 'Découvrez les meilleurs clans',
-    'chart_clans' => 'Graphique Clans',
+    'decouvrir_clans' => 'Découvrez les meilleurs clans',
+    'graphique_clans' => 'Graphique Clans',
 
-    'top_10_users' => 'Top 10 Utilisateurs',
-    'discover_users' => 'Découvrez les meilleurs utilisateurs',
-    'chart_users' => 'Graphique Utilisateurs',
+    'top_10_usagers' => 'Top 10 Utilisateurs',
+    'decouvrir_usagers' => 'Découvrez les meilleurs utilisateurs',
+    'graphique_usagers' => 'Graphique Utilisateurs',
 
     // Clan leaderboard translations
-    'top_10_members' => 'Top 10 Membres',
-    'discover_members' => 'Découvrez les meilleurs membres de ce clan',
-    'chart_members' => 'Graphique Membres',
+    'top_10_membres' => 'Top 10 Membres',
+    'decouvrir_membres' => 'Découvrez les meilleurs membres de ce clan',
+    'graphique_membres' => 'Graphique Membres',
 
-    'top_10_improvement' => 'Top 10 Amélioration',
-    'discover_improvement' => 'Découvrez les membres avec la plus grande amélioration',
-    'chart_improvement' => 'Graphique Amélioration',
+    'top_10_amelioration' => 'Top 10 Amélioration',
+    'decouvrir_amelioration' => 'Découvrez les membres avec la plus grande amélioration',
+    'graphique_amelioration' => 'Graphique Amélioration',
 
     // Common translations
     'points' => 'points',
-    'export_list' => 'Exporter Liste',
-    'export_capture' => 'Exporter Capture',
-    'back_to_leaderboard' => 'Retour au classement',
+    'exporter_liste' => 'Exporter Liste',
+    'exporter_capture' => 'Exporter Capture',
+    'retour_au_classement' => 'Retour au classement',
 
     // Graph translations
-    'score_evolution' => 'Évolution des scores',
+    'evolution_pointage' => 'Évolution des scores',
     'evolution_pointages_clan' => 'Évolution des scores des clans',
     'evolution_pointages_utilisateurs' => 'Évolution des scores des utilisateurs',
-    'evolution_member_scores' => 'Évolution des scores des membres',
-    'evolution_improvements' => 'Évolution des améliorations',
-    'score' => 'Score',
-    'months' => 'Mois',
+    'evolution_membre_pointages' => 'Évolution des scores des membres',
+    'evolution_ameliorations' => 'Évolution des améliorations',
+    'pointage' => 'Score',
+    'mois' => 'Mois',
 
     // Navigation
-    'back_to_leaderboard' => 'Retour au classement',
+    'retour_au_classement' => 'Retour au classement',
 ];

@@ -1,11 +1,11 @@
 <?php
 
 return [
-    'modify_conversations' => 'Modify Conversations',
+    'modifier_conversation' => 'Modify Conversations',
     'message' => 'Message',
-    'file' => 'File',
-    'edit' => 'Edit',
-    'delete' => 'Delete',
-    'save' => 'Save',
-    'cancel' => 'Cancel',
+    'fichier' => 'File',
+    'modifier' => 'Edit',
+    'supprimer' => 'Delete',
+    'sauvegarder' => 'Save',
+    'annuler' => 'Cancel',
 ];

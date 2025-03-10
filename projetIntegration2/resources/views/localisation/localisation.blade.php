@@ -2,7 +2,7 @@
 <html lang="{{ app()->getLocale() }}">
 
 <head>
-    <title>{{ __('gyms.page_title') }}</title>
+    <title>{{ __('gyms.titre_page') }}</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
@@ -204,16 +204,16 @@
 
 <body>
     <div id="search-container">
-        <h1>{{ __('gyms.nearby_gyms') }}</h1>
+        <h1>{{ __('gyms.gyms_proche') }}</h1>
         <div id="search-input-container">
-            <input type="text" id="search-bar" placeholder="{{ __('gyms.search_placeholder') }}">
+            <input type="text" id="search-bar" placeholder="{{ __('gyms.recherche_exemple') }}">
             <button id="clear-search">x</button>
         </div>
         <div id="no-results-container">
-            {{ __('gyms.no_results') }}<span id="search-term"></span>"
+            {{ __('gyms.aucun_resultats') }}<span id="search-term"></span>"
         </div>
         <div id="results-container">
-            <h2>{{ __('gyms.search_results') }}</h2>
+            <h2>{{ __('gyms.resultats_recherche') }}</h2>
             <ul id="results-list"></ul>
         </div>
     </div>
@@ -221,25 +221,25 @@
         <div id="map"></div>
         <div style="position: absolute; top: 10px; right: 10px; z-index: 1000; background: rgba(0,0,0,0.5); padding: 5px; border-radius: 4px;">
             <input type="checkbox" id="toggle-circles" checked>
-            <label for="toggle-circles" style="color: white;">{{ __('gyms.show_traffic_circles') }}</label>
+            <label for="toggle-circles" style="color: white;">{{ __('gyms.voir_cercle_traffic') }}</label>
         </div>
         <button id="current-location-btn"><i class="fa-solid fa-location-crosshairs"></i></button>
     </div>
     <script>
         const translations = {
-            youAreHere: "{{ __('gyms.you_are_here') }}",
-            geolocationNotSupported: "{{ __('gyms.geolocation_not_supported') }}",
-            address: "{{ __('gyms.address') }}",
-            phone: "{{ __('gyms.phone') }}",
-            website: "{{ __('gyms.website') }}",
+            youAreHere: "{{ __('gyms.vous_etes_ici') }}",
+            geolocationNotSupported: "{{ __('gyms.geolocalisation_non_supporte') }}",
+            address: "{{ __('gyms.adresse') }}",
+            phone: "{{ __('gyms.telephone') }}",
+            website: "{{ __('gyms.site_web') }}",
             email: "{{ __('gyms.email') }}",
             traffic: "{{ __('gyms.traffic') }}",
-            legendTitle: "{{ __('gyms.legend_title') }}",
-            veryLowTraffic: "{{ __('gyms.very_low_traffic') }}",
-            lowTraffic: "{{ __('gyms.low_traffic') }}",
-            mediumTraffic: "{{ __('gyms.medium_traffic') }}",
-            highTraffic: "{{ __('gyms.high_traffic') }}",
-            veryHighTraffic: "{{ __('gyms.very_high_traffic') }}",
+            legendTitle: "{{ __('gyms.titre_legendre') }}",
+            veryLowTraffic: "{{ __('gyms.traffic_super_faible') }}",
+            lowTraffic: "{{ __('gyms.traffic_faible') }}",
+            mediumTraffic: "{{ __('gyms.traffic_moyen') }}",
+            highTraffic: "{{ __('gyms.traffic_eleve') }}",
+            veryHighTraffic: "{{ __('gyms.traffic_tres_eleve') }}",
             doubleClickTip: "{{ __('gyms.double_click_tip') }}"
         };
         // Initialiser la carte avec les coordonnées du Cégep de Trois-Rivières---------------------------------------------------------------------

@@ -31,7 +31,7 @@ class reinitialisation extends Mailable
     {
         App::setLocale($this->locale);
         return new Envelope(
-            subject: __('emails.password_reset.subject'),
+            subject: __('emails.reinitialisation_mdp.subject'),
         );
     }
 

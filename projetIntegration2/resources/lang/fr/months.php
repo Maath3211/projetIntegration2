@@ -2,7 +2,7 @@
 
 return [
     'jan' => 'Jan',
-    'feb' => 'Fév',
+    'fev' => 'Fév',
     'mar' => 'Mar',
     'apr' => 'Avr',
     'may' => 'Mai',

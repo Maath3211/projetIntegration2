@@ -2,34 +2,34 @@
 
 return [
     // Common elements
-    'back' => 'Retour',
-    'save' => 'Enregistrer',
-    'add' => 'Ajouter',
-    'update' => 'Mettre à jour',
-    'title' => 'Titre',
+    'retour' => 'Retour',
+    'sauvegarde' => 'Enregistrer',
+    'ajout' => 'Ajouter',
+    'mis_a_jour' => 'Mettre à jour',
+    'titre' => 'Titre',
     'description' => 'Description',
 
-    'created_successfully' => 'Objectif créé avec succès !',
-    'updated_successfully' => 'Objectif mis à jour avec succès !',
-    'deleted_successfully' => 'Objectif supprimé avec succès !',
+    'cree_avec_success' => 'Objectif créé avec succès !',
+    'mis_a_jour_success' => 'Objectif mis à jour avec succès !',
+    'supprimer_avec_success' => 'Objectif supprimé avec succès !',
 
     // Create page
-    'create_title' => 'Ajouter un objectif',
-    'objective_title' => 'Titre :',
-    'objective_description' => 'Description :',
-    'title_placeholder' => 'Titre de l\'objectif',
-    'description_placeholder' => 'Décris ton objectif...',
-    'add_button' => 'Ajouter',
+    'creer_titre' => 'Ajouter un objectif',
+    'titre_objectif' => 'Titre :',
+    'description_objectif' => 'Description :',
+    'titre_exemple' => 'Titre de l\'objectif',
+    'description_exemple' => 'Décris ton objectif...',
+    'ajout_bouton' => 'Ajouter',
 
     // Index page
-    'list_title' => 'Liste de vos objectifs',
-    'add_objective' => 'Ajouter un Objectif',
-    'uncompleted_objectives' => 'Objectifs non complétés',
-    'completed_objectives' => 'Objectifs complétés',
+    'titre_liste' => 'Liste de vos objectifs',
+    'ajout_objectif' => 'Ajouter un Objectif',
+    'objectifs_non_complets' => 'Objectifs non complétés',
+    'objectifs_complets' => 'Objectifs complétés',
 
     // Edit page
-    'edit_title' => 'Modifier l\'Objectif',
-    'not_found' => 'Aucun objectif trouvé.',
-    'back_to_list' => 'Retour à la liste',
-    'update_button' => 'Mettre à jour',
+    'modifier_titre' => 'Modifier l\'Objectif',
+    'non_trouve' => 'Aucun objectif trouvé.',
+    'retour_a_la_liste' => 'Retour à la liste',
+    'bouton_mis_a_jour' => 'Mettre à jour',
 ];

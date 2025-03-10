@@ -2,35 +2,35 @@
 
 return [
     // Common elements
-    'back' => 'Back',
-    'save' => 'Save',
-    'add' => 'Add',
-    'update' => 'Update',
-    'title' => 'Title',
+    'retour' => 'Back',
+    'sauvegarde' => 'Save',
+    'ajout' => 'Add',
+    'mis_a_jour' => 'Update',
+    'titre' => 'Title',
     'description' => 'Description',
 
-    'created_successfully' => 'Objective created successfully!',
-    'updated_successfully' => 'Objective updated successfully!',
-    'deleted_successfully' => 'Objective deleted successfully!',
+    'cree_avec_success' => 'Objective created successfully!',
+    'mis_a_jour_success' => 'Objective updated successfully!',
+    'supprimer_avec_success' => 'Objective deleted successfully!',
 
 
     // Create page
-    'create_title' => 'Add an objective',
-    'objective_title' => 'Title:',
-    'objective_description' => 'Description:',
-    'title_placeholder' => 'Objective title',
-    'description_placeholder' => 'Describe your objective...',
-    'add_button' => 'Add',
+    'creer_titre' => 'Add an objective',
+    'titre_objectif' => 'Title:',
+    'description_objectif' => 'Description:',
+    'titre_exemple' => 'Objective title',
+    'description_exemple' => 'Describe your objective...',
+    'ajout_bouton' => 'Add',
 
     // Index page
-    'list_title' => 'Your objectives list',
-    'add_objective' => 'Add an objective',
-    'uncompleted_objectives' => 'Uncompleted objectives',
-    'completed_objectives' => 'Completed objectives',
+    'titre_liste' => 'Your objectives list',
+    'ajout_objectif' => 'Add an objective',
+    'objectifs_non_complets' => 'Uncompleted objectives',
+    'objectifs_complets' => 'Completed objectives',
 
     // Edit page
-    'edit_title' => 'Edit objective',
-    'not_found' => 'No objective found.',
-    'back_to_list' => 'Back to list',
-    'update_button' => 'Update',
+    'modifier_titre' => 'Edit objective',
+    'non_trouve' => 'No objective found.',
+    'retour_a_la_liste' => 'Back to list',
+    'bouton_mis_a_jour' => 'Update',
 ];

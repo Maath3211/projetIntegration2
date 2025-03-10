@@ -10,10 +10,10 @@
             <h4 class="mb-0">
                 @switch($showType)
                 @case('members')
-                {{ __('leaderboard.evolution_member_scores') }}
+                {{ __('leaderboard.evolution_membre_pointages') }}
                 @break
                 @case('improvements')
-                {{ __('leaderboard.evolution_improvements') }}
+                {{ __('leaderboard.evolution_ameliorations') }}
                 @break
                 @case('clans')
                 {{ __('leaderboard.evolution_pointages_clan') }}
@@ -26,7 +26,7 @@
                 @endif
             </h4>
             <button wire:click="closeGraph" class="btn btn-secondary btn-sm">
-                <i class="fas fa-arrow-left"></i> {{ __('leaderboard.back_to_leaderboard') }}
+                <i class="fas fa-arrow-left"></i> {{ __('leaderboard.retour_au_classement') }}
             </button>
         </div>
         <div class="card-body">
@@ -43,19 +43,19 @@
             switch(showType) {
                 case 'clans': 
                     chartTitle = '{{ __('leaderboard.evolution_pointages_clan') }}';
-                    chartLabel = '{{ __('leaderboard.score_evolution') }}';
+                    chartLabel = '{{ __('leaderboard.evolution_pointage') }}';
                     break;
                 case 'members':
-                    chartTitle = '{{ __('leaderboard.evolution_member_scores') }}';
-                    chartLabel = '{{ __('leaderboard.score_evolution') }}';
+                    chartTitle = '{{ __('leaderboard.evolution_membre_pointages') }}';
+                    chartLabel = '{{ __('leaderboard.evolution_pointage') }}';
                     break;
                 case 'improvements':
-                    chartTitle = '{{ __('leaderboard.evolution_improvements') }}';
-                    chartLabel = '{{ __('leaderboard.score_evolution') }}';
+                    chartTitle = '{{ __('leaderboard.evolution_ameliorations') }}';
+                    chartLabel = '{{ __('leaderboard.evolution_pointage') }}';
                     break;
                 default:
                     chartTitle = '{{ __('leaderboard.evolution_pointages_utilisateurs') }}';
-                    chartLabel = '{{ __('leaderboard.score_evolution') }}';
+                    chartLabel = '{{ __('leaderboard.evolution_pointage') }}';
             }
             
             let chartData = {
@@ -86,13 +86,13 @@
                             beginAtZero: true,
                             title: { 
                                 display: true, 
-                                text: '{{ __('leaderboard.score') }}'
+                                text: '{{ __('leaderboard.pointage') }}'
                             }
                         },
                         x: { 
                             title: { 
                                 display: true, 
-                                text: '{{ __('leaderboard.months') }}'
+                                text: '{{ __('leaderboard.mois') }}'
                             } 
                         }
                     },

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{ __('messages.modify_conversations') }}</title>
+    <title>{{ __('messages.modifier_conversation') }}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
@@ -49,7 +49,7 @@
 
 <body>
     <div class="container mt-5">
-        <h1 class="text-center mb-4">{{ __('messages.modify_conversations') }}</h1>
+        <h1 class="text-center mb-4">{{ __('messages.modifier_conversation') }}</h1>
         <ul class="list-group">
             @foreach($messages as $message)
             <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -66,7 +66,7 @@
                     @csrf
                     @method('PUT')
                     <input type="text" name="nouveau_message" class="form-control" placeholder="{{ __('chat.nouveau_message') }}">
-                    <button type="submit" class="btn btn-primary btn-sm">{{ __('messages.edit') }}</button>
+                    <button type="submit" class="btn btn-primary btn-sm">{{ __('messages.modifier') }}</button>
                 </form>
             </li>
             @endforeach
