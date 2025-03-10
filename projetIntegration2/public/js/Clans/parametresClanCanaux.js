@@ -136,13 +136,13 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log('Nom de catégorie identique. Aucun changement n\'a été effectué.');
             return;
         }
+        if(!(nouveauNom.length > 50) && /^[A-Za-z\u00C0-\u00FF-]+$/.test(nouveauNom) && nouveauNom.length !== 0){
+            categoriesRenommees[categorieARenommer] = categorieARenommer + ";" + nouveauNom;
+            document.querySelector('.' + categorieARenommer + " div").textContent = nouveauNom;
+            console.log("Valeur ajoutée : ", categorieARenommer + " : " + nouveauNom);
 
-        // Ajouter la catégorie et sa nouvelle valeur ou la mettre la jour si elle existe déjà
-        categoriesRenommees[categorieARenommer] = categorieARenommer + ";" + nouveauNom;
-        document.querySelector('.' + categorieARenommer + " div").textContent = nouveauNom;
-        console.log("Valeur ajoutée : ", categorieARenommer + " : " + nouveauNom);
-
-        document.getElementById('categoriesARenommer').value = Object.values(categoriesRenommees);
+            document.getElementById('categoriesARenommer').value = Object.values(categoriesRenommees);
+        }
     });
 
     /*

@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class CategorieCanal extends Model
 {
+    use HasFactory;
+    
     protected $table = "categories_canal";
     protected $fillable = [
         'categorie',

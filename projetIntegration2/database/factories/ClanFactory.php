@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Clan;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ClanFactory extends Factory
@@ -14,8 +15,8 @@ class ClanFactory extends Factory
     {
         return [
             'adminId' => User::factory(),
-            'image' => $this->faker->imageUrl(640, 480, 'clan', true, 'default.jpg'),
-            'nom' => $this->faker->company(),
+            'image' => 'default.jpg',
+            'nom' => $this->faker->word(),
             'public' => $this->faker->boolean(),
         ];
     }
