@@ -18,6 +18,11 @@ use App\Models\User;
 use App\Events\PusherBroadcast;
 use App\Http\Controllers\ObjectifController;
 
+// pour quand il y a une erreur dans la navigation
+Route::fallback(function() {
+    return redirect()->route('profil.profil');
+});
+
 Route::get('/', function () {
     return redirect()->route('profil.pageConnexion');
 });
