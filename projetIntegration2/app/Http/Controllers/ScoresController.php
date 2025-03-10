@@ -73,7 +73,7 @@ class ScoresController extends Controller
 
         $userClans = DB::table('clan_users')
             ->join('clans', 'clans.id', '=', 'clan_users.clan_id')
-            ->where('clan_users.user_id', /*auth()->id()*/ 1)
+            ->where('clan_users.user_id', Auth::id())
             ->where('clans.public', 1) // Only include clans where public is 1
             ->select('clans.id as clan_id', 'clans.nom as clan_nom', 'clans.image as clan_image')
             ->get();

@@ -16,10 +16,11 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\AmisController;
 use App\Models\User;
 use App\Events\PusherBroadcast;
+use App\Http\Controllers\GraphiquePersoController;
 use App\Http\Controllers\ObjectifController;
 
 // pour quand il y a une erreur dans la navigation
-Route::fallback(function() {
+Route::fallback(function () {
     return redirect()->route('profil.profil');
 });
 
@@ -51,30 +52,34 @@ Route::middleware([VerifierAdminClan::class])->group(function () {
 
 
 // POUR XAVIER, METTRE LES ROUTES QUE TU AS BESOIN
-Route::GET('/clan/{id}/canal/{canal}',
-[ClanController::class, 'showCanalClan'])->name('clan.canal');
+Route::GET(
+    '/clan/{id}/canal/{canal}',
+    [ClanController::class, 'showCanalClan']
+)->name('clan.canal');
 //Envoyer un message dans un canal
-Route::POST('/broadcastClan', [ClanController::class,'broadcastClan']);
-Route::POST('/receiveClan', [ClanController::class,'receiveClan']);
+Route::POST('/broadcastClan', [ClanController::class, 'broadcastClan']);
+Route::POST('/receiveClan', [ClanController::class, 'receiveClan']);
 
 
 
 
 
-Route::GET('/yup',
-[UserCommunication::class,'index'])->name('user.index');
+Route::GET(
+    '/yup',
+    [UserCommunication::class, 'index']
+)->name('user.index');
 
-Route::GET('/conversations/{user}', [ConversationsController::class,'show'])->name('conversations.show');
-Route::POST('/conversations/{user}', [ConversationsController::class,'store']);
-Route::POST('/broadcast', [ConversationsController::class,'broadcast']);
-Route::POST('/receive', [ConversationsController::class,'receive']);
-Route::GET('/conversations', [ConversationsController::class,'index'])->name('conversations');
+Route::GET('/conversations/{user}', [ConversationsController::class, 'show'])->name('conversations.show');
+Route::POST('/conversations/{user}', [ConversationsController::class, 'store']);
+Route::POST('/broadcast', [ConversationsController::class, 'broadcast']);
+Route::POST('/receive', [ConversationsController::class, 'receive']);
+Route::GET('/conversations', [ConversationsController::class, 'index'])->name('conversations');
 
-Route::GET('/testClan/{clans}', [ConversationsController::class,'showClan'])->name('conversations.showClan');
+Route::GET('/testClan/{clans}', [ConversationsController::class, 'showClan'])->name('conversations.showClan');
 //Test Clan Message
 //Route::POST('/broadcastClan', [ConversationsController::class,'broadcastClan']);
 //Route::POST('/receiveClan', [ConversationsController::class,'receiveClan']);
-Route::GET('/modificationMessage', [ConversationsController::class,'showModificationMessage'])->name('conversations.showModificationMessage');
+Route::GET('/modificationMessage', [ConversationsController::class, 'showModificationMessage'])->name('conversations.showModificationMessage');
 
 Route::delete('/messages/{message}', [ConversationsController::class, 'destroy'])->middleware('auth')->name('messages.destroy');
 Route::put('/messages/{id}', [ConversationsController::class, 'updateMessage'])->name('messages.update');
@@ -93,68 +98,109 @@ Route::POST(
     [ProfilController::class, 'connexion']
 )->name('profil.connexion');
 
-Route::GET('/auth/google',
-[ProfilController::class,'connexionGoogle'])->name('profil.connexionGoogle');
+Route::GET(
+    '/auth/google',
+    [ProfilController::class, 'connexionGoogle']
+)->name('profil.connexionGoogle');
 
-Route::GET('/auth/google/callback',
-[ProfilController::class,'googleCallback'])->name('profil.googleCallback');
+Route::GET(
+    '/auth/google/callback',
+    [ProfilController::class, 'googleCallback']
+)->name('profil.googleCallback');
 
-Route::GET('/creerCompteGoogle',
-[ProfilController::class,'creerCompteGoogle'])->name('profil.creerCompteGoogle');
+Route::GET(
+    '/creerCompteGoogle',
+    [ProfilController::class, 'creerCompteGoogle']
+)->name('profil.creerCompteGoogle');
 
-Route::POST('/creerCompteGoogle',
-[ProfilController::class,'storeCreerCompteGoogle'])->name('profil.storeCreerCompteGoogle');
+Route::POST(
+    '/creerCompteGoogle',
+    [ProfilController::class, 'storeCreerCompteGoogle']
+)->name('profil.storeCreerCompteGoogle');
 
-Route::GET('/creerCompte',
-[ProfilController::class,'creerCompte'])->name('profil.creerCompte');
+Route::GET(
+    '/creerCompte',
+    [ProfilController::class, 'creerCompte']
+)->name('profil.creerCompte');
 
-Route::POST('/creerCompte',
-[ProfilController::class, 'storeCreerCompte'])->name('profil.storeCreerCompte');
+Route::POST(
+    '/creerCompte',
+    [ProfilController::class, 'storeCreerCompte']
+)->name('profil.storeCreerCompte');
 
-Route::GET('/meilleursGroupes',
-[ScoresController::class, 'meilleursGroupes']
+Route::GET(
+    '/meilleursGroupes',
+    [ScoresController::class, 'meilleursGroupes']
 )->name('scores.meilleursGroupes');
 
-Route::POST('/deconnexion',
-[ProfilController::class, 'deconnexion'])->name('profil.deconnexion');
+Route::POST(
+    '/deconnexion',
+    [ProfilController::class, 'deconnexion']
+)->name('profil.deconnexion');
 
-Route::GET('/confirmation/{codeVerification}',
-[ProfilController::class,'confCourriel'])->name('profil.confirmation');
+Route::GET(
+    '/confirmation/{codeVerification}',
+    [ProfilController::class, 'confCourriel']
+)->name('profil.confirmation');
 
-Route::GET('/meilleursGroupes',
-[ScoresController::class,'meilleursGroupes'])->name('scores.meilleursGroupes');
-Route::POST('/deconnexion',
-[ProfilController::class,'deconnexion'])->name('profil.deconnexion');
+Route::GET(
+    '/meilleursGroupes',
+    [ScoresController::class, 'meilleursGroupes']
+)->name('scores.meilleursGroupes');
+Route::POST(
+    '/deconnexion',
+    [ProfilController::class, 'deconnexion']
+)->name('profil.deconnexion');
 
-Route::GET('/profil',
-[ProfilController::class, 'profil'])->name('profil.profil')->middleware('auth');
+Route::GET(
+    '/profil',
+    [ProfilController::class, 'profil']
+)->name('profil.profil')->middleware('auth');
 
-Route::GET('/profil/modification',
-[ProfilController::class,'modification'])->name('profil.modification')->middleware('auth');
+Route::GET(
+    '/profil/modification',
+    [ProfilController::class, 'modification']
+)->name('profil.modification')->middleware('auth');
 
-Route::POST('/profil/suppressionProfil',
-[ProfilController::class,'suppressionProfil'])->name('profil.suppressionProfil')->middleware('auth');
+Route::POST(
+    '/profil/suppressionProfil',
+    [ProfilController::class, 'suppressionProfil']
+)->name('profil.suppressionProfil')->middleware('auth');
 
-Route::POST('/profil/modification/update',
-[ProfilController::class,'updateModification'])->name('profil.updateModification')->middleware('auth');
+Route::POST(
+    '/profil/modification/update',
+    [ProfilController::class, 'updateModification']
+)->name('profil.updateModification')->middleware('auth');
 
-Route::GET('/profil/{email}',
-[ProfilController::class,'profilPublic'])->name('profil.profilPublic')->middleware('auth');
+Route::GET(
+    '/profil/{email}',
+    [ProfilController::class, 'profilPublic']
+)->name('profil.profilPublic')->middleware('auth');
 
-Route::GET('/reinitialisation',
-[ProfilController::class,'pageMotDePasseOublie'])->name('profil.reinitialisation');
+Route::GET(
+    '/reinitialisation',
+    [ProfilController::class, 'pageMotDePasseOublie']
+)->name('profil.reinitialisation');
 
-Route::post('/reinitialisation',
-[ProfilController::class, 'motDePasseOublieEmail'])->name('profil.motDePasseOublieEmail');
+Route::post(
+    '/reinitialisation',
+    [ProfilController::class, 'motDePasseOublieEmail']
+)->name('profil.motDePasseOublieEmail');
 
-Route::get('/reinitialisation/{token}',
-[ProfilController::class, 'showResetPasswordForm'])->name('profil.reinitialisation.token');
+Route::get(
+    '/reinitialisation/{token}',
+    [ProfilController::class, 'showResetPasswordForm']
+)->name('profil.reinitialisation.token');
 
-Route::post('/reinitialisationMDP',
-[ProfilController::class, 'resetPassword'])->name('profil.resetPassword');
+Route::post(
+    '/reinitialisationMDP',
+    [ProfilController::class, 'resetPassword']
+)->name('profil.resetPassword');
 
-Route::GET('/stats',
-[StatistiqueController::class,'index'])->name('statistique.index');
+Route::GET(
+    '/stats',
+    [StatistiqueController::class, 'index']
+)->name('statistique.index');
 
 Route::GET(
     '/graphique',
@@ -171,14 +217,20 @@ Route::GET(
     [GymController::class, 'index']
 )->name('localisation.index');
 
-Route::get('/ajouterFoisGym',
-[StatistiqueController::class,'ajouterFoisGym'])->name('statistique.ajouterFoisGym');
+Route::get(
+    '/ajouterFoisGym',
+    [StatistiqueController::class, 'ajouterFoisGym']
+)->name('statistique.ajouterFoisGym');
 
-Route::GET('/graphiqueExercice/{exercice}',
-[StatistiqueController::class,'graphiqueExercice'])->name('statistique.graphiqueExercice');
+Route::GET(
+    '/graphiqueExercice/{exercice}',
+    [StatistiqueController::class, 'graphiqueExercice']
+)->name('statistique.graphiqueExercice');
 
-Route::GET('/thermique',
-[StatistiqueController::class,'thermique'])->name('statistique.thermique');
+Route::GET(
+    '/thermique',
+    [StatistiqueController::class, 'thermique']
+)->name('statistique.thermique');
 
 Route::post('/statistique/storeThermique', [StatistiqueController::class, 'storeThermique'])->name('statistique.storeThermique');
 
@@ -195,31 +247,47 @@ Route::post('/ajouter-score/{exercice}', [StatistiqueController::class, 'ajouter
 
 
 
-Route::GET('/objectif',
-[ObjectifController::class,'index'])->name('objectif.index');
+Route::GET(
+    '/objectif',
+    [ObjectifController::class, 'index']
+)->name('objectif.index');
 
-Route::GET('/objectif/ajouter',
-[ObjectifController::class,'create'])->name('objectif.create');
-
-
-Route::GET('/objectif/edit/{id}',
-[ObjectifController::class,'edit'])->name('objectif.edit');
-
-Route::post('/objectif',
- [ObjectifController::class, 'store'])->name('objectif.store');
-
-Route::put('/objectif/{id}',
- [ObjectifController::class, 'update'])->name('objectif.update');
-
- Route::put('/objectif/update/{id}',
- [ObjectifController::class, 'updateComplet'])->name('objectif.updateComplet');
-
-Route::delete('/objectif/{id}',
- [ObjectifController::class, 'destroy'])->name('objectif.destroy');
+Route::GET(
+    '/objectif/ajouter',
+    [ObjectifController::class, 'create']
+)->name('objectif.create');
 
 
-Route::GET('/localisation', 
-[GymController::class, 'index'])->name('localisation.index');
+Route::GET(
+    '/objectif/edit/{id}',
+    [ObjectifController::class, 'edit']
+)->name('objectif.edit');
+
+Route::post(
+    '/objectif',
+    [ObjectifController::class, 'store']
+)->name('objectif.store');
+
+Route::put(
+    '/objectif/{id}',
+    [ObjectifController::class, 'update']
+)->name('objectif.update');
+
+Route::put(
+    '/objectif/update/{id}',
+    [ObjectifController::class, 'updateComplet']
+)->name('objectif.updateComplet');
+
+Route::delete(
+    '/objectif/{id}',
+    [ObjectifController::class, 'destroy']
+)->name('objectif.destroy');
+
+
+Route::GET(
+    '/localisation',
+    [GymController::class, 'index']
+)->name('localisation.index');
 Route::get('/export/top-users', [ScoresController::class, 'exportTopUsers'])->name('export.topUsers');
 Route::get('/export/top-clans', [ScoresController::class, 'exportTopClans'])->name('export.topClans');
 Route::get('/export/top-membres/{clanId}', [ScoresController::class, 'exportTopMembres'])->name('export.topMembres');
@@ -233,7 +301,7 @@ Route::get('/scores/chart-page', [App\Http\Controllers\ScoresController::class, 
 
 //Route pour l'ajout/recherche d'amis/clans
 Route::get('amis', [AmisController::class, 'index'])->name('amis.index');
-Route::match(['get','post'], 'amis/recherche', [AmisController::class, 'recherche'])->name('amis.recherche');
+Route::match(['get', 'post'], 'amis/recherche', [AmisController::class, 'recherche'])->name('amis.recherche');
 Route::post('amis/ajouter', [AmisController::class, 'ajouter'])->name('amis.ajouter');
 Route::post('clans/recherche', [AmisController::class, 'rechercheClan'])->name('clans.recherche');
 
@@ -247,5 +315,16 @@ Route::post('amis/accepter', [AmisController::class, 'accepter'])->name('amis.ac
 Route::post('amis/refuser', [AmisController::class, 'refuser'])->name('amis.refuser');
 
 // Routes pour la recherche et la gestion des clans
-Route::match(['get','post'], 'clans/recherche', [ClanController::class, 'rechercheClans'])->name('clans.recherche');
+Route::match(['get', 'post'], 'clans/recherche', [ClanController::class, 'rechercheClans'])->name('clans.recherche');
 Route::post('clans/rejoindre', [ClanController::class, 'rejoindre'])->name('clans.rejoindre');
+
+// Custom Graph Routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/graphs/create', [GraphiquePersoController::class, 'create'])->name('graphs.create');
+    Route::post('/graphs', [GraphiquePersoController::class, 'store'])->name('graphs.store');
+    Route::get('/graphs', [GraphiquePersoController::class, 'index'])->name('graphs.index');
+    Route::get('/graphs/{id}', [GraphiquePersoController::class, 'show'])->name('graphs.show');
+    Route::get('/graphs/{id}/edit', [GraphiquePersoController::class, 'edit'])->name('graphs.edit');
+    Route::put('/graphs/{id}', [GraphiquePersoController::class, 'update'])->name('graphs.update');
+    Route::delete('/graphs/{id}', [GraphiquePersoController::class, 'destroy'])->name('graphs.delete');
+});
