@@ -51,6 +51,11 @@ class ModificationRequest extends FormRequest
                 'before:today',
                 'after:1900-01-01'
             ],
+            'aPropos' => [
+                'nullable',
+                'string',
+                'max:128',
+            ],
         ];
     }
     public function messages()
@@ -72,6 +77,7 @@ class ModificationRequest extends FormRequest
                 'dateNaissance.date' => 'La date de naissance doit être une date',
                 'dateNaissance.before' => 'La date de naissance doit être avant aujourd\'hui',
                 'dateNaissance.after' => 'La date de naissance doit être après 1900-01-01',
+                'aPropos.max' => 'La description doit être de 128 caractères maximum',
             ];
     }
 }
