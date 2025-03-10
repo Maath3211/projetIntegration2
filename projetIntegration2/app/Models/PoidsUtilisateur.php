@@ -12,4 +12,9 @@ class PoidsUtilisateur extends Model
     protected $table = 'poids_utilisateur';
     protected $fillable = ['semaine', 'poids','user_id'];
     public $incrementing = true; 
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

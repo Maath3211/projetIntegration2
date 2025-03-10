@@ -11,4 +11,9 @@ class Objectif extends Model
     protected $primaryKey = 'id';
     public $timestamps = true;
     protected $fillable = ['id','titre', 'description', 'completer', 'user_id'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

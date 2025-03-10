@@ -10,4 +10,9 @@ class StatThermique extends Model
     use HasFactory;
     protected $table = 'statThermique';
     protected $fillable = ['date', 'type_activite', 'user_id'];	
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
