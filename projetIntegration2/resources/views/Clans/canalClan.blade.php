@@ -347,6 +347,8 @@
 
 
 
+
+
         // ---------------------------
         // Lorsqu'un fichier est sélectionné
         $('#fichierInput').on('change', function() {
@@ -572,7 +574,7 @@
                 let messageId = $(this).data('id');
                 $.ajax({
                     type: "DELETE",
-                    url: `/messages/${messageId}`,
+                    url: `/messagesClan/${messageId}`,
                     data: {
                         _token: "{{ csrf_token() }}"
                     }

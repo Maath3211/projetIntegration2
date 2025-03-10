@@ -390,7 +390,6 @@
 
 
 
-            
             // ---------------------------
             // Gestion de la suppression des messages
             // ---------------------------
@@ -399,6 +398,7 @@
             $(document).on('click', '.delete-btn', function(e) {
                 e.preventDefault();
                 let messageId = $(this).data('id');
+                console.log("Suppression du message avec ID:", messageId); // Ajout de console
                 $.ajax({
                     type: "DELETE",
                     url: `/messages/${messageId}`,
@@ -406,6 +406,7 @@
                         _token: "{{ csrf_token() }}"
                     }
                 }).done(function(res) {
+                    console.log("Réponse de suppression:", res); // Ajout de console
                     if (res.success) {
                         // Supprime le message du DOM
                         $(`#message-${messageId}`).remove();
@@ -413,6 +414,7 @@
                         alert("Erreur lors de la suppression du message.");
                     }
                 }).fail(function() {
+                    console.error("Erreur lors de la suppression du message."); // Ajout de console
                     alert("Erreur lors de la suppression du message.");
                 });
             });
