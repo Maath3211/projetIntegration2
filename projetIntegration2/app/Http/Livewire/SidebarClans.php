@@ -15,18 +15,10 @@ class SidebarClans extends Component
     public function mount($userClans)
     {
         $this->userClans = $userClans;
-        Log::debug('SidebarClans mounted', [
-            'initial_clan' => $this->selectedClanId,
-            'clans_count' => $this->userClans->count()
-        ]);
     }
 
     public function selectClan($clanId)
     {
-        Log::debug('SidebarClans selectClan called', [
-            'from' => $this->selectedClanId,
-            'to' => $clanId
-        ]);
         
         if ($this->selectedClanId !== $clanId) {
             $this->selectedClanId = $clanId;
