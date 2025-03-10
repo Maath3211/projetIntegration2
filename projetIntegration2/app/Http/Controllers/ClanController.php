@@ -693,7 +693,19 @@ class ClanController extends Controller
         ]);
     }
 
+    public function receiveClan(Request $request){
 
+        return response()->json([
+            'message' => $request->message,
+            'sender_id' => $request->sender_id,
+            'group_id' => $request->group_id,
+            'canal_id' => $request->canal_id,
+            'deleted' => $request->deleted,
+            'last_id' => $request->last_id,
+            'photo' => $request->photo,
+            
+        ]);
+        }
 
     public function destroy(UtilisateurClan $message)
     {
@@ -728,7 +740,7 @@ class ClanController extends Controller
         $messageId = $message->id;
         $message->delete();
     
-        broadcast(new SuppressionMessageGroup($messageId, $message->idClan))->toOthers();
+        broadcast(new SuppressionMessageGroup($messageId, $message->idClan, $message->idClan))->toOthers();
     
         return response()->json(['success' => 'Message supprimé']);
     }

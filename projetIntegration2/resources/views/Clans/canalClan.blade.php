@@ -395,13 +395,12 @@
         const friendId = "{{ request()->id }}"; // ID de l'ami avec qui il discute :: Plutot le clan avec qui il discute
         const canal = "{{ request()->canal }}";
 
-        console.log("User ID:", userId);
+
 
 
 
         const channelName = "chat-" + friendId + "-" + canal;
 
-        console.log("Subscribing to:", channelName);
 
         const pusher = new Pusher('{{ config('broadcasting.connections.pusher.key') }}', {
             cluster: '{{ config('broadcasting.connections.pusher.options.cluster') }}',
@@ -409,11 +408,9 @@
         });
 
         pusher.connection.bind('connected', function() {
-            console.log('Successfully connected to Pusher');
         });
 
         pusher.connection.bind('error', function(err) {
-            console.error('Connection error:', err);
         });
 
         const channel = pusher.subscribe(channelName);
@@ -430,7 +427,6 @@
             } else {
                 // Détermine le contenu du message (texte, image ou fichier)
                 let messageContent = data.message ? `<p>${data.message}</p>` : "";
-                console.log(data);
                 // Déterminer si c'est une image ou un fichier à télécharger
                 let fileExtension = data.photo ? data.photo.split('.').pop().toLowerCase() : "";
                 let isImage = ["jpg", "jpeg", "png", "gif"].includes(fileExtension);
@@ -510,7 +506,6 @@
                     contentType: false, // Ne pas définir de type de contenu
                 }).done(function(res) {
 
-
                     $("#preview-container").html("");
                     $("input[name='fichier']").val(""); // Réinitialiser l'input file
 
@@ -528,7 +523,7 @@
                             fileContent =
                                 `<img src="${res.fichier}" class="message-image" alt="Image envoyée">`;
                         } else {
-                            fileContent = `<a href="../${res.fichier}" target="_blank" class="text-blue-500">
+                            fileContent = `<a href="${res.fichier}" target="_blank" class="text-blue-500">
                 📄 Télécharger ${res.fichier.split('/').pop()}
             </a>`;
                         }
@@ -568,34 +563,43 @@
             // Gestion de la suppression des messages
             // ---------------------------
 
-            // Lorsqu'un utilisateur clique sur le bouton de suppression
-            $(document).on('click', '.delete-btn', function(e) {
-                e.preventDefault();
-                let messageId = $(this).data('id');
-                $.ajax({
-                    type: "DELETE",
-                    url: `/messagesClan/${messageId}`,
-                    data: {
-                        _token: "{{ csrf_token() }}"
-                    }
-                }).done(function(res) {
-                    if (res.success) {
-                        // Supprime le message du DOM
-                        $(`#message-${messageId}`).remove();
-                    } else {
-                        alert("Erreur lors de la suppression du message.");
-                    }
-                }).fail(function() {
-                    alert("Erreur lors de la suppression du message.");
-                });
-            });
+           // Gestion de la suppression des messages
+    $(document).on('click', '.delete-btn', function(e) {
+        e.preventDefault();
+        let messageId = $(this).data('id');
+        console.log("Suppression du message avec l'ID:", messageId); // Ajout pour le débogage
 
-            // Écouter l'événement de suppression spécifique diffusé par Pusher
-            channel.bind('message-deleted', function(data) {
-                console.log("Message supprimé:", data); // Affiche l'ID du message supprimé pour le débogage
-                // Supprime le message correspondant du DOM
-                $(`#message-${data.messageId}`).remove();
-            });
+        $.ajax({
+            type: "DELETE",
+            url: `/messagesClan/${messageId}`,
+            data: {
+                _token: "{{ csrf_token() }}"
+            }
+        }).done(function(res) {
+            console.log("Réponse de l'API:", res); // Ajout pour le débogage
+            if (res.success) {
+                // Supprime le message du DOM
+                $(`#message-${messageId}`).remove();
+                console.log("Message supprimé du DOM:", messageId);
+            } else {
+                alert("Erreur lors de la suppression du message.");
+            }
+        }).fail(function(xhr, status, error) {
+            console.error("Erreur lors de la requête de suppression:", error); // Ajout pour le débogage
+            alert("Erreur lors de la suppression du message.");
+        });
+    });
+
+    // Écouter l'événement de suppression spécifique diffusé par Pusher
+    channel.bind('message-deleted', function(data) {
+        console.log("Message supprimé via Pusher:", data); // Affiche l'ID du message supprimé pour le débogage
+        // Supprime le message correspondant du DOM
+        $(`#message-${data.messageId}`).remove();
+        console.log("Message supprimé du DOM via Pusher:", data.messageId);
+    });
+
+
+    
     </script>
 
 

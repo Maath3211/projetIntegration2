@@ -15,6 +15,7 @@ use App\Events\PusherBroadcast;
 use App\Events\MessageGroup;
 use App\Events\SuppressionMessageGroup;
 
+//TODO : BUG A CORRIGER
 
 
 
@@ -71,7 +72,6 @@ class ConversationsController extends Controller
             return response()->json(['error' => 'Vous devez envoyer soit un message, soit un fichier, soit les deux.'], 422);
         }
         
-    
         try {
             $fichierNom = null;
             if ($request->hasFile('fichier')) {
@@ -89,18 +89,17 @@ class ConversationsController extends Controller
                 $fichier->move(public_path($dossier), $fichierNom);
             }
     
-            // Insérer le message dans la base de données
-            $lastId = \DB::table('user_ami')->insertGetId([
+            // Insérer le message dans la base de données en utilisant le modèle Message
+            $message = Message::create([
                 'idEnvoyer' => auth()->id(),
-                'idReceveur'    => $request->to,
-                'message'   => $request->message,
-                'fichier'   => $fichierNom, // Stocke le chemin public
-                'created_at'=> now(),
-                'updated_at'=> now()
+                'idReceveur' => $request->to,
+                'message' => $request->message,
+                'fichier' => $fichierNom, // Stocke le chemin public
+                'created_at' => now(),
             ]);
     
             // Diffuser l’événement via Pusher
-            broadcast(new PusherBroadcast($request->message, auth()->id(), $request->to, false, $lastId, $fichierNom, auth()->user()->email))
+            broadcast(new PusherBroadcast($request->message, auth()->id(), $request->to, false, $message->id, $fichierNom, auth()->user()->email))
                 ->toOthers();
     
         } catch (\Exception $e) {
@@ -108,13 +107,12 @@ class ConversationsController extends Controller
         }
     
         return response()->json([
-            'message'      => $request->message,
-            'last_id'      => $lastId,
-            'sender_id'    => auth()->id(),
+            'message' => $request->message,
+            'last_id' => $message->id,
+            'sender_id' => auth()->id(),
             'sender_email' => auth()->user()->email,
-            'fichier'      => $fichierNom ? asset($dossier . $fichierNom) : null, // Retourne l'URL complète
-            'email'        => auth()->user()->email,
-
+            'fichier' => $fichierNom ? asset($dossier . $fichierNom) : null, // Retourne l'URL complète
+            'email' => auth()->user()->email,
         ]);
     }
     

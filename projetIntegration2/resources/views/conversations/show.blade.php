@@ -56,7 +56,7 @@
                                             <button class="delete-btn" data-id="{{ $message->id }}">🗑️</button>
                                         @else
                                             <div class="avatar bg-primary text-white rounded-circle p-2">
-                                                {{ substr($message->user->email, 0, 2)  }}
+                                                {{ substr($message->user->email ?? 'Email inconnu', 0, 2)  }}
                                             </div>
                                         @endif
     
@@ -355,7 +355,7 @@
                             fileContent =
                                 `<img src="${res.fichier}" class="message-image" alt="Image envoyée">`;
                         } else {
-                            fileContent = `<a href="../${res.fichier}" target="_blank" class="text-blue-500">
+                            fileContent = `<a href="${res.fichier}" target="_blank" class="text-blue-500">
                 📄 Télécharger ${res.fichier.split('/').pop()}
             </a>`;
                         }
