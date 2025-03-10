@@ -19,4 +19,12 @@ class Canal extends Model
     protected $dates = ['created_at', 'read_at']; 
 
     public $timestamps = false;
+
+    public function clan(){
+        return $this->belongsTo(Clan::class, 'clanId');
+    }
+
+    public function categorie(){
+        return $this->belongsTo(CategorieCanal::class, 'categorieId');
+    }
 }

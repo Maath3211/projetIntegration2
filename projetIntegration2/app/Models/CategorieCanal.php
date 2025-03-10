@@ -18,4 +18,8 @@ class CategorieCanal extends Model
     protected $dates = ['created_at', 'read_at']; 
 
     public $timestamps = false;
+
+    public function clan(){
+        return $this->belongsTo('App\Models\Clan', 'clanId');
+    }
 }
