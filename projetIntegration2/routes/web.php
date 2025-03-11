@@ -329,3 +329,15 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/graphs/{id}', [GraphiquePersoController::class, 'update'])->name('graphs.update');
     Route::delete('/graphs/{id}', [GraphiquePersoController::class, 'destroy'])->name('graphs.delete');
 });
+
+// Add this to web.php if not already present
+Route::post('/switch-language', function (\Illuminate\Http\Request $request) {
+    $locale = $request->input('locale');
+    if (in_array($locale, ['en', 'fr'])) {
+        session(['locale' => $locale]);
+        app()->setLocale($locale);
+        \Log::info('Switching language to: ' . $locale);
+    }
+    
+    return response()->json(['success' => true, 'locale' => app()->getLocale(), 'session_locale' => session('locale')]);
+})->name('switchLanguage');

@@ -10,7 +10,7 @@
             <button type="button" class="bouton me-2">{{ __('objectives.retour') }}</button>
         </a>
         <a href="{{ route('objectif.create') }}">
-            <button type="button" class="bouton ms-2">{{ __('objectives.ajout_objective') }}</button>
+            <button type="button" class="bouton ms-2">{{ __('objectives.ajout_objectif') }}</button>
         </a>
     </div>
     

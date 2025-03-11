@@ -24,9 +24,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if (Session::has('locale')) {
-            App::setLocale(Session::get('locale'));
-        }
+        // Always set the locale from session if available
+        $this->app->singleton('locale', function ($app) {
+            if (Session::has('locale')) {
+                $locale = Session::get('locale');
+                Log::debug('Setting locale from session: ' . $locale);
+                App::setLocale($locale);
+                return $locale;
+            }
+            return Config::get('app.locale');
+        });
         Livewire::component('global-leaderboard', \App\Http\Livewire\GlobalLeaderboard::class);
         Livewire::component('clan-leaderboard', \App\Http\Livewire\ClanLeaderboard::class);
         Livewire::component('test-component', \App\Http\Livewire\TestComponent::class);

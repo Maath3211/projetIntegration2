@@ -2,7 +2,7 @@
 
 return [
     'parametres_generaux' => 'Paramètres généraux',
-    'quitter' => 'Quitter',
+    'quitter' => 'QUITTER',
     'recommendation_image' => 'Une image de forme carrée est recommendée pour le clan.',
     'televerser_image' => 'Téléverser une image',
     'nom_clan' => 'Nom du clan',
@@ -13,6 +13,7 @@ return [
     'confirmer' => 'Confirmer',
     'parametres_clan' => 'Paramètres de clan',
     'avertissement_suppression_clan' => 'Êtes-vous sur de vouloir supprimer le clan? Cette action est irréversible.',
+    'telecharger' => '📄 Télécharger',
 
 
     // New translations for parametresClanCanaux.blade.php
@@ -22,7 +23,7 @@ return [
     'membres' => 'Membres',
     'suppression_clan' => 'Supprimer le clan',
     'categories_canal' => 'Catégories de canaux',
-    'help' => 'Aide',
+    'aide' => 'Aide',
     'competition' => 'Compétition',
     'ajout_categorie' => 'Ajouter une catégorie',
     'modification_sauvegarde' => 'N\'oubliez pas d\'enregistrer vos modifications avant de quitter!',
@@ -41,12 +42,18 @@ return [
     'joindre_clan' => 'Rejoindre un clan',
     'clan_sans_canal' => 'Aucun canal n\'est créé pour ce clan. Veuillez en créer une pour commencer.',
     'sans_categorie' => 'Aucune catégorie de canal n\'a été créée pour ce clan. Veuillez en créer une pour ajout des canaux.',
-    'entrer_message' => 'Entrez votre message içi...',
+    'entrer_message' => 'Entrez votre message ici...',
     'invitation_vue' => 'Invitez quelqu\'un au clan pour afficher les membres!',
     'ajout_canal' => 'Ajouter un canal',
     'renommer_canal' => 'Renommer un canal',
     'supprimer_canal' => 'Supprimer le canal',
+    'supprimer_channel' => 'Supprimer le canal',
     'supprimer_canal_avertissement' => 'Êtes-vous sûr de vouloir supprimer ce canal?',
+    'supprimer_channel_warning' => 'Êtes-vous sûr de vouloir supprimer ce canal?',
+    'voir_message_precedent' => 'Voir les messages précédents',
+    'voir_message_suivant' => 'Voir les messages suivants',
+    'envoyer' => 'Envoyer',
+    
 
     // Traductions rechercheClans.blade.php
 
@@ -58,5 +65,22 @@ return [
     'succes_requete_envoyer' => 'Demande de clan envoyée avec succès !',
     'joindre' => 'Rejoindre',
 
-
+    // Additional translations
+    'invitation_clan' => 'Invitation de clan',
+    'inviter_membre' => 'Inviter un membre',
+    'inviter' => 'Inviter',
+    'aucun_membre' => 'Aucun membre trouvé',
+    'chercher_membre' => 'Chercher un membre',
+    'admin_clan' => 'Administrateur du clan',
+    'message_bienvenue' => 'Bienvenue dans votre clan!',
+    'photo_profil' => 'Photo de profil',
+    'date_adhesion' => 'Date d\'adhésion',
+    'role_clan' => 'Rôle dans le clan',
+    'membre_depuis' => 'Membre depuis',
+    'statut' => 'Statut',
+    'actions' => 'Actions',
+    'actif' => 'Actif',
+    'inactif' => 'Inactif',
+    'supprimer_invitation' => 'Supprimer l\'invitation',
+    'confirmer_invitation' => 'Confirmer l\'invitation',
 ];

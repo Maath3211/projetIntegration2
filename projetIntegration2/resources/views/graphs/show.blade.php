@@ -2,7 +2,8 @@
 @section('titre', $graph->titre)
 @section('style')
 <link rel="stylesheet" style="text/css" href="{{asset('css/graphs/graphs.css')}}">
-@endsection()
+@endsection
+
 @section('contenu')
 <div class="container mt-4">
     <div class="row justify-content-center">
@@ -12,10 +13,10 @@
                     <h1 class="h3 mb-0 text-white">{{ $graph->titre }}</h1>
                     <div>
                         <a href="{{ route('graphs.index') }}" class="btn btn-secondary me-2">
-                            <i class="fas fa-arrow-left me-1"></i> Retour
+                            <i class="fas fa-arrow-left me-1"></i> {{ __('graphs.retour') }}
                         </a>
                         <a href="{{ route('graphs.create') }}" class="btn bouton">
-                            <i class="fas fa-plus-circle me-1"></i> Nouveau graphique
+                            <i class="fas fa-plus-circle me-1"></i> {{ __('graphs.nouveau_graphique') }}
                         </a>
                     </div>
                 </div>
@@ -24,28 +25,28 @@
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-body p-3">
-                                    <h5 class="card-title">Informations</h5>
+                                    <h5 class="card-title">{{ __('graphs.informations') }}</h5>
                                     <table class="table table-sm table-borderless mb-0">
                                         <tr>
-                                            <td class="fw-bold text-white">Type:</td>
+                                            <td class="fw-bold text-white">{{ __('graphs.type') }}:</td>
                                             <td class="text-white">
                                                 @if($graph->type == 'global')
-                                                Pointages Global
+                                                {{ __('graphs.pointages_global') }}
                                                 @elseif($graph->clan)
-                                                Pointages Clan: {{ $graph->clan->nom }}
+                                                {{ __('graphs.pointages_clan') }}: {{ $graph->clan->nom }}
                                                 @endif
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="fw-bold text-white">Période:</td>
-                                            <td class="text-white">{{ $graph->date_debut->format('d/m/Y') }} au {{ $graph->date_fin->format('d/m/Y') }}</td>
+                                            <td class="fw-bold text-white">{{ __('graphs.periode_label') }}</td>
+                                            <td class="text-white">{{ $graph->date_debut->format('d/m/Y') }} - {{ $graph->date_fin->format('d/m/Y') }}</td>
                                         </tr>
                                         <tr>
-                                            <td class="fw-bold text-white">Créé le:</td>
+                                            <td class="fw-bold text-white">{{ __('graphs.cree_le') }}:</td>
                                             <td class="text-white">{{ $graph->created_at->format('d/m/Y') }}</td>
                                         </tr>
                                         <tr>
-                                            <td class="fw-bold text-white">Expire le:</td>
+                                            <td class="fw-bold text-white">{{ __('graphs.expire_le') }}:</td>
                                             <td class="text-white">{{ $graph->date_expiration->format('d/m/Y') }}</td>
                                         </tr>
                                     </table>
@@ -54,7 +55,7 @@
                         </div>
                     </div>
 
-                    <div class="chart-container" style="position: relative; height:400px; width:100%">
+                    <div class="chart-container" style="position: relative; min-height: 400px;">
                         <canvas id="scoreChart"></canvas>
                     </div>
                 </div>
@@ -68,18 +69,70 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const ctx = document.getElementById('scoreChart').getContext('2d');
-        const data = @json($graph->data);
-        
+        const data = @json($graph -> data);
+
+        // Add translations for months
+        const translations = {
+            clanScores: "{{ __('charts.pointages_clan') }}",
+            userScores: "{{ __('charts.pointages_utilisateurs') }}",
+            score: "{{ __('charts.score') }}",
+            months: "{{ __('charts.months') }}",
+            jan: "{{ __('charts.jan') }}",
+            feb: "{{ __('charts.fev') }}",
+            mar: "{{ __('charts.mar') }}",
+            apr: "{{ __('charts.avr') }}",
+            may: "{{ __('charts.mai') }}",
+            jun: "{{ __('charts.juin') }}",
+            jul: "{{ __('charts.jul') }}",
+            aug: "{{ __('charts.aug') }}",
+            sep: "{{ __('charts.sep') }}",
+            oct: "{{ __('charts.oct') }}",
+            nov: "{{ __('charts.nov') }}",
+            dec: "{{ __('charts.dec') }}"
+        };
+
+        // Translate month labels if they are in Month Year format (e.g., "Jan 2025")
+        if (data.interval === 'monthly') {
+            data.labels = data.labels.map(label => {
+                const parts = label.split(' ');
+                if (parts.length === 2) {
+                    const monthAbbr = parts[0].toLowerCase();
+                    const year = parts[1];
+
+                    // Get translation key based on month abbreviation
+                    let translationKey;
+                    switch(monthAbbr) {
+                        case 'jan': translationKey = 'jan'; break;
+                        case 'feb': translationKey = 'feb'; break;
+                        case 'mar': translationKey = 'mar'; break;
+                        case 'apr': translationKey = 'apr'; break;
+                        case 'may': translationKey = 'may'; break;
+                        case 'jun': translationKey = 'jun'; break;
+                        case 'jul': translationKey = 'jul'; break;
+                        case 'aug': translationKey = 'aug'; break;
+                        case 'sep': translationKey = 'sep'; break;
+                        case 'oct': translationKey = 'oct'; break;
+                        case 'nov': translationKey = 'nov'; break;
+                        case 'dec': translationKey = 'dec'; break;
+                        default: translationKey = monthAbbr;
+                    }
+
+                    return translations[translationKey] + ' ' + year;
+                }
+                return label;
+            });
+        }
+
         // Get proper color scheme to match ScoreGraph
         const chartColor = '{{ $graph->type == "global" ? "#2196F3" : "#4CAF50" }}';
         const bgColor = '{{ $graph->type == "global" ? "rgba(33, 150, 243, 0.1)" : "rgba(76, 175, 80, 0.1)" }}';
-        
+
         new Chart(ctx, {
             type: 'line',
             data: {
                 labels: data.labels,
                 datasets: [{
-                    label: '{{ $graph->type == "global" ? "Scores Globaux" : "Scores Clan" }}',
+                    label: '{{ $graph->type == "global" ? __("graphs.pointages_global") : __("graphs.pointages_clan") }}',
                     data: data.values,
                     borderColor: chartColor,
                     backgroundColor: bgColor,
@@ -99,7 +152,7 @@
                         beginAtZero: true,
                         title: {
                             display: true,
-                            text: 'Points',
+                            text: '{{ __("graphs.points") }}',
                             font: {
                                 size: 14,
                                 weight: 'bold'
@@ -117,7 +170,7 @@
                     x: {
                         title: {
                             display: true,
-                            text: data.interval === 'daily' ? 'Jours' : 'Mois',
+                            text: data.interval === 'daily' ? '{{ __("graphs.jours_label") }}' : '{{ __("graphs.mois_label") }}',
                             font: {
                                 size: 14,
                                 weight: 'bold'
@@ -134,17 +187,6 @@
                     }
                 },
                 plugins: {
-                    title: {
-                        display: true,
-                        text: '{{ $graph->titre }}',
-                        font: {
-                            size: 18,
-                            weight: 'bold'
-                        },
-                        padding: {
-                            bottom: 20
-                        }
-                    },
                     legend: {
                         labels: {
                             font: {

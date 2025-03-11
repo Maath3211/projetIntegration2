@@ -6,7 +6,7 @@
 
 
 <div id="main">
-    <a href="/stats"><button class="bouton">{{ __('stats.back') }}</button></a>
+    <a href="/stats"><button class="bouton">{{ __('stats.backpage') }}</button></a>
 
 
     <h1 id="titre">{{ __('stats.week') }} {{$diffSemaines}}</h1>

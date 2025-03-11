@@ -16,6 +16,8 @@ return [
     
     // User actions
     'deconnexion' => 'Déconnexion',
+    'mon_profil' => 'Mon Profil',
+    'parametres' => 'Paramètres',
     
     // Modal titles
     'ajouter_clan' => 'Ajouter un nouveau clan',

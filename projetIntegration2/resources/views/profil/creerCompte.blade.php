@@ -24,19 +24,19 @@
 
                 <form action="{{ route('profil.creerCompte') }}" method="post" enctype="multipart/form-data" id="formCreation">
                     @csrf
-                    <h1 class="h1" id="titreConnexion">{{ __('auth.creation_account_title') }}</h1>
+                    <h1 class="h1" id="titreConnexion">{{ __('auth.creation_titre_compte') }}</h1>
                     <div class="conteneurForm">
                         <label for="email" class="text-vert">{{ __('auth.adresse_courriel') }}</label>
                         <input type="email" class="form-control inputConnexion" id="email"
                             placeholder="{{ __('auth.adresse_courriel') }}" name="email" value="{{ old('email') }}">
                         <div class="conteneurErreur">
                             @error('email')
-                                <span class="text-danger">{{ $message }}&ensp;</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#dc3545"
-                                    class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
-                                    <path
-                                        d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
-                                </svg>
+                            <span class="text-danger">{{ $message }}&ensp;</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#dc3545"
+                                class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
+                                <path
+                                    d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
+                            </svg>
                             @enderror
                         </div>
                     </div>
@@ -47,12 +47,12 @@
                             placeholder="{{ __('auth.prenom') }}" value="{{ old('prenom') }}">
                         <div class="conteneurErreur">
                             @error('prenom')
-                                <span class="text-danger">{{ $message }}&ensp;</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#dc3545"
-                                    class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
-                                    <path
-                                        d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
-                                </svg>
+                            <span class="text-danger">{{ $message }}&ensp;</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#dc3545"
+                                class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
+                                <path
+                                    d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
+                            </svg>
                             @enderror
                         </div>
                     </div>
@@ -62,28 +62,29 @@
                             placeholder="{{ __('auth.nom_de_famille') }}" value="{{ old('nom') }}">
                         <div class="conteneurErreur">
                             @error('nom')
-                                <span class="text-danger">{{ $message }}&ensp;</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#dc3545"
-                                    class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
-                                    <path
-                                        d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
-                                </svg>
+                            <span class="text-danger">{{ $message }}&ensp;</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#dc3545"
+                                class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
+                                <path
+                                    d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
+                            </svg>
                             @enderror
                         </div>
                     </div>
                     <div class="conteneurForm">
                         <label for="imageProfil" class="text-vert">{{ __('auth.image_profil') }}</label>
-                        <input type="file" class="form-control inputConnexion" id="imageProfil" name="imageProfil">
-                        <label for="imageProfil" class="custom-file-upload" id="filename">{{ __('auth.aucun_changement') }}</label>
-                        
+                        <input type="file" class="form-control inputConnexion" id="imageProfil" name="imageProfil"
+                            data-no-file-text="{{ __('auth.aucun_fichier') }}">
+                        <label for="imageProfil" class="custom-file-upload" id="filename">{{ __('auth.aucun_fichier') }}</label>
+
                         <div class="conteneurErreur">
                             @error('imageProfil')
-                                <span class="text-danger">{{ $message }}&ensp;</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#dc3545"
-                                    class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
-                                    <path
-                                        d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
-                                </svg>
+                            <span class="text-danger">{{ $message }}&ensp;</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#dc3545"
+                                class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
+                                <path
+                                    d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
+                            </svg>
                             @enderror
                         </div>
                     </div>
@@ -92,19 +93,19 @@
                         <select class="form-select inputConnexion form-control" name="pays">
                             <option>{{ __('auth.choisir') }}</option>
                             @foreach ($countries as $country)
-                                <option value="{{ $country['name'] }}"
-                                    {{ old('pays') == $country['name'] ? 'selected' : '' }}>{{ $country['name'] }}
-                                </option>
+                            <option value="{{ $country['name'] }}"
+                                {{ old('pays') == $country['name'] ? 'selected' : '' }}>{{ $country['name'] }}
+                            </option>
                             @endforeach
                         </select>
                         <div class="conteneurErreur">
                             @error('pays')
-                                <span class="text-danger">{{ $message }}&ensp;</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#dc3545"
-                                    class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
-                                    <path
-                                        d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
-                                </svg>
+                            <span class="text-danger">{{ $message }}&ensp;</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#dc3545"
+                                class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
+                                <path
+                                    d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
+                            </svg>
                             @enderror
                         </div>
                     </div>
@@ -120,12 +121,12 @@
                         </select>
                         <div class="conteneurErreur">
                             @error('genre')
-                                <span class="text-danger">{{ $message }}&ensp;</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#dc3545"
-                                    class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
-                                    <path
-                                        d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
-                                </svg>
+                            <span class="text-danger">{{ $message }}&ensp;</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#dc3545"
+                                class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
+                                <path
+                                    d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
+                            </svg>
                             @enderror
                         </div>
                     </div>
@@ -136,12 +137,12 @@
                             max="{{ date('Y-m-d') }}" min="1900-01-01">
                         <div class="conteneurErreur">
                             @error('dateNaissance')
-                                <span class="text-danger">{{ $message }}&ensp;</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#dc3545"
-                                    class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
-                                    <path
-                                        d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
-                                </svg>
+                            <span class="text-danger">{{ $message }}&ensp;</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#dc3545"
+                                class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
+                                <path
+                                    d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
+                            </svg>
                             @enderror
                         </div>
                     </div>
@@ -151,12 +152,12 @@
                             placeholder="{{ __('auth.mot_de_passe') }}">
                         <div class="conteneurErreur">
                             @error('password')
-                                <span class="text-danger">{{ $message }}&ensp;</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#dc3545"
-                                    class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
-                                    <path
-                                        d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
-                                </svg>
+                            <span class="text-danger">{{ $message }}&ensp;</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#dc3545"
+                                class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
+                                <path
+                                    d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
+                            </svg>
                             @enderror
                         </div>
                     </div>
@@ -166,23 +167,23 @@
                             id="password_confirmation" placeholder="{{ __('auth.confirm_motdepasse') }}">
                         <div class="conteneurErreur">
                             @error('password_confirmation')
-                                <span class="text-danger">{{ $message }}&ensp;</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#dc3545"
-                                    class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
-                                    <path
-                                        d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
-                                </svg>
+                            <span class="text-danger">{{ $message }}&ensp;</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#dc3545"
+                                class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
+                                <path
+                                    d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
+                            </svg>
                             @enderror
                         </div>
                     </div>
                     @if (session('errors'))
-                        @foreach ($errors->all() as $error)
-                            @if ($error == 'Informations invalides')
-                                <div class="alert alert-erreur">
-                                    <p>{{ $error }}</p>
-                                </div>
-                            @endif
-                        @endforeach
+                    @foreach ($errors->all() as $error)
+                    @if ($error == 'Informations invalides')
+                    <div class="alert alert-erreur">
+                        <p>{{ $error }}</p>
+                    </div>
+                    @endif
+                    @endforeach
                     @endif
                     <div>
                         <button type="submit" class="btn btn-connexion">{{ __('auth.creation') }}</button>
@@ -209,6 +210,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
 </script>
+
 <script src="{{ asset('js/Profil/creation.js') }}"></script>
 
 </html>

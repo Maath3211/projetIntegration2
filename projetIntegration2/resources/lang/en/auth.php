@@ -13,7 +13,7 @@ return [
     'image_profil' => 'Profile image',
 
     // Gender options
-    'choisire' => 'Choose',
+    'choisir' => 'Choose',
     'homme' => 'Male',
     'femme' => 'Female',
     'pas_indiquer' => 'Prefer not to say',
@@ -49,6 +49,7 @@ return [
     // File upload
     'aucun_changement' => 'No change',
     'choisir_fichier' => 'Choose file',
+    'aucun_fichier' => 'No file selected',
 
     'compte_verifie' => 'Your account has been successfully verified',
     'courriel_existe' => 'An account already exists with this email',

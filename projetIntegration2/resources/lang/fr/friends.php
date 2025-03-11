@@ -31,7 +31,7 @@ return [
     // Buttons
     'accepter' => '✓',
     'refuser' => '✕',
-    'add_friend' => 'Ajouter',
+    'ajouter_amis' => 'Ajouter',
     
     // Profile elements
     'avatar_defaut' => 'Avatar par défaut',

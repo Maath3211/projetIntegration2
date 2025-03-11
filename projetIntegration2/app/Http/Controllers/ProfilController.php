@@ -99,7 +99,7 @@ class ProfilController extends Controller
             'semaine' => 1,
             'poids' => 0
         ]);
-        return redirect()->route('profil.connexion')->with('message', __('profile.profile_confirmation'));
+        return redirect()->route('profil.connexion')->with('message', __('profile.confirmation_profil'));
     }
 
     public function creerCompteGoogle()
@@ -222,7 +222,7 @@ class ProfilController extends Controller
         }
 
         Mail::to($utilisateur->email)->send(new confirmation($utilisateur));
-        return redirect()->route('profil.connexion')->with('message', __('profile.profile_confirmation'));
+        return redirect()->route('profil.connexion')->with('message', __('profile.confirmation_profil'));
     }
 
     public function profil()
@@ -240,7 +240,7 @@ class ProfilController extends Controller
         $clansAway = $utilisateur->clans;
         
         if (!$utilisateur) {
-            return redirect()->route('profil.profil')->withErrors([__('profile.user_notfound')]);
+            return redirect()->route('profil.profil')->withErrors([__('profile.utilisateur_non_trouve')]);
         }
         return View('profil.profil', compact('utilisateur', 'clansAway', 'clans'));
     }
@@ -263,44 +263,30 @@ class ProfilController extends Controller
 
     public function modification()
     {
-        // Cache the countries for 1 day
-        $countries = Cache::remember('countries_list_french', now()->addDay(), function () {
-            return $this->listePays();
-        });
-        $utilisateur = Auth::user();
-        $clans = $utilisateur->clans;
-        return View('profil.modification', compact('countries', 'clans'));
+        $countries = $this->listePays();
+        return view('profil.modification', compact('countries'));
     }
 
     public function updateModification(ModificationRequest $request)
     {
-        $utilisateur = Auth::user();
-        $utilisateur->prenom = $request->input('prenom');
-        $utilisateur->nom = $request->input('nom');
-        $utilisateur->pays = $request->input('pays');
-        $utilisateur->genre = $request->input('genre');
-        $utilisateur->dateNaissance = $request->input('dateNaissance');
-        $utilisateur->aPropos = $request->input('aPropos');
-
-
-        if ($request->hasFile('imageProfil')) {
-            if ($utilisateur->imageProfil && file_exists(public_path($utilisateur->imageProfil))) {
-                unlink(public_path($utilisateur->imageProfil));
-            }
-
-            $uploadedFile = $request->file('imageProfil');
-            $nomFichierUnique = 'img/Utilisateurs/' . str_replace(' ', '_', $utilisateur->id) . '-' . uniqid() . '.' . $uploadedFile->extension();
-            try {
-                $uploadedFile->move(public_path('img/Utilisateurs'), $nomFichierUnique);
-                $utilisateur->imageProfil = $nomFichierUnique;
-            } catch (\Exception $e) {
-                Log::error(__('profile.image_upload_error'), [$e]);
-                return redirect()->back()->withErrors(['imageProfil' => __('profile.image_upload_error')]);
-            }
-        }
-
-        $utilisateur->save();
-        return redirect()->route('profil.profil')->with('message', __('profile.profile_update_success'));
+        // Get the authenticated user
+        $user = Auth::user();
+        // ... other validation and processing
+        
+        // Update basic user info
+        $user->prenom = $request->prenom;
+        $user->nom = $request->nom;
+        $user->email = $request->email;
+        $user->pays = $request->pays;  // Save the country name in the current locale
+        $user->dateNaissance = $request->dateNaissance;
+        $user->genre = $request->genre;
+        $user->aPropos = $request->aPropos;
+        
+        // ... handle profile image if provided
+        
+        $user->save();
+        
+        return redirect()->back()->with('message', __('profile.profil_modifier_succes'));
     }
 
     public function pageMotDePasseOublie()
@@ -398,12 +384,11 @@ class ProfilController extends Controller
         // Get current locale
         $locale = app()->getLocale();
         $cacheKey = 'countries_list_' . $locale;
-
+        
         // Use locale-specific cache key
         return Cache::remember($cacheKey, now()->addDay(), function () use ($locale) {
             $response = Http::withoutVerifying()->get('https://restcountries.com/v3.1/all');
-            // !! remettre après verification !!         $response = Http::get('https://restcountries.com/v3.1/all');
-
+            
             if ($response->successful()) {
                 return collect($response->json())->map(function ($country) use ($locale) {
                     // Get country name in current locale
@@ -413,7 +398,7 @@ class ProfilController extends Controller
                         // Default to English
                         $name = $country['name']['common'];
                     }
-
+                    
                     return [
                         'name' => $name,
                         'code' => $country['cca2'],

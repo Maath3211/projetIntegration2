@@ -13,6 +13,7 @@ return [
     'confirmer' => 'Confirm',
     'parametres_clan' => 'Clan settings',
     'avertissement_suppression_clan' => 'Are you sure you want to delete the clan? This action is irreversible.',
+    'telecharger' => '📄 Download',
     
     // New translations for parametresClanCanaux.blade.php
     'parametres' => 'Settings',
@@ -21,6 +22,7 @@ return [
     'membres' => 'Members',
     'suppression_clan' => 'Delete clan',
     'categories_canal' => 'Channel categories',
+    'aide' => 'Help',
     'competition' => 'Competition',
     'ajout_categorie' => 'Add category',
     'modification_sauvegarde' => 'Don\'t forget to save your changes before leaving!',
@@ -44,7 +46,12 @@ return [
     'ajout_canal' => 'Add a channel',
     'renommer_canal' => 'Rename a channel',
     'supprimer_canal' => 'Delete the channel',
+    'supprimer_channel' => 'Delete the channel',
     'supprimer_canal_avertissement' => 'Are you sure you want to delete this channel?',
+    'supprimer_channel_warning' => 'Are you sure you want to delete this channel?',
+    'voir_message_precedent' => 'View previous messages',
+    'voir_message_suivant' => 'View next messages',
+    'envoyer' => 'Send',
 
     // Traductions rechercheClans.blade.php
 
@@ -55,4 +62,23 @@ return [
     'resultats_recherche' => 'Search results:',
     'succes_requete_envoyer' => 'Clan request sent successfully!',
     'joindre' => 'Join',
+
+    // Additional translations
+    'invitation_clan' => 'Clan invitation',
+    'inviter_membre' => 'Invite a member',
+    'inviter' => 'Invite',
+    'aucun_membre' => 'No member found',
+    'chercher_membre' => 'Search for a member',
+    'admin_clan' => 'Clan administrator',
+    'message_bienvenue' => 'Welcome to your clan!',
+    'photo_profil' => 'Profile photo',
+    'date_adhesion' => 'Join date',
+    'role_clan' => 'Role in clan',
+    'membre_depuis' => 'Member since',
+    'statut' => 'Status',
+    'actions' => 'Actions',
+    'actif' => 'Active',
+    'inactif' => 'Inactive',
+    'supprimer_invitation' => 'Delete invitation',
+    'confirmer_invitation' => 'Confirm invitation',
 ];

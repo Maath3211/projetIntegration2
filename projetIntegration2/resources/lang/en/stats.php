@@ -2,13 +2,13 @@
 
 return [
     // Common elements
-    'back' => 'Back',
     'save' => 'Save',
     'cancel' => 'Cancel',
     'add' => 'Add',
     'view_chart' => 'View my chart',
     'week' => 'Week',
     'weeks' => 'Weeks',
+    'backpage' => 'Back',
 
     // Stats index page
     'statistics_of' => 'Statistics of',
@@ -22,16 +22,17 @@ return [
     'add_exercise' => 'Add an exercise',
     'exercise_name' => 'Exercise name',
     'score' => 'Score lbs or km',
-    
+    'ajouter_compteur_gym' => 'Add a gym counter',
+
     // Weight chart page
     'weight_improvement' => 'Weight improvement',
     'new_weight' => 'New weight (lbs):',
     'add_modify' => 'Add/Modify',
-    
+
     // Exercise chart page
     'improvement_of' => 'Improvement of your',
     'new_score' => 'New Score (Lbs):',
-    
+
     // Calendar page
     'activity_calendar' => 'Activity Calendar',
     'previous' => '⬅️ Previous',
@@ -45,7 +46,7 @@ return [
     'back' => 'Back',
     'running' => 'Running',
     'no_activity_selected' => 'No activity selected!',
-    
+
     // Months
     'january' => 'January',
     'february' => 'February',
@@ -59,7 +60,7 @@ return [
     'october' => 'October',
     'november' => 'November',
     'december' => 'December',
-    
+
     // Chart labels
     'weight_lbs' => 'Weight (Lbs)',
     'weight_kg' => 'Weight (Kg)',

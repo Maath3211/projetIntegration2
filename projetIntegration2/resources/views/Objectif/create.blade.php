@@ -10,12 +10,12 @@
             @csrf
 
             <label for="titre" class="label">{{ __('objectives.titre_objectif') }}</label>
-            <input type="text" id="titre" name="titre" class="input" placeholder="{{ __('objectives.titre_placeholder') }}" required>
+            <input type="text" id="titre" name="titre" class="input" placeholder="{{ __('objectives.titre_exemple') }}" required>
 
             <label for="description" class="label">{{ __('objectives.description_objectif') }}</label>
             <textarea id="description" name="description" class="input textarea" placeholder="{{ __('objectives.description_exemple') }}" required></textarea>
 
-            <button type="submit" class="bouton">{{ __('objectives.ajout_button') }}</button>
+            <button type="submit" class="bouton">{{ __('objectives.ajout_bouton') }}</button>
         </form>
 
         <a href="{{ route('objectif.index') }}" class="bouton bouton-retour">{{ __('objectives.retour') }}</a>

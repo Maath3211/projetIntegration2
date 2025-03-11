@@ -179,7 +179,7 @@
                             <!-- Ici, "user_id" serait l'expéditeur de la demande et "friend_id" le destinataire -->
                             <input type="hidden" name="user_id" value="{{ $utilisateurConnecteId ?? 0 }}">
                             <input type="hidden" name="friend_id" value="{{ $utilisateur->id }}">
-                            <button type="submit" class="add-button">{{ __('friends.add_friend') }}</button>
+                            <button type="submit" class="add-button">{{ __('friends.ajouter_amis') }}</button>
                         </form>
                     </li>
 

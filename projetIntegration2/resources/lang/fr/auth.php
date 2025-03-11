@@ -49,6 +49,7 @@ return [
     // File upload
     'aucun_changement' => 'Aucun changement',
     'choisir_fichier' => 'Choisir un fichier',
+    'aucun_fichier' => 'Aucun fichier sélectionné',
 
     'compte_verifie' => 'Votre compte a été vérifié avec succès',
     'courriel_existe' => 'Un compte existe déjà avec cet email',

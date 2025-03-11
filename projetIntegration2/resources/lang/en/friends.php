@@ -24,7 +24,7 @@ return [
     // Buttons
     'accepter' => '✓',
     'refuser' => '✕',
-    'add_friend' => 'Add',
+    'ajouter_amis' => 'Add',
     
     // Profile elements
     'avatar_defaut' => 'Default Avatar',

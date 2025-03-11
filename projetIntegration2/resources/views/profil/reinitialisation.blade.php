@@ -29,7 +29,7 @@
                         @csrf
                         <label for="email" class="text-vert">{{ __('profile.adresse_courriel') }}</label>
                         <input type="email" class="form-control inputReinitialisation" id="email"
-                            placeholder="Adresse courriel" name="email">
+                            placeholder="{{ __('profile.courriel') }}" name="email">
                     </div>
                     <br>
                     @if (session('message'))

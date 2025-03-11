@@ -2,7 +2,6 @@
 
 return [
     // Common elements
-    'back' => 'Retour',
     'save' => 'Sauvegarder',
     'cancel' => 'Annuler',
     'add' => 'Ajouter',
@@ -22,16 +21,17 @@ return [
     'add_exercise' => 'Ajouter un exercice',
     'exercise_name' => 'Nom de l\'exercice',
     'score' => 'Score lbs ou km',
-    
+    'ajouter_compteur_gym' => 'Ajouter un compteur de gym',
+
     // Weight chart page
     'weight_improvement' => 'Amélioration de votre poids',
     'new_weight' => 'Nouveau poids (lbs) :',
     'add_modify' => 'Ajouter/Modifier',
-    
+
     // Exercise chart page
     'improvement_of' => 'Amélioration de votre',
     'new_score' => 'Nouveau Score (Lbs) :',
-    
+
     // Calendar page
     'activity_calendar' => 'Calendrier d\'Activité',
     'previous' => '⬅️ Précédent',
@@ -43,9 +43,10 @@ return [
     'legs' => 'Jambe',
     'chest' => 'Pectoraux',
     'back' => 'Dos',
+    'backpage' => 'Retour',
     'running' => 'Course',
     'no_activity_selected' => 'Aucune activité sélectionnée !',
-    
+
     // Months
     'january' => 'Janvier',
     'february' => 'Février',
@@ -59,7 +60,7 @@ return [
     'october' => 'Octobre',
     'november' => 'Novembre',
     'december' => 'Décembre',
-    
+
     // Chart labels
     'weight_lbs' => 'Poids (Lbs)',
     'weight_kg' => 'Poids (Kg)',

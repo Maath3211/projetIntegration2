@@ -4,7 +4,7 @@
 
 <body>
     <div class="boutonContainer">
-        <a href="/stats"><button class="bouton">{{ __('stats.back') }}</button></a>
+        <a href="/stats"><button class="bouton">{{ __('stats.backpage') }}</button></a>
         <form id="thermiqueForm" action="{{ route('statistique.storeThermique') }}" method="POST">
             @csrf
             <input type="hidden" name="donnees" id="donnees">

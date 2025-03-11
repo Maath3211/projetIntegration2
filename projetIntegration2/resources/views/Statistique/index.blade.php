@@ -15,7 +15,7 @@
 
     
     <div class="flex flex-wrap justify-center space-x-4 mt-4">
-      <a href="/ajouterFoisGym">  <button class="bouton">ajouter compteur gym</button></a>
+      <a href="/ajouterFoisGym">  <button class="bouton">{{ __('stats.ajouter_compteur_gym') }}</button></a>
       <a href="/profil">  <button class="bouton">{{ __('stats.profile') }}</button></a>
       <a href="/objectif">  <button class="bouton">{{ __('stats.view_objectives') }}</button></a>
     </div>
