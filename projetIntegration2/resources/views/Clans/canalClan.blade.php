@@ -348,6 +348,18 @@
     <!-- Script directement dans la page car on doit référencer une librairie Laravel depuis la page (config) -->
 
     <script>
+
+
+    // Fonction pour échapper les caractères spéciaux
+    function escapeHtml(unsafe) {
+        return unsafe
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
         // ---------------------------
         // Gestion de l'envoi du formulaire
         // ---------------------------
@@ -465,7 +477,7 @@
                 $("input[name='fichier']").val(""); // Réinitialiser l'input file
 
                 let avatarText = res.sender_email.substring(0, 2);
-                let messageContent = res.message ? `<p>${res.message}</p>` : "";
+                let messageContent = res.message ? `<p>${escapeHtml(res.message)}</p>` : "";
 
 
                 // Déterminer si c'est une image ou un fichier à télécharger

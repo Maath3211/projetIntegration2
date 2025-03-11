@@ -244,7 +244,7 @@
                             <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
                             <br>
                             <div class="message-text">
-                                ${escapeHtml(messageContent)}
+                                ${messageContent}
                             </div>
                             ${fileContent}
                         </div>
@@ -295,10 +295,10 @@
 
             if (res.fichier) {
                 if (isImage) {
-                    fileContent = `<img src="${escapeHtml(res.fichier)}" class="message-image" alt="Image envoyée">`;
+                    fileContent = `<img src="${res.fichier}" class="message-image" alt="Image envoyée">`;
                 } else {
-                    fileContent = `<a href="${escapeHtml(res.fichier)}" target="_blank" class="text-blue-500">
-                        📄 Télécharger ${escapeHtml(res.fichier.split('/').pop())}
+                    fileContent = `<a href="${res.fichier}" target="_blank" class="text-blue-500">
+                        📄 Télécharger ${res.fichier.split('/').pop()}
                     </a>`;
                 }
             }
@@ -308,7 +308,7 @@
                     <div class="message own-message">
                         <button class="delete-btn" data-id="${res.last_id}">🗑️</button>
                         <div class="bubble">
-                            <strong>${escapeHtml(res.sender_email)}</strong>
+                            <strong>${res.sender_email}</strong>
                             <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
                             <br>
                             <div class="message-text">
@@ -316,7 +316,7 @@
                             </div>
                             ${fileContent}
                         </div>
-                        <div class="ml-4 avatar bg-primary text-white rounded-circle p-2">${escapeHtml(avatarText)}</div>
+                        <div class="ml-4 avatar bg-primary text-white rounded-circle p-2">${avatarText}</div>
                     </div>
                     <div class="separator"></div>
                 </div>
