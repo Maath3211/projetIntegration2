@@ -30,7 +30,6 @@ class ClanLeaderboard extends Component
     {
         $this->selectedClanId = $clanId;
         $oneMonthAgo = \Carbon\Carbon::now()->subMonth();
-        Log::debug('Updating clan with ID: ' . $clanId);
 
         try {
             $this->selectedClan = Clan::find($clanId);

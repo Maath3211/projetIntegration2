@@ -300,7 +300,8 @@ aside {
         box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
         display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: center; /* Center items like desktop nav */
+        padding-left: 0; /* Remove left padding */
     }
     
     .show-mobile-menu {
@@ -314,26 +315,29 @@ aside {
         display: flex;
         flex-direction: column;
         align-items: center;
+        width: 100%; /* Take full width of container */
+        justify-content: center;
     }
     
+    /* Center all items including profile menu */
+    .mobile-menu .relative.mt-auto {
+        align-self: center;
+        margin-left: 0;
+        margin-bottom: 20px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    
+    /* Ensure consistent sizing for all menu items */
+    .mobile-menu .w-16,
     .mobile-menu .bullePersonnalisee {
-        margin-bottom: 15px;
+        margin: 0 auto;
     }
     
-    /* Copy of main navbar styling for mobile */
-    .mobile-menu .w-16 {
-        width: 4rem;
-    }
-    
-    .mobile-menu .h-16 {
-        height: 4rem;
-    }
-    
-    .mobile-menu .rounded-full {
-        border-radius: 9999px;
-    }
-    
-    .mobile-menu .overflow-hidden {
-        overflow: hidden;
+    /* Fix profile menu positioning */
+    #mobileProfileMenu {
+        left: 50%;
+        transform: translateX(-50%);
     }
 }
