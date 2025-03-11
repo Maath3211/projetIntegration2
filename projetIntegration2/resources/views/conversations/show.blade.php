@@ -38,7 +38,7 @@
                     <div class="col-md-8 colonneMessages2">
                         <!-- Contenu supprimé -->
                         <div class="chat-messages" id="chat-messages">
-    
+
                             @if ($messages->hasMorePages())
                                 <div class="div text-center">
                                     <a href="{{ $messages->nextPageUrl() }}" class="btn btn-light">
@@ -46,7 +46,7 @@
                                     </a>
                                 </div>
                             @endif
-    
+
                             @foreach ($messages as $message)
                                 <div class="messageTotal" id="message-{{ $message->id }}">
                                     <div
@@ -59,7 +59,7 @@
                                                 {{ substr($message->user->email ?? 'Email inconnu', 0, 2)  }}
                                             </div>
                                         @endif
-    
+
                                         <div class="bubble">
                                             <strong>{{ $message->user->email ?? 'Email inconnu' }}</strong>
                                             <span class="text-muted">{{ substr($message->created_at, 11, 5) }}</span>
@@ -67,7 +67,7 @@
                                             <div class="message-text">
                                                 <p>{!! nl2br(e($message->message)) !!}</p>
                                             </div>
-    
+
                                             @if ($message->fichier)
                                                 @php
                                                     $extension = pathinfo($message->fichier, PATHINFO_EXTENSION);
@@ -76,7 +76,7 @@
                                                         ? 'img/conversations_photo/'
                                                         : 'fichier/conversations_fichier/';
                                                 @endphp
-    
+
                                                 @if ($isImage)
                                                     <img src="{{ asset($dossier . $message->fichier) }}" alt="Image envoyée"
                                                         class="w-32 h-32 object-cover">
@@ -87,11 +87,11 @@
                                                     </a>
                                                 @endif
                                             @endif
-    
-    
+
+
                                         </div>
-    
-    
+
+
                                         @if ($message->idEnvoyer != auth()->id())
                                             <!-- Pas de bouton de suppression pour les messages reçus -->
                                         @else
@@ -103,10 +103,10 @@
                                     <div class="separator"></div>
                                 </div>
                             @endforeach
-    
-    
-    
-    
+
+
+
+
                             @if ($messages->previousPageUrl())
                                 <div class="div text-center">
                                     <a href="{{ $messages->previousPageUrl() }}" class="btn btn-light">
@@ -114,19 +114,19 @@
                                     </a>
                                 </div>
                             @endif
-    
+
                         </div>
-    
+
                         <div class="d-flex align-items-center mt-3">
-    
-    
-    
+
+
+
                             <form action="" method="post" enctype="multipart/form-data" class="d-flex flex-grow-1">
                                 @csrf
                                 <div class="form-group d-flex flex-column w-100">
                                     <!-- Conteneur pour afficher l'aperçu de l'image -->
                                     <div id="preview-container"></div>
-    
+
                                     <!-- Autres contrôles du formulaire -->
                                     <div class="d-flex align-items-center mt-3">
                                         <div class="file-upload-wrapper me-2">
@@ -143,16 +143,16 @@
                                 </div>
                             </form>
                         </div>
-    
+
                         <u>
                             @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
                             @endforeach
                         </u>
-    
-    
+
+
                     </div>
-    
+
 
 
                 </div>
@@ -234,8 +234,8 @@
             console.error('Connection error:', err);
         });
 
-            const channel = pusher.subscribe(channelName);
-            console.log("Channel:", channel);
+        const channel = pusher.subscribe(channelName);
+        console.log("Channel:", channel);
 
 
 
@@ -250,7 +250,7 @@
 
 
         // Recevoir les messages de la conversation
-        channel.bind('event-group', function(data) {
+        channel.bind('mon-event', function(data) {
             // Vérifier si le message a été supprimé
             if (data.deleted === true) {
                 // Si le message a été supprimé, le retirer du DOM
@@ -420,7 +420,7 @@
             });
 
             // Écouter l'événement de suppression spécifique diffusé par Pusher
-            channel.bind('message-deleted', function(data) {
+            channel.bind('message-deleted-ami', function(data) {
                 console.log("Message supprimé:", data); // Affiche l'ID du message supprimé pour le débogage
                 // Supprime le message correspondant du DOM
                 $(`#message-${data.messageId}`).remove();
@@ -429,5 +429,5 @@
         </script>
 
 
-                
+
 @endsection

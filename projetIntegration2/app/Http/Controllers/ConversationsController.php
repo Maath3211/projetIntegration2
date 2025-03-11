@@ -14,6 +14,7 @@ use App\Http\Requests\StoreMessage;
 use App\Events\PusherBroadcast;
 use App\Events\MessageGroup;
 use App\Events\SuppressionMessageGroup;
+use App\Events\SuppressionMessageAmis;
 
 //TODO : BUG A CORRIGER
 
@@ -27,7 +28,7 @@ class ConversationsController extends Controller
     private $ClanRepository;
 
     public function __construct(
-        ConversationsRepository $conversationRepository, 
+        ConversationsRepository $conversationRepository,
         ConversationsClan $ClanRepository
     ) {
         $this->ConvRepository = $conversationRepository;
@@ -61,34 +62,39 @@ class ConversationsController extends Controller
         ]);
     }
 
+    //Pour utilisation du pusher nom de variable en englais
     public function broadcast(Request $request)
     {
+        \Log::info('Début de la diffusion du message', ['user_id' => auth()->id()]);
+
         $request->validate([
             'message' => 'nullable|string',
             'fichier' => 'nullable|file|max:20480', // 20 Mo
         ]);
-        
+
         if (!$request->filled('message') && !$request->hasFile('fichier')) {
+            \Log::warning('Aucun message ou fichier fourni', ['user_id' => auth()->id()]);
             return response()->json(['error' => 'Vous devez envoyer soit un message, soit un fichier, soit les deux.'], 422);
         }
-        
+
         try {
             $fichierNom = null;
             if ($request->hasFile('fichier')) {
                 $fichier = $request->file('fichier');
-        
+
                 // Générer un nom unique avec horodatage
                 $fichierNom = time() . '_' . $fichier->getClientOriginalName();
-        
+
                 // Déterminer le dossier en fonction du type de fichier
                 $dossier = in_array($fichier->getClientOriginalExtension(), ['jpg', 'jpeg', 'png', 'gif'])
                     ? 'img/conversations_photo/'
                     : 'fichier/conversations_fichier/';
-        
+
                 // Stocker le fichier
                 $fichier->move(public_path($dossier), $fichierNom);
+                //\Log::info('Fichier téléchargé avec succès', ['fichier_nom' => $fichierNom, 'dossier' => $dossier]);
             }
-    
+
             // Insérer le message dans la base de données en utilisant le modèle Message
             $message = Message::create([
                 'idEnvoyer' => auth()->id(),
@@ -97,15 +103,19 @@ class ConversationsController extends Controller
                 'fichier' => $fichierNom, // Stocke le chemin public
                 'created_at' => now(),
             ]);
-    
+
+            //\Log::info('Message créé avec succès', ['message_id' => $message->id]);
+
             // Diffuser l’événement via Pusher
             broadcast(new PusherBroadcast($request->message, auth()->id(), $request->to, false, $message->id, $fichierNom, auth()->user()->email))
                 ->toOthers();
-    
+
+            //\Log::info('Message diffusé avec succès', ['message_id' => $message->id]);
+
         } catch (\Exception $e) {
-            \Log::error('❌ Erreur lors du broadcast: ' . $e->getMessage());
+            //\Log::error('❌ Erreur lors du broadcast: ' . $e->getMessage());
         }
-    
+
         return response()->json([
             'message' => $request->message,
             'last_id' => $message->id,
@@ -115,42 +125,47 @@ class ConversationsController extends Controller
             'email' => auth()->user()->email,
         ]);
     }
-    
 
+
+
+    //Pour utilisation du pusher nom de variable en englais
     public function receive(Request $request){
-
+        \Log::info('❌ Erreur lors du broadcast: ' . $request);
     return response()->json([
         'message' => $request->message,
         'sender_id' => $request->sender_id,
-        'group_id' => $request->group_id,
-        'canal_id' => $request->canal_id,
+        'receiver_id' => $request->receiver_id,
         'deleted' => $request->deleted,
         'last_id' => $request->last_id,
         'photo' => $request->photo,
-        
+        'email' => $request->email,
+
     ]);
     }
 
     public function destroy(Message $message)
     {
+        \Log::info('Tentative de suppression du message', ['message_id' => $message->id, 'user_id' => auth()->id()]);
+
         if (auth()->id() !== $message->idEnvoyer) {
+            \Log::warning('Action non autorisée pour la suppression du message', ['message_id' => $message->id, 'user_id' => auth()->id()]);
             return response()->json(['error' => 'Action non autorisée'], 403);
         }
-    
+
         \Log::info('Détails du message avant suppression', ['message_id' => $message->id, 'fichier' => $message->fichier]);
-    
+
         if ($message->fichier) {
             $fichierNom = $message->fichier;
-    
+
             // Déterminer le dossier selon l'extension
             $dossier = in_array(pathinfo($fichierNom, PATHINFO_EXTENSION), ['jpg', 'jpeg', 'png', 'gif'])
                 ? 'img/conversations_photo/'
                 : 'fichier/conversations_fichier/';
-    
+
             $fichierPath = public_path($dossier . $fichierNom);
-    
+
             \Log::info('Chemin du fichier à supprimer', ['fichier_path' => $fichierPath]);
-    
+
             if (file_exists($fichierPath)) {
                 unlink($fichierPath);
                 \Log::info('Fichier supprimé', ['fichier_path' => $fichierPath]);
@@ -160,17 +175,19 @@ class ConversationsController extends Controller
         } else {
             \Log::info('Aucun fichier associé au message', ['message_id' => $message->id]);
         }
-    
+
         $messageId = $message->id;
         $message->delete();
-    
-        broadcast(new SuppressionMessageGroup($messageId, $message->idClan))->toOthers();
-    
+
+        \Log::info('Message supprimé avec succès', ['message_id' => $messageId]);
+
+        broadcast(new SuppressionMessageAmis($messageId, $message->idEnvoyer, $message->idReceveur))->toOthers();
+
         return response()->json(['success' => 'Message supprimé']);
     }
-    
-    
-    
+
+
+
 
     //Modification pour avoir mes points
 
