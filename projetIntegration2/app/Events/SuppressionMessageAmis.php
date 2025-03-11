@@ -36,14 +36,14 @@ class SuppressionMessageAmis implements ShouldBroadcastNow
     public function broadcastOn(): array
     {
         $channel = new Channel("chat-" . min($this->receveurId, $this->envoyeurId) . "-" . max($this->envoyeurId, $this->receveurId));
-        Log::info('Broadcasting on channel', ['channel' => $channel->name]);
+        //Log::info('Broadcasting on channel', ['channel' => $channel->name]);
         return [$channel];
     }
 
     public function broadcastAs(): string
     {
         $eventName = 'message-deleted-ami';
-        Log::info('Broadcasting as event', ['event' => $eventName]);
+        //Log::info('Broadcasting as event', ['event' => $eventName]);
         return $eventName;
     }
 
@@ -52,7 +52,7 @@ class SuppressionMessageAmis implements ShouldBroadcastNow
         $data = [
             'messageId' => $this->messageId,
         ];
-        Log::info('Broadcasting with data', $data);
+        //Log::info('Broadcasting with data', $data);
         return $data;
     }
 }
