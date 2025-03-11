@@ -17,6 +17,9 @@ class Kernel extends ConsoleKernel
                 ->weekly()
                 ->sundays()
                 ->at('00:00');
+                
+        // Other scheduled tasks
+        $schedule->command('graphs:clean')->daily();
     }
 
     /**
