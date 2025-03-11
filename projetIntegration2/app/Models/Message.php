@@ -13,6 +13,7 @@ class Message extends Model
         'message',
         'idEnvoyer',
         'idReceveur',
+        'fichier',
         'created_at',
     ];
 

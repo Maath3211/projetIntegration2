@@ -19,12 +19,20 @@ class PusherBroadcast implements ShouldBroadcastNow
     public $message;
     public $senderId;
     public $receiverId;
+    public $deleted; // Ajout du flag de suppression
+    public $lastId;
+    public $photo;
+    public $email;
 
-    public function __construct($message, $senderId, $receiverId)
+    public function __construct($message, $senderId, $receiverId, $deleted = false, $lastId, $photo = null, $email)
     {
         $this->message = $message;
         $this->senderId = $senderId;
         $this->receiverId = $receiverId;
+        $this->deleted = $deleted; // Défaut à false
+        $this->lastId = $lastId;
+        $this->photo = $photo;
+        $this->email = $email;
     }
 
     public function broadcastOn()
@@ -44,7 +52,11 @@ class PusherBroadcast implements ShouldBroadcastNow
         return [
             'message' => $this->message,
             'sender_id' => $this->senderId,
-            'receiver_id' => $this->receiverId
+            'receiver_id' => $this->receiverId,
+            'deleted' => $this->deleted,
+            'last_id' => $this->lastId,
+            'photo' => $this->photo,
+            'email' => $this->email
         ];
     }
 }

@@ -13,9 +13,11 @@ use App\Models\User;
 use App\Models\Canal;
 use App\Models\CategorieCanal;
 use App\Models\Clan_user;
+use App\Models\UtilisateurClan;
 use App\Repository\ConversationsRepository;
 use App\Repository\ConversationsClan;
 use App\Events\MessageGroup;
+use App\Events\SuppressionMessageGroup;
 use Exception;
 
 class ClanController extends Controller
@@ -691,6 +693,57 @@ class ClanController extends Controller
         ]);
     }
 
+    public function receiveClan(Request $request){
+
+        return response()->json([
+            'message' => $request->message,
+            'sender_id' => $request->sender_id,
+            'group_id' => $request->group_id,
+            'canal_id' => $request->canal_id,
+            'deleted' => $request->deleted,
+            'last_id' => $request->last_id,
+            'photo' => $request->photo,
+            
+        ]);
+        }
+
+    public function destroy(UtilisateurClan $message)
+    {
+        if (auth()->id() !== $message->idEnvoyer) {
+            return response()->json(['error' => 'Action non autorisée'], 403);
+        }
+    
+        \Log::info('Détails du message avant suppression', ['message_id' => $message->id, 'fichier' => $message->fichier]);
+    
+        if ($message->fichier) {
+            $fichierNom = $message->fichier;
+    
+            // Déterminer le dossier selon l'extension
+            $dossier = in_array(pathinfo($fichierNom, PATHINFO_EXTENSION), ['jpg', 'jpeg', 'png', 'gif'])
+                ? 'img/conversations_photo/'
+                : 'fichier/conversations_fichier/';
+    
+            $fichierPath = public_path($dossier . $fichierNom);
+    
+            \Log::info('Chemin du fichier à supprimer', ['fichier_path' => $fichierPath]);
+    
+            if (file_exists($fichierPath)) {
+                unlink($fichierPath);
+                \Log::info('Fichier supprimé', ['fichier_path' => $fichierPath]);
+            } else {
+                \Log::warning('Le fichier n\'existe pas', ['fichier_path' => $fichierPath]);
+            }
+        } else {
+            \Log::info('Aucun fichier associé au message', ['message_id' => $message->id]);
+        }
+    
+        $messageId = $message->id;
+        $message->delete();
+    
+        broadcast(new SuppressionMessageGroup($messageId, $message->idClan, $message->idClan))->toOthers();
+    
+        return response()->json(['success' => 'Message supprimé']);
+    }
 
 
 

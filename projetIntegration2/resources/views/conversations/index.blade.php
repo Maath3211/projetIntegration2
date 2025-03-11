@@ -76,7 +76,16 @@
     flex-direction: column;
     height: 100vh; /* Prendre toute la hauteur de l'écran */
 }
-
+.intro-text {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        color: black;
+    }
 
     </style>
 
@@ -113,241 +122,29 @@
                             <div class="texteSurImage">Workout Master</div>
                             {{-- <div><a href="{{ route('clan.parametres', ['id' => $clan->id]) }}"><i class="fa-solid fa-ellipsis"></i></a></div> --}}
                             {{-- Test pour tester la route clan A CHANGER --}}
-                            <div><a href="{{route('conversations.showClan', 1)}}"><i class="fa-solid fa-ellipsis bg-danger"></i></a></div>
+                            <div></div>
                         </div>
                         <div class="conteneurCanaux">
                             <!-- Afficher amis  -->
                             <h1>Amis</h1>
                             @include('conversations.utilisateurs',['users'=>$users])
-                            <div><a href="{{route('conversations.showClan', 1)}}"><i class="fa-solid fa-ellipsis bg-danger"></i></a></div>
-                            <div><a href="{{route('conversations.showClan', 2)}}"><i class="fa-solid fa-ellipsis bg-danger"></i></a></div>
-                            <div><a href="{{route('conversations.showClan', 3)}}"><i class="fa-solid fa-ellipsis bg-danger"></i></a></div>
+
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-8 colonneMessages2">
-
-
-
+            <div class="col-md-10 colonneMessages2">
 
                 <!-- Contenu supprimé -->
-                    <div class="chat-messages" id="chat-messages">
-    
-                        
-    
-
-    
-
-    
-                    </div>
-    
-                    <div class="d-flex align-items-center mt-3">
-                        <button class="btn btn-secondary me-2">➕</button>
-                        <button class="btn btn-secondary me-2">😊</button>
-
-                            <div class="form-group d-flex align-items-center w-100">
-                                <input type="textarea" class="message-input form-control flex-grow-1" name="content" placeholder="Écris un message...">
-                                <button class="btn btn-primary ms-2" type="submit">Submit</button>
-                            </div>
-                        
-                    </div>
-                    <u>
-
-                    </u>
+                <div class="chat-messages" id="chat-messages">
+                    <div class="presentation" style="display: flex; justify-content: center; align-items: center; height: 100%;">
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            </div>
-            <div class="col-md-2 colonneMembres">
-                <div class="contenuScrollableMembres">
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur1.jpg')}}" > 
-                            <div>
-                                <strong>ADMIN</strong> - Tommy Jackson
-                            </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur2.jpg')}}" > 
-                            <div>
-                                AverageGymGoer
-                            </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur3.jpg')}}" > 
-                            <div>
-                                NotTheAverageGuy
-                            </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur4.jpg')}}" > 
-                            <div>
-                                Julie St-Aubin  
-                            </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur5.avif')}}" > 
-                            <div>
-                                Gnulons  
-                            </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur6.jpg')}}" > 
-                            <div>
-                                Jack Jacked
-                            </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur7.jpg')}}" > 
-                            <div>
-                                Sophie  
-                            </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur8.jpg')}}" > 
-                            <div>
-                                Lucia Percada
-                            </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur9.jpg')}}" > 
-                            <div>
-                                Stevie  
-                            </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur11.jpg')}}" > 
-                            <div>
-                                Tom  
-                            </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur12.jpg')}}" > 
-                            <div>
-                                Bluestack  
-                            </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur13.jpg')}}" > 
-                            <div>
-                                CoolCarl123
-                            </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur14.webp')}}" > 
-                            <div>
-                                Sylvain  
-                            </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur15.jpg')}}" > 
-                            <div>
-                                Ghost  
-                            </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur16.jpg')}}" > 
-                            <div>
-                                Coach Noah  
-                            </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur17.jpg')}}" > 
-                            <div>
-                                MotivationGuy  
-                            </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur18.jpg')}}" > 
-                            <div>
-                                xXDarkSlayerXx  
-                            </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur19.jpg')}}" > 
-                            <div>
-                                CalisthenicGod_1  
-                            </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur20.jpg')}}" > 
-                            <div>
-                                Gymcord#654302  
-                            </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur4.jpg')}}" > 
-                            <div>
-                                Julia Julia    
-                            </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{asset('img/Utilisateurs/utilisateur2.jpg')}}" > 
-                            <div>
-                                Dieu Poulet
-                            </div>
-                        </a>
+                    <div class="intro-text">Bienvenue sur la page de conversation. Ici, vous pouvez discuter avec vos amis et échanger des messages en temps réel.</div>
                     </div>
                 </div>
+
             </div>
-        </div>
     </div>
 </div>
 
