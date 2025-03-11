@@ -165,14 +165,15 @@
                                 <div class="d-flex align-items-center mt-3">
                                     <div class="file-upload-wrapper me-2">
                                         <input type="file" class="file-upload-input" name="fichier" id="fichierInput" />
-                                        <label for="fichierInput" class="btn btn-secondary me-2 file-upload-btn text-white">📁</label>
+                                        <label for="fichierInput"
+                                            class="btn btn-secondary me-2 file-upload-btn text-white">📁</label>
                                     </div>
                                     <div id="emoji-picker-container" class="emoji-picker-container"></div>
                                     <button type="button" id="emoji-btn"
                                         name="emoji"class="btn btn-secondary me-2">😊</button>
                                     <input id="message" type="textarea" class="message-input form-control flex-grow-1"
                                         name="content" placeholder="Écris un message...">
-                                    <button class="btn btn-primary ms-2" type="submit">Submit</button>
+                                    <button class="btn btn-primary ms-2" id="BoutonSoumettre" type="submit">Submit</button>
                                 </div>
                             </div>
                         </form>
@@ -206,7 +207,9 @@
                                     <a href="{{ route('profil.profilPublic', ['email' => $membre->email]) }}">
                                         <img src="{{ asset($membre->imageProfil) }}">
                                         <div>
-                                            @if($membre->id == $clan->adminId)ADMIN - @endif{{ $membre->prenom }} {{ $membre->nom }}
+                                            @if ($membre->id == $clan->adminId)
+                                                ADMIN -
+                                            @endif{{ $membre->prenom }} {{ $membre->nom }}
                                         </div>
                                     </a>
                                 </div>
@@ -343,82 +346,32 @@
 
 
     <!-- Script directement dans la page car on doit référencer une librairie Laravel depuis la page (config) -->
+
     <script>
-
-
-
-
-
         // ---------------------------
-        // Lorsqu'un fichier est sélectionné
-        $('#fichierInput').on('change', function() {
-            var input = this;
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    // Crée un conteneur avec l'image et un bouton "X" pour annuler
-                    $('#preview-container').html(
-                        '<div style="position: relative; display: inline-block;">' +
-                        '<img src="' + e.target.result +
-                        '" alt="Aperçu de l\'image sélectionnée" class="preview-img">' +
-                        '<button id="cancel-preview" ' +
-                        'style="position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.7); border: none; color: white; font-size: 20px; line-height: 20px; width: 25px; height: 25px; border-radius: 50%; cursor: pointer;">' +
-                        '&times;' +
-                        '</button>' +
-                        '</div>'
-                    );
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        });
-
-        // Lorsqu'on clique sur le bouton "X"
-        $(document).on('click', '#cancel-preview', function() {
-            $('#preview-container').empty();
-            $('#fichierInput').val('');
-        });
-
-
-
-
-
-
-
-
-        // Scroll to the bottom of the chat messages
-        document.addEventListener("DOMContentLoaded", function() {
-            var chatMessages = document.getElementById("chat-messages");
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        });
-
+        // Gestion de l'envoi du formulaire
+        // ---------------------------
         const userId = "{{ auth()->id() }}"; // ID de l'utilisateur connecté
         const friendId = "{{ request()->id }}"; // ID de l'ami avec qui il discute :: Plutot le clan avec qui il discute
         const canal = "{{ request()->canal }}";
-
-
-
-
-
         const channelName = "chat-" + friendId + "-" + canal;
-
 
         const pusher = new Pusher('{{ config('broadcasting.connections.pusher.key') }}', {
             cluster: '{{ config('broadcasting.connections.pusher.options.cluster') }}',
             encrypted: true
         });
 
-        pusher.connection.bind('connected', function() {
-        });
+        pusher.connection.bind('connected', function() {});
 
-        pusher.connection.bind('error', function(err) {
-        });
+        pusher.connection.bind('error', function(err) {});
 
         const channel = pusher.subscribe(channelName);
 
 
 
-
+        // ---------------------------
         // Recevoir les messages de la conversation
+        // ---------------------------
         channel.bind('event-group', function(data) {
             // Vérifier si le message a été supprimé
             if (data.deleted === true) {
@@ -469,67 +422,69 @@
         </div>
     `);
 
-                    // Scroll au bas des messages
-                    $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
-                }
-            });
+                // Scroll au bas des messages
+                $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
+            }
+        });
 
 
 
 
 
+        // ---------------------------
+        // Gestion envoi du formulaire
+        // ---------------------------
+        $("form").submit(function(e) {
+            e.preventDefault();
 
-            $("form").submit(function(e) {
-                e.preventDefault();
-
-                let formData = new FormData();
-                formData.append("_token", "{{ csrf_token() }}");
-                formData.append("message", $("input[name='content']").val());
-                formData.append("from", userId);
-                formData.append("to", friendId);
-                formData.append("canal", canal);
-
-
-                let fileInput = $("input[name='fichier']")[0]; // Assurez-vous que l'input file a name='fichier'
-                if (fileInput.files.length > 0) {
-                    formData.append("fichier", fileInput.files[0]); // Ajoute l'image ou le fichier si présent
-                }
-
-                $.ajax({
-                    type: "POST",
-                    url: "/broadcastClan",
-                    headers: {
-                        "X-Socket-Id": pusher.connection.socket_id,
-                    },
-                    data: formData,
-                    processData: false, // Ne pas traiter les données
-                    contentType: false, // Ne pas définir de type de contenu
-                }).done(function(res) {
-
-                    $("#preview-container").html("");
-                    $("input[name='fichier']").val(""); // Réinitialiser l'input file
-
-                    let avatarText = res.sender_email.substring(0, 2);
-                    let messageContent = res.message ? `<p>${res.message}</p>` : "";
+            let formData = new FormData();
+            formData.append("_token", "{{ csrf_token() }}");
+            formData.append("message", $("input[name='content']").val());
+            formData.append("from", userId);
+            formData.append("to", friendId);
+            formData.append("canal", canal);
 
 
-                    // Déterminer si c'est une image ou un fichier à télécharger
-                    let fileExtension = res.fichier ? res.fichier.split('.').pop().toLowerCase() : "";
-                    let isImage = ["jpg", "jpeg", "png", "gif"].includes(fileExtension);
-                    let fileContent = "";
+            let fileInput = $("input[name='fichier']")[0]; // Assurez-vous que l'input file a name='fichier'
+            if (fileInput.files.length > 0) {
+                formData.append("fichier", fileInput.files[0]); // Ajoute l'image ou le fichier si présent
+            }
 
-                    if (res.fichier) {
-                        if (isImage) {
-                            fileContent =
-                                `<img src="${res.fichier}" class="message-image" alt="Image envoyée">`;
-                        } else {
-                            fileContent = `<a href="${res.fichier}" target="_blank" class="text-blue-500">
+            $.ajax({
+                type: "POST",
+                url: "/broadcastClan",
+                headers: {
+                    "X-Socket-Id": pusher.connection.socket_id,
+                },
+                data: formData,
+                processData: false, // Ne pas traiter les données
+                contentType: false, // Ne pas définir de type de contenu
+            }).done(function(res) {
+
+                $("#preview-container").html("");
+                $("input[name='fichier']").val(""); // Réinitialiser l'input file
+
+                let avatarText = res.sender_email.substring(0, 2);
+                let messageContent = res.message ? `<p>${res.message}</p>` : "";
+
+
+                // Déterminer si c'est une image ou un fichier à télécharger
+                let fileExtension = res.fichier ? res.fichier.split('.').pop().toLowerCase() : "";
+                let isImage = ["jpg", "jpeg", "png", "gif"].includes(fileExtension);
+                let fileContent = "";
+
+                if (res.fichier) {
+                    if (isImage) {
+                        fileContent =
+                            `<img src="${res.fichier}" class="message-image" alt="Image envoyée">`;
+                    } else {
+                        fileContent = `<a href="${res.fichier}" target="_blank" class="text-blue-500">
                 📄 Télécharger ${res.fichier.split('/').pop()}
             </a>`;
-                        }
                     }
+                }
 
-                    $("#chat-messages").append(`
+                $("#chat-messages").append(`
         <div class="messageTotal" id="message-${res.last_id}">
             <div class="message own-message">
                 <button class="delete-btn" data-id="${res.last_id}">🗑️</button>
@@ -548,58 +503,55 @@
         </div>
     `);
 
-                    $("input[name='content']").val("");
-                    $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
-                }).fail(function(xhr, status, error) {
-                    console.error("Erreur d'envoi :", error);
-                });
+                $("input[name='content']").val("");
+                $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
+            }).fail(function(xhr, status, error) {
+                console.error("Erreur d'envoi :", error);
             });
-
-
-
-
-
-            // ---------------------------
-            // Gestion de la suppression des messages
-            // ---------------------------
-
-           // Gestion de la suppression des messages
-    $(document).on('click', '.delete-btn', function(e) {
-        e.preventDefault();
-        let messageId = $(this).data('id');
-        console.log("Suppression du message avec l'ID:", messageId); // Ajout pour le débogage
-
-        $.ajax({
-            type: "DELETE",
-            url: `/messagesClan/${messageId}`,
-            data: {
-                _token: "{{ csrf_token() }}"
-            }
-        }).done(function(res) {
-            console.log("Réponse de l'API:", res); // Ajout pour le débogage
-            if (res.success) {
-                // Supprime le message du DOM
-                $(`#message-${messageId}`).remove();
-                console.log("Message supprimé du DOM:", messageId);
-            } else {
-                alert("Erreur lors de la suppression du message.");
-            }
-        }).fail(function(xhr, status, error) {
-            console.error("Erreur lors de la requête de suppression:", error); // Ajout pour le débogage
-            alert("Erreur lors de la suppression du message.");
         });
-    });
-
-    // Écouter l'événement de suppression spécifique diffusé par Pusher
-    channel.bind('message-deleted', function(data) {
-        console.log("Message supprimé via Pusher:", data); // Affiche l'ID du message supprimé pour le débogage
-        // Supprime le message correspondant du DOM
-        $(`#message-${data.messageId}`).remove();
-        console.log("Message supprimé du DOM via Pusher:", data.messageId);
-    });
 
 
-    
+
+
+
+        // ---------------------------
+        // Gestion de la suppression des messages
+        // ---------------------------
+
+        // Gestion de la suppression des messages
+        $(document).on('click', '.delete-btn', function(e) {
+            e.preventDefault();
+            let messageId = $(this).data('id');
+            console.log("Suppression du message avec l'ID:", messageId); // Ajout pour le débogage
+
+            $.ajax({
+                type: "DELETE",
+                url: `/messagesClan/${messageId}`,
+                data: {
+                    _token: "{{ csrf_token() }}"
+                }
+            }).done(function(res) {
+                console.log("Réponse de l'API:", res); // Ajout pour le débogage
+                if (res.success) {
+                    // Supprime le message du DOM
+                    $(`#message-${messageId}`).remove();
+                    console.log("Message supprimé du DOM:", messageId);
+                } else {
+                    alert("Erreur lors de la suppression du message.");
+                }
+            }).fail(function(xhr, status, error) {
+                console.error("Erreur lors de la requête de suppression:", error); // Ajout pour le débogage
+                alert("Erreur lors de la suppression du message.");
+            });
+        });
+
+        // Écouter l'événement de suppression spécifique diffusé par Pusher
+        channel.bind('message-deleted', function(data) {
+            console.log("Message supprimé via Pusher:", data); // Affiche l'ID du message supprimé pour le débogage
+            // Supprime le message correspondant du DOM
+            $(`#message-${data.messageId}`).remove();
+            console.log("Message supprimé du DOM via Pusher:", data.messageId);
+        });
     </script>
 
 

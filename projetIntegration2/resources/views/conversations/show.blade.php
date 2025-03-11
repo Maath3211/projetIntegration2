@@ -169,48 +169,6 @@
 
         <script>
 
-                    // ---------------------------
-        // Lorsqu'un fichier est sélectionné
-        $('#fichierInput').on('change', function() {
-            var input = this;
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    // Crée un conteneur avec l'image et un bouton "X" pour annuler
-                    $('#preview-container').html(
-                        '<div style="position: relative; display: inline-block;">' +
-                        '<img src="' + e.target.result +
-                        '" alt="Aperçu de l\'image sélectionnée" class="preview-img">' +
-                        '<button id="cancel-preview" ' +
-                        'style="position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.7); border: none; color: white; font-size: 20px; line-height: 20px; width: 25px; height: 25px; border-radius: 50%; cursor: pointer;">' +
-                        '&times;' +
-                        '</button>' +
-                        '</div>'
-                    );
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        });
-
-        // Lorsqu'on clique sur le bouton "X"
-        $(document).on('click', '#cancel-preview', function() {
-            $('#preview-container').empty();
-            $('#fichierInput').val('');
-        });
-
-        // Scroll to the bottom of the chat messages
-        document.addEventListener("DOMContentLoaded", function() {
-            var chatMessages = document.getElementById("chat-messages");
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        });
-
-
-
-
-
-
-
-
             const userId = "{{ auth()->id() }}"; // ID de l'utilisateur connecté
             const friendId = "{{ $user->id }}"; // ID de l'ami avec qui il discute
 
