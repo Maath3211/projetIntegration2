@@ -156,7 +156,7 @@ class ConversationsController extends Controller
             //\Log::info('Message créé avec succès', ['message_id' => $message->id]);
 
             // Diffuser l’événement via Pusher
-            broadcast(new PusherBroadcast($request->message, auth()->id(), $request->to, false, $message->id, $fichierNom, auth()->user()->email))
+            broadcast(new PusherBroadcast(e($request->message), auth()->id(), $request->to, false, $message->id, $fichierNom, auth()->user()->email))
                 ->toOthers();
 
             //\Log::info('Message diffusé avec succès', ['message_id' => $message->id]);
