@@ -181,7 +181,7 @@
         @csrf
         <div id="fenetreAjoutClan" class="fenetreCategorie">
           <div class="conteneurConfirmation">
-            <div class="titreConfirmation" style="display: flex; align-items: center;">
+            <div class="titreConfirmation" style="display: flex; align-items: center; padding:10px;">
               <img src="{{ asset('img/Clans/default.jpg') }}" alt="Image du clan" class="apercuImage"
                 style="width: 50px; height: 50px; margin-right: 10px;">
               <input type="text" name="nomClan" class="form-control entreeNomClan"
