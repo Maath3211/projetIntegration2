@@ -24,13 +24,14 @@ document.addEventListener('DOMContentLoaded', function(){
         
         // Règle 1 : la catégorie ne doit pas dépasser les 50 caractères
         if(valeur.length > 50){
-            messageErreur.textContent = "La catégorie ne doit pas dépasser 50 caractères.";
+            messageErreur.textContent = "Le nom du clan ne doit pas dépasser 50 caractères.";
             messageErreur.style.display = "block";
+            messageErreur.style.paddingLeft = "15px";
             this.style.borderColor = 'red';
         }
         // Règle 2 : pas de nombres ou de symboles, juste les caractères UTF-8 et les traits (-) sont acceptés.
         else if (!/^[A-Za-z\u00C0-\u00FF-\s]+$/.test(valeur) && valeur.length !== 0){
-            messageErreur.textContent = "Seulement les lettre (UTF-8) et les traits (-) sont permis."
+            messageErreur.textContent = "Seulement les lettres (UTF-8) et les traits (-) sont permis."
             messageErreur.style.display = "block";
             this.style.borderColor = 'red';
         }
