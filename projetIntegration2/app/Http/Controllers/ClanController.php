@@ -93,7 +93,7 @@ class ClanController extends Controller
     // Mise à jour des paramtètres généraux (image & nom du clan)
     public function miseAJourGeneral(Request $request, $id){
         try {
-            
+            Log::info('NOM: ' . $request->input('nomClan'));
             // la validation du formulaire
             $request->validate([
                 'imageClan' => 'image|mimes:jpeg,png,jpg,gif,webp|max:4096',
@@ -157,9 +157,9 @@ class ClanController extends Controller
             }
 
         } catch (Exception $e) {
-            Log::error('Téléversement d\'image erronné: ' . $e->getMessage());
+            Log::error('Enregistrement: ' . $e->getMessage());
     
-            return back()->with('erreur', 'Une erreur est survenue lors du téléversement de l\'image.');
+            return back()->with('erreur', $e->getMessage());
         }
     }
 
