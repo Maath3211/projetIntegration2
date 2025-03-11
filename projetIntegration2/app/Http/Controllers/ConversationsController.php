@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\UtilisateurClan;
 use App\Models\Message;
 use App\Models\Canal;
+
 use App\Repository\ConversationsRepository;
 use App\Repository\ConversationsClan;
 use App\Http\Requests\StoreMessage;
@@ -38,6 +39,17 @@ class ConversationsController extends Controller
 
     public function index()
     {
+
+        $utilisateur = auth()->id();
+        $utilisateur = User::findOrFail($utilisateur);
+         
+        if (!$utilisateur){
+            Log::info('Utilisateur pas connecté.');
+            return redirect('/connexion')->with('erreur', 'Vous devez être connectés pour afficher les clans.');
+        }
+         
+        $clans = $utilisateur->clans()->get();
+
         $userId = auth()->id();
         $users = \DB::table('demande_amis')
             ->join('users', function ($join) use ($userId) {
@@ -53,13 +65,27 @@ class ConversationsController extends Controller
             ->where('users.id', '!=', $userId)
             ->get();
 
+
+
+
         return view('conversations.index', [
             'users' => $users,
+            'clans' => $clans,
         ]);
     }
 
     public function show(User $user)
     {
+        $utilisateur = auth()->id();
+        $utilisateur = User::findOrFail($utilisateur);
+         
+        if (!$utilisateur){
+            Log::info('Utilisateur pas connecté.');
+            return redirect('/connexion')->with('erreur', 'Vous devez être connectés pour afficher les clans.');
+        }
+         
+        $clans = $utilisateur->clans()->get();
+
         $userId = auth()->id();
         $users = \DB::table('demande_amis')
             ->join('users', function ($join) use ($userId) {
@@ -74,11 +100,14 @@ class ConversationsController extends Controller
             })
             ->where('users.id', '!=', $userId)
             ->get();
-
+    
+        $messages = $this->ConvRepository->getMessageFor(auth()->id(), $user->id);
+    
         return view('conversations.show', [
             'users' => $users,
             'user' => $user,
-            'messages' => $this->ConvRepository->getMessageFor(auth()->id(), $user->id)->paginate(300)
+            'messages' => $messages,
+            'clans' => $clans,  
         ]);
     }
 

@@ -56,12 +56,12 @@
                                             <button class="delete-btn" data-id="{{ $message->id }}">🗑️</button>
                                         @else
                                             <div class="avatar bg-primary text-white rounded-circle p-2">
-                                                {{ substr($message->user->email ?? 'Email inconnu', 0, 2)  }}
+                                                {{ substr($message->from->email, 0, 2)  }}
                                             </div>
                                         @endif
 
                                         <div class="bubble">
-                                            <strong>{{ $message->user->email ?? 'Email inconnu' }}</strong>
+                                            <strong>{{ $message->from->email}}</strong>
                                             <span class="text-muted">{{ substr($message->created_at, 11, 5) }}</span>
                                             <br>
                                             <div class="message-text">
@@ -96,7 +96,7 @@
                                             <!-- Pas de bouton de suppression pour les messages reçus -->
                                         @else
                                             <div class="avatar bg-primary text-white rounded-circle p-2">
-                                                {{ substr($message->user->email ?? 'Email inconnu', 0, 2) }}
+                                                {{ substr($message->from->email, 0, 2) }}
                                             </div>
                                         @endif
                                     </div>
