@@ -12,7 +12,8 @@ use App\Models\User;
 
 class UserRelationTest extends TestCase
 {
-
+    use DatabaseTransactions;
+    
     #[Test]
     public function relation_clans_retourne_donnees_correctes(): void
     {
