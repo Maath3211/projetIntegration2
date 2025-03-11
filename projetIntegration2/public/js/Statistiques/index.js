@@ -78,9 +78,8 @@ function saveExercise() {
                 document.getElementById('exerciseName').value = '';
                 document.getElementById('exerciseScore').value = '';
                 document.getElementById('addExerciseForm').classList.add('hidden');
-                console.log('Exercise added successfully');
-                
-                // Wait a moment before reloading to ensure data is saved
+                console.log('Exercise ajouté avec succès !');
+            
                 setTimeout(() => {
                     location.reload();
                 }, 1000);
