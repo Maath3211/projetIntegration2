@@ -33,7 +33,7 @@ class ProfilController extends Controller
     {
         $utilisateur = User::where('email', $request->email)->first();
         if (!$utilisateur) {
-            return redirect()->back()->withErrors(['email' => 'Aucun compte trouvé avec cet email']);
+            return redirect()->back()->withErrors(['email' => 'Informations invalides']);
         }
         if ($utilisateur->email_verified_at == null) {
             return redirect()->back()->withErrors(['email' => 'Votre compte n\'a pas été vérifié']);
@@ -241,7 +241,7 @@ class ProfilController extends Controller
         $clans = $utilisateur->clans;
         $utilisateur = User::where('email', $email)->first();
         $clansAway = $utilisateur->clans;
-        
+
         if (!$utilisateur) {
             return redirect()->route('profil.profil')->withErrors(['Utilisateur introuvable']);
         }
@@ -259,9 +259,11 @@ class ProfilController extends Controller
     }
 
 
-    public function deconnexion()
+    public function deconnexion(Request $request)
     {
         Auth::guard()->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
         return redirect()->route('profil.pageConnexion');
     }
 
@@ -357,13 +359,23 @@ class ProfilController extends Controller
         $request->validate([
             'email' => 'required|email',
             'password' => 'required|min:8|confirmed',
-            'token' => 'required'
+            'token' => 'required',
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'confirmed',
+                'regex:/[a-z]/',     // at least one lowercase letter
+                'regex:/[A-Z]/',     // at least one uppercase letter
+                'regex:/[0-9]/',     // at least one number
+            ],
         ], [
             'email.required' => 'Le courriel est requis',
             'email.email' => 'Le format du courriel est invalide',
             'password.required' => 'Le mot de passe est requis',
             'password.min' => 'Le mot de passe doit contenir au moins 8 caractères',
             'password.confirmed' => 'La confirmation du mot de passe ne correspond pas',
+            'password.regex' => 'Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule et un chiffre',
             'token.required' => 'Le jeton de réinitialisation est requis'
         ]);
 
