@@ -18,18 +18,59 @@
 </head>
 
 <body class=" flex h-screen" id="background">
-  <main id="main">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-2 colonneNavigationParametres">
-          <div class="conteneurNavigation">
-            <div class="titreNavigation">{{ __('clans.parametres') }}</div>
-            <div class="navigationParametres">
-              <div class="categorieParametre general actif">{{ __('clans.general') }}</div>
-              <div class="categorieParametre canaux">{{ __('clans.canaux') }}</div>
-              <div class="categorieParametre membres">{{ __('clans.membres') }}</div>
-              <div class="categorieParametre supprimer">{{ __('clans.supprimer_clan') }}</div>
+    <main id="main">
+      <div class="container-fluid">
+        <!-- Navigation -->
+        <div class="row">
+          <div class="col-md-2 colonneNavigationParametres">
+            <div class="conteneurNavigation">
+              <div class="titreNavigation">{{ __('clans.parametres') }}</div>
+              <div class="navigationParametres">
+                <div class="categorieParametre general actif" >{{ __('clans.general') }}</div>
+                <div class="categorieParametre canaux" >{{ __('clans.canaux') }}</div>
+                <div class="categorieParametre membres" >{{ __('clans.membres') }}</div>
+                <div class="categorieParametre supprimer" >{{ __('clans.supprimer_clan') }}</div>
+              </div>
             </div>
+          </div>
+
+          <!-- Paramètres -->
+          <div class="col-md-10 colonneParametres">
+            <div class="conteneurParametres ">
+
+              <div class="titreParametre">Paramètres généraux</div>
+              <a href="{{ route('clan.montrer', ['id' => $id]) }}">
+                <div class="boutonRetour">
+                  <i class="fa-regular fa-circle-xmark fa-3x"></i>
+                  <div>QUITTER</div>
+                </div>
+              </a>
+            </div>
+            <form action="{{ route('clan.miseAJour.general', ['id' => $id]) }}" method="POST" enctype="multipart/form-data" id="formulaireSoumission">
+              @csrf
+              <div class="row">
+                <div class="col-md-12 parametresGeneraux">
+                  <img src="{{asset($clan->image)}}" alt="erreur lors de l'affichage de votre image.">
+                  <div class="formulaireAjoutImage">
+                    <div>Une image de forme carrée est recommendée pour le clan.</div>
+                      <div class="form-group">
+                        <label for="imageClan" class="televerser">Téléverser une image</label>
+                        <input type="file" class="form-control-file" id="imageClan" name="imageClan" accept="image/*">
+                      </div>
+                    </div>
+                    <div class="nomClan">
+                        <label for="nomClan">Nom du clan</label>
+                        <input type="text" class="form-control" id="nomClan" name="nomClan" value="{{$clan->nom}}">
+                    </div>
+                </div>
+              </div>
+              <div class="row barreEnregistrerConteneur">
+                  <div class="col-md-10 rangeeEnregistrer">
+                      <div>N'oubliez pas d'enregistrer vos modifications avant de quitter!</div>
+                      <button type="submit" class="btn btn-success">Enregistrer</button>
+                  </div>
+              </div>
+            </form>
           </div>
         </div>
 

@@ -30,15 +30,10 @@ class LeaderboardSwitcher extends Component
 
     public function updateSelectedClan($clanId)
     {
-        Log::debug('LeaderboardSwitcher received clanSelected event', [
-            'current' => $this->selectedClanId,
-            'new' => $clanId,
-            'timestamp' => now()
-        ]);
 
         // Store the previous state before updating
         $previousClanId = $this->selectedClanId;
-        
+
         if ($previousClanId !== $clanId) {
             $this->selectedClanId = $clanId;
             $this->refreshKey = now()->timestamp;
@@ -87,12 +82,7 @@ class LeaderboardSwitcher extends Component
 
     public function render()
     {
-        Log::debug('LeaderboardSwitcher rendering', [
-            'selectedClanId' => $this->selectedClanId,
-            'refreshKey' => $this->refreshKey,
-            'hasTopClans' => $this->topClans->isNotEmpty(),
-            'hasTopUsers' => $this->topUsers->isNotEmpty()
-        ]);
+
 
         return view('livewire.leaderboard-switcher', [
             'selectedClan' => $this->selectedClanId !== 'global' ? Clan::find($this->selectedClanId) : null

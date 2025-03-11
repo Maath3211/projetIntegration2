@@ -85,6 +85,13 @@
             border: none;
             outline: none;
         }
+        .message-text {
+
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            max-width: 500px; /* Ajuste la largeur selon ton design */
+
+        }
 
         .separator {
             display: block;
@@ -272,383 +279,336 @@
 
     @section('contenu')
 
-    <div class="contenuPrincipal">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-2 colonneCanaux">
-                    <div class="container">
-                        <div class="column">
-                            <!-- column est en anglais parce que c'est le nom de la classe bootstrap c'est pas mon choix -->
-                            <div class="conteneurImage">
-                                <div class="texteSurImage">Workout Master</div>
-                                {{-- <div><a href="{{ route('clan.parametres', ['id' => $clan->id]) }}"><i class="fa-solid fa-ellipsis"></i></a>
-                            </div> --}}
-                            <div><a href="{{ route('clan.parametres', ['id' => 1]) }}"><i
-                                        class="fa-solid fa-ellipsis"></i></a></div>
-                        </div>
-                        <div class="conteneurCanaux">
-                            <!-- Afficher amis  -->
-                            <h1>{{ __('chat.amis') }}</h1>
-                            @include('conversations.utilisateurs', ['users' => $users])
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-8 colonneMessages2">
-
-
-
-
-                <!-- Contenu supprimé -->
-                <div class="chat-messages" id="chat-messages">
-
-                    @if ($messages->hasMorePages())
-                    <div class="div text-center">
-                        <a href="{{ $messages->nextPageUrl() }}" class="btn btn-light">
-                            {{ __('chat.voir_messages_precedents') }}
-                        </a>
-                    </div>
-                    @endif
-
-                    @foreach ($messages as $message)
-                    <div class="messageTotal" id="message-{{ $message->id }}">
-                        <div
-                            class="message {{ $message->idEnvoyer == auth()->id() ? 'own-message' : 'received-message' }}">
-                            @if ($message->idEnvoyer == auth()->id())
-                            <!-- Bouton de suppression visible uniquement pour l'auteur -->
-                            <button class="delete-btn" data-id="{{ $message->id }}">{{ __('chat.btn_suppression') }}</button>
-                            @else
-                            <div class="avatar bg-primary text-white rounded-circle p-2">
-                                {{ substr($message->user->email, 0, 2) }}
-                            </div>
-                            @endif
-
-                            <div class="bubble">
-                                <strong>{{ $message->user->email }}</strong>
-                                <span class="text-muted">{{ substr($message->created_at, 11, 5) }}</span>
-                                <br>
-                                <p>{!! nl2br(e($message->message)) !!}</p>
-
-                                @if ($message->fichier)
-                                @php
-                                $extension = pathinfo($message->fichier, PATHINFO_EXTENSION);
-                                $isImage = in_array($extension, ['jpg', 'jpeg', 'png', 'gif']);
-                                $dossier = $isImage
-                                ? 'img/conversations_photo/'
-                                : 'fichier/conversations_fichier/';
-                                @endphp
-
-                                @if ($isImage)
-                                <img src="{{ asset($dossier . $message->fichier) }}"
-                                    alt="Image envoyée" class="w-32 h-32 object-cover">
-                                @else
-                                <a href="{{ asset($dossier . $message->fichier) }}" target="_blank"
-                                    class="text-blue-500">
-                                    {{ __('chat.telecharger_file') }} {{ $message->fichier }}
-                                </a>
-                                @endif
-                                @endif
-
-
-                            </div>
-
-
-                            @if ($message->idEnvoyer != auth()->id())
-                            <!-- Pas de bouton de suppression pour les messages reçus -->
-                            @else
-                            <div class="avatar bg-primary text-white rounded-circle p-2">
-                                {{ substr($message->user->email, 0, 2) }}
-                            </div>
-                            @endif
-                        </div>
-                        <div class="separator"></div>
-                    </div>
-                    @endforeach
-
-
-
-
-                    @if ($messages->previousPageUrl())
-                    <div class="div text-center">
-                        <a href="{{ $messages->previousPageUrl() }}" class="btn btn-light">
-                            {{ __('chat.voir_messages_suivants') }}
-                        </a>
-                    </div>
-                    @endif
-
-                </div>
-
-                <div class="d-flex align-items-center mt-3">
-
-
-
-                    <form action="" method="post" enctype="multipart/form-data" class="d-flex flex-grow-1">
-                        @csrf
-                        <div class="form-group d-flex flex-column w-100">
-                            <!-- Conteneur pour afficher l'aperçu de l'image -->
-                            <div id="preview-container"></div>
-
-                            <!-- Autres contrôles du formulaire -->
-                            <div class="d-flex align-items-center mt-3">
-                                <div class="file-upload-wrapper me-2">
-                                    <input type="file" class="file-upload-input" name="fichier"
-                                        id="fichierInput" />
-                                    <label for="fichierInput" class="file-upload-btn text-white">{{ __('chat.btn_fichier') }}</label>
+        <div class="contenuPrincipal">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-2 colonneCanaux">
+                        <div class="container">
+                            <div class="column">
+                                <!-- column est en anglais parce que c'est le nom de la classe bootstrap c'est pas mon choix -->
+                                <div class="conteneurImage">
+                                    <div class="texteSurImage">Workout Master</div>
+                                    {{-- <div><a href="{{ route('clan.parametres', ['id' => $clan->id]) }}"><i class="fa-solid fa-ellipsis"></i></a></div> --}}
+                                    <div><a href="{{ route('clan.parametres', ['id' => 1]) }}"><i
+                                                class="fa-solid fa-ellipsis"></i></a></div>
                                 </div>
-                                <div id="emoji-picker-container" class="emoji-picker-container"></div>
-                                <button type="button" id="emoji-btn" name="emoji" class="btn btn-secondary me-2">{{ __('chat.emoji_btn') }}</button>
-                                <input id="message" type="textarea" class="message-input form-control flex-grow-1"
-                                    name="content" placeholder="{{ __('chat.ecrire_message') }}">
-                                <button class="btn btn-primary ms-2" type="submit">{{ __('chat.soumettre') }}</button>
+                                <div class="conteneurCanaux">
+                                    <!-- Afficher amis  -->
+                                    <h1>Amis</h1>
+                                    @include('conversations.utilisateurs', ['users' => $users])
+                                </div>
                             </div>
                         </div>
-                    </form>
-                </div>
-
-                <u>
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </u>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            </div>
-            <div class="col-md-2 colonneMembres">
-                <div class="contenuScrollableMembres">
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{ asset('img/Utilisateurs/utilisateur1.jpg') }}">
-                            <div>
-                                <strong>{{ __('chat.admin') }}</strong> - Tommy Jackson
-                            </div>
-                        </a>
                     </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{ asset('img/Utilisateurs/utilisateur2.jpg') }}">
-                            <div>
-                                AverageGymGoer
-                            </div>
-                        </a>
+
+
+
+
+
+
+                    <div class="col-md-8 colonneMessages2">
+                        <!-- Contenu supprimé -->
+                        <div class="chat-messages" id="chat-messages">
+
+                            @if ($messages->hasMorePages())
+                                <div class="div text-center">
+                                    <a href="{{ $messages->nextPageUrl() }}" class="btn btn-light">
+                                        Voir les messages précédent
+                                    </a>
+                                </div>
+                            @endif
+
+                            @foreach ($messages as $message)
+                                <div class="messageTotal" id="message-{{ $message->id }}">
+                                    <div
+                                        class="message {{ $message->idEnvoyer == auth()->id() ? 'own-message' : 'received-message' }}">
+                                        @if ($message->idEnvoyer == auth()->id())
+                                            <!-- Bouton de suppression visible uniquement pour l'auteur -->
+                                            <button class="delete-btn" data-id="{{ $message->id }}">🗑️</button>
+                                        @else
+                                            <div class="avatar bg-primary text-white rounded-circle p-2">
+                                                {{ substr($message->user->email, 0, 2) }}
+                                            </div>
+                                        @endif
+
+                                        <div class="bubble">
+                                            <strong>{{ $message->user->email }}</strong>
+                                            <span class="text-muted">{{ substr($message->created_at, 11, 5) }}</span>
+                                            <br>
+                                            <div class="message-text">
+                                                <p>{!! nl2br(e($message->message)) !!}</p>  
+                                            </div>
+
+                                            @if ($message->fichier)
+                                                @php
+                                                    $extension = pathinfo($message->fichier, PATHINFO_EXTENSION);
+                                                    $isImage = in_array($extension, ['jpg', 'jpeg', 'png', 'gif']);
+                                                    $dossier = $isImage
+                                                        ? 'img/conversations_photo/'
+                                                        : 'fichier/conversations_fichier/';
+                                                @endphp
+
+                                                @if ($isImage)
+                                                    <img src="{{ asset($dossier . $message->fichier) }}"
+                                                        alt="Image envoyée" class="w-32 h-32 object-cover">
+                                                @else
+                                                    <a href="{{ asset($dossier . $message->fichier) }}" target="_blank"
+                                                        class="text-blue-500">
+                                                        📄 Télécharger {{ $message->fichier }}
+                                                    </a>
+                                                @endif
+                                            @endif
+
+
+                                        </div>
+
+
+                                        @if ($message->idEnvoyer != auth()->id())
+                                            <!-- Pas de bouton de suppression pour les messages reçus -->
+                                        @else
+                                            <div class="avatar bg-primary text-white rounded-circle p-2">
+                                                {{ substr($message->user->email, 0, 2) }}
+                                            </div>
+                                        @endif
+                                    </div>
+                                    <div class="separator"></div>
+                                </div>
+                            @endforeach
+
+
+
+
+                            @if ($messages->previousPageUrl())
+                                <div class="div text-center">
+                                    <a href="{{ $messages->previousPageUrl() }}" class="btn btn-light">
+                                        Voir les messages suivant
+                                    </a>
+                                </div>
+                            @endif
+
+                        </div>
+
+                        <div class="d-flex align-items-center mt-3">
+
+                            
+
+                            <form action="" method="post" enctype="multipart/form-data" class="d-flex flex-grow-1">
+                                @csrf
+                                <div class="form-group d-flex flex-column w-100">
+                                    <!-- Conteneur pour afficher l'aperçu de l'image -->
+                                    <div id="preview-container"></div>
+
+                                    <!-- Autres contrôles du formulaire -->
+                                    <div class="d-flex align-items-center mt-3">
+                                        <div class="file-upload-wrapper me-2">
+                                            <input type="file" class="file-upload-input" name="fichier"
+                                                id="fichierInput" />
+                                            <label for="fichierInput" class="file-upload-btn text-white">📁</label>
+                                        </div>
+                                        <div id="emoji-picker-container" class="emoji-picker-container"></div>
+                                        <button type="button" id="emoji-btn" name="emoji"class="btn btn-secondary me-2">😊</button>
+                                        <input id="message" type="textarea" class="message-input form-control flex-grow-1"
+                                            name="content" placeholder="Écris un message...">
+                                        <button class="btn btn-primary ms-2" type="submit">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <u>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </u>
+
+
                     </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{ asset('img/Utilisateurs/utilisateur3.jpg') }}">
-                            <div>
-                                NotTheAverageGuy
+
+
+
+
+                    <div class="col-md-2 colonneMembres">
+                        <div class="contenuScrollableMembres">
+                            <div class="membre">
+                                <a href="#">
+                                    <img src="{{ asset('img/Utilisateurs/utilisateur1.jpg') }}">
+                                    <div>
+                                        <strong>ADMIN</strong> - Tommy Jackson
+                                    </div>
+                                </a>
                             </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{ asset('img/Utilisateurs/utilisateur4.jpg') }}">
-                            <div>
-                                Julie St-Aubin
+                            <div class="membre">
+                                <a href="#">
+                                    <img src="{{ asset('img/Utilisateurs/utilisateur2.jpg') }}">
+                                    <div>
+                                        AverageGymGoer
+                                    </div>
+                                </a>
                             </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{ asset('img/Utilisateurs/utilisateur5.avif') }}">
-                            <div>
-                                Gnulons
+                            <div class="membre">
+                                <a href="#">
+                                    <img src="{{ asset('img/Utilisateurs/utilisateur3.jpg') }}">
+                                    <div>
+                                        NotTheAverageGuy
+                                    </div>
+                                </a>
                             </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{ asset('img/Utilisateurs/utilisateur6.jpg') }}">
-                            <div>
-                                Jack Jacked
+                            <div class="membre">
+                                <a href="#">
+                                    <img src="{{ asset('img/Utilisateurs/utilisateur4.jpg') }}">
+                                    <div>
+                                        Julie St-Aubin
+                                    </div>
+                                </a>
                             </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{ asset('img/Utilisateurs/utilisateur7.jpg') }}">
-                            <div>
-                                Sophie
+                            <div class="membre">
+                                <a href="#">
+                                    <img src="{{ asset('img/Utilisateurs/utilisateur5.avif') }}">
+                                    <div>
+                                        Gnulons
+                                    </div>
+                                </a>
                             </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{ asset('img/Utilisateurs/utilisateur8.jpg') }}">
-                            <div>
-                                Lucia Percada
+                            <div class="membre">
+                                <a href="#">
+                                    <img src="{{ asset('img/Utilisateurs/utilisateur6.jpg') }}">
+                                    <div>
+                                        Jack Jacked
+                                    </div>
+                                </a>
                             </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{ asset('img/Utilisateurs/utilisateur9.jpg') }}">
-                            <div>
-                                Stevie
+                            <div class="membre">
+                                <a href="#">
+                                    <img src="{{ asset('img/Utilisateurs/utilisateur7.jpg') }}">
+                                    <div>
+                                        Sophie
+                                    </div>
+                                </a>
                             </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{ asset('img/Utilisateurs/utilisateur11.jpg') }}">
-                            <div>
-                                Tom
+                            <div class="membre">
+                                <a href="#">
+                                    <img src="{{ asset('img/Utilisateurs/utilisateur8.jpg') }}">
+                                    <div>
+                                        Lucia Percada
+                                    </div>
+                                </a>
                             </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{ asset('img/Utilisateurs/utilisateur12.jpg') }}">
-                            <div>
-                                Bluestack
+                            <div class="membre">
+                                <a href="#">
+                                    <img src="{{ asset('img/Utilisateurs/utilisateur9.jpg') }}">
+                                    <div>
+                                        Stevie
+                                    </div>
+                                </a>
                             </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{ asset('img/Utilisateurs/utilisateur13.jpg') }}">
-                            <div>
-                                CoolCarl123
+                            <div class="membre">
+                                <a href="#">
+                                    <img src="{{ asset('img/Utilisateurs/utilisateur11.jpg') }}">
+                                    <div>
+                                        Tom
+                                    </div>
+                                </a>
                             </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{ asset('img/Utilisateurs/utilisateur14.webp') }}">
-                            <div>
-                                Sylvain
+                            <div class="membre">
+                                <a href="#">
+                                    <img src="{{ asset('img/Utilisateurs/utilisateur12.jpg') }}">
+                                    <div>
+                                        Bluestack
+                                    </div>
+                                </a>
                             </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{ asset('img/Utilisateurs/utilisateur15.jpg') }}">
-                            <div>
-                                Ghost
+                            <div class="membre">
+                                <a href="#">
+                                    <img src="{{ asset('img/Utilisateurs/utilisateur13.jpg') }}">
+                                    <div>
+                                        CoolCarl123
+                                    </div>
+                                </a>
                             </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{ asset('img/Utilisateurs/utilisateur16.jpg') }}">
-                            <div>
-                                Coach Noah
+                            <div class="membre">
+                                <a href="#">
+                                    <img src="{{ asset('img/Utilisateurs/utilisateur14.webp') }}">
+                                    <div>
+                                        Sylvain
+                                    </div>
+                                </a>
                             </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{ asset('img/Utilisateurs/utilisateur17.jpg') }}">
-                            <div>
-                                MotivationGuy
+                            <div class="membre">
+                                <a href="#">
+                                    <img src="{{ asset('img/Utilisateurs/utilisateur15.jpg') }}">
+                                    <div>
+                                        Ghost
+                                    </div>
+                                </a>
                             </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{ asset('img/Utilisateurs/utilisateur18.jpg') }}">
-                            <div>
-                                xXDarkSlayerXx
+                            <div class="membre">
+                                <a href="#">
+                                    <img src="{{ asset('img/Utilisateurs/utilisateur16.jpg') }}">
+                                    <div>
+                                        Coach Noah
+                                    </div>
+                                </a>
                             </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{ asset('img/Utilisateurs/utilisateur19.jpg') }}">
-                            <div>
-                                CalisthenicGod_1
+                            <div class="membre">
+                                <a href="#">
+                                    <img src="{{ asset('img/Utilisateurs/utilisateur17.jpg') }}">
+                                    <div>
+                                        MotivationGuy
+                                    </div>
+                                </a>
                             </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{ asset('img/Utilisateurs/utilisateur20.jpg') }}">
-                            <div>
-                                Gymcord#654302
+                            <div class="membre">
+                                <a href="#">
+                                    <img src="{{ asset('img/Utilisateurs/utilisateur18.jpg') }}">
+                                    <div>
+                                        xXDarkSlayerXx
+                                    </div>
+                                </a>
                             </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{ asset('img/Utilisateurs/utilisateur4.jpg') }}">
-                            <div>
-                                Julia Julia
+                            <div class="membre">
+                                <a href="#">
+                                    <img src="{{ asset('img/Utilisateurs/utilisateur19.jpg') }}">
+                                    <div>
+                                        CalisthenicGod_1
+                                    </div>
+                                </a>
                             </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{ asset('img/Utilisateurs/utilisateur2.jpg') }}">
-                            <div>
-                                Dieu Poulet
+                            <div class="membre">
+                                <a href="#">
+                                    <img src="{{ asset('img/Utilisateurs/utilisateur20.jpg') }}">
+                                    <div>
+                                        Gymcord#654302
+                                    </div>
+                                </a>
                             </div>
-                        </a>
+                            <div class="membre">
+                                <a href="#">
+                                    <img src="{{ asset('img/Utilisateurs/utilisateur4.jpg') }}">
+                                    <div>
+                                        Julia Julia
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="membre">
+                                <a href="#">
+                                    <img src="{{ asset('img/Utilisateurs/utilisateur2.jpg') }}">
+                                    <div>
+                                        Dieu Poulet
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    </div>
 
-    <script>
-        // Add translations for JavaScript
-        const translations = {
-            deleteBtn: "{{ __('chat.btn_suppression') }}",
-            downloadFile: "{{ __('chat.telecharger_file') }}",
-            errorDeleting: "{{ __('chat.erreur_deleting') }}",
-            errorSending: "{{ __('chat.erreur_sending') }}",
-            selectedImagePreview: "{{ __('chat.apercu_image_selection') }}",
-            emojiSearch: "{{ __('chat.recherche_emoji') }}",
-        };
 
-        function formatMessage(message) {
-            const maxLength = 50; // Maximum length before adding a newline
-            let formattedMessage = '';
-            for (let i = 0; i < message.length; i += maxLength) {
-                formattedMessage += message.substring(i, i + maxLength) + '\n';
-            }
-            return formattedMessage;
-        }
+
+
+    <script src="{{ asset('js/Conversations/chat.js') }}"></script>
+
+        <script>
 
 
 
@@ -764,10 +724,12 @@
                         {{ isset($message) ? substr($message->user->email, 0, 2) : 'rien' }}
                     </div>
                     <div class="bubble">
-                        <strong>${data.sender_email ? data.sender_email : ''}</strong>
+                        <strong>{{ isset($message) ? $message->user->email : 'rien' }}</strong>
                         <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
                         <br>
-                        ${messageContent}
+                        <div class="message-text">
+                            ${messageContent}
+                        </div>
                         ${fileContent}
                     </div>
                 </div>
@@ -817,44 +779,48 @@
                 let avatarText = res.sender_email.substring(0, 2);
                 let messageContent = res.message ? `<p>${res.message}</p>` : "";
 
-                // Determine file content
-                let fileExtension = res.fichier ? res.fichier.split('.').pop().toLowerCase() : "";
-                let isImage = ["jpg", "jpeg", "png", "gif"].includes(fileExtension);
-                let fileContent = "";
 
-                if (res.fichier) {
-                    if (isImage) {
-                        fileContent = `<img src="${res.fichier}" class="message-image" alt="Image envoyée">`;
-                    } else {
-                        fileContent = `<a href="../${res.fichier}" target="_blank" class="text-blue-500">
-                ${translations.downloadFile} ${res.fichier.split('/').pop()}
-            </a>`;
+                    // Déterminer si c'est une image ou un fichier à télécharger
+                    let fileExtension = res.fichier ? res.fichier.split('.').pop().toLowerCase() : "";
+                    let isImage = ["jpg", "jpeg", "png", "gif"].includes(fileExtension);
+                    let fileContent = "";
+
+                    if (res.fichier) {
+                        if (isImage) {
+                            fileContent =
+                                `<img src="${res.fichier}" class="message-image" alt="Image envoyée">`;
+                        } else {
+                            fileContent = `<a href="../${res.fichier}" target="_blank" class="text-blue-500">
+                    📄 Télécharger ${res.fichier.split('/').pop()}
+                </a>`;
+                        }
                     }
-                }
 
-                $("#chat-messages").append(`
-        <div class="messageTotal" id="message-${res.last_id}">
-            <div class="message own-message">
-                <button class="delete-btn" data-id="${res.last_id}">${translations.deleteBtn}</button>
-                <div class="bubble">
-                    <strong>${res.sender_email}</strong>
-                    <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
-                    <br>
-                    ${messageContent}
-                    ${fileContent}
+                    $("#chat-messages").append(`
+            <div class="messageTotal" id="message-${res.last_id}">
+                <div class="message own-message">
+                    <button class="delete-btn" data-id="${res.last_id}">🗑️</button>
+                    <div class="bubble">
+                        <strong>${res.sender_email}</strong>
+                        <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
+                        <br>
+                        <div class="message-text">
+                            ${messageContent}
+                        </div>
+                        ${fileContent}
+                    </div>
+                    <div class="ml-4 avatar bg-primary text-white rounded-circle p-2">${avatarText}</div>
                 </div>
-                <div class="ml-4 avatar bg-primary text-white rounded-circle p-2">${avatarText}</div>
+                <div class="separator"></div>
             </div>
-            <div class="separator"></div>
-        </div>
-    `);
+        `);
 
-                $("input[name='content']").val("");
-                $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
-            }).fail(function() {
-                alert(translations.errorSending);
+                    $("input[name='content']").val("");
+                    $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
+                }).fail(function(xhr, status, error) {
+                    console.error("Erreur d'envoi :", error);
+                });
             });
-        });
 
 
 

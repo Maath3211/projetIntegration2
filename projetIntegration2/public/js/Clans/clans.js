@@ -2,7 +2,6 @@
 document.addEventListener("DOMContentLoaded", function() {
 
     const canals = document.querySelectorAll('.canal');
-    const divScrollable = document.querySelector(".contenuScrollable");
     const renommer = document.getElementById('renommerCanal');
     const ajouter = document.getElementById('ajoutCanal');
     const supprimer = document.getElementById('confirmationSuppression')
@@ -12,9 +11,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let _canal = '';
     let _categorie = '';
 
-    // Déroulement automatique jusqu'en bas des messages
-    divScrollable.scrollTop = divScrollable.scrollHeight;
-
+    // pour annuler un formulaire (cacher la fenêtre contextuelle)
     document.querySelectorAll('.annuler').forEach(bouton => {
         bouton.addEventListener('click', function() {
             bouton.parentElement.parentElement.parentElement.style.display = 'none';
@@ -35,6 +32,7 @@ document.addEventListener("DOMContentLoaded", function() {
         formulaire.submit();
     });
 
+    // confirmer l'ajout d'un canal
     ajouter.querySelector('#confirmerAjout').addEventListener('click', function(){
         nouveauNom = ajouter.querySelector('input').value;
         formulaire.querySelector('.action').value = 'ajouter';
@@ -48,6 +46,7 @@ document.addEventListener("DOMContentLoaded", function() {
         formulaire.submit();
     });
 
+    // confirmer la suppression d'un canal
     supprimer.querySelector('#confirmerSuppression').addEventListener('click', function(){
         formulaire.querySelector('.action').value = 'supprimer';
         formulaire.querySelector('.requete').value = JSON.stringify({
@@ -60,16 +59,13 @@ document.addEventListener("DOMContentLoaded", function() {
         formulaire.submit();
     });
 
-
+    // pour chaque canal
     canals.forEach(canal => {
 
         // Pour montrer quel canal est actif actuellement
         canal.addEventListener('click', function() {
             canals.forEach(c => c.classList.remove('active'));
             canal.classList.add('active');
-
-            // Quand on change de canal de chat, on scroll jusqu'en bas automatiquement
-            divScrollable.scrollTop = divScrollable.scrollHeight;
         });
 
         canal.querySelector('.modifier').addEventListener('click', function() {
@@ -107,6 +103,7 @@ document.addEventListener("DOMContentLoaded", function() {
         })
     });
 
+    // Vérification de l'input au fur et à mesure
     document.querySelectorAll('.entreeNomCanal').forEach(entree => {
         entree.addEventListener('input', function(){
             valeur = this.value;
@@ -131,4 +128,16 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
     })
+
+    // pour fermer les fenêtres contextuelles lorsqu'il appuie sur Esc
+    document.addEventListener('keydown', function(event){
+        if (event.key === 'Escape'){
+            if(renommer.style.display == 'flex')
+                renommer.style.display = 'none';
+            if(supprimer.style.display == 'flex')
+                supprimer.style.display = 'none';
+            if(ajouter.style.display == 'flex')
+                ajouter.style.display = 'none';
+        }
+    });
 });

@@ -26,7 +26,6 @@ class CreationCompteRequest extends FormRequest
                 'required',
             ],
             'imageProfil' => [
-                'required',
                 'image',
                 'max:2048',
                 'mimes:jpeg,png,jpg,gif,svg,bmp,webp',
@@ -60,7 +59,6 @@ class CreationCompteRequest extends FormRequest
                 'email.email' => 'L\'email doit être valide',
                 'prenom.required' => 'Le prénom est requis',
                 'nom.required' => 'Le nom est requis',
-                'imageProfil.required' => 'L\'image de profil est requise',
                 'imageProfil.max' => 'L\'image de profil doit être un fichier image de moins de 2 Mo',
                 'imageProfil.mimes' => 'L\'image de profil doit être un fichier image',
                 'pays.not_in' => 'Le pays est requis',

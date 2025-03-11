@@ -7,6 +7,7 @@
 @endsection()
 
 @section('contenu')
+<!-- TODO - VÉRIFIER SI LE FOCUS D'UN CANAL MARCHE APRÈS QUE XAVIER A IMPLÉMENTÉ LE CHAT POUR MEMBRE ET POUR ADMIN VÉRIFIER LES 2 -->
 <div class="contenuPrincipal">
     <div class="container-fluid">
         <div class="row">
@@ -22,13 +23,39 @@
                         </div>
                         @endif
                         <div class="conteneurCanaux">
+                            <!-- Afficher toutes les catégories ainsi que leurs canaux dans l'ordre -->
                             @if(isset($categories))
-                            @foreach($categories as $categorie)
-                            <div class="categorieCanal">
-                                <div class="titreCategorieCanal categorie_{{ $categorie->id }}">
-                                    <div>
-                                        <i class="fa-solid fa-minus"></i>
-                                        {{ $categorie->categorie }}
+                                @foreach($categories as $categorie)
+                                    <div class="categorieCanal">
+                                        <div class="titreCategorieCanal categorie_{{ $categorie->id }}">
+                                            <div>
+                                                <i class="fa-solid fa-minus"></i>
+                                                {{ $categorie->categorie }}
+                                            </div>
+                                            @if($utilisateur->id == $clan->adminId)
+                                                <i class="fa-solid fa-plus fa-xs"></i>
+                                            @endif
+                                        </div>
+                                        @if(isset($canauxParCategorie[$categorie->id]))
+                                            @foreach($canauxParCategorie[$categorie->id] as $canal)
+                                                <div class="canal">
+                                                    <a href="/clan/{{ $id }}/canal/{{ $canal->id }}" class="canal_{{ $canal->id }}">
+                                                        <div>
+                                                            <i class="fa-solid fa-hashtag"></i>
+                                                            {{ $canal->titre }}
+                                                        </div>
+                                                    </a>
+                                                    @if($utilisateur->id == $clan->adminId)
+                                                    <div class="iconesModificationCanal">
+                                                        <i class="fa-solid fa-pen modifier"></i>
+                                                        <i class="fa-solid fa-x supprimer"></i>
+                                                    </div>
+                                                    @endif
+                                                </div>
+                                            @endforeach
+                                        @else
+                                            <p>Aucun canal n'est créé pour ce clan. Veuillez en créer une pour commencer.</p>
+                                        @endif
                                     </div>
                                     <i class="fa-solid fa-plus fa-xs"></i>
                                 </div>
@@ -70,13 +97,16 @@
             </div>
             <div class="col-md-2 colonneMembres">
                 <div class="contenuScrollableMembres">
+                    <!-- Afficher tous les membres du clan, admin en premier-->
                     @if(isset($membres))
-                    @foreach($membres as $membre)
-                    <div class="membre">
-                        <a href="">
-                            <img src="{{asset($membre->imageProfil)}}">
-                            <div>
-                                {{$membre->prenom}} {{$membre->nom}}
+                        @foreach($membres as $membre)
+                            <div class="membre">
+                                <a href="{{ route('profil.profilPublic', ['email' => $membre->email]) }}">
+                                    <img src="{{asset($membre->imageProfil)}}" > 
+                                    <div>
+                                        @if($membre->id == $clan->adminId)ADMIN - @endif{{$membre->prenom}} {{$membre->nom}}
+                                    </div>
+                                </a>
                             </div>
                         </a>
                     </div>
@@ -88,90 +118,67 @@
             </div>
         </div>
     </div>
-    <form id="formulaireClan" action="{{ route('canal.actions', ['id' => $id]) }}" method="POST">
-        @csrf
-        <input type="hidden" class="action" name="action">
-        <input type="hidden" class="requete" name="requete">
-    </form>
+    @if($utilisateur->id == $clan->adminId)
+        <!-- Les formulaires pour modifier/supprimer/ajouter sont dans la page seulement si l'utilisateur connecté est l'administrateur -->
+        <form id="formulaireClan" action="{{ route('canal.actions', ['id' => $id]) }}" method="POST">
+            @csrf
+            <input type="hidden" class="action" name="action">
+            <input type="hidden" class="requete" name="requete">
+        </form>
 
-    <!-- Fenêtre contextuelle pour ajouter un canal -->
-    <div id="ajoutCanal" class="fenetreCategorie">
-        <div class="conteneurConfirmation">
-            <div class="titreConfirmation">
-                <div>{{ __('clans.ajout_canal') }}</div>
-            </div>
-            <div class="texteConfirmation">
-                <input type="text" name="entreeNomCanal" class="form-control entreeNomCanal" placeholder="ex.: Cardio">
-                <span class="messageErreur"></span>
-            </div>
+        <!-- Fenêtre contextuelle pour ajouter un canal -->
+        <div id="ajoutCanal" class="fenetreCategorie">
+            <div class="conteneurConfirmation">
+                <div class="titreConfirmation">
+                    <div>{{ __('clans.ajout_canal') }}</div>
+                </div>
+                <div class="texteConfirmation">
+                    <input type="text" name="entreeNomCanal" class="form-control entreeNomCanal" placeholder="ex.: Cardio">
+                    <span class="messageErreur"></span>
+                </div>
 
-            <div class="boutonsConfirmation">
-                <button class="annuler" type="button">{{ __('clans.annuler') }}</button>
-                <button id="confirmerAjout" type="button">{{ __('clans.confirmer') }}</button>
+                <div class="boutonsConfirmation">
+                    <button class="annuler" type="button">{{ __('clans.annuler') }}</button>
+                    <button id="confirmerAjout" type="button">{{ __('clans.confirmer') }}</button>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Fenêtre contextuelle pour renommer un canal -->
-    <div id="renommerCanal" class="fenetreCategorie">
-        <div class="conteneurConfirmation">
-            <div class="titreConfirmation">
-                <div>{{ __('clans.renommer_canal') }}</div>
-            </div>
-            <div class="texteConfirmation">
-                <input type="text" name="entreeNomCanal" class="form-control entreeNomCanal" placeholder="ex.: Cardio">
-                <span class="messageErreur"></span>
-            </div>
+        <!-- Fenêtre contextuelle pour renommer un canal -->
+        <div id="renommerCanal" class="fenetreCategorie">
+            <div class="conteneurConfirmation">
+                <div class="titreConfirmation">
+                    <div>{{ __('clans.renommer_canal') }}</div>
+                </div>
+                <div class="texteConfirmation">
+                    <input type="text" name="entreeNomCanal" class="form-control entreeNomCanal" placeholder="ex.: Cardio">
+                    <span class="messageErreur"></span>
+                </div>
 
-            <div class="boutonsConfirmation">
-                <button class="annuler" type="button">{{ __('clans.annuler') }}</button>
-                <button id="confirmerRenommage" type="button">{{ __('clans.confirmer') }}</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Fenêtre contextuelle pour supprimer un canal -->
-    <div id="confirmationSuppression" class="fenetreCategorie">
-        <div class="conteneurConfirmation">
-            <div class="titreConfirmation">
-                <div>{{ __('clans.supprimer_channel') }}</div>
-            </div>
-            <div class="texteConfirmation">
-                <div>{{ __('clans.supprimer_channel_warning') }}</div>
-            </div>
-
-            <div class="boutonsConfirmation">
-                <button class="annuler" type="button">{{ __('clans.annuler') }}</button>
-                <button id="confirmerSuppression" type="button">{{ __('clans.supprimer') }}</button>
+                <div class="boutonsConfirmation">
+                    <button class="annuler" type="button">{{ __('clans.annuler') }}</button>
+                    <button id="confirmerRenommage" type="button">{{ __('clans.confirmer') }}</button>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div id="conteneurMessages">
-        @if(session('message'))
-        <div class="alert" id="messageSucces">
-            <span>{{session('message')}}</span>
-            <button class="close-btn">X</button>
-        </div>
-        @endif
+        <!-- Fenêtre contextuelle pour supprimer un canal -->
+        <div id="confirmationSuppression" class="fenetreCategorie">
+            <div class="conteneurConfirmation">
+                <div class="titreConfirmation">
+                    <div>{{ __('clans.supprimer_channel') }}</div>
+                </div>
+                <div class="texteConfirmation">
+                    <div>{{ __('clans.supprimer_channel_warning') }}</div>
+                </div>
 
-        <!--Obligé d'utiliser $errors ici c'est la facon que laravel gère ses erreurs-->
-        @if($errors->any() || session('erreur'))
-        <div class="alert" id="messageErreur">
-            <ul>
-                @if($errors->any())
-                @foreach($errors->all() as $erreur)
-                <li>{{ $erreur }}</li>
-                @endforeach
-                @endif
-                @if(session('erreur'))
-                <li>{{ session('erreur') }}</li>
-                @endif
-            </ul>
-            <button class="close-btn">X</button>
+                <div class="boutonsConfirmation">
+                    <button class="annuler" type="button">{{ __('clans.annuler') }}</button>
+                    <button id="confirmerSuppression" type="button">{{ __('clans.supprimer') }}</button>
+                </div>
+            </div>
         </div>
-        @endif
-    </div>
+    @endif
 
 </div>
 

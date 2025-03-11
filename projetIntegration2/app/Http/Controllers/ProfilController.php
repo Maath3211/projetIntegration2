@@ -8,6 +8,8 @@ use App\Http\Requests\CreationCompteGoogleRequest;
 use App\Http\Requests\CreationCompteRequest;
 use App\Http\Requests\ModificationRequest;
 use App\Models\User;
+use App\Models\Statistiques;
+use App\Models\PoidsUtilisateur;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Auth;
@@ -30,6 +32,9 @@ class ProfilController extends Controller
     public function connexion(ConnexionRequest $request)
     {
         $utilisateur = User::where('email', $request->email)->first();
+        if (!$utilisateur) {
+            return redirect()->back()->withErrors(['email' => 'Aucun compte trouvé avec cet email']);
+        }
         if ($utilisateur->email_verified_at == null) {
             return redirect()->back()->withErrors(['email' => __('auth.compte_non_verifie')]);
         }
@@ -56,7 +61,6 @@ class ProfilController extends Controller
         $utilisateur->email = $request->email;
         $utilisateur->prenom = $request->prenom;
         $utilisateur->nom = $request->nom;
-        $utilisateur->imageProfil = $request->imageProfil;
         $utilisateur->pays = $request->pays;
         $utilisateur->genre = $request->genre;
         $utilisateur->dateNaissance = $request->dateNaissance;
@@ -74,11 +78,27 @@ class ProfilController extends Controller
                 return redirect()->back()->withErrors(['imageProfil' => __('profile.image_upload_error')]);
             }
         } else {
-            return redirect()->back()->withErrors(['imageProfil' => __('auth.aucune_image')]);
+            $utilisateur->imageProfil = 'img/Utilisateurs/utilisateurParDefaut.jpg';
         }
 
         Mail::to($utilisateur->email)->send(new confirmation($utilisateur));
         $utilisateur->save();
+        
+        Statistiques::create([
+            'user_id' => $utilisateur->id,
+            'nomStatistique' => 'poids',
+            'score' => 0
+        ]);
+        Statistiques::create([
+            'user_id' => $utilisateur->id,
+            'nomStatistique' => 'FoisGym',
+            'score' => 0
+        ]);
+        PoidsUtilisateur::create([
+            'user_id' => $utilisateur->id,
+            'semaine' => 1,
+            'poids' => 0
+        ]);
         return redirect()->route('profil.connexion')->with('message', __('profile.profile_confirmation'));
     }
 
@@ -208,17 +228,31 @@ class ProfilController extends Controller
     public function profil()
     {
         $utilisateur = Auth::user();
-        $clans = $utilisateur->clans;
+        $clans = $utilisateur->clans; // Fetch all clans associated with the user
         return view('profil.profil', compact('utilisateur', 'clans'));
     }
 
     public function profilPublic($email)
     {
+        $utilisateur = Auth::user();
+        $clans = $utilisateur->clans;
         $utilisateur = User::where('email', $email)->first();
+        $clansAway = $utilisateur->clans;
+        
         if (!$utilisateur) {
             return redirect()->route('profil.profil')->withErrors([__('profile.user_notfound')]);
         }
-        return View('profil.profilPublic', compact('utilisateur'));
+        return View('profil.profil', compact('utilisateur', 'clansAway', 'clans'));
+    }
+
+    public function suppressionProfil()
+    {
+        $utilisateur = Auth::user();
+        if ($utilisateur->imageProfil && file_exists(public_path($utilisateur->imageProfil))) {
+            unlink(public_path($utilisateur->imageProfil));
+        }
+        $utilisateur->delete();
+        return redirect()->route('profil.pageConnexion')->with('message', 'Votre compte a été supprimé avec succès');
     }
 
     public function deconnexion()
@@ -229,8 +263,13 @@ class ProfilController extends Controller
 
     public function modification()
     {
-        $countries = $this->listePays();
-        return View('profil.modification', compact('countries'));
+        // Cache the countries for 1 day
+        $countries = Cache::remember('countries_list_french', now()->addDay(), function () {
+            return $this->listePays();
+        });
+        $utilisateur = Auth::user();
+        $clans = $utilisateur->clans;
+        return View('profil.modification', compact('countries', 'clans'));
     }
 
     public function updateModification(ModificationRequest $request)
@@ -241,6 +280,8 @@ class ProfilController extends Controller
         $utilisateur->pays = $request->input('pays');
         $utilisateur->genre = $request->input('genre');
         $utilisateur->dateNaissance = $request->input('dateNaissance');
+        $utilisateur->aPropos = $request->input('aPropos');
+
 
         if ($request->hasFile('imageProfil')) {
             if ($utilisateur->imageProfil && file_exists(public_path($utilisateur->imageProfil))) {
@@ -343,6 +384,9 @@ class ProfilController extends Controller
     public function confCourriel($codeVerification)
     {
         $user = User::where('codeVerification', $codeVerification)->first();
+        if (!$user) {
+            return redirect()->route('profil.connexion')->withErrors(['message' => 'Code de vérification invalide']);
+        }
         $user->email_verified_at = now();
         $user->codeVerification = null;
         $user->save();

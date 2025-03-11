@@ -24,12 +24,14 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
+    // fermer un fenêtre contextuelle si on clique sur annuler
     document.querySelectorAll('.annuler').forEach(bouton => {
         bouton.addEventListener('click', function(){
             bouton.parentElement.parentElement.parentElement.style.display = 'none';
         });
     });
 
+    // confirmer la suppression
     supprimer.querySelector('#confirmerSuppression').addEventListener('click', function() {
         if(!membreSelectionnes.includes(_membre.classList[1].split('membre_')[1])){
             membreSelectionnes.push(_membre.classList[1].split('membre_')[1]);
@@ -40,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function() {
         supprimer.style.display = 'none';
     });
 
-    //obtenir les membres à supprimer
+    // obtenir les membres à supprimer
     document.querySelectorAll('.membre i.supprimer').forEach(icon => {
         icon.addEventListener('click', function(){
             //obtenir la catégorie à ajouter dans les "à supprimer"
@@ -49,6 +51,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
+    // copier le lien d'invitation au clan
     document.querySelector('.copier').addEventListener('click', function(){
         let texte = document.querySelector('.rangeeInviter div:last-of-type').textContent.trim();
         console.log(texte);
@@ -60,15 +63,26 @@ document.addEventListener("DOMContentLoaded", function() {
         })
     });
 
-
+    // confirmer la suppression du clan
     supprimerClan.querySelector('#confirmerSuppressionClan').addEventListener('click', function() {
         document.querySelector('#formulaireSuppressionClan').submit();
     });
 
-    document.querySelectorAll('.close-btn').forEach(bouton => {
+    // fermer une fenêtre contextuelle de message d'erreur ou de succès
+    document.querySelectorAll('.close-btn').forEach(bouton => {
         bouton.addEventListener('click', function(){
             bouton.parentElement.style.display = 'none';
         });
+    });
+
+    // fermer les fenêtres contextuelles lorsqu'il appuie sur Esc
+    document.addEventListener('keydown', function(event){
+        if (event.key === 'Escape'){
+            if(supprimer.style.display == 'flex')
+                supprimer.style.display = 'none';
+            if(supprimerClan.style.display == 'flex')
+                supprimerClan.style.display = 'none';
+        }
     });
 
 });

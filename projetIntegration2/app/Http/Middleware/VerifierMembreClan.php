@@ -6,21 +6,33 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Clan;
 
 class VerifierMembreClan
 {
     /**
-     * Handle an incoming request.
+     * 
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
     {
         $utilisateur = Auth::user();
-        $clan = $request->route('clan');
+        $clan = Clan::find($request->route('id'));
 
-        if(!$utilisateur || !$clan || !$utilisateur->clans()->contains($clan->id)){
-            return redirect('/')->with('error', 'Vous ne faites pas partie de ce clan.');
+        // s'il n'est pas connecté
+        if(!$utilisateur){
+            return redirect('/')->with('erreur', 'Vous devez être connectés pour faire cette action.');
+        }
+
+        // si le clan n'existe pas
+        if(!$clan){
+            return redirect('/profil')->with('erreur', 'Ce clan n\'existe pas.');
+        }
+
+        // s'il n'est pas membre du clan
+        if(!$utilisateur->clans()->wherePivot('clan_id', $clan->id)->exists()){
+            return redirect('/profil')->with('erreur', 'Vous n\'êtes pas autorisé à faire cette action.');
         }
 
         return $next($request);

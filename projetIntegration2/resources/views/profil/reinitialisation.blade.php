@@ -15,7 +15,7 @@
 </head>
 
 <body>
-    <link rel="stylesheet" href="{{ asset('css/Profil/connexion.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/Profil/reinitialisation.css') }}">
 
     <img src="{{ asset('img/backgroundConnexion.png') }}" alt="Background" id="imgBackground">
 
@@ -28,8 +28,8 @@
                     <div class="conteneurForm">
                         @csrf
                         <label for="email" class="text-vert">{{ __('profile.adresse_courriel') }}</label>
-                        <input type="email" class="form-control inputConnexion" id="email"
-                            placeholder="{{ __('profile.adresse_courriel') }}" name="email">
+                        <input type="email" class="form-control inputReinitialisation" id="email"
+                            placeholder="Adresse courriel" name="email">
                     </div>
                     <br>
                     @if (session('message'))
@@ -46,7 +46,7 @@
                             @endif
                         @endforeach
                     @endif
-                    <button type="submit" class="btn btn-connexion">{{ __('profile.reset') }}</button>
+                    <button type="submit" class="btn btn-confirmation">{{ __('profile.reset') }}</button>
                     <a href="{{ route('profil.connexion') }}" class="btn btn-retour">{{ __('profile.back') }}</a>
                 </form>
 

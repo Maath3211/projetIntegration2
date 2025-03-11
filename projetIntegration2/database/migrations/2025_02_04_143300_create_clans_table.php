@@ -6,16 +6,13 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('clans', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('adminId');
+            $table->unsignedBigInteger('adminId')->nullable(false);
             $table->string('image')->default('default.jpg');
-            $table->string('nom');
+            $table->string('nom', 50);
             $table->boolean('public')->default(true);
             $table->timestamps();
 
@@ -23,11 +20,9 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
+        // supprimer les clé étrangères
         if(Schema::hasTable('clans')) {
             Schema::table('clans', function(Blueprint $table){
                 $table->dropForeign(['adminId']);
