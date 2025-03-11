@@ -81,7 +81,7 @@
       </div>
     </a>
 
-    <div class="relative mt-auto">
+    <div class="relative mt-auto sectionProfil">
       <button id="mobileProfileMenuBtn" class="w-16 h-16 overflow-hidden rounded-full">
         <img src="{{ asset(Auth::user()->imageProfil) }}" class="object-cover w-full h-full">
       </button>
@@ -146,7 +146,7 @@
         </div>
       </a>
 
-      <div class="relative mt-auto">
+      <div class="mt-auto sectionProfil">
         <button id="profileMenuBtn" class="w-16 h-16 overflow-hidden rounded-full">
           <img src="{{ asset(Auth::user()->imageProfil) }}" class="object-cover w-full h-full">
         </button>
