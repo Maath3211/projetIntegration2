@@ -41,8 +41,12 @@ class CreationCompteGoogleRequest extends FormRequest
             ],
             'password' => [
                 'required',
+                'string',
                 'min:8',
                 'confirmed',
+                'regex:/[a-z]/',     // at least one lowercase letter
+                'regex:/[A-Z]/',     // at least one uppercase letter
+                'regex:/[0-9]/',     // at least one number
             ],
         ];
     }
@@ -65,6 +69,7 @@ class CreationCompteGoogleRequest extends FormRequest
             'password.required' => 'Le mot de passe est requis',
             'password.min' => 'Le mot de passe doit contenir au moins 8 caractères',
             'password.confirmed' => 'Les mots de passe ne correspondent pas',
+            'password.regex' => 'Le mot de passe doit contenir au moins une lettre minuscule, une lettre majuscule et un chiffre',
         ];
     }
 

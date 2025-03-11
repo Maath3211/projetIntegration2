@@ -30,6 +30,7 @@ class User extends Authenticatable
         'aPropos',
         'id',
         'google_id',
+        'password',
     ];
 
     protected $hidden = [

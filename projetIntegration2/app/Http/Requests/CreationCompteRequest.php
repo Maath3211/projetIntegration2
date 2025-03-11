@@ -46,8 +46,12 @@ class CreationCompteRequest extends FormRequest
             ],
             'password' => [
                 'required',
+                'string',
                 'min:8',
                 'confirmed',
+                'regex:/[a-z]/',     // at least one lowercase letter
+                'regex:/[A-Z]/',     // at least one uppercase letter
+                'regex:/[0-9]/',     // at least one number
             ]
         ];
     }
@@ -71,7 +75,8 @@ class CreationCompteRequest extends FormRequest
                 'dateNaissance.after' => 'La date de naissance doit être après 1900-01-01',
                 'password.required' => 'Le mot de passe est requis',
                 'password.length' => 'Le mot de passe doit contenir au moins 8 caractères',
-                'password.confirmed' => 'La confirmation du mot de passe ne correspond pas'
+                'password.confirmed' => 'La confirmation du mot de passe ne correspond pas',
+                'password.regex' => 'Le mot de passe doit contenir au moins une lettre minuscule, une lettre majuscule et un chiffre',
             ];
     }
 
