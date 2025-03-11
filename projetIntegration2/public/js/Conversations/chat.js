@@ -145,8 +145,11 @@ document.addEventListener("DOMContentLoaded", async function () {
         displayEmojis(filteredEmojis);
     });
 
+    // Charger les emojis au chargement de la page
+    await loadEmojis();
+
     // 🎭 Affichage du picker
-    emojiButton.addEventListener("click", async (e) => {
+    emojiButton.addEventListener("click", (e) => {
         e.stopPropagation();
         if (!isPickerVisible) {
             emojiPicker.style.display = "block";
@@ -154,7 +157,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                 emojiPicker.classList.add("active");
                 isPickerVisible = true;
             }, 10);
-            await loadEmojis(); // Charger les emojis
         } else {
             emojiPicker.classList.remove("active");
             setTimeout(() => {

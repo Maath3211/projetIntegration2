@@ -138,7 +138,7 @@
                                             name="emoji"class="btn btn-secondary me-2">😊</button>
                                         <input id="message" type="textarea" class="message-input form-control flex-grow-1"
                                             name="content" placeholder="Écris un message...">
-                                        <button class="btn btn-primary ms-2" type="submit">Submit</button>
+                                        <button class="btn btn-primary ms-2" id="BoutonSoumettre" type="submit">Submit</button>
                                     </div>
                                 </div>
                             </form>
