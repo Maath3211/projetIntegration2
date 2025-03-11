@@ -287,13 +287,13 @@ class ClanController extends Controller
         $action = $request->input('action');
         $requete = json_decode($request->input('requete'), true);
         if(isset($requete['nouveauNom'])){
-            $requete['nouveauNom'] = str_replace(' ', '-', $requete['nouveauNom']);
+            $requete['nouveauNom'] = str_replace(' ', '-', strtolower($requete['nouveauNom']));
         }
 
         if(isset($requete['canal'])){
             // pour ajouter un canal
             if($action === 'ajouter') {
-                $requete['nouveauNom'] = str_replace(' ', '-', $requete['nouveauNom']);
+                $requete['nouveauNom'] = str_replace(' ', '-', strtolower($requete['nouveauNom']));
 
                 // Critère 1: Les canaux de doivent pas dépasser les 50 caractères.
                 if(strlen($requete['nouveauNom']) > 50){
@@ -313,7 +313,7 @@ class ClanController extends Controller
 
                 
                 if($canal)
-                    return redirect()->back()->with('message', 'ajout fait avec succès!');
+                    return redirect()->back()->with('message', 'Ajout effectué avec succès!');
                 else 
                     return redirect()->back()->with('erreur', 'Erreur lors de l\'ajout du canal. Veuillez réessayer plus tard.');
             } 
@@ -331,15 +331,15 @@ class ClanController extends Controller
                         return redirect()->back()->with('erreur', 'Les canaux ne doivent pas contenir de chiffres ou de symboles. Seul les lettres UTF-8 et les traits (-) sont permis.');
                     }
 
-                    $canal->titre = $requete['nouveauNom'];
+                    $canal->titre = str_replace(' ', '-', strtolower($requete['nouveauNom']));
                     $canal->save();
                     
-                    return redirect()->back()->with('message', 'modification faite avec succès!');
+                    return redirect()->back()->with('message', 'Modification effectuée avec succès!');
                 } 
                 // pour supprimer un canal
                 else if($action === 'supprimer') {
                     $canal->delete();
-                    return redirect()->back()->with('message', 'suppression faite avec succès!');
+                    return redirect()->back()->with('message', 'Suppression effectuée avec succès!');
                 }
             }
         }
@@ -494,7 +494,7 @@ class ClanController extends Controller
 
         $clan->delete();
         
-        return redirect()->route('profil.profil')->with('message', 'Suppression faite avec succès!');
+        return redirect()->route('profil.profil')->with('message', 'Suppression effectuée avec succès!');
     }
 
     // Accepter une invitation a un clan
@@ -705,7 +705,7 @@ class ClanController extends Controller
             'photo' => $request->photo,
             
         ]);
-        }
+    }
 
     public function destroy(UtilisateurClan $message)
     {

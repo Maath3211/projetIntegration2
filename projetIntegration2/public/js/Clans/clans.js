@@ -21,6 +21,8 @@ document.addEventListener("DOMContentLoaded", function() {
     // ajouter les événements pour les boutons des fenêtres contextuelles
     renommer.querySelector('#confirmerRenommage').addEventListener('click', function(){
         nouveauNom = renommer.querySelector('input').value;
+        nouveauNom = nouveauNom.toLowerCase().replace(/ /g, '-');
+
         formulaire.querySelector('.action').value = 'renommer';
         formulaire.querySelector('.requete').value = JSON.stringify({
             canal: _canal,
@@ -35,6 +37,8 @@ document.addEventListener("DOMContentLoaded", function() {
     // confirmer l'ajout d'un canal
     ajouter.querySelector('#confirmerAjout').addEventListener('click', function(){
         nouveauNom = ajouter.querySelector('input').value;
+        nouveauNom = nouveauNom.toLowerCase().replace(/ /g, '-');
+
         formulaire.querySelector('.action').value = 'ajouter';
         formulaire.querySelector('.requete').value = JSON.stringify({
             canal: -1,
@@ -106,6 +110,8 @@ document.addEventListener("DOMContentLoaded", function() {
     // Vérification de l'input au fur et à mesure
     document.querySelectorAll('.entreeNomCanal').forEach(entree => {
         entree.addEventListener('input', function(){
+            this.value = this.value.toLowerCase().replace(/ /g, '-');
+
             valeur = this.value;
             messageErreur = this.parentElement.querySelector('.messageErreur');
     
