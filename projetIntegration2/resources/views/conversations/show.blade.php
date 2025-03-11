@@ -35,7 +35,7 @@
 
 
 
-                    <div class="col-md-8 colonneMessages2">
+                    <div class="col-md-10 colonneMessages2">
                         <!-- Contenu supprimé -->
                         <div class="chat-messages" id="chat-messages">
 
