@@ -114,7 +114,7 @@
     <aside class="w-20 text-white h-screen flex flex-col items-center py-4 space-y-4 p-5">
 
       <!-- Navigation aux messages privés entre utilisateurs -->
-      <a href="#">
+      <a href="{{ route('conversations.index') }}">
         <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee"><i
             class="fa-solid fa-comment fa-2xl"></i></div>
       </a>
