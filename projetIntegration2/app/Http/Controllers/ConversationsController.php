@@ -36,29 +36,49 @@ class ConversationsController extends Controller
     }
 
 
-    public function index(){
-
-        $users = User::select('email','id')->get();
-        return view('conversations.index',[
-            'users' => \DB::table('demande_amis')
-            ->join('users', 'requested_id', '=', 'users.id')
+    public function index()
+    {
+        $userId = auth()->id();
+        $users = \DB::table('demande_amis')
+            ->join('users', function ($join) use ($userId) {
+                $join->on('users.id', '=', 'demande_amis.requested_id')
+                    ->orOn('users.id', '=', 'demande_amis.requester_id');
+            })
             ->select('users.email', 'users.id')
             ->where('demande_amis.status', 'accepted')
-            ->get(),
-        ]);
+            ->where(function ($query) use ($userId) {
+                $query->where('demande_amis.requester_id', $userId)
+                    ->orWhere('demande_amis.requested_id', $userId);
+            })
+            ->where('users.id', '!=', $userId)
+            ->get();
 
+        return view('conversations.index', [
+            'users' => $users,
+        ]);
     }
 
-    public function show(User $user){
-
-        return view('conversations.show',[
-            'users' => \DB::table('demande_amis')
-            ->join('users', 'requested_id', '=', 'users.id')
-            ->select('users.email', 'users.id', 'users.email')
+    public function show(User $user)
+    {
+        $userId = auth()->id();
+        $users = \DB::table('demande_amis')
+            ->join('users', function ($join) use ($userId) {
+                $join->on('users.id', '=', 'demande_amis.requested_id')
+                    ->orOn('users.id', '=', 'demande_amis.requester_id');
+            })
+            ->select('users.email', 'users.id')
             ->where('demande_amis.status', 'accepted')
-            ->get(),
+            ->where(function ($query) use ($userId) {
+                $query->where('demande_amis.requester_id', $userId)
+                    ->orWhere('demande_amis.requested_id', $userId);
+            })
+            ->where('users.id', '!=', $userId)
+            ->get();
+
+        return view('conversations.show', [
+            'users' => $users,
             'user' => $user,
-            'messages' => $this->ConvRepository->getMessageFor(auth()->id(), $user->id)->paginate(300)//Pagination des messages par 2
+            'messages' => $this->ConvRepository->getMessageFor(auth()->id(), $user->id)->paginate(300)
         ]);
     }
 
