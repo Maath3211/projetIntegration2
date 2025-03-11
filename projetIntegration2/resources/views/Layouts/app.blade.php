@@ -232,6 +232,9 @@
             @if (session('erreur'))
             <li>{{ session('erreur') }}</li>
             @endif
+            @if (session('error'))
+            <li>{{ session('erreur') }}</li>
+            @endif
           </ul>
           <button class="close-btn">X</button>
         </div>
