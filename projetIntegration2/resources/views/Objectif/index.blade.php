@@ -3,18 +3,18 @@
 <link rel="stylesheet" style="text/css" href="\css\Objectif\ObjectifIndex.css"> 
 
 <div class="container">
-    <h1 class="mb-4">Liste de vos objectifs</h1>
+    <h1 class="mb-4">{{ __('objectives.titre_liste') }}</h1>
     
     <div class="d-flex justify-content-between mb-4">
         <a href="{{ route('statistique.index') }}">
-            <button type="button" class="bouton me-2">Retour</button>
+            <button type="button" class="bouton me-2">{{ __('objectives.retour') }}</button>
         </a>
         <a href="{{ route('objectif.create') }}">
-            <button type="button" class="bouton ms-2">Ajouter un Objectif</button>
+            <button type="button" class="bouton ms-2">{{ __('objectives.ajout_objectif') }}</button>
         </a>
     </div>
     
-    <h2 class="mt-4">Objectifs non complétés</h2>
+    <h2 class="mt-4">{{ __('objectives.objectifs_non_complets') }}</h2>
     <ul class="list-group">
         @foreach ($objectifNonCompleter as $objectif)
         <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -47,7 +47,7 @@
         @endforeach
     </ul>
     
-    <h2 class="mt-4">Objectifs complétés</h2>
+    <h2 class="mt-4">{{ __('objectives.objectifs_complets') }}</h2>
     <ul class="list-group">
         @foreach ($objectifCompleter as $objectif)
         <li class="list-group-item d-flex justify-content-between align-items-center completer">

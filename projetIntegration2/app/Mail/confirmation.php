@@ -8,6 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\App;
 
 class confirmation extends Mailable
 {
@@ -16,9 +17,10 @@ class confirmation extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct($utilisateur)
+    public function __construct($utilisateur, $locale = null)
     {
         $this->utilisateur = $utilisateur;
+        $this->locale = $locale ?? App::getLocale(); // Use current locale if not specified
     }
 
     /**
@@ -26,8 +28,9 @@ class confirmation extends Mailable
      */
     public function envelope(): Envelope
     {
+        App::setLocale($this->locale);
         return new Envelope(
-            subject: 'Confirmation de compte',
+            subject: __('emails.confirmation.subject'),
         );
     }
 
@@ -36,6 +39,7 @@ class confirmation extends Mailable
      */
     public function content(): Content
     {
+        App::setLocale($this->locale);
         return new Content(
             view: 'Emails.confirmation',
         );

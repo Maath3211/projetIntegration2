@@ -72,13 +72,13 @@
 
     <div class="container chat-container mt-4">
         <div class="chat-header d-flex justify-content-between">
-            <h4>Nom Groupe</h4>
-            <div>1/25</div>
+            <h4>{{ __('chat.nom_groupe') }}</h4>
+            <div>{{ __('chat.membres', ['count' => 1, 'total' => 25]) }}</div>
         </div>
 
         <div class="row mt-3">
             <div class="col-md-3 chat-sidebar">
-                <p>Liste des amis / groupes d'amis</p>
+                <p>{{ __('chat.liste_amis') }}</p>
             </div>
             <div class="col-md-9">
                 <div class="chat-messages">
@@ -86,7 +86,7 @@
                         <div class="avatar bg-primary text-white rounded-circle p-2">SS</div>
                         <div class="bubble">
                             <strong>Sam Sulek</strong> <span class="text-muted">14:34</span><br>
-                            🔊 Audio
+                            {{ __('chat.message_audio') }}
                         </div>
                     </div>
                     <div class="message">
@@ -99,7 +99,7 @@
                     <div class="message own-message">
                         <div class="bubble">
                             <strong>Yoan</strong> <span class="text-muted">14:36</span><br>
-                            Nice body
+                            {{ __('chat.nice_body') }}
                         </div>
                         <div class="avatar bg-danger text-white rounded-circle p-2">Y</div>
                     </div>

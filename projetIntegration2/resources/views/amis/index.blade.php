@@ -128,10 +128,10 @@
 
     <div class="top-buttons" style="margin-bottom: 20px;">
         <a href="{{ route('amis.index') }}" class="search-button" style="text-decoration: none; padding: 10px 20px; background-color: #a9fe77; color: #000; border: 1px solid #999; border-radius: 5px; margin-right: 10px;">
-            Rechercher des amis
+            {{ __('friends.recherche_amis') }}
         </a>
         <a href="{{ route('amis.demandes') }}" class="add-button" style="text-decoration: none; padding: 10px 20px; background-color: #a9fe77; color: #000; border: 1px solid #999; border-radius: 5px;">
-            Liste des demandes d'amis
+            {{ __('friends.liste_demandes_amis') }}
         </a>
     </div>
 
@@ -151,24 +151,24 @@
     <div class="search-bar">
         <form action="{{ route('amis.recherche') }}" method="POST">
             @csrf
-            <input type="text" name="q" placeholder="Nom d'utilisateur" required class="search-input">
-            <button type="submit" class="search-button">Rechercher</button>
+            <input type="text" name="q" placeholder="{{ __('friends.recherche_exemple') }}" required class="search-input">
+            <button type="submit" class="search-button">{{ __('friends.bouton_recherche') }}</button>
         </form>
     </div>
 
     @isset($utilisateurs)
         @if($utilisateurs->isEmpty())
-            <p>Aucun utilisateur trouvé.</p>
+            <p>{{ __('friends.aucun_utilisateurs_trouves') }}</p>
         @else
-            <h2>Résultats de recherche :</h2>
+            <h2>{{ __('friends.resultats_recherche') }}</h2>
             <ul class="result-list">
                 @foreach($utilisateurs as $utilisateur)
                     <li class="result-item" data-target="#profileModal{{ $utilisateur->id }}">
                         <div class="profile-trigger">
                             @if($utilisateur->avatar)
-                                <img src="{{ asset('images/avatars/' . $utilisateur->avatar) }}" alt="Avatar" class="avatar" style="width:40px;height:40px;border-radius:50%;">
+                                <img src="{{ asset('images/avatars/' . $utilisateur->avatar) }}" alt="{{ __('friends.avatar') }}" class="avatar" style="width:40px;height:40px;border-radius:50%;">
                             @else
-                                <img src="{{ asset('images/avatars/default-avatar.jpg') }}" alt="Avatar" class="avatar" style="width:40px;height:40px;border-radius:50%;">
+                                <img src="{{ asset('images/avatars/default-avatar.jpg') }}" alt="{{ __('friends.avatar_defaut') }}" class="avatar" style="width:40px;height:40px;border-radius:50%;">
                             @endif
                             <span class="username">{{ $utilisateur->username }}</span>
                         </div>
@@ -179,7 +179,7 @@
                             <!-- Ici, "user_id" serait l'expéditeur de la demande et "friend_id" le destinataire -->
                             <input type="hidden" name="user_id" value="{{ $utilisateurConnecteId ?? 0 }}">
                             <input type="hidden" name="friend_id" value="{{ $utilisateur->id }}">
-                            <button type="submit" class="add-button">Ajouter</button>
+                            <button type="submit" class="add-button">{{ __('friends.ajouter_amis') }}</button>
                         </form>
                     </li>
 
@@ -188,23 +188,23 @@
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="profileModalLabel{{ $utilisateur->id }}">Profil de {{ $utilisateur->username }}</h5>
+                                    <h5 class="modal-title" id="profileModalLabel{{ $utilisateur->id }}">{{ __('friends.profil_de', ['name' => $utilisateur->username]) }}</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
                                     @if($utilisateur->avatar)
-                                        <img src="{{ asset('images/avatars/' . $utilisateur->avatar) }}" alt="Avatar" class="profile-avatar">
+                                        <img src="{{ asset('images/avatars/' . $utilisateur->avatar) }}" alt="{{ __('friends.avatar') }}" class="profile-avatar">
                                     @else
-                                        <img src="{{ asset('images/avatars/default-avatar.jpg') }}" alt="Avatar" class="profile-avatar">
+                                        <img src="{{ asset('images/avatars/default-avatar.jpg') }}" alt="{{ __('friends.avatar_defaut') }}" class="profile-avatar">
                                     @endif
-                                    <p><strong>Nom complet:</strong> {{ $utilisateur->name }}</p>
-                                    <p><strong>Email:</strong> {{ $utilisateur->email }}</p>
-                                    <p><strong>Membre depuis:</strong> {{ $utilisateur->created_at->format('d M Y') }}</p>
+                                    <p><strong>{{ __('friends.nom_complet') }}</strong> {{ $utilisateur->name }}</p>
+                                    <p><strong>{{ __('friends.email') }}</strong> {{ $utilisateur->email }}</p>
+                                    <p><strong>{{ __('friends.membre_depuis') }}</strong> {{ $utilisateur->created_at->format('d M Y') }}</p>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('friends.fermer') }}</button>
                                 </div>
                             </div>
                         </div>

@@ -26,7 +26,7 @@
                                 </div>
                                 <div class="conteneurCanaux">
                                     <!-- Afficher amis  -->
-                                    <h1>Amis</h1>
+                                    <h1>{{ __('chat.amis') }}</h1>
                                     @include('conversations.utilisateurs', ['users' => $users])
                                 </div>
                             </div>
@@ -42,7 +42,7 @@
                             @if ($messages->hasMorePages())
                                 <div class="div text-center">
                                     <a href="{{ $messages->nextPageUrl() }}" class="btn btn-light">
-                                        Voir les messages précédent
+                                        {{ __('chat.voir_messages_precedents') }}
                                     </a>
                                 </div>
                             @endif
@@ -110,7 +110,7 @@
                             @if ($messages->previousPageUrl())
                                 <div class="div text-center">
                                     <a href="{{ $messages->previousPageUrl() }}" class="btn btn-light">
-                                        Voir les messages suivant
+                                        {{ __('chat.voir_messages_suivants') }}
                                     </a>
                                 </div>
                             @endif
@@ -137,8 +137,8 @@
                                         <button type="button" id="emoji-btn"
                                             name="emoji"class="btn btn-secondary me-2">😊</button>
                                         <input id="message" type="textarea" class="message-input form-control flex-grow-1"
-                                            name="content" placeholder="Écris un message...">
-                                        <button class="btn btn-primary ms-2" id="BoutonSoumettre" type="submit">Submit</button>
+                                            name="content" placeholder="{{ __('chat.ecrire_message') }}">
+                                        <button class="btn btn-primary ms-2" id="BoutonSoumettre" type="submit">{{ __('chat.soumettre') }}</button>
                                     </div>
                                 </div>
                             </form>

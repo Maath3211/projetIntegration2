@@ -5,28 +5,37 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Session;
 
 class ScoreGraph extends Component
 {
     public $months = [];
     public $clanScores = [];
     public $userScores = [];
-    public $showType = 'users'; // Options: 'users', 'clans', 'members', 'improvements'
-    public $selectedClanId = null;
+    public $showType;
+    public $selectedClanId;
+    public $refreshKey = 0;
 
-    protected $listeners = [
-        'updateSelectedClan' => 'updateSelectedClan'
-    ];
+    protected function getListeners()
+    {
+        return [
+            'localeChanged' => 'handleLocaleChanged',
+            'updateSelectedClan' => 'updateSelectedClan'
+        ];
+    }
 
-    public function mount($showType = 'users', $selectedClanId = null)
+    public function mount($showType = 'members', $selectedClanId = null)
     {
         $this->showType = $showType;
         $this->selectedClanId = $selectedClanId;
+
+        // Set locale from session when component mounts
+        if (Session::has('locale')) {
+            App::setLocale(Session::get('locale'));
+        }
+
         $this->loadChartData();
-    }
-    public function hideGraph()
-    {
-        $this->dispatch('closeGraph');
     }
 
     public function loadChartData()
@@ -36,9 +45,21 @@ class ScoreGraph extends Component
         $this->clanScores = [];
         $this->userScores = [];
 
+        // Get current locale
+        $locale = App::getLocale();
+
         for ($i = 5; $i >= 0; $i--) {
             $month = Carbon::now()->subMonths($i);
-            $this->months[] = $month->format('M Y');
+
+            // Translate month name based on locale
+            if ($locale === 'fr') {
+                // Custom French month format using translations
+                $monthName = __('months.' . strtolower($month->format('M')));
+                $this->months[] = $monthName . ' ' . $month->format('Y');
+            } else {
+                // Default English format
+                $this->months[] = $month->format('M Y');
+            }
 
             $startOfMonth = $month->startOfMonth()->format('Y-m-d');
             $endOfMonth = $month->endOfMonth()->format('Y-m-d');
@@ -74,7 +95,7 @@ class ScoreGraph extends Component
                 }
 
                 $userScore = $userQuery->sum('scores.score');
-                $this->userScores[] = $userScore ?: 0; 
+                $this->userScores[] = $userScore ?: 0;
             } catch (\Exception $e) {
                 $this->userScores[] = rand(700, 1500);
             }
@@ -87,8 +108,52 @@ class ScoreGraph extends Component
         $this->loadChartData();
     }
 
+    public function handleLocaleChanged($params = null)
+    {
+        $locale = null;
+
+        // Handle different parameter formats
+        if (is_string($params)) {
+            $locale = $params;
+        } elseif (is_array($params) && isset($params['locale'])) {
+            $locale = $params['locale'];
+        }
+
+        // Update locale if valid
+        if ($locale && in_array($locale, ['en', 'fr'])) {
+            Session::put('locale', $locale);
+            App::setLocale($locale);
+
+            // Reload chart data with new locale for month names
+            $this->loadChartData();
+        }
+
+        if (Session::has('locale')) {
+            App::setLocale(Session::get('locale'));
+        }
+
+        // Increment refresh key to force re-render
+        $this->refreshKey++;
+    }
+
+    public function closeGraph()
+    {
+        $this->dispatch('scoreGraphClosed');
+    }
+
     public function render()
     {
-        return view('livewire.score-graph');
+        // Set locale from session before rendering
+        if (Session::has('locale')) {
+            App::setLocale(Session::get('locale'));
+        }
+
+        return view('livewire.score-graph', [
+            'showType' => $this->showType,
+            'selectedClanId' => $this->selectedClanId,
+            'months' => $this->months,
+            'clanScores' => $this->clanScores,
+            'userScores' => $this->userScores,
+        ]);
     }
 }

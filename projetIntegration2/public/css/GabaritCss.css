@@ -38,7 +38,7 @@ aside {
 }
 
 .bullePersonnalisee i {
-    color: #303030; 
+    color: #303030;
     background-color: #d9d9d9;
     flex-grow: 1;
     height: 100%;
@@ -69,6 +69,28 @@ aside {
 .bouton:active {
     transform: scale(0.95);
     box-shadow: 1px 1px 5px rgba(169, 254, 119, 0.8);
+}
+
+#imgDeconnexion {
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+    width: 8vh;
+    background-color: #303030;
+}
+
+.language-switcher {
+    display: inline-block;
+    margin: 10px 0;
+}
+
+.language-switcher a {
+    text-decoration: none;
+    padding: 5px;
+}
+
+.language-switcher a.active {
+    font-weight: bold;
 }
 
 .creerClan {
@@ -191,7 +213,7 @@ aside {
 }
 
 .messageErreur {
-    color:rgb(219, 82, 82);
+    color: rgb(219, 82, 82);
     display: none;
 }
 
@@ -228,13 +250,13 @@ aside {
     cursor: pointer;
 }
 
-#messageSucces{
+#messageSucces {
     background-color: #60c22c;
     border: 2px solid rgba(71, 70, 70, 0.5);
     color: black;
 }
 
-#messageErreur{
+#messageErreur {
     background-color: #c22c2c;
     border: 2px solid rgba(71, 70, 70, 0.8);
     color: black;
