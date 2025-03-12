@@ -1,5 +1,5 @@
 <div style="height: 100vh; overflow-y: auto; scrollbar-width: thin; scrollbar-color: transparent transparent;">
-    
+
     @if(!$showingGraph)
     <div id="topMembresContainer" style="scrollbar-width: thin; scrollbar-color: transparent transparent;">
         <div class="leaderboard-header p-3 mb-3 border rounded d-flex justify-content-between align-items-center">
@@ -32,7 +32,7 @@
                 @foreach ($meilleursMembres->take(5) as $index => $membre)
                 <div class="clan-row d-flex align-items-center justify-content-between mb-2 py-2 px-3 border-bottom">
                     <div class="d-flex align-items-center">
-                        <a href="" class="clan-link">
+                        <a class="clan-link" href="{{ route('profil.profilPublic', ['email' => $membre->user_email]) }}">
                             <div class="position mr-3">{{ $index + 1 }}</div>
                             <img src="{{ asset($membre->user_image) }}" alt="User Image" class="rounded-circle" style="width:40px; height:40px;">
                             <span class="clan-nom ml-3">{{ $membre->user_prenom }} {{ $membre->user_nom }}</span>
@@ -46,7 +46,7 @@
                 @foreach ($meilleursMembres->slice(5, 5) as $index => $membre)
                 <div class="clan-row d-flex align-items-center justify-content-between mb-2 py-2 px-3 border-bottom">
                     <div class="d-flex align-items-center">
-                        <a href="" class="clan-link">
+                        <a class="clan-link" href="{{ route('profil.profilPublic', ['email' => $membre->user_email]) }}">
                             <div class="position mr-3">{{ $index + 6 }}</div>
                             <img src="{{ asset($membre->user_image) }}" alt="User Image" class="rounded-circle" style="width:40px; height:40px;">
                             <span class="clan-nom ml-3">{{ $membre->user_prenom }} {{ $membre->user_nom }}</span>
@@ -89,7 +89,7 @@
                 @foreach ($topScoreImprovement->take(5) as $index => $user)
                 <div class="clan-row d-flex align-items-center justify-content-between mb-2 py-2 px-3 border-bottom">
                     <div class="d-flex align-items-center">
-                        <a href="" class="clan-link">
+                        <a class="clan-link" href="{{ route('profil.profilPublic', ['email' => $user->user_email]) }}">
                             <div class="position mr-3">{{ $index + 1 }}</div>
                             <img src="{{ asset($user->user_image) }}" alt="User Image" class="rounded-circle" style="width:40px; height:40px;">
                             <span class="clan-nom ml-3">{{ $user->user_prenom }} {{ $user->user_nom }}</span>
@@ -104,7 +104,7 @@
                 @foreach ($topScoreImprovement->slice(5, 5) as $index => $user)
                 <div class="clan-row d-flex align-items-center justify-content-between mb-2 py-2 px-3 border-bottom">
                     <div class="d-flex align-items-center">
-                        <a href="" class="clan-link">
+                        <a class="clan-link" href="{{ route('profil.profilPublic', ['email' => $user->user_email]) }}">
                             <div class="position mr-3">{{ $index + 6 }}</div>
                             <img src="{{ asset($user->user_image) }}" alt="User Image" class="rounded-circle" style="width:40px; height:40px;">
                             <span class="clan-nom ml-3">{{ $user->user_prenom }} {{ $user->user_nom }}</span>
