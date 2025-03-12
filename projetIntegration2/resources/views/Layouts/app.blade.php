@@ -130,13 +130,13 @@
     <aside class="w-20 text-white h-screen flex flex-col items-center py-4 space-y-4 p-5">
 
       <!-- Navigation aux messages privés entre utilisateurs -->
-      <a href="{{ route('conversations.index') }}">
+      <a href="{{ route('conversations.index') }}" title="{{__('layout.messagerie')}}">
         <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee"><i
             class="fa-solid fa-comment fa-2xl"></i></div>
       </a>
 
       <!-- Navigation aux classements -->
-      <a href="{{route('scores.meilleursGroupes')}}">
+      <a href="{{route('scores.meilleursGroupes')}}" title="{{__('layout.classements')}}">
         <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee"><i
             class="fa-solid fa-ranking-star fa-2xl"></i></div>
       </a>
@@ -145,17 +145,17 @@
       @if (isset($clans))
       @foreach ($clans as $clan)
       <a href="{{ route('clan.montrer', ['id' => $clan->id]) }}">
-        <div class="w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset($clan->image) }}"
+        <div class=" w-16 h-16 rounded-full overflow-hidden"><img src="{{ asset($clan->image) }}"
             class="object-cover w-full h-full"></div>
       </a>
       @endforeach
       @endif
-      <a id="creerClan">
+      <a id="creerClan" title="{{__('layout.creer_clan')}}">
         <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee creerClan"><i
             class="fa-regular fa-square-plus fa-2xl"></i></i></div>
       </a>
 
-      <a href="{{ route('graphs.index') }}" title="Mes Graphiques">
+      <a href="{{ route('graphs.index') }}" title="{{__('layout.mes_graphiques')}}">
         <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee position-relative">
           <i class="fa-solid fa-chart-line fa-2xl"></i>
           <i class="fa-solid fa-plus position-absolute" style="font-size: 0.8em; color: #a9fe77; bottom: 12px; right: 12px; background: #333; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; border: 1px solid #a9fe77;"></i>

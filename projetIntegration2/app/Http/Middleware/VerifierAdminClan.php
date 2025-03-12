@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Clan;
 
+
 class VerifierAdminClan
 {
     /**
@@ -22,17 +23,17 @@ class VerifierAdminClan
 
         // s'il n'est pas connecté
         if(!$utilisateur){
-            return redirect('/')->with('erreur', 'Vous devez être connectés pour faire cette action.');
+            return redirect('/')->with('erreur', __('middleware.must_be_logged_in'));
         }
 
         // si le clan n'existe pas
         if(!$clan){
-            return redirect('/profil')->with('erreur', 'Ce clan n\'existe pas.');
+            return redirect('/profil')->with('erreur', __('middleware.clan_not_exist'));
         }
 
         // si l'utilisateur n'est pas l'admin
         if($clan->adminId != $utilisateur->id){
-            return redirect('/profil')->with('erreur', 'Vous n\'êtes pas autorisé à faire cette action.');
+            return redirect('/profil')->with('erreur', __('middleware.not_clan_admin'));
         }
 
         return $next($request);
