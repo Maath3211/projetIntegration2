@@ -41,7 +41,7 @@ return [
     'clan' => 'Clan',
     'creation_clan' => 'Créer un clan',
     'joindre_clan' => 'Rejoindre un clan',
-    'clan_sans_canal' => 'Aucun canal n\'est créé pour ce clan. Veuillez en créer une pour commencer.',
+    'clan_sans_canal' => 'Aucun canal n\'est créé pour cette catégorie. Veuillez en créer une pour commencer.',
     'sans_categorie' => 'Aucune catégorie de canal n\'a été créée pour ce clan. Veuillez en créer une pour ajout des canaux.',
     'entrer_message' => 'Entrez votre message ici...',
     'invitation_vue' => 'Invitez quelqu\'un au clan pour afficher les membres!',

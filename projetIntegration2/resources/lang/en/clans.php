@@ -39,7 +39,7 @@ return [
     'clan' => 'Clan',
     'creation_clan' => 'Create a clan',
     'joindre_clan' => 'Join a clan',
-    'clan_sans_canal' => 'No channel is created for this clan. Please create one to start.',
+    'clan_sans_canal' => 'No channel is created for this category. Please create one to start.',
     'sans_categorie' => 'No channel category has been created for this clan. Please create one to add channels.',
     'entrer_message' => 'Enter your message here...',
     'invitation_vue' => 'Invite someone to the clan to display the members!',
