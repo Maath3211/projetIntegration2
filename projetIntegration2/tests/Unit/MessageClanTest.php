@@ -104,7 +104,7 @@ class MessageClanTest extends TestCase
 
 
     #[Test]
-    public function un_message_doist_avoir_un_message_ou_un_fichier()
+    public function un_message_doit_avoir_un_message_ou_un_fichier()
     {
         $this->expectException(\Illuminate\Validation\ValidationException::class);
     
