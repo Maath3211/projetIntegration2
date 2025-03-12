@@ -54,7 +54,7 @@
                                                 </div>
                                             @endforeach
                                         @else
-                                            <p>Aucun canal n'est créé pour ce clan. Veuillez en créer une pour commencer.</p>
+                                            <p>Aucun canal n'est créé pour cette catégorie. Veuillez en créer une pour commencer.</p>
                                         @endif
                                     </div>
                                     <i class="fa-solid fa-plus fa-xs"></i>

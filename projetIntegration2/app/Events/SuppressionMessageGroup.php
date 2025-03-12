@@ -20,16 +20,19 @@ class SuppressionMessageGroup implements ShouldBroadcastNow
 
     public $messageId;
     public $groupId;
+    public $canal;
+    
 
-    public function __construct($messageId, $groupId)
+    public function __construct($messageId, $groupId, $canal)
     {
         $this->messageId = $messageId;
         $this->groupId = $groupId;
+        $this->canal = $canal;
     }
 
     public function broadcastOn(): array
     {
-        return [new Channel("chat-" . $this->groupId)];
+        return [new Channel("chat-" . $this->groupId) . "-" . $this->canal];
     }
 
     public function broadcastAs(): string

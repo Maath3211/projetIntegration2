@@ -13,9 +13,11 @@ use App\Models\User;
 use App\Models\Canal;
 use App\Models\CategorieCanal;
 use App\Models\Clan_user;
+use App\Models\UtilisateurClan;
 use App\Repository\ConversationsRepository;
 use App\Repository\ConversationsClan;
 use App\Events\MessageGroup;
+use App\Events\SuppressionMessageGroup;
 use Exception;
 
 class ClanController extends Controller
@@ -91,7 +93,7 @@ class ClanController extends Controller
     // Mise à jour des paramtètres généraux (image & nom du clan)
     public function miseAJourGeneral(Request $request, $id){
         try {
-            
+            Log::info('NOM: ' . $request->input('nomClan'));
             // la validation du formulaire
             $request->validate([
                 'imageClan' => 'image|mimes:jpeg,png,jpg,gif,webp|max:4096',
@@ -155,9 +157,9 @@ class ClanController extends Controller
             }
 
         } catch (Exception $e) {
-            Log::error('Téléversement d\'image erronné: ' . $e->getMessage());
+            Log::error('Enregistrement: ' . $e->getMessage());
     
-            return back()->with('erreur', 'Une erreur est survenue lors du téléversement de l\'image.');
+            return back()->with('erreur', $e->getMessage());
         }
     }
 
@@ -285,13 +287,13 @@ class ClanController extends Controller
         $action = $request->input('action');
         $requete = json_decode($request->input('requete'), true);
         if(isset($requete['nouveauNom'])){
-            $requete['nouveauNom'] = str_replace(' ', '-', $requete['nouveauNom']);
+            $requete['nouveauNom'] = str_replace(' ', '-', strtolower($requete['nouveauNom']));
         }
 
         if(isset($requete['canal'])){
             // pour ajouter un canal
             if($action === 'ajouter') {
-                $requete['nouveauNom'] = str_replace(' ', '-', $requete['nouveauNom']);
+                $requete['nouveauNom'] = str_replace(' ', '-', strtolower($requete['nouveauNom']));
 
                 // Critère 1: Les canaux de doivent pas dépasser les 50 caractères.
                 if(strlen($requete['nouveauNom']) > 50){
@@ -311,7 +313,7 @@ class ClanController extends Controller
 
                 
                 if($canal)
-                    return redirect()->back()->with('message', 'ajout fait avec succès!');
+                    return redirect()->back()->with('message', 'Ajout effectué avec succès!');
                 else 
                     return redirect()->back()->with('erreur', 'Erreur lors de l\'ajout du canal. Veuillez réessayer plus tard.');
             } 
@@ -329,15 +331,15 @@ class ClanController extends Controller
                         return redirect()->back()->with('erreur', 'Les canaux ne doivent pas contenir de chiffres ou de symboles. Seul les lettres UTF-8 et les traits (-) sont permis.');
                     }
 
-                    $canal->titre = $requete['nouveauNom'];
+                    $canal->titre = str_replace(' ', '-', strtolower($requete['nouveauNom']));
                     $canal->save();
                     
-                    return redirect()->back()->with('message', 'modification faite avec succès!');
+                    return redirect()->back()->with('message', 'Modification effectuée avec succès!');
                 } 
                 // pour supprimer un canal
                 else if($action === 'supprimer') {
                     $canal->delete();
-                    return redirect()->back()->with('message', 'suppression faite avec succès!');
+                    return redirect()->back()->with('message', 'Suppression effectuée avec succès!');
                 }
             }
         }
@@ -492,7 +494,7 @@ class ClanController extends Controller
 
         $clan->delete();
         
-        return redirect()->route('profil.profil')->with('message', 'Suppression faite avec succès!');
+        return redirect()->route('profil.profil')->with('message', 'Suppression effectuée avec succès!');
     }
 
     // Accepter une invitation a un clan
@@ -675,7 +677,7 @@ class ClanController extends Controller
             ]);
     
             // Diffuser l’événement via Pusher
-            broadcast(new MessageGroup($request->message, auth()->id(), $request->canal ,$request->to, false, $lastId, $fichierNom, auth()->user()->email))
+            broadcast(new MessageGroup(e($request->message), auth()->id(), $request->canal ,$request->to, false, $lastId, $fichierNom, auth()->user()->email))
                 ->toOthers();
     
         } catch (\Exception $e) {
@@ -691,6 +693,57 @@ class ClanController extends Controller
         ]);
     }
 
+    public function receiveClan(Request $request){
+
+        return response()->json([
+            'message' => $request->message,
+            'sender_id' => $request->sender_id,
+            'group_id' => $request->group_id,
+            'canal_id' => $request->canal_id,
+            'deleted' => $request->deleted,
+            'last_id' => $request->last_id,
+            'photo' => $request->photo,
+            
+        ]);
+    }
+
+    public function destroy(UtilisateurClan $message)
+    {
+        if (auth()->id() !== $message->idEnvoyer) {
+            return response()->json(['error' => 'Action non autorisée'], 403);
+        }
+    
+        \Log::info('Détails du message avant suppression', ['message_id' => $message->id, 'fichier' => $message->fichier]);
+    
+        if ($message->fichier) {
+            $fichierNom = $message->fichier;
+    
+            // Déterminer le dossier selon l'extension
+            $dossier = in_array(pathinfo($fichierNom, PATHINFO_EXTENSION), ['jpg', 'jpeg', 'png', 'gif'])
+                ? 'img/conversations_photo/'
+                : 'fichier/conversations_fichier/';
+    
+            $fichierPath = public_path($dossier . $fichierNom);
+    
+            \Log::info('Chemin du fichier à supprimer', ['fichier_path' => $fichierPath]);
+    
+            if (file_exists($fichierPath)) {
+                unlink($fichierPath);
+                \Log::info('Fichier supprimé', ['fichier_path' => $fichierPath]);
+            } else {
+                \Log::warning('Le fichier n\'existe pas', ['fichier_path' => $fichierPath]);
+            }
+        } else {
+            \Log::info('Aucun fichier associé au message', ['message_id' => $message->id]);
+        }
+    
+        $messageId = $message->id;
+        $message->delete();
+    
+        broadcast(new SuppressionMessageGroup($messageId, $message->idClan, $message->idClan))->toOthers();
+    
+        return response()->json(['success' => 'Message supprimé']);
+    }
 
 
 

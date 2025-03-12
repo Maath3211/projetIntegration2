@@ -58,8 +58,9 @@ Route::GET(
     [ClanController::class, 'showCanalClan']
 )->name('clan.canal');
 //Envoyer un message dans un canal
-Route::POST('/broadcastClan', [ClanController::class, 'broadcastClan']);
-Route::POST('/receiveClan', [ClanController::class, 'receiveClan']);
+Route::POST('/broadcastClan', [ClanController::class,'broadcastClan']);
+Route::POST('/receiveClan', [ClanController::class,'receiveClan']);
+Route::delete('/messagesClan/{message}', [ClanController::class, 'destroy'])->middleware('auth')->name('messages.destroy');
 
 
 
@@ -74,7 +75,7 @@ Route::GET('/conversations/{user}', [ConversationsController::class, 'show'])->n
 Route::POST('/conversations/{user}', [ConversationsController::class, 'store']);
 Route::POST('/broadcast', [ConversationsController::class, 'broadcast']);
 Route::POST('/receive', [ConversationsController::class, 'receive']);
-Route::GET('/conversations', [ConversationsController::class, 'index'])->name('conversations');
+Route::GET('/conversations', [ConversationsController::class, 'index'])->name('conversations.index');
 
 Route::GET('/testClan/{clans}', [ConversationsController::class, 'showClan'])->name('conversations.showClan');
 //Test Clan Message

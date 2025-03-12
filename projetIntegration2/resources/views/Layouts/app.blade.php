@@ -130,7 +130,7 @@
     <aside class="w-20 text-white h-screen flex flex-col items-center py-4 space-y-4 p-5">
 
       <!-- Navigation aux messages privés entre utilisateurs -->
-      <a href="#">
+      <a href="{{ route('conversations.index') }}">
         <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee"><i
             class="fa-solid fa-comment fa-2xl"></i></div>
       </a>
@@ -176,9 +176,7 @@
           <span style="color: {{ app()->getLocale() == 'fr' ? '#fff' : '#aaa' }}; text-decoration: none; display: block;">FR</span>
         </div>
       </div>
-
-
-      <div class="relative mt-auto">
+      <div class="mt-auto sectionProfil">
         <button id="profileMenuBtn" class="w-16 h-16 overflow-hidden rounded-full">
           <img src="{{ asset(Auth::user()->imageProfil) }}" class="object-cover w-full h-full">
         </button>
@@ -213,7 +211,7 @@
         @csrf
         <div id="fenetreAjoutClan" class="fenetreCategorie">
           <div class="conteneurConfirmation">
-            <div class="titreConfirmation" style="display: flex; align-items: center;">
+            <div class="titreConfirmation" style="display: flex; align-items: center; padding:10px;">
               <img src="{{ asset('img/Clans/default.jpg') }}" alt="Image du clan" class="apercuImage"
                 style="width: 50px; height: 50px; margin-right: 10px;">
               <input type="text" name="nomClan" class="form-control entreeNomClan"
@@ -262,6 +260,9 @@
             @endforeach
             @endif
             @if (session('erreur'))
+            <li>{{ session('erreur') }}</li>
+            @endif
+            @if (session('error'))
             <li>{{ session('erreur') }}</li>
             @endif
           </ul>

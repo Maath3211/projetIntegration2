@@ -13,6 +13,7 @@ class Message extends Model
         'message',
         'idEnvoyer',
         'idReceveur',
+        'fichier',
         'created_at',
     ];
 
@@ -28,7 +29,7 @@ class Message extends Model
  */
     public function from(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'receveur_id');
+        return $this->belongsTo(User::class, 'idEnvoyer');
     }
 
     

@@ -3,8 +3,8 @@ body {
     color: aliceblue;
 }
 
-main {
-    width: 100%;
+main{
+    width:100%;
 }
 
 aside::-webkit-scrollbar {
@@ -12,8 +12,21 @@ aside::-webkit-scrollbar {
 }
 
 aside {
+    max-height: 100vh;
     -ms-overflow-style: none;
     scrollbar-width: none;
+    overflow-y: auto;
+}
+
+.sectionProfil {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background-color: #303030;
+    z-index: 1000;
+    margin-top: 10px;
+    padding: 0.8%;
+    border-top: 2px rgba(218, 245, 203, 0.5) solid;
 }
 
 .bullePersonnalisee {
@@ -353,5 +366,10 @@ aside {
     #mobileProfileMenu {
         left: 50%;
         transform: translateX(-50%);
+    }
+
+    .sectionProfil{
+        background-color: transparent;
+        border:none;
     }
 }

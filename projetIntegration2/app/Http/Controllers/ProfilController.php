@@ -33,7 +33,7 @@ class ProfilController extends Controller
     {
         $utilisateur = User::where('email', $request->email)->first();
         if (!$utilisateur) {
-            return redirect()->back()->withErrors(['email' => 'Aucun compte trouvé avec cet email']);
+            return redirect()->back()->withErrors(['email' => 'Informations invalides']);
         }
         if ($utilisateur->email_verified_at == null) {
             return redirect()->back()->withErrors(['email' => __('auth.compte_non_verifie')]);
@@ -238,7 +238,7 @@ class ProfilController extends Controller
         $clans = $utilisateur->clans;
         $utilisateur = User::where('email', $email)->first();
         $clansAway = $utilisateur->clans;
-        
+
         if (!$utilisateur) {
             return redirect()->route('profil.profil')->withErrors([__('profile.utilisateur_non_trouve')]);
         }
@@ -255,9 +255,12 @@ class ProfilController extends Controller
         return redirect()->route('profil.pageConnexion')->with('message', 'Votre compte a été supprimé avec succès');
     }
 
-    public function deconnexion()
+
+    public function deconnexion(Request $request)
     {
         Auth::guard()->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
         return redirect()->route('profil.pageConnexion');
     }
 
@@ -339,13 +342,23 @@ class ProfilController extends Controller
         $request->validate([
             'email' => 'required|email',
             'password' => 'required|min:8|confirmed',
-            'token' => 'required'
+            'token' => 'required',
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'confirmed',
+                'regex:/[a-z]/',     // at least one lowercase letter
+                'regex:/[A-Z]/',     // at least one uppercase letter
+                'regex:/[0-9]/',     // at least one number
+            ],
         ], [
             'email.required' => __('profile.courriel_requis'),
             'email.email' => __('profile.courriel_entrer'),
             'password.required' => __('profile.mdp_required'),
             'password.min' => __('profile.mdp_min'),
             'password.confirmed' => __('profile.mdp_confirmed'),
+            'password.regex' => 'Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule et un chiffre',
             'token.required' => __('profile.token_requis')
         ]);
 

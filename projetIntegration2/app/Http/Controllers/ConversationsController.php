@@ -6,14 +6,18 @@ use Illuminate\Http\Request;
 use App\Models\Clan;
 use App\Models\User;
 use App\Models\UtilisateurClan;
+use App\Models\Message;
 use App\Models\Canal;
+
 use App\Repository\ConversationsRepository;
 use App\Repository\ConversationsClan;
 use App\Http\Requests\StoreMessage;
 use App\Events\PusherBroadcast;
 use App\Events\MessageGroup;
 use App\Events\SuppressionMessageGroup;
+use App\Events\SuppressionMessageAmis;
 
+//TODO : BUG A CORRIGER
 
 
 
@@ -25,7 +29,7 @@ class ConversationsController extends Controller
     private $ClanRepository;
 
     public function __construct(
-        ConversationsRepository $conversationRepository, 
+        ConversationsRepository $conversationRepository,
         ConversationsClan $ClanRepository
     ) {
         $this->ConvRepository = $conversationRepository;
@@ -33,110 +37,184 @@ class ConversationsController extends Controller
     }
 
 
-    public function index(){
+    public function index()
+    {
 
-        $users = User::select('email','id')->get();
-        return view('conversations.index',[
-            'users' => $this->ConvRepository->getConversations()
+        $utilisateur = auth()->id();
+        $utilisateur = User::findOrFail($utilisateur);
+         
+        if (!$utilisateur){
+            Log::info('Utilisateur pas connecté.');
+            return redirect('/connexion')->with('erreur', 'Vous devez être connectés pour afficher les clans.');
+        }
+         
+        $clans = $utilisateur->clans()->get();
+
+        $userId = auth()->id();
+        $users = \DB::table('demande_amis')
+            ->join('users', function ($join) use ($userId) {
+                $join->on('users.id', '=', 'demande_amis.requested_id')
+                    ->orOn('users.id', '=', 'demande_amis.requester_id');
+            })
+            ->select('users.email', 'users.id')
+            ->where('demande_amis.status', 'accepted')
+            ->where(function ($query) use ($userId) {
+                $query->where('demande_amis.requester_id', $userId)
+                    ->orWhere('demande_amis.requested_id', $userId);
+            })
+            ->where('users.id', '!=', $userId)
+            ->get();
+
+
+
+
+        return view('conversations.index', [
+            'users' => $users,
+            'clans' => $clans,
         ]);
-
     }
 
-    public function show(User $user){
-        dd($user);
-        //$users = auth()->id();
-        //dd($user);
-        return view('conversations.show',[
-            'users' => $this->ConvRepository->getConversations(),
+    public function show(User $user)
+    {
+        $utilisateur = auth()->id();
+        $utilisateur = User::findOrFail($utilisateur);
+         
+        if (!$utilisateur){
+            Log::info('Utilisateur pas connecté.');
+            return redirect('/connexion')->with('erreur', 'Vous devez être connectés pour afficher les clans.');
+        }
+         
+        $clans = $utilisateur->clans()->get();
+
+        $userId = auth()->id();
+        $users = \DB::table('demande_amis')
+            ->join('users', function ($join) use ($userId) {
+                $join->on('users.id', '=', 'demande_amis.requested_id')
+                    ->orOn('users.id', '=', 'demande_amis.requester_id');
+            })
+            ->select('users.email', 'users.id')
+            ->where('demande_amis.status', 'accepted')
+            ->where(function ($query) use ($userId) {
+                $query->where('demande_amis.requester_id', $userId)
+                    ->orWhere('demande_amis.requested_id', $userId);
+            })
+            ->where('users.id', '!=', $userId)
+            ->get();
+    
+        $messages = $this->ConvRepository->getMessageFor(auth()->id(), $user->id);
+    
+        return view('conversations.show', [
+            'users' => $users,
             'user' => $user,
-            'messages' => $this->ConvRepository->getMessageFor(auth()->id(), $user->id)->paginate(300)//Pagination des messages par 2
+            'messages' => $messages,
+            'clans' => $clans,  
         ]);
     }
 
+    //Pour utilisation du pusher nom de variable en englais
+    public function broadcast(Request $request)
+    {
+        \Log::info('Début de la diffusion du message', ['user_id' => auth()->id()]);
 
-    public function store(User $user, StoreMessage $request){
-        $senderId = auth()->id();
-        $receiverId = $user->id;
+        $request->validate([
+            'message' => 'nullable|string',
+            'fichier' => 'nullable|file|max:20480', // 20 Mo
+        ]);
 
-        $message = $this->ConvRepository->createMessage(
-            $request->get('content'),
-            $senderId,
-            $receiverId
-        );
+        if (!$request->filled('message') && !$request->hasFile('fichier')) {
+            \Log::warning('Aucun message ou fichier fourni', ['user_id' => auth()->id()]);
+            return response()->json(['error' => 'Vous devez envoyer soit un message, soit un fichier, soit les deux.'], 422);
+        }
 
-        // Envoi du message via Pusher
-        broadcast(new PusherBroadcast($message->content, $senderId, $receiverId))->toOthers();
-        //\Log::info("📡 Message broadcasté : {$message->content}");
-
-        return redirect()->route('conversations.show', [$user->id]);
-    }
-
-
-
-    public function broadcast(Request $request){
-        //\Log::info('Message envoyé via Pusher', $request->all());
-        //\Log::info('📡 Tentative de broadcast avec message: ' . $request->message);
         try {
-            broadcast(new PusherBroadcast($request->message, auth()->id(), $request->to))
-                ->toOthers();
-            //\Log::info('✅ Message broadcasté avec succès');
-            
-            // Enregistrement des informations dans la table user_ami
-            \DB::table('user_ami')->insert([
+            $fichierNom = null;
+            if ($request->hasFile('fichier')) {
+                $fichier = $request->file('fichier');
+
+                // Générer un nom unique avec horodatage
+                $fichierNom = time() . '_' . $fichier->getClientOriginalName();
+
+                // Déterminer le dossier en fonction du type de fichier
+                $dossier = in_array($fichier->getClientOriginalExtension(), ['jpg', 'jpeg', 'png', 'gif'])
+                    ? 'img/conversations_photo/'
+                    : 'fichier/conversations_fichier/';
+
+                // Stocker le fichier
+                $fichier->move(public_path($dossier), $fichierNom);
+                //\Log::info('Fichier téléchargé avec succès', ['fichier_nom' => $fichierNom, 'dossier' => $dossier]);
+            }
+
+            // Insérer le message dans la base de données en utilisant le modèle Message
+            $message = Message::create([
                 'idEnvoyer' => auth()->id(),
                 'idReceveur' => $request->to,
                 'message' => $request->message,
+                'fichier' => $fichierNom, // Stocke le chemin public
                 'created_at' => now(),
-                'updated_at' => now()
             ]);
-            //\Log::info('✅ Message Enregistrer avec succès');
 
-            
+            //\Log::info('Message créé avec succès', ['message_id' => $message->id]);
 
+            // Diffuser l’événement via Pusher
+            broadcast(new PusherBroadcast(e($request->message), auth()->id(), $request->to, false, $message->id, $fichierNom, auth()->user()->email))
+                ->toOthers();
+
+            //\Log::info('Message diffusé avec succès', ['message_id' => $message->id]);
 
         } catch (\Exception $e) {
-            \Log::error('❌ Erreur lors du broadcast: ' . $e->getMessage());
+            //\Log::error('❌ Erreur lors du broadcast: ' . $e->getMessage());
         }
-        return response()->json(['message' => $request->message]);
-    }
-    
 
+        return response()->json([
+            'message' => $request->message,
+            'last_id' => $message->id,
+            'sender_id' => auth()->id(),
+            'sender_email' => auth()->user()->email,
+            'fichier' => $fichierNom ? asset($dossier . $fichierNom) : null, // Retourne l'URL complète
+            'email' => auth()->user()->email,
+        ]);
+    }
+
+
+
+    //Pour utilisation du pusher nom de variable en englais
     public function receive(Request $request){
-        //\Log::info('Receive method called with message: ' . $request->message);
-        //\Log::info('Message received: ' . $request->message); // Debug
-        return response()->json(['message' => $request->message]);
+        \Log::info('❌ Erreur lors du broadcast: ' . $request);
+    return response()->json([
+        'message' => $request->message,
+        'sender_id' => $request->sender_id,
+        'receiver_id' => $request->receiver_id,
+        'deleted' => $request->deleted,
+        'last_id' => $request->last_id,
+        'photo' => $request->photo,
+        'email' => $request->email,
+
+    ]);
     }
 
-
-
-
-
-
-
-
-
-/*-----------------------------------Conversation Clan-----------------------------------*/
-
-    public function destroy(UtilisateurClan $message)
+    public function destroy(Message $message)
     {
+        \Log::info('Tentative de suppression du message', ['message_id' => $message->id, 'user_id' => auth()->id()]);
+
         if (auth()->id() !== $message->idEnvoyer) {
+            \Log::warning('Action non autorisée pour la suppression du message', ['message_id' => $message->id, 'user_id' => auth()->id()]);
             return response()->json(['error' => 'Action non autorisée'], 403);
         }
-    
+
         \Log::info('Détails du message avant suppression', ['message_id' => $message->id, 'fichier' => $message->fichier]);
-    
+
         if ($message->fichier) {
             $fichierNom = $message->fichier;
-    
+
             // Déterminer le dossier selon l'extension
             $dossier = in_array(pathinfo($fichierNom, PATHINFO_EXTENSION), ['jpg', 'jpeg', 'png', 'gif'])
                 ? 'img/conversations_photo/'
                 : 'fichier/conversations_fichier/';
-    
+
             $fichierPath = public_path($dossier . $fichierNom);
-    
+
             \Log::info('Chemin du fichier à supprimer', ['fichier_path' => $fichierPath]);
-    
+
             if (file_exists($fichierPath)) {
                 unlink($fichierPath);
                 \Log::info('Fichier supprimé', ['fichier_path' => $fichierPath]);
@@ -146,120 +224,16 @@ class ConversationsController extends Controller
         } else {
             \Log::info('Aucun fichier associé au message', ['message_id' => $message->id]);
         }
-    
+
         $messageId = $message->id;
         $message->delete();
-    
-        broadcast(new SuppressionMessageGroup($messageId, $message->idClan))->toOthers();
-    
+
+        \Log::info('Message supprimé avec succès', ['message_id' => $messageId]);
+
+        broadcast(new SuppressionMessageAmis($messageId, $message->idEnvoyer, $message->idReceveur))->toOthers();
+
         return response()->json(['success' => 'Message supprimé']);
     }
-    
-    
-    
-    
-    
-    
-
-    public function showClan(Clan $clans)
-    {
-        
-        return view('conversations.showClan', [
-            'users' => $this->ClanRepository->getConversationsClan(),
-            'user' => $clans,
-            'messages' => $this->ClanRepository->getMessageClanFor($clans->id) // Plus besoin de auth()->id()
-            
-        ]);
-        
-    }
-    
-
-    public function broadcastClan(Request $request)
-    {
-        $request->validate([
-            'message' => 'nullable|string',
-            'fichier' => 'nullable|file|max:20480', // 20 Mo
-        ]);
-        
-        if (!$request->filled('message') && !$request->hasFile('fichier')) {
-            return response()->json(['error' => 'Vous devez envoyer soit un message, soit un fichier, soit les deux.'], 422);
-        }
-        
-    
-        try {
-            $fichierNom = null;
-            if ($request->hasFile('fichier')) {
-                $fichier = $request->file('fichier');
-        
-                // Générer un nom unique avec horodatage
-                $fichierNom = time() . '_' . $fichier->getClientOriginalName();
-        
-                // Déterminer le dossier en fonction du type de fichier
-                $dossier = in_array($fichier->getClientOriginalExtension(), ['jpg', 'jpeg', 'png', 'gif'])
-                    ? 'img/conversations_photo/'
-                    : 'fichier/conversations_fichier/';
-        
-                // Stocker le fichier
-                $fichier->move(public_path($dossier), $fichierNom);
-            }
-    
-            // Insérer le message dans la base de données
-            $lastId = \DB::table('utilisateur_clan')->insertGetId([
-                'idEnvoyer' => auth()->id(),
-                'idClan'    => $request->to,
-                'message'   => $request->message,
-                'fichier'   => $fichierNom, // Stocke le chemin public
-                'created_at'=> now(),
-                'updated_at'=> now()
-            ]);
-    
-            // Diffuser l’événement via Pusher
-            broadcast(new MessageGroup($request->message, auth()->id(), $request->to, false, $lastId, $fichierNom, auth()->user()->email))
-                ->toOthers();
-    
-        } catch (\Exception $e) {
-            \Log::error('❌ Erreur lors du broadcast: ' . $e->getMessage());
-        }
-    
-        return response()->json([
-            'message'      => $request->message,
-            'last_id'      => $lastId,
-            'sender_id'    => auth()->id(),
-            'sender_email' => auth()->user()->email,
-            'fichier'      => $fichierNom ? asset($dossier . $fichierNom) : null, // Retourne l'URL complète
-            'email'        => auth()->user()->email,
-
-        ]);
-    }
-    
-    
-    
-
-
-public function receiveClan(Request $request)
-{
-
-    // Ajoute l'email dans la réponse WebSocket
-    return response()->json([
-        'message' => $request->message,
-        'sender_id' => $request->sender_id,
-        'group_id' => $request->group_id,
-        'canal_id' => $request->canal_id,
-        'deleted' => $request->deleted,
-        'last_id' => $request->last_id,
-        'photo' => $request->photo,
-        
-    ]);
-}
-
-
-
-
-
-
-
-
-
 
 
 

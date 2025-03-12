@@ -60,9 +60,7 @@ class ConversationsRepository{
         return $this->message->newQuery()
         ->whereRaw("((idEnvoyer = $envoyeur AND idReceveur = $receveur) OR (idEnvoyer = $receveur AND idReceveur = $envoyeur ))")
         ->orderBy('created_at', 'ASC')
-        ->with([
-            'from' => function($query){return $query->select('email','id');}
-        ]);
+        ->with('from')->paginate(300);
     }
 /**
  * 
