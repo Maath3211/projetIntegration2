@@ -153,6 +153,34 @@ class ClanUserSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'id'         => 21,
+                'clan_id'    => 2,
+                'user_id'    => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id'         => 22,
+                'clan_id'    => 3,
+                'user_id'    => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id'         => 23,
+                'clan_id'    => 4,
+                'user_id'    => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id'         => 24,
+                'clan_id'    => 5,
+                'user_id'    => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
         ]);
     }
 }

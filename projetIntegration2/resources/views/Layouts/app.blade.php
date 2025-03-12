@@ -251,7 +251,7 @@
         @endif
 
         <!--Obligé d'utiliser $errors ici c'est la facon que laravel gère ses erreurs-->
-        @if ($errors->any() || session('erreur'))
+        @if ($errors->any() || session('erreur') || session('error'))
         <div class="alert" id="messageErreur">
           <ul>
             @if ($errors->any())
@@ -263,7 +263,7 @@
             <li>{{ session('erreur') }}</li>
             @endif
             @if (session('error'))
-            <li>{{ session('erreur') }}</li>
+            <li>{{ session('error') }}</li>
             @endif
           </ul>
           <button class="close-btn">X</button>
