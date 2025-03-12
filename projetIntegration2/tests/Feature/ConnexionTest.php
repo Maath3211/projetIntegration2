@@ -55,5 +55,24 @@ class ConnexionTest extends TestCase
         $response->assertRedirect('/'); // Verify it redirects back
     }
 
+    #[Test]
+    public function un_utilisateur_ne_peut_pas_se_connecter_avec_un_compte_non_verifie()
+    {
+        $user = User::factory()->create([
+            'email' => 'test165985123@test.com',
+            'password' => bcrypt('adminggg'),
+        ]);
+
+        $response = $this->post('/connexion', [
+            'email' => $user->email,
+            'password' => bcrypt('adminggg'),
+        ]);
+
+        // Assert the user is not authenticated
+        $this->assertGuest();
+        $response->assertSessionHas('errors');
+        $response->assertRedirect('/'); // Verify it redirects back
+    }
+
     
 }
