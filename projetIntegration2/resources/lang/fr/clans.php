@@ -14,6 +14,7 @@ return [
     'parametres_clan' => 'Paramètres de clan',
     'avertissement_suppression_clan' => 'Êtes-vous sur de vouloir supprimer le clan? Cette action est irréversible.',
     'telecharger' => '📄 Télécharger',
+    
 
 
     // New translations for parametresClanCanaux.blade.php
@@ -83,4 +84,5 @@ return [
     'inactif' => 'Inactif',
     'supprimer_invitation' => 'Supprimer l\'invitation',
     'confirmer_invitation' => 'Confirmer l\'invitation',
+    'lien_invitation' => 'Lien d\'invitation: ',
 ];

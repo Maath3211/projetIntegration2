@@ -81,4 +81,5 @@ return [
     'inactif' => 'Inactive',
     'supprimer_invitation' => 'Delete invitation',
     'confirmer_invitation' => 'Confirm invitation',
+    'lien_invitation' => 'Invitation link',
 ];
