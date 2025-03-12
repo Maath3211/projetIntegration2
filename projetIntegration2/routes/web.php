@@ -200,17 +200,17 @@ Route::post(
 Route::GET(
     '/stats',
     [StatistiqueController::class, 'index']
-)->name('statistique.index');
+)->name('statistique.index')->middleware('auth');
 
 Route::GET(
     '/graphique',
     [StatistiqueController::class, 'graphique']
-)->name('statistique.graphique');
+)->name('statistique.graphique')->middleware('auth');
 
 Route::GET(
     '/thermique',
     [StatistiqueController::class, 'thermique']
-)->name('statistique.thermique');
+)->name('statistique.thermique')->middleware('auth');
 
 Route::GET(
     '/localisation',
@@ -225,63 +225,63 @@ Route::get(
 Route::GET(
     '/graphiqueExercice/{exercice}',
     [StatistiqueController::class, 'graphiqueExercice']
-)->name('statistique.graphiqueExercice');
+)->name('statistique.graphiqueExercice')->middleware('auth');
 
 Route::GET(
     '/thermique',
     [StatistiqueController::class, 'thermique']
-)->name('statistique.thermique');
+)->name('statistique.thermique')->middleware('auth');
 
-Route::post('/statistique/storeThermique', [StatistiqueController::class, 'storeThermique'])->name('statistique.storeThermique');
+Route::post('/statistique/storeThermique', [StatistiqueController::class, 'storeThermique'])->name('statistique.storeThermique')->middleware('auth');
 
-Route::post('/statistiques/save', [StatistiqueController::class, 'save'])->name('statistiques.save');
+Route::post('/statistiques/save', [StatistiqueController::class, 'save'])->name('statistiques.save')->middleware('auth');
 
-Route::delete('/statistiques/{id}', [StatistiqueController::class, 'delete'])->name('statistiques.delete');
+Route::delete('/statistiques/{id}', [StatistiqueController::class, 'delete'])->name('statistiques.delete')->middleware('auth');
 
-Route::post('/statistiques/{id}/update-poids', [StatistiqueController::class, 'updatePoids'])->name('statistiques.updatePoids');
+Route::post('/statistiques/{id}/update-poids', [StatistiqueController::class, 'updatePoids'])->name('statistiques.updatePoids')->middleware('auth');
 
 
-Route::post('/ajouter-poids', [StatistiqueController::class, 'ajouterPoids'])->name('ajouter-poids');
+Route::post('/ajouter-poids', [StatistiqueController::class, 'ajouterPoids'])->name('ajouter-poids')->middleware('auth');
 
-Route::post('/ajouter-score/{exercice}', [StatistiqueController::class, 'ajouterScoreExercice'])->name('ajouter-score');
+Route::post('/ajouter-score/{exercice}', [StatistiqueController::class, 'ajouterScoreExercice'])->name('ajouter-score')->middleware('auth');
 
 
 
 Route::GET(
     '/objectif',
     [ObjectifController::class, 'index']
-)->name('objectif.index');
+)->name('objectif.index')->middleware('auth');
 
 Route::GET(
     '/objectif/ajouter',
     [ObjectifController::class, 'create']
-)->name('objectif.create');
+)->name('objectif.create')->middleware('auth');
 
 
 Route::GET(
     '/objectif/edit/{id}',
     [ObjectifController::class, 'edit']
-)->name('objectif.edit');
+)->name('objectif.edit')->middleware('auth');
 
 Route::post(
     '/objectif',
     [ObjectifController::class, 'store']
-)->name('objectif.store');
+)->name('objectif.store')->middleware('auth');
 
 Route::put(
     '/objectif/{id}',
     [ObjectifController::class, 'update']
-)->name('objectif.update');
+)->name('objectif.update')->middleware('auth');
 
 Route::put(
     '/objectif/update/{id}',
     [ObjectifController::class, 'updateComplet']
-)->name('objectif.updateComplet');
+)->name('objectif.updateComplet')->middleware('auth');
 
 Route::delete(
     '/objectif/{id}',
     [ObjectifController::class, 'destroy']
-)->name('objectif.destroy');
+)->name('objectif.destroy')->middleware('auth');
 
 
 Route::GET(
