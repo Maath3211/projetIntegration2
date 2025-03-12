@@ -106,6 +106,7 @@ class ClanController extends Controller
                 'nomClan.max' => 'Le nom du clan ne doit pas dépasser les 50 caractères.',
             ]);
 
+            
             $nomClan = $request->input('nomClan');
 
             // si une image a été soumise, on échange l'ancienne avec la nouvelle dans nos fichiers
