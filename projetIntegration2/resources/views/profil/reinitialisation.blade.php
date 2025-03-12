@@ -24,7 +24,7 @@
             <div class="col-md-10">
 
                 <form action="{{ route('profil.motDePasseOublieEmail') }}" method="post" id="formConnexion">
-                    <h1 class="h1" id="titreConnexion">{{ __('profile.password_reset') }}</h1>
+                    <h1 class="h1" id="titreConnexion">{{ __('profile.reinitialisation_mdp') }}</h1>
                     <div class="conteneurForm">
                         @csrf
                         <label for="email" class="text-vert">{{ __('profile.adresse_courriel') }}</label>
@@ -39,15 +39,15 @@
                     @endif
                     @if (session('errors'))
                         @foreach ($errors->all() as $error)
-                            @if ($error !== __('validation.required', ['attribute' => __('profile.adresse_courriel')]) && $error !== __('validation.required', ['attribute' => __('profile.password')]))
+                            @if ($error !== __('validation.required', ['attribute' => __('profile.adresse_courriel')]) && $error !== __('validation.required', ['attribute' => __('profile.mdp')]))
                                 <div class="alert alert-erreur">
                                     <p>{{ $error }}</p>
                                 </div>
                             @endif
                         @endforeach
                     @endif
-                    <button type="submit" class="btn btn-confirmation">{{ __('profile.reset') }}</button>
-                    <a href="{{ route('profil.connexion') }}" class="btn btn-retour">{{ __('profile.back') }}</a>
+                    <button type="submit" class="btn btn-confirmation">{{ __('profile.reinitialiser') }}</button>
+                    <a href="{{ route('profil.connexion') }}" class="btn btn-retour">{{ __('profile.retour') }}</a>
                 </form>
 
             </div>

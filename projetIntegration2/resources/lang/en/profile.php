@@ -27,38 +27,38 @@ return [
     'courriel' => 'Email',
     'date_naissance' => 'Date of Birth',
     'pays' => 'Country',
-    'choose_file' => 'Choose a file',
-    'choose' => 'Choose',
+    'choisir_fichier' => 'Choose a file',
+    'choisir' => 'Choose',
     'genre' => 'Genre',
 
     // Password reset
-    'password_reset' => 'Password Reset',
+    'reinitialisation_mdp' => 'Password Reset',
     'adresse_courriel' => 'Email address',
-    'password' => 'Password',
-    'password_confirmation' => 'Password confirmation',
-    'reset' => 'Reset',
-    'back' => 'Back',
-    'success_message' => 'A reset email has been sent if the account exists',
-    'password_update_success' => 'Your password has been updated successfully',
+    'mdp' => 'Password',
+    'confirmation_mdp' => 'Password confirmation',
+    'reinitialiser' => 'Reset',
+    'retour' => 'Back',
+    'message_succes' => 'A reset email has been sent if the account exists',
+    'mdp_maj_succes' => 'Your password has been updated successfully',
 
     //Profile Warning
 
-    'email_required' => 'Email is required',
-    'email_email' => 'Please enter a valid email address',
-    'password_required' => 'Password is required',
-    'password_min' => 'Password must be at least 8 characters',
-    'password_confirmed' => 'Password confirmation does not match',
-    'token_required' => 'Token is required',
+    'courriel_requis' => 'Email is required',
+    'courriel_entrer' => 'Please enter a valid email address',
+    'mdp_requis' => 'Password is required',
+    'mdp_min' => 'Password must be at least 8 characters',
+    'mdp_confirmer' => 'Password confirmation does not match',
+    'token_requis' => 'Token is required',
 
     // Errors
 
-    'image_upload_error' => 'Error uploading profile image',
-    'image_save_error' => 'Error saving the profile image',
+    'erreur_tel_image' => 'Error uploading profile image',
+    'erreur_sauv_image' => 'Error saving the profile image',
 
     //Google
 
-    'google_image_error' => 'Error with Google profile image',
-    'google_image_download' => 'Error downloading Google profile image',
-    'google_image_save' => 'Error saving Google profile image',
+    'image_google_erreur' => 'Error with Google profile image',
+    'image_google_telech' => 'Error downloading Google profile image',
+    'image_google_sauv' => 'Error saving Google profile image',
 
 ];

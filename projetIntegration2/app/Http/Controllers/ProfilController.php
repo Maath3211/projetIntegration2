@@ -74,8 +74,8 @@ class ProfilController extends Controller
                 $uploadedFile->move(public_path('img/Utilisateurs'), $nomFichierUnique);
                 $utilisateur->imageProfil = $nomFichierUnique;
             } catch (\Exception $e) {
-                Log::error(__('profile.image_upload_error'), [$e]);
-                return redirect()->back()->withErrors(['imageProfil' => __('profile.image_upload_error')]);
+                Log::error(__('profile.erreur_tel_image'), [$e]);
+                return redirect()->back()->withErrors(['imageProfil' => __('profile.erreur_tel_image')]);
             }
         } else {
             $utilisateur->imageProfil = 'img/Utilisateurs/utilisateurParDefaut.jpg';
@@ -204,15 +204,15 @@ class ProfilController extends Controller
                 if (file_put_contents(public_path($nomFichierUnique), $imageContent)) {
                     $utilisateur->imageProfil = $nomFichierUnique;
                 } else {
-                    Log::error(__('profile.google_image_save'));
-                    return redirect()->back()->withErrors(['imageProfil' => __('profile.image_save_error')]);
+                    Log::error(__('profile.image_google_sauv'));
+                    return redirect()->back()->withErrors(['imageProfil' => __('profile.erreur_sauv_image')]);
                 }
             } catch (\Exception $e) {
-                Log::error(__('profile.google_image_download'), [$e]);
-                return redirect()->back()->withErrors(['imageProfil' => __('profile.image_upload_error')]);
+                Log::error(__('profile.image_google_telech'), [$e]);
+                return redirect()->back()->withErrors(['imageProfil' => __('profile.erreur_tel_image')]);
             }
         } else {
-            return redirect()->back()->withErrors(['imageProfil' => __('profile.google_image_error')]);
+            return redirect()->back()->withErrors(['imageProfil' => __('profile.image_google_erreur')]);
         }
 
         $utilisateur->save();
@@ -305,7 +305,7 @@ class ProfilController extends Controller
 
         $user = User::where('email', $request->email)->first();
         if (!$user) {
-            return redirect()->route('profil.connexion')->with('message', __('profile.success_message'));
+            return redirect()->route('profil.connexion')->with('message', __('profile.message_succes'));
         }
 
         $token = Str::random(64);
@@ -322,7 +322,7 @@ class ProfilController extends Controller
         ]);
 
         Mail::to($request->email)->send(new reinitialisation($token));
-        return redirect()->route('profil.connexion')->with('message', __('profile.success_message'));
+        return redirect()->route('profil.connexion')->with('message', __('profile.message_succes'));
     }
 
     public function showResetPasswordForm(string $token)
@@ -341,12 +341,12 @@ class ProfilController extends Controller
             'password' => 'required|min:8|confirmed',
             'token' => 'required'
         ], [
-            'email.required' => __('profile.email_required'),
-            'email.email' => __('profile.email_email'),
-            'password.required' => __('profile.password_required'),
-            'password.min' => __('profile.password_min'),
-            'password.confirmed' => __('profile.password_confirmed'),
-            'token.required' => __('profile.token_required')
+            'email.required' => __('profile.courriel_requis'),
+            'email.email' => __('profile.courriel_entrer'),
+            'password.required' => __('profile.mdp_required'),
+            'password.min' => __('profile.mdp_min'),
+            'password.confirmed' => __('profile.mdp_confirmed'),
+            'token.required' => __('profile.token_requis')
         ]);
 
         $updatePassword = DB::table('password_reset_tokens')
@@ -364,7 +364,7 @@ class ProfilController extends Controller
 
         DB::table('password_reset_tokens')->where(['email' => $request->email])->delete();
 
-        return redirect('/connexion')->with('message', __('profile.password_update_success'));
+        return redirect('/connexion')->with('message', __('profile.mdp_update_success'));
     }
 
     public function confCourriel($codeVerification)

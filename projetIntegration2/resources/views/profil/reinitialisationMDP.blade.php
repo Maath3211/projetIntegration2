@@ -26,7 +26,7 @@
                 <form action="{{ route('profil.resetPassword') }}" method="post" id="formConnexion">
                     @csrf
                     <input type="text" value="{{ $token }}" name="token" hidden>
-                    <h1 class="h1" id="titreConnexion">{{ __('profile.password_reset') }}</h1>
+                    <h1 class="h1" id="titreConnexion">{{ __('profile.reinitialisation_mdp') }}</h1>
                     <div class="conteneurForm">
                         <label for="email" class="text-vert">{{ __('profile.adresse_courriel') }}</label>
                         <input type="email" class="form-control inputConnexion" id="email"
@@ -34,9 +34,9 @@
                     </div>
 
                     <div class="conteneurForm">
-                        <label for="password" class="text-vert">{{ __('profile.password') }}</label>
+                        <label for="password" class="text-vert">{{ __('profile.mdp') }}</label>
                         <input type="password" class="form-control inputConnexion" id="password"
-                            placeholder="{{ __('profile.password') }}" name="password">
+                            placeholder="{{ __('profile.mdp') }}" name="password">
                         @error('password')
                         <span class="text-danger">{{ $message }}&ensp;</span>
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#dc3545"
@@ -47,9 +47,9 @@
                         @enderror
                     </div>
                     <div class="conteneurForm">
-                        <label for="password_confirmation" class="text-vert">{{ __('profile.password_confirmation') }}</label>
+                        <label for="password_confirmation" class="text-vert">{{ __('profile.mdp_confirmation') }}</label>
                         <input type="password" class="form-control inputConnexion" id="password_confirmation"
-                            placeholder="{{ __('profile.password_confirmation') }}" name="password_confirmation">
+                            placeholder="{{ __('profile.mdp_confirmation') }}" name="password_confirmation">
                         @error('password_confirmation')
                         <span class="text-danger">{{ $message }}&ensp;</span>
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#dc3545"
@@ -67,15 +67,15 @@
                     @endif
                     @if (session('errors'))
                     @foreach ($errors->all() as $error)
-                    @if ($error !== __('validation.required', ['attribute' => __('profile.adresse_courriel')]) && $error !== __('validation.required', ['attribute' => __('profile.password')]))
+                    @if ($error !== __('validation.required', ['attribute' => __('profile.adresse_courriel')]) && $error !== __('validation.required', ['attribute' => __('profile.mdp')]))
                     <div class="alert alert-erreur">
                         <p>{{ $error }}</p>
                     </div>
                     @endif
                     @endforeach
                     @endif
-                    <button type="submit" class="btn btn-connexion">{{ __('profile.reset') }}</button>
-                    <a href="{{ route('profil.connexion') }}" class="btn btn-retour">{{ __('profile.back') }}</a>
+                    <button type="submit" class="btn btn-connexion">{{ __('profile.reinitialiser') }}</button>
+                    <a href="{{ route('profil.connexion') }}" class="btn btn-retour">{{ __('profile.retour') }}</a>
                 </form>
 
             </div>

@@ -4,56 +4,56 @@
 
 <body>
     <div class="boutonContainer">
-        <a href="/stats"><button class="bouton">{{ __('stats.backpage') }}</button></a>
+        <a href="/stats"><button class="bouton">{{ __('stats.retourpage') }}</button></a>
         <form id="thermiqueForm" action="{{ route('statistique.storeThermique') }}" method="POST">
             @csrf
             <input type="hidden" name="donnees" id="donnees">
-            <button class="bouton" id="sauvegarder">{{ __('stats.save') }}</button>
+            <button class="bouton" id="sauvegarder">{{ __('stats.sauvegarde') }}</button>
         </form>
     </div>
 
-    <h1 class="titre">{{ __('stats.activity_calendar') }}</h1>
+    <h1 class="titre">{{ __('stats.calendrier_activite') }}</h1>
 
     <div class="heatmapContainer">
         <div class="navigation">
-            <button class="bouton" id="moisPrecedant">{{ __('stats.previous') }}</button>
+            <button class="bouton" id="moisPrecedant">{{ __('stats.precedent') }}</button>
             <div class="moisTitre" id="moisTitre"></div>
-            <button class="bouton" id="moisSuivant">{{ __('stats.next') }}</button>
+            <button class="bouton" id="moisSuivant">{{ __('stats.suivant') }}</button>
         </div>
 
         <div class="navigation">
-            <label for="anneeSelect">{{ __('stats.year') }}</label>
+            <label for="anneeSelect">{{ __('stats.annee') }}</label>
             <select id="anneeSelect" class="bouton">
 
             </select>
         </div>
         <div class="heatmap" id="heatmap"></div>
         <div class="legende">
-            <h3>{{ __('stats.legend') }}</h3>
+            <h3>{{ __('stats.legende') }}</h3>
             <ul>
                 <li>
                     <div class="color-box" style="background-color: #ffffff;"></div>
-                    {{ __('stats.no_activity_day') }}
+                    {{ __('stats.journee_sans_activite') }}
                 </li>
                 <li>
                     <div class="color-box" style="background-color: #dfffc2;"></div>
-                    {{ __('stats.arms') }}
+                    {{ __('stats.bras') }}
                 </li>
                 <li>
                     <div class="color-box" style="background-color: #ffeb3b;"></div>
-                    {{ __('stats.legs') }}
+                    {{ __('stats.jambes') }}
                 </li>
                 <li>
                     <div class="color-box" style="background-color: #ffcccb;"></div>
-                    {{ __('stats.chest') }}
+                    {{ __('stats.pectoraux') }}
                 </li>
                 <li>
                     <div class="color-box" style="background-color: #a8c7e8;"></div>
-                    {{ __('stats.back') }}
+                    {{ __('stats.dos') }}
                 </li>
                 <li>
                     <div class="color-box" style="background-color: #ffe0b2;"></div>
-                    {{ __('stats.running') }}
+                    {{ __('stats.course') }}
                 </li>
             </ul>
         </div>
@@ -67,51 +67,51 @@
 
     <script>
         const mois = [{
-                nom: "{{ __('stats.january') }}",
+                nom: "{{ __('stats.janvier') }}",
                 jours: 31
             },
             {
-                nom: "{{ __('stats.february') }}",
+                nom: "{{ __('stats.fevrier') }}",
                 jours: 28
             },
             {
-                nom: "{{ __('stats.march') }}",
+                nom: "{{ __('stats.mars') }}",
                 jours: 31
             },
             {
-                nom: "{{ __('stats.april') }}",
+                nom: "{{ __('stats.avril') }}",
                 jours: 30
             },
             {
-                nom: "{{ __('stats.may') }}",
+                nom: "{{ __('stats.mai') }}",
                 jours: 31
             },
             {
-                nom: "{{ __('stats.june') }}",
+                nom: "{{ __('stats.juin') }}",
                 jours: 30
             },
             {
-                nom: "{{ __('stats.july') }}",
+                nom: "{{ __('stats.juillet') }}",
                 jours: 31
             },
             {
-                nom: "{{ __('stats.august') }}",
+                nom: "{{ __('stats.aout') }}",
                 jours: 31
             },
             {
-                nom: "{{ __('stats.september') }}",
+                nom: "{{ __('stats.septembre') }}",
                 jours: 30
             },
             {
-                nom: "{{ __('stats.october') }}",
+                nom: "{{ __('stats.octobre') }}",
                 jours: 31
             },
             {
-                nom: "{{ __('stats.november') }}",
+                nom: "{{ __('stats.novembre') }}",
                 jours: 30
             },
             {
-                nom: "{{ __('stats.december') }}",
+                nom: "{{ __('stats.decembre') }}",
                 jours: 31
             }
         ];
@@ -263,7 +263,7 @@
             });
 
             if (donnees.length === 0) {
-                alert("{{ __('stats.no_activity_selected') }}");
+                alert("{{ __('stats.aucune_activite_select') }}");
                 return;
             }
 

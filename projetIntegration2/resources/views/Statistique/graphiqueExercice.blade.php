@@ -5,13 +5,13 @@
 <link rel="stylesheet" style="text/css" href="\css\Statistique\graphiqueExerciceCss.css">
 
 <div id="main">
-    <a href="/stats"><button class="bouton">{{ __('stats.backpage') }}</button></a>
+    <a href="/stats"><button class="bouton">{{ __('stats.retourpage') }}</button></a>
 
 
-    <h1 id="titre">{{ __('stats.week') }} {{$diffSemaines}}</h1>
+    <h1 id="titre">{{ __('stats.semaine') }} {{$diffSemaines}}</h1>
 
 
-    <h1 id="titre">{{ __('stats.improvement_of') }} {{$exercice->nomStatistique}}</h1>
+    <h1 id="titre">{{ __('stats.amelioration_de') }} {{$exercice->nomStatistique}}</h1>
     <div class="uniteToggle">
         <button class="bouton" id="btnLbs">Lbs</button>
         <button class="bouton" id="btnKg">Kg</button>
@@ -19,9 +19,9 @@
     <div class="form-container">
         <form action="{{ route('ajouter-score', [$exercice->id]) }}" method="POST">
             @csrf
-            <label for="score">{{ __('stats.new_score') }}</label>
+            <label for="score">{{ __('stats.nouveau_score') }}</label>
             <input type="number" id="score" name="score" required>
-            <button type="submit" class="bouton">{{ __('stats.add_modify') }}</button>
+            <button type="submit" class="bouton">{{ __('stats.ajouter_modifier') }}</button>
         </form>
     </div>
 
@@ -52,7 +52,7 @@
                         x: {
                             title: {
                                 display: true,
-                                text: '{{ __("stats.weeks") }}',
+                                text: '{{ __("stats.semaines") }}',
                                 color: '#e5e5e5',
                                 font: {
                                     size: 16

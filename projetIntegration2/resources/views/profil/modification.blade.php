@@ -153,7 +153,7 @@
                             </div>
                             <div class="col-md-4 d-flex flex-column align-items-center">
                                 <select class="form-select inputModification form-control" name="pays">
-                                    <option>{{ __('profile.choose') }}</option>
+                                    <option>{{ __('profile.choisir') }}</option>
                                     @foreach ($countries as $country)
                                     <option value="{{ $country['name'] }}"
                                         {{ Auth::user()->pays == $country['name'] ? 'selected' : '' }}>
@@ -180,7 +180,7 @@
                             </div>
                             <div class="col-md-4 d-flex flex-column align-items-center">
                                 <select class="form-select inputModification form-control" name="genre">
-                                    <option>{{ __('profile.choose') }}</option>
+                                    <option>{{ __('profile.choisir') }}</option>
                                     <option value="Homme" {{ Auth::user()->genre == 'Homme' ? 'selected' : '' }}>{{ __('auth.homme') }}
                                     </option>
                                     <option value="Femme" {{ Auth::user()->genre == 'Femme' ? 'selected' : '' }}>{{ __('auth.femme') }}

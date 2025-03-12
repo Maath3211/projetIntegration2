@@ -26,36 +26,36 @@ return [
     'courriel' => 'Adresse courriel',
     'date_naissance' => 'Date de naissance',
     'pays' => 'Pays',
-    'choose_file' => 'Choisir un fichier',
-    'choose' => 'Choisir',
+    'choisir_fichier' => 'Choisir un fichier',
+    'choisir' => 'Choisir',
     'genre' => 'Genre',
 
     // Password reset
-    'password_reset' => 'Réinitialisation de mot de passe',
+    'reinitialisation_mdp' => 'Réinitialisation de mot de passe',
     'adresse_courriel' => 'Adresse courriel',
-    'password' => 'Mot de passe',
-    'password_confirmation' => 'Confirmation mot de passe',
-    'reset' => 'Réinitialiser',
-    'back' => 'Retour',
-    'success_message' => 'Un courriel de reinitialisation a été envoyé si le compte existe',
-    'password_update_success' => 'Votre mot de passe a été mis à jour avec succès',
+    'mdp' => 'Mot de passe',
+    'confirmation_mdp' => 'Confirmation mot de passe',
+    'reinitialiser' => 'Réinitialiser',
+    'retour' => 'Retour',
+    'message_succes' => 'Un courriel de reinitialisation a été envoyé si le compte existe',
+    'mdp_maj_succes' => 'Votre mot de passe a été mis à jour avec succès',
 
     //Avertissement profile
 
-    'email_required' => 'L\'adresse e-mail est requise',
-    'email_email' => 'Veuillez entrer une adresse e-mail valide',
-    'password_required' => 'Le mot de passe est requis',
-    'password_min' => 'Le mot de passe doit comporter au moins 8 caractères',
-    'password_confirmed' => 'La confirmation du mot de passe ne correspond pas',
-    'token_required' => 'Le jeton est requis',
+    'courriel_requis' => 'L\'adresse e-mail est requise',
+    'courriel_entrer' => 'Veuillez entrer une adresse e-mail valide',
+    'mdp_requis' => 'Le mot de passe est requis',
+    'mdp_min' => 'Le mot de passe doit comporter au moins 8 caractères',
+    'mdp_confirmer' => 'La confirmation du mot de passe ne correspond pas',
+    'token_requis' => 'Le jeton est requis',
 
     // Erreurs
 
-    'image_upload_error' => 'Erreur lors du téléversement de l\'image de profil',
-    'image_save_error' => 'Erreur lors de l\'enregistrement de l\'image de profil',
+    'erreur_tel_image' => 'Erreur lors du téléversement de l\'image de profil',
+    'erreur_sauv_image' => 'Erreur lors de l\'enregistrement de l\'image de profil',
 
     // Google
-    'google_image_error' => 'Erreur avec l\'image de profil Google',
-    'google_image_download' => 'Erreur lors du téléchargement de l\'image Google',
-    'google_image_save' => 'Erreur lors de la sauvegarde de l\'image Google',
+    'image_google_erreur' => 'Erreur avec l\'image de profil Google',
+    'image_google_telech' => 'Erreur lors du téléchargement de l\'image Google',
+    'image_google_sauv' => 'Erreur lors de la sauvegarde de l\'image Google',
 ];
