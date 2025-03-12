@@ -10,28 +10,14 @@
         body { padding: 20px; }
         .card { box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
     </style>
+    @livewireStyles
 </head>
 <body>
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-10">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h4 class="mb-0">Test Chart</h4>
-                        <button onclick="window.close()" class="btn btn-secondary">
-                            Close
-                        </button>
-                    </div>
-                    <div class="card-body">
-                        <div style="height: 400px;">
-                            <canvas id="testChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <h1>Score Graph</h1>
+        @livewire('score-graph')
     </div>
-
+    @livewireScripts
     <script>
         // Log that we're starting
         console.log('Chart test script starting');

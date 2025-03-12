@@ -55,9 +55,10 @@ class ScoresController extends Controller
                 'users.prenom',
                 'users.nom',
                 'users.imageProfil',
+                'users.email',
                 DB::raw('SUM(scores.score) as total_score')
             )
-            ->groupBy('users.id', 'users.prenom', 'users.nom', 'users.imageProfil')
+            ->groupBy('users.id', 'users.prenom', 'users.nom', 'users.imageProfil', 'users.email')
             ->orderByDesc('total_score')
             ->limit(10)
             ->get();
@@ -153,9 +154,10 @@ class ScoresController extends Controller
                 'users.imageProfil as user_image',
                 'users.nom as user_nom',
                 'users.prenom as user_prenom',
+                'users.email as user_email',  // Add this line
                 DB::raw('SUM(scores.score) as user_total_score')
             )
-            ->groupBy('users.id', 'users.imageProfil', 'users.nom', 'users.prenom')
+            ->groupBy('users.id', 'users.imageProfil', 'users.nom', 'users.prenom', 'users.email')  // Add email here too
             ->orderByDesc('user_total_score')
             ->limit(10)
             ->get();
@@ -191,9 +193,10 @@ class ScoresController extends Controller
                 'users.imageProfil as user_image',
                 'users.nom as user_nom',
                 'users.prenom as user_prenom',
+                'users.email as user_email',  // Add this line
                 DB::raw('SUM(scores.score) as score_improvement')
             )
-            ->groupBy('users.id', 'users.imageProfil', 'users.nom', 'users.prenom')
+            ->groupBy('users.id', 'users.imageProfil', 'users.nom', 'users.prenom', 'users.email')  // Add email here too
             ->orderByDesc('score_improvement')
             ->limit(10)
             ->get();

@@ -2,8 +2,8 @@
 @section('titre', 'Clans')
 
 @section('style')
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" style="text/css" href="{{asset('css/Clans/clans.css')}}">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" style="text/css" href="{{asset('css/Clans/clans.css')}}">
 @endsection()
 
 @section('contenu')
@@ -15,12 +15,12 @@
                 <div class="container">
                     <div class="column"> <!-- column est en anglais parce que c'est le nom de la classe bootstrap c'est pas mon choix -->
                         @if(isset($clan))
-                            <div class="conteneurImage" style="background-image: url('{{ asset($clan->image) }}');">
-                                <div class="texteSurImage">{{ $clan->nom }}</div>
-                                @if($utilisateur->id == $clan->adminId)
-                                    <div><a href="{{ route('clan.parametres', ['id' => $clan->id]) }}"><i class="fa-solid fa-ellipsis"></i></a></div>
-                                @endif
-                            </div>
+                        <div class="conteneurImage" style="background-image: url('{{ asset($clan->image) }}');">
+                            <div class="texteSurImage">{{ $clan->nom }}</div>
+                            @if($utilisateur->id == $clan->adminId)
+                            <div><a href="{{ route('clan.parametres', ['id' => $clan->id]) }}"><i class="fa-solid fa-ellipsis"></i></a></div>
+                            @endif
+                        </div>
                         @endif
                         <div class="conteneurCanaux">
                             <!-- Afficher toutes les catégories ainsi que leurs canaux dans l'ordre -->
@@ -57,9 +57,30 @@
                                             <p>Aucun canal n'est créé pour cette catégorie. Veuillez en créer une pour commencer.</p>
                                         @endif
                                     </div>
+                                    <i class="fa-solid fa-plus fa-xs"></i>
+                                </div>
+                                @if(isset($canauxParCategorie[$categorie->id]))
+                                @foreach($canauxParCategorie[$categorie->id] as $canal)
+                                <div class="canal">
+                                    <a href="/clan/{{ $id }}/canal/{{ $canal->id }}" class="canal_{{ $canal->id }}">
+                                        <div>
+                                            <i class="fa-solid fa-hashtag"></i>
+                                            {{ $canal->titre }}
+                                        </div>
+                                    </a>
+                                    <div class="iconesModificationCanal">
+                                        <i class="fa-solid fa-pen modifier"></i>
+                                        <i class="fa-solid fa-x supprimer"></i>
+                                    </div>
+                                </div>
                                 @endforeach
+                                @else
+                                <p>{{ __('clans.clan_sans_canal') }}</p>
+                                @endif
+                            </div>
+                            @endforeach
                             @else
-                                <p>Aucune catégorie de canal n'a été créée pour ce clan. Veuillez en créer une pour ajout des canaux.</p>
+                            <p>{{ __('clans.sans_categorie') }}</p>
                             @endif
                         </div>
                     </div>
@@ -70,7 +91,7 @@
                     <!-- COLONNE POUR LES MESSAGES POUR XAVIER -->
                 </div>
                 <div class="entreeFixe">
-                    <input type="text" placeholder="Entrez votre message içi..." maxlength="1000">
+                    <input type="text" placeholder="{{ __('clans.entrer_message) }}" maxlength="1000">
                     <i class="fa-solid fa-play aly fa-xl"></i>
                 </div>
             </div>
@@ -87,9 +108,11 @@
                                     </div>
                                 </a>
                             </div>
-                        @endforeach
+                        </a>
+                    </div>
+                    @endforeach
                     @else
-                        <p>Invitez quelqu'un au clan pour afficher les membres!</p>
+                    <p>{{ __('clans.invitation_vue') }}</p>
                     @endif
                 </div>
             </div>
@@ -107,7 +130,7 @@
         <div id="ajoutCanal" class="fenetreCategorie">
             <div class="conteneurConfirmation">
                 <div class="titreConfirmation">
-                    <div>Ajouter un canal</div>
+                    <div>{{ __('clans.ajout_canal') }}</div>
                 </div>
                 <div class="texteConfirmation">
                     <input type="text" name="entreeNomCanal" class="form-control entreeNomCanal" placeholder="ex.: Cardio">
@@ -115,8 +138,8 @@
                 </div>
 
                 <div class="boutonsConfirmation">
-                    <button class="annuler" type="button">Annuler</button>
-                    <button id="confirmerAjout" type="button">Confirmer</button>
+                    <button class="annuler" type="button">{{ __('clans.annuler') }}</button>
+                    <button id="confirmerAjout" type="button">{{ __('clans.confirmer') }}</button>
                 </div>
             </div>
         </div>
@@ -125,7 +148,7 @@
         <div id="renommerCanal" class="fenetreCategorie">
             <div class="conteneurConfirmation">
                 <div class="titreConfirmation">
-                    <div>Renommer un canal</div>
+                    <div>{{ __('clans.renommer_canal') }}</div>
                 </div>
                 <div class="texteConfirmation">
                     <input type="text" name="entreeNomCanal" class="form-control entreeNomCanal" placeholder="ex.: Cardio">
@@ -133,8 +156,8 @@
                 </div>
 
                 <div class="boutonsConfirmation">
-                    <button class="annuler" type="button">Annuler</button>
-                    <button id="confirmerRenommage" type="button">Confirmer</button>
+                    <button class="annuler" type="button">{{ __('clans.annuler') }}</button>
+                    <button id="confirmerRenommage" type="button">{{ __('clans.confirmer') }}</button>
                 </div>
             </div>
         </div>
@@ -143,15 +166,15 @@
         <div id="confirmationSuppression" class="fenetreCategorie">
             <div class="conteneurConfirmation">
                 <div class="titreConfirmation">
-                    <div>Supprimer le canal</div>
+                    <div>{{ __('clans.supprimer_channel') }}</div>
                 </div>
                 <div class="texteConfirmation">
-                    <div>Êtes-vous sur de vouloir supprimer ce canal?</div>
+                    <div>{{ __('clans.supprimer_channel_warning') }}</div>
                 </div>
 
                 <div class="boutonsConfirmation">
-                    <button class="annuler" type="button">Annuler</button>
-                    <button id="confirmerSuppression" type="button">Supprimer</button>
+                    <button class="annuler" type="button">{{ __('clans.annuler') }}</button>
+                    <button id="confirmerSuppression" type="button">{{ __('clans.supprimer') }}</button>
                 </div>
             </div>
         </div>

@@ -11,6 +11,7 @@ use App\Http\Controllers\ConversationsController;
 use App\Http\Controllers\StatistiqueController;
 use App\Http\Controllers\GymController;
 use App\Http\Controllers\ClanController;
+use App\Http\Controllers\TraductionController;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\AmisController;
@@ -129,11 +130,6 @@ Route::POST(
     [ProfilController::class, 'storeCreerCompte']
 )->name('profil.storeCreerCompte');
 
-Route::GET(
-    '/meilleursGroupes',
-    [ScoresController::class, 'meilleursGroupes']
-)->name('scores.meilleursGroupes');
-
 Route::POST(
     '/deconnexion',
     [ProfilController::class, 'deconnexion']
@@ -145,13 +141,9 @@ Route::GET(
 )->name('profil.confirmation');
 
 Route::GET(
-    '/meilleursGroupes',
+    '/classements',
     [ScoresController::class, 'meilleursGroupes']
 )->name('scores.meilleursGroupes');
-Route::POST(
-    '/deconnexion',
-    [ProfilController::class, 'deconnexion']
-)->name('profil.deconnexion');
 
 Route::GET(
     '/profil',
@@ -329,3 +321,15 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/graphs/{id}', [GraphiquePersoController::class, 'update'])->name('graphs.update');
     Route::delete('/graphs/{id}', [GraphiquePersoController::class, 'destroy'])->name('graphs.delete');
 });
+
+// Add this to web.php if not already present
+Route::post('/switch-language', function (\Illuminate\Http\Request $request) {
+    $locale = $request->input('locale');
+    if (in_array($locale, ['en', 'fr'])) {
+        session(['locale' => $locale]);
+        app()->setLocale($locale);
+        \Log::info('Switching language to: ' . $locale);
+    }
+    
+    return response()->json(['success' => true, 'locale' => app()->getLocale(), 'session_locale' => session('locale')]);
+})->name('switchLanguage');

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr-ca">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     <meta charset="UTF-8">
@@ -9,7 +9,6 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" style="text/css" href="\css\GabaritCss.css">
 
@@ -25,12 +24,12 @@
             <div class="col-md-10">
 
                 <form action="{{ route('profil.motDePasseOublieEmail') }}" method="post" id="formConnexion">
-                    <h1 class="h1" id="titreConnexion">Réinitialisation de mot de passe</h1>
+                    <h1 class="h1" id="titreConnexion">{{ __('profile.reinitialisation_mdp') }}</h1>
                     <div class="conteneurForm">
                         @csrf
-                        <label for="email" class="text-vert">Adresse courriel</label>
+                        <label for="email" class="text-vert">{{ __('profile.adresse_courriel') }}</label>
                         <input type="email" class="form-control inputReinitialisation" id="email"
-                            placeholder="Adresse courriel" name="email">
+                            placeholder="{{ __('profile.courriel') }}" name="email">
                     </div>
                     <br>
                     @if (session('message'))
@@ -40,15 +39,15 @@
                     @endif
                     @if (session('errors'))
                         @foreach ($errors->all() as $error)
-                            @if ($error !== 'L\'adresse courriel est requise' && $error !== 'Le mot de passe est requis')
+                            @if ($error !== __('validation.required', ['attribute' => __('profile.adresse_courriel')]) && $error !== __('validation.required', ['attribute' => __('profile.mdp')]))
                                 <div class="alert alert-erreur">
                                     <p>{{ $error }}</p>
                                 </div>
                             @endif
                         @endforeach
                     @endif
-                    <button type="submit" class="btn btn-confirmation">Réinitialisation</button>
-                    <a href="{{ route('profil.connexion') }}" class="btn btn-retour">Retour</a>
+                    <button type="submit" class="btn btn-confirmation">{{ __('profile.reinitialiser') }}</button>
+                    <a href="{{ route('profil.connexion') }}" class="btn btn-retour">{{ __('profile.retour') }}</a>
                 </form>
 
             </div>

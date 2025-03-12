@@ -254,7 +254,7 @@ class ConversationsController extends Controller
     public function updateMessage(Request $request, $id)
     {
         $request->validate([
-            'new_message' => 'required|string',
+            'nouveau_message' => 'required|string',
         ]);
 
         $message = UtilisateurClan::findOrFail($id);
@@ -263,7 +263,7 @@ class ConversationsController extends Controller
             return response()->json(['error' => 'Action non autorisée'], 403);
         }
 
-        $message->message = $request->new_message;
+        $message->message = $request->nouveau_message;
         $message->save();
 
         return redirect()->route('conversations.showModificationMessage');

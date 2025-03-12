@@ -15,18 +15,19 @@ class AmisController extends Controller
     }
 
     // Recherche les utilisateurs par nom d'utilisateur
-    public function recherche(Request $requete)
+    public function recherche(Request $request)
     {
-        // Si la méthode est GET, rediriger vers la page principale des amis
-        if ($requete->isMethod('get')) {
-            return redirect()->route('amis.index');
+        $q = $request->input('q');
+        
+        if(empty($q)) {
+            return redirect()->back()->withErrors([__('friends.search_required')]);
         }
 
-        $requete->validate([
+        $request->validate([
             'q' => 'required|string'
         ]);
 
-        $query = $requete->input('q');
+        $query = $request->input('q');
 
         // Utiliser l'utilisateur authentifié ou l'ID 999 pour les tests
         $userId = auth()->check() ? auth()->user()->id : 999;
@@ -45,7 +46,7 @@ class AmisController extends Controller
             ->whereNotIn('id', $friendIds)
             ->get();
 
-        return view('amis.index', compact('utilisateurs'));
+        return view('amis.index', compact('utilisateurs', 'utilisateurConnecteId'));
     }
 
     public function rechercheClan(Request $request)
@@ -101,7 +102,7 @@ class AmisController extends Controller
             'updated_at'   => now(),
         ]);
 
-        return back()->with('success', 'Demande d\'ami envoyée avec succès!');
+        return redirect()->back()->with('success', __('friends.succes_requete_envoyer'));
     }
 
     // Affiche les demandes d'amis destinées à l'utilisateur connecté (ou 999 en test)
@@ -165,7 +166,7 @@ class AmisController extends Controller
         // Pour déboguer, vous pouvez vérifier le résultat de l'insertion :
         // dd($result); // Affiche true en cas d'insertion réussie
 
-        return back()->with('success', 'Demande d\'ami acceptée et relation ajoutée!');
+        return redirect()->back()->with('success', __('friends.success_accept'));
     }
 
     // Refuse une demande d'ami
@@ -193,6 +194,49 @@ class AmisController extends Controller
                 'updated_at' => now(),
             ]);
 
-        return back()->with('success', 'Demande d\'ami refusée.');
+        return redirect()->back()->with('success', __('friends.success_decline'));
+    }
+
+    public function envoyer(Request $request)
+    {
+        $request->validate([
+            'friend_id' => 'required|integer|exists:users,id',
+        ]);
+
+        // Utiliser l'utilisateur authentifié ou assigner l'ID 999 si personne n'est connecté
+        if (auth()->check()) {
+            $user = auth()->user();
+        } else {
+            // Pour les tests, si pas d'utilisateur connecté, considérer l'utilisateur 999
+            $user = (object) ['id' => 999];
+        }
+
+        $friendId = $request->input('friend_id');
+
+        // Empêcher d'envoyer une demande à soi-même
+        if ($user->id == $friendId) {
+            return back()->withErrors('Vous ne pouvez pas vous ajouter vous-même.');
+        }
+
+        // Vérifier qu'une demande n'existe pas déjà
+        $exists = \DB::table('demande_amis')
+            ->where('requester_id', $user->id)
+            ->where('requested_id', $friendId)
+            ->exists();
+
+        if ($exists) {
+            return back()->withErrors('Une demande d\'ami a déjà été envoyée.');
+        }
+
+        // Insérer la demande d'ami dans la table
+        \DB::table('demande_amis')->insert([
+            'requester_id' => $user->id,
+            'requested_id' => $friendId,
+            'status'       => 'pending',
+            'created_at'   => now(),
+            'updated_at'   => now(),
+        ]);
+
+        return redirect()->back()->with('success', __('friends.success_sent'));
     }
 }

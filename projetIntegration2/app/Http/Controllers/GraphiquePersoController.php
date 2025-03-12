@@ -16,60 +16,24 @@ class GraphiquePersoController extends Controller
      */
     public function index()
     {
-        // Add debugging to see what's happening
-        try {
-            $user = Auth::user();
+        $user = Auth::user();
+        $graphs = GraphSauvegarde::where('user_id', $user->id)
+            ->where('date_expiration', '>=', now())
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-            if (!$user) {
-                return redirect()->route('profil.pageConnexion')
-                    ->with('error', 'Vous devez être connecté pour accéder à cette page');
-            }
-
-            $graphs = GraphSauvegarde::where('user_id', $user->id)
-                ->where('date_expiration', '>=', now())
-                ->orderBy('created_at', 'desc')
-                ->get();
-
-            // Check if the view file exists
-            $viewPath = resource_path('views/graphs/index.blade.php');
-            if (!file_exists($viewPath)) {
-                return response("View file not found: graphs.index", 500);
-            }
-
-            return view('graphs.index', compact('graphs'));
-        } catch (\Exception $e) {
-            return response('Error loading graphs: ' . $e->getMessage(), 500);
-        }
+        return view('graphs.index', compact('graphs'));
     }
-
-    // Other methods remain the same
 
     /**
      * Display the form to create a new graph
      */
     public function create()
     {
-        try {
-            // Check if user is authenticated
-            $user = Auth::user();
-            if (!$user) {
-                return redirect()->route('profil.pageConnexion')
-                    ->with('error', 'Vous devez être connecté pour accéder à cette page');
-            }
+        $user = Auth::user();
+        $clans = $user->clans()->get();
 
-            // Get user's clans
-            $clans = $user->clans()->get();
-
-            // Check if view exists
-            $viewPath = resource_path('views/graphs/create.blade.php');
-            if (!file_exists($viewPath)) {
-                return response("View file not found: graphs.create", 500);
-            }
-
-            return view('graphs.create', compact('clans'));
-        } catch (\Exception $e) {
-            return response('Error loading create form: ' . $e->getMessage(), 500);
-        }
+        return view('graphs.create', compact('clans'));
     }
 
     /**
@@ -96,7 +60,7 @@ class GraphiquePersoController extends Controller
 
             if (!$isMember) {
                 return redirect()->back()
-                    ->with('error', 'Vous n\'êtes pas membre de ce clan');
+                    ->with('error', __('graphs.erreur_membre_clan'));
             }
         }
 
@@ -109,19 +73,24 @@ class GraphiquePersoController extends Controller
         );
 
         // Save the graph
-        $savedGraph = GraphSauvegarde::create([
-            'user_id' => $user->id,
-            'type' => $request->type,
-            'clan_id' => $request->type == 'clan' ? $request->clan_id : null,
-            'titre' => $request->titre,
-            'date_debut' => $request->date_debut,
-            'date_fin' => $request->date_fin,
-            'data' => $data,
-            'date_expiration' => Carbon::now()->addDays(90),
-        ]);
+        try {
+            $savedGraph = GraphSauvegarde::create([
+                'user_id' => $user->id,
+                'type' => $request->type,
+                'clan_id' => $request->type == 'clan' ? $request->clan_id : null,
+                'titre' => $request->titre,
+                'date_debut' => $request->date_debut,
+                'date_fin' => $request->date_fin,
+                'data' => $data,
+                'date_expiration' => Carbon::now()->addDays(90),
+            ]);
 
-        return redirect()->route('graphs.show', $savedGraph->id)
-            ->with('success', 'Graphique créé avec succès');
+            return redirect()->route('graphs.show', $savedGraph->id)
+                ->with('success', __('graphs.cree_avec_succes'));
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', __('graphs.erreur_creation') . ': ' . $e->getMessage());
+        }
     }
 
     /**
@@ -130,66 +99,99 @@ class GraphiquePersoController extends Controller
     public function show($id)
     {
         try {
-            // Find the graph with proper error handling
             $graph = GraphSauvegarde::findOrFail($id);
 
             // Check if user owns this graph
             if ($graph->user_id != Auth::id()) {
                 return redirect()->route('graphs.index')
-                    ->with('error', 'Vous n\'êtes pas autorisé à voir ce graphique');
+                    ->with('error', __('graphs.non_autorise'));
             }
 
-            // Ensure data is properly formatted
-            if (empty($graph->data) || !is_array($graph->data)) {
-                // If data is not properly formatted, generate it again
-                $data = $this->generateGraphData(
-                    $graph->type,
-                    $graph->clan_id,
-                    $graph->date_debut,
-                    $graph->date_fin
-                );
+            // Log for debugging
+            \Log::debug('Graph data:', ['data' => $graph->data]);
 
-                // Update the graph with the new data
-                $graph->data = $data;
-                $graph->save();
-            }
-
-
-            // Get the ScoreGraph style chart configuration
-            $chartConfig = [
-                'type' => 'line',
-                'options' => [
-                    'responsive' => true,
-                    'maintainAspectRatio' => false,
-                    'scales' => [
-                        'y' => [
-                            'beginAtZero' => true,
-                            'title' => [
-                                'display' => true,
-                                'text' => 'Points',
-                                'font' => ['size' => 14, 'weight' => 'bold']
-                            ]
-                        ],
-                        'x' => [
-                            'title' => [
-                                'display' => true,
-                                'font' => ['size' => 14, 'weight' => 'bold']
-                            ]
-                        ]
-                    ],
-                    'plugins' => [
-                        'legend' => [
-                            'position' => 'top',
-                            'labels' => ['usePointStyle' => true]
-                        ]
-                    ]
-                ]
-            ];
-
-            return view('graphs.show', compact('graph', 'chartConfig'));
+            return view('graphs.show', compact('graph'));
         } catch (\Exception $e) {
             return redirect()->route('graphs.index')
-                ->with('error', 'Erreur lors de l\'affichage du graphique: ' . $e->getMessage());
+                ->with('error', __('graphs.erreur_affichage') . ': ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Show the form for editing the graph
+     */
+    public function edit($id)
+    {
+        try {
+            $graph = GraphSauvegarde::findOrFail($id);
+
+            // Check if user owns this graph
+            if ($graph->user_id != Auth::id()) {
+                return redirect()->route('graphs.index')
+                    ->with('error', __('graphs.non_autorise'));
+            }
+
+            $clans = Auth::user()->clans()->get();
+
+            return view('graphs.edit', compact('graph', 'clans'));
+        } catch (\Exception $e) {
+            return redirect()->route('graphs.index')
+                ->with('error', __('graphs.erreur_chargement_formulaire') . ': ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Update the specified graph
+     */
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'titre' => 'required|max:255',
+            'type' => 'required|in:global,clan',
+            'clan_id' => 'required_if:type,clan|exists:clans,id',
+            'date_debut' => 'required|date',
+            'date_fin' => 'required|date|after_or_equal:date_debut',
+        ]);
+
+        try {
+            $graph = GraphSauvegarde::findOrFail($id);
+
+            // Check if user owns this graph
+            if ($graph->user_id != Auth::id()) {
+                return redirect()->route('graphs.index')
+                    ->with('error', __('graphs.non_autorise'));
+            }
+
+            // Check if data needs regeneration
+            $regenerateData = $graph->date_debut->format('Y-m-d') != $request->date_debut ||
+                $graph->date_fin->format('Y-m-d') != $request->date_fin ||
+                $graph->type != $request->type ||
+                ($graph->type == 'clan' && $graph->clan_id != $request->clan_id);
+
+            // Update graph properties
+            $graph->titre = $request->titre;
+            $graph->type = $request->type;
+            $graph->clan_id = $request->type == 'clan' ? $request->clan_id : null;
+            $graph->date_debut = $request->date_debut;
+            $graph->date_fin = $request->date_fin;
+
+            // Regenerate data if needed
+            if ($regenerateData) {
+                $graph->data = $this->generateGraphData(
+                    $request->type,
+                    $request->clan_id,
+                    $request->date_debut,
+                    $request->date_fin
+                );
+            }
+
+            $graph->save();
+
+            return redirect()->route('graphs.show', $graph->id)
+                ->with('success', __('graphs.modifie_avec_succes'));
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', __('graphs.erreur_modification') . ': ' . $e->getMessage());
         }
     }
 
@@ -198,17 +200,23 @@ class GraphiquePersoController extends Controller
      */
     public function destroy($id)
     {
-        $graph = GraphSauvegarde::findOrFail($id);
+        try {
+            $graph = GraphSauvegarde::findOrFail($id);
 
-        // Check if user owns this graph
-        if ($graph->user_id != Auth::id()) {
-            abort(403, 'Non autorisé');
+            // Check if user owns this graph
+            if ($graph->user_id != Auth::id()) {
+                return redirect()->route('graphs.index')
+                    ->with('error', __('graphs.non_autorise'));
+            }
+
+            $graph->delete();
+
+            return redirect()->route('graphs.index')
+                ->with('success', __('graphs.supprime_avec_succes'));
+        } catch (\Exception $e) {
+            return redirect()->route('graphs.index')
+                ->with('error', __('graphs.erreur_suppression') . ': ' . $e->getMessage());
         }
-
-        $graph->delete();
-
-        return redirect()->route('graphs.index')
-            ->with('success', 'Graphique supprimé avec succès');
     }
 
     /**
@@ -237,7 +245,6 @@ class GraphiquePersoController extends Controller
                 ->orderBy('date')
                 ->get()
                 ->pluck('date');
-
         }
 
         // Calculate the number of months between dates
@@ -347,102 +354,5 @@ class GraphiquePersoController extends Controller
             ->where('clan_users.clan_id', $clanId)
             ->whereBetween('scores.date', [$startDate->format('Y-m-d'), $endDate->format('Y-m-d')])
             ->sum('scores.score') ?: 0;
-    }
-
-    /**
-     * Show the form for editing the graph
-     */
-    public function edit($id)
-    {
-        try {
-            // Find the graph
-            $graph = GraphSauvegarde::findOrFail($id);
-            
-            // Check if user owns this graph
-            if ($graph->user_id != Auth::id()) {
-                return redirect()->route('graphs.index')
-                    ->with('error', 'Vous n\'êtes pas autorisé à modifier ce graphique');
-            }
-            
-            // Get user's clans for the dropdown
-            $user = Auth::user();
-            $clans = $user->clans()->get();
-            
-            return view('graphs.edit', compact('graph', 'clans'));
-        } catch (\Exception $e) {
-            \Log::error('Error loading graph edit form: ' . $e->getMessage());
-            return redirect()->route('graphs.index')
-                ->with('error', 'Erreur lors du chargement du formulaire: ' . $e->getMessage());
-        }
-    }
-
-    /**
-     * Update the specified graph
-     */
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'titre' => 'required|max:255',
-            'type' => 'required|in:global,clan',
-            'clan_id' => 'required_if:type,clan|exists:clans,id',
-            'date_debut' => 'required|date',
-            'date_fin' => 'required|date|after_or_equal:date_debut',
-        ]);
-        
-        try {
-            // Find the graph
-            $graph = GraphSauvegarde::findOrFail($id);
-            
-            // Check if user owns this graph
-            if ($graph->user_id != Auth::id()) {
-                return redirect()->route('graphs.index')
-                    ->with('error', 'Vous n\'êtes pas autorisé à modifier ce graphique');
-            }
-            
-            // Check clan membership if applicable
-            if ($request->type == 'clan') {
-                $isMember = DB::table('clan_users')
-                    ->where('user_id', Auth::id())
-                    ->where('clan_id', $request->clan_id)
-                    ->exists();
-                    
-                if (!$isMember) {
-                    return redirect()->back()
-                        ->with('error', 'Vous n\'êtes pas membre de ce clan');
-                }
-            }
-            
-            // Check if data needs regeneration (dates or type changed)
-            $regenerateData = $graph->date_debut->format('Y-m-d') != $request->date_debut ||
-                             $graph->date_fin->format('Y-m-d') != $request->date_fin ||
-                             $graph->type != $request->type ||
-                             ($graph->type == 'clan' && $graph->clan_id != $request->clan_id);
-            
-            // Update basic fields
-            $graph->titre = $request->titre;
-            $graph->type = $request->type;
-            $graph->clan_id = $request->type == 'clan' ? $request->clan_id : null;
-            $graph->date_debut = $request->date_debut;
-            $graph->date_fin = $request->date_fin;
-            
-            // Regenerate graph data if needed
-            if ($regenerateData) {
-                $graph->data = $this->generateGraphData(
-                    $request->type,
-                    $request->clan_id,
-                    $request->date_debut,
-                    $request->date_fin
-                );
-            }
-            
-            $graph->save();
-            
-            return redirect()->route('graphs.show', $graph->id)
-                ->with('success', 'Graphique modifié avec succès');
-        } catch (\Exception $e) {
-            \Log::error('Error updating graph: ' . $e->getMessage());
-            return redirect()->back()
-                ->with('error', 'Erreur lors de la modification: ' . $e->getMessage());
-        }
     }
 }
