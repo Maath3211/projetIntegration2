@@ -20,7 +20,7 @@ return [
     'general' => 'General',
     'canaux' => 'Channels',
     'membres' => 'Members',
-    'suppression_clan' => 'Delete clan',
+    'supprimer_clan' => 'Delete clan',
     'categories_canal' => 'Channel categories',
     'aide' => 'Help',
     'competition' => 'Competition',

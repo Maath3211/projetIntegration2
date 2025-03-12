@@ -7,6 +7,7 @@ return [
     'message_audio' => '🔊 Audio',
     'nice_body' => 'Beau physique',
     'settings' => 'Paramètres',
+    'bienvenue' => 'Bienvenue sur la page de conversation. Ici, vous pouvez discuter avec vos amis et échanger des messages en temps réel.',
 
     // Chat Interface
     'amis' => 'Amis',

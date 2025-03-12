@@ -7,6 +7,7 @@ return [
     'message_audio' => '🔊 Audio',
     'nice_body' => 'Nice body',
     'settings' => 'Settings',
+    'bienvenue' => 'Welcome to the conversation page. Here you can chat with your friends and exchange messages in real time.',
 
     // Chat Interface
     'amis' => 'Friends',

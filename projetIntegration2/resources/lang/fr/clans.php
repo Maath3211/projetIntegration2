@@ -21,7 +21,7 @@ return [
     'general' => 'Général',
     'canaux' => 'Canaux',
     'membres' => 'Membres',
-    'suppression_clan' => 'Supprimer le clan',
+    'supprimer_clan' => 'Supprimer le clan',
     'categories_canal' => 'Catégories de canaux',
     'aide' => 'Aide',
     'competition' => 'Compétition',

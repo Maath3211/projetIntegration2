@@ -120,7 +120,7 @@
           <div>{{ __('clans.supprimer_clan') }}</div>
         </div>
         <div class="texteConfirmation">
-          <div>{{ __('clans.supprimer_clan_warning') }}.</div>
+          <div>{{ __('clans.avertissement_suppression_clan') }}.</div>
         </div>
 
         <div class="boutonsConfirmation">
