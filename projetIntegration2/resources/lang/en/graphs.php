@@ -55,7 +55,7 @@ return [
     'confirmation_suppression' => 'Are you sure you want to delete this graph?',
 
     // Information labels
-    'informations' => 'Information',
+    'informations' => 'Informations',
     'pointages_global' => 'Global Scores',
     'pointages_clan' => 'Clan Scores',
     'periode_label' => 'Period:',
