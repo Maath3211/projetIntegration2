@@ -79,7 +79,7 @@ class ConversationsController extends Controller
         $utilisateur = auth()->id();
         $utilisateur = User::findOrFail($utilisateur);
 
-        if (!$utilisateur){
+        if (!$utilisateur) {
             Log::info('Utilisateur pas connecté.');
             return redirect('/connexion')->with('erreur', 'Vous devez être connectés pour afficher les clans.');
         }
@@ -100,6 +100,24 @@ class ConversationsController extends Controller
             })
             ->where('users.id', '!=', $userId)
             ->get();
+
+        // Vérifier si l'utilisateur est ami
+        $isFriend = \DB::table('demande_amis')
+            ->where(function ($query) use ($userId, $user) {
+                $query->where('requester_id', $userId)
+                    ->where('requested_id', $user->id);
+            })
+            ->orWhere(function ($query) use ($userId, $user) {
+                $query->where('requester_id', $user->id)
+                    ->where('requested_id', $userId);
+            })
+            ->where('status', 'accepted')
+            ->exists();
+
+        if (!$isFriend) {
+            \Log::info('Tentative d\'accès à une conversation sans être ami.', ['user_id' => $userId, 'target_id' => $user->id]);
+            return redirect()->route('conversations.index')->with('erreur', 'Vous devez être ami pour accéder à cette conversation.');
+        }
 
         $messages = $this->ConvRepository->getMessageFor(auth()->id(), $user->id);
 
