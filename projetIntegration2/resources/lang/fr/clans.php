@@ -17,7 +17,7 @@ return [
     
 
 
-    // New translations for parametresClanCanaux.blade.php
+    // New translations for parametresclancanaux.blade.php
     'parametres' => 'Paramètres',
     'general' => 'Général',
     'canaux' => 'Canaux',
@@ -37,7 +37,7 @@ return [
     'suppression_membre_avertissement' => 'Êtes-vous sur de vouloir expulser ce membre du clan?',
     'expulser' => 'Expulser',
 
-    //Traductions accueilClans.blade.php
+    //Traductions accueilclans.blade.php
     'clan' => 'Clan',
     'creation_clan' => 'Créer un clan',
     'joindre_clan' => 'Rejoindre un clan',

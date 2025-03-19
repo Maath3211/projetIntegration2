@@ -60,7 +60,7 @@ class ClanController extends Controller
             return redirect()->route('clan.canal', ['id' => $id, 'canal' => $canauxParCategorie->first()->first()->id]);
         }
 
-        return View('Clans.accueilClans', compact('id', 'clans', 'clan', 'membres', 'categories', 'canauxParCategorie', 'utilisateur'));
+        return View('Clans.accueilclans', compact('id', 'clans', 'clan', 'membres', 'categories', 'canauxParCategorie', 'utilisateur'));
     }
 
     // Paramètres d'un clan
@@ -75,18 +75,18 @@ class ClanController extends Controller
         
         if(Route::currentRouteName() === "clan.parametres"){
             //les paramètres généraux
-            return View('Clans.parametresClan', compact('id', 'clan' ));
+            return View('Clans.parametresclan', compact('id', 'clan' ));
         }
         else if (Route::currentRouteName() === "clan.parametres.canaux") {
             //les paramètres de catégories de canaux
             $categories = CategorieCanal::where('clanId', '=', $clan->id)->get();
-            return View('Clans.parametresClanCanaux', compact('id', 'clan', 'categories'));
+            return View('Clans.parametresclancanaux', compact('id', 'clan', 'categories'));
         }
         else if (Route::currentRouteName() === "clan.parametres.membres"){
             // les paramètres des membres du clan
             $lienInvitation = $this->genererLienInvitation($clan);
             $membres = $clan->utilisateurs;
-            return View('Clans.parametresClanMembres', compact('id', 'clan', 'lienInvitation', 'membres'));
+            return View('Clans.parametresclanmembres', compact('id', 'clan', 'lienInvitation', 'membres'));
         }
     }
 
@@ -624,7 +624,7 @@ class ClanController extends Controller
         Log::info('CLANS: ' . json_encode($clans->toArray()));
         Log::info('CATEGORIES: ' . json_encode($categories->pluck('id')->toArray()));
         Log::info('CANAUX: ' . json_encode($canauxParCategorie->toArray()));
-        return View('Clans.canalClan', 
+        return View('Clans.canalclan', 
         compact(
         'id', 
         'clans', 
