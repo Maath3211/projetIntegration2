@@ -14,6 +14,7 @@ return [
     'parametres_clan' => 'Paramètres de clan',
     'avertissement_suppression_clan' => 'Êtes-vous sur de vouloir supprimer le clan? Cette action est irréversible.',
     'telecharger' => '📄 Télécharger',
+    
 
 
     // New translations for parametresClanCanaux.blade.php
@@ -40,7 +41,7 @@ return [
     'clan' => 'Clan',
     'creation_clan' => 'Créer un clan',
     'joindre_clan' => 'Rejoindre un clan',
-    'clan_sans_canal' => 'Aucun canal n\'est créé pour ce clan. Veuillez en créer une pour commencer.',
+    'clan_sans_canal' => 'Aucun canal n\'est créé pour cette catégorie. Veuillez en créer une pour commencer.',
     'sans_categorie' => 'Aucune catégorie de canal n\'a été créée pour ce clan. Veuillez en créer une pour ajout des canaux.',
     'entrer_message' => 'Entrez votre message ici...',
     'invitation_vue' => 'Invitez quelqu\'un au clan pour afficher les membres!',
@@ -83,4 +84,5 @@ return [
     'inactif' => 'Inactif',
     'supprimer_invitation' => 'Supprimer l\'invitation',
     'confirmer_invitation' => 'Confirmer l\'invitation',
+    'lien_invitation' => 'Lien d\'invitation: ',
 ];

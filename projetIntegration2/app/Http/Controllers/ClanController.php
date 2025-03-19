@@ -97,15 +97,17 @@ class ClanController extends Controller
             // la validation du formulaire
             $request->validate([
                 'imageClan' => 'image|mimes:jpeg,png,jpg,gif,webp|max:4096',
-                'nomClan' => 'string|max:50',
+                'nomClan' => 'string|max:50|regex:/^[\p{L}\s\-]+$/u',
             ], [
                 'imageClan.image' => 'Erreur lors du chargement de l\'image.',
                 'imageClan.mimes' => 'Format d\'image invaide.',
                 'imageClan.max' => 'L\'image du clan ne doit pas dépasser 4MB.',
                 'nomClan.string' => 'Le nom du clan doit être du texte.',
                 'nomClan.max' => 'Le nom du clan ne doit pas dépasser les 50 caractères.',
+                'nomClan.regex' => 'Le nom du clan ne peut contenir que des lettres UTF-8, des espaces et des tirets (-)',
             ]);
 
+            
             $nomClan = $request->input('nomClan');
 
             // si une image a été soumise, on échange l'ancienne avec la nouvelle dans nos fichiers
@@ -358,6 +360,9 @@ class ClanController extends Controller
                     $utilisateur = User::findOrFail($membre);
                     if($utilisateur && $utilisateur->id != $clan->adminId){
                         $utilisateur->clans()->detach($id);
+                    }
+                    else if ($utilisateur->id == $clan->adminId){
+                        return redirect()->route('clan.parametres.membres', ['id' => $id])->with('erreur', 'Vous ne pouvez pas supprimer l\'administrateur du clan.');
                     }
                 }
             }

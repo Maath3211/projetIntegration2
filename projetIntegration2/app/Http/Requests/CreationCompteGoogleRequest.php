@@ -37,7 +37,7 @@ class CreationCompteGoogleRequest extends FormRequest
                 'required',
                 'date',
                 'before:today',
-                'after:1900-01-01'
+                'after:1899-12-31'
             ],
             'password' => [
                 'required',

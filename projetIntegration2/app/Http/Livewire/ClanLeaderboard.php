@@ -64,9 +64,10 @@ class ClanLeaderboard extends Component
                 'users.imageProfil as user_image',
                 'users.nom as user_nom',
                 'users.prenom as user_prenom',
+                'users.email as user_email',
                 DB::raw('SUM(scores.score) as user_total_score')
             )
-            ->groupBy('users.id', 'users.imageProfil', 'users.nom', 'users.prenom')
+            ->groupBy('users.id', 'users.imageProfil', 'users.nom', 'users.prenom', 'users.email')
             ->orderByDesc('user_total_score')
             ->limit(10)
             ->get();
@@ -80,9 +81,10 @@ class ClanLeaderboard extends Component
                 'users.imageProfil as user_image',
                 'users.nom as user_nom',
                 'users.prenom as user_prenom',
+                'users.email as user_email',
                 DB::raw('SUM(scores.score) as score_improvement')
             )
-            ->groupBy('users.id', 'users.imageProfil', 'users.nom', 'users.prenom')
+            ->groupBy('users.id', 'users.imageProfil', 'users.nom', 'users.prenom', 'users.email')
             ->orderByDesc('score_improvement')
             ->limit(10)
             ->get();

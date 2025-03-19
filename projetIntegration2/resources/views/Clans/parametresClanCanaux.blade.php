@@ -82,10 +82,10 @@
                     <div id="confirmationSuppression" class="fenetreCategorie">
                         <div class="conteneurConfirmation">
                             <div class="titreConfirmation">
-                                <div>{{ __('clans.supprimer_channel_category') }}</div>
+                                <div>{{ __('clans.supression_categorie_canal') }}</div>
                             </div>
                             <div class="texteConfirmation">
-                                <div>{{ __('clans.supprimer_channel_category_warning') }}</div>
+                                <div>{{ __('clans.supression_categorie_canal_avertissement') }}</div>
                             </div>
 
                             <div class="boutonsConfirmation">

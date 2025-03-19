@@ -5,6 +5,7 @@ return [
     'top_10_clans' => 'Top 10 Clans',
     'decouvrir_clans' => 'Découvrez les meilleurs clans',
     'graphique_clans' => 'Graphique Clans',
+    'classements' => 'Classements',
 
     'top_10_usagers' => 'Top 10 Utilisateurs',
     'decouvrir_usagers' => 'Découvrez les meilleurs utilisateurs',

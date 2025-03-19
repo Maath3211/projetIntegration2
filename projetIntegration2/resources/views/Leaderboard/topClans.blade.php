@@ -15,7 +15,7 @@
                 <div class="container">
                     <div class="column">
                         <div class="conteneurImage">
-                            <div class="texteSurImage">Leaderboards</div>
+                            <div class="texteSurImage">{{__('leaderboard.classements')}}</div>
                         </div>
                         <!-- Sidebar: Livewire Component -->
                         <livewire:sidebar-clans :userClans="$userClans" />
@@ -30,66 +30,7 @@
                 </div>
             </div>
 
-            <div class="col-md-2 colonneMembres">
-                <div class="contenuScrollableMembres">
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{asset('img/Utilisateur/utilisateur1.jpg')}}">
-                            <div>
-                                <strong>ADMIN</strong> - Tommy Jackson
-                            </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{asset('img/Utilisateur/utilisateur2.jpg')}}">
-                            <div>
-                                AverageGymGoer
-                            </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{asset('img/Utilisateur/utilisateur3.jpg')}}">
-                            <div>
-                                NotTheAverageGuy
-                            </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{asset('img/Utilisateur/utilisateur15.jpg')}}">
-                            <div>
-                                Ghost
-                            </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{asset('img/Utilisateur/utilisateur16.jpg')}}">
-                            <div>
-                                Coach Noah
-                            </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{asset('img/Utilisateur/utilisateur17.jpg')}}">
-                            <div>
-                                MotivationGuy
-                            </div>
-                        </a>
-                    </div>
-                    <div class="membre">
-                        <a href="#">
-                            <img src="{{asset('img/Utilisateur/utilisateur18.jpg')}}">
-                            <div>
-                                xXDarkSlayerXx
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
+
         </div>
     </div>
 </div>

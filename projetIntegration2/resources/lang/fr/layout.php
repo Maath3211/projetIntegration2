@@ -4,6 +4,10 @@ return [
     // Navigation
     'messages_prives' => 'Messages Privés',
     'classements' => 'Classements',
+    'mes_graphiques' => 'Mes Graphiques',
+    'creer_clan' => 'Créer un clan',
+    'classements' => 'Classements',
+    'messagerie' => 'Messagerie',
     
     // Clan creation
     'creation_clan' => 'Créer un clan',

@@ -130,11 +130,6 @@ Route::POST(
     [ProfilController::class, 'storeCreerCompte']
 )->name('profil.storeCreerCompte');
 
-Route::GET(
-    '/meilleursGroupes',
-    [ScoresController::class, 'meilleursGroupes']
-)->name('scores.meilleursGroupes');
-
 Route::POST(
     '/deconnexion',
     [ProfilController::class, 'deconnexion']
@@ -146,13 +141,9 @@ Route::GET(
 )->name('profil.confirmation');
 
 Route::GET(
-    '/meilleursGroupes',
+    '/classements',
     [ScoresController::class, 'meilleursGroupes']
 )->name('scores.meilleursGroupes');
-Route::POST(
-    '/deconnexion',
-    [ProfilController::class, 'deconnexion']
-)->name('profil.deconnexion');
 
 Route::GET(
     '/profil',
@@ -164,12 +155,12 @@ Route::GET(
     [ProfilController::class, 'modification']
 )->name('profil.modification')->middleware('auth');
 
-Route::POST(
+Route::delete(
     '/profil/suppressionProfil',
     [ProfilController::class, 'suppressionProfil']
 )->name('profil.suppressionProfil')->middleware('auth');
 
-Route::POST(
+Route::patch(
     '/profil/modification/update',
     [ProfilController::class, 'updateModification']
 )->name('profil.updateModification')->middleware('auth');

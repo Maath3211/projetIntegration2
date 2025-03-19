@@ -68,7 +68,7 @@
                 <div class="row barreEnregistrerConteneur">
                     @if(isset($lienInvitation))
                     <div class="col-md-10 rangeeInviter">
-                        <div>Lien d'invitation: </div>
+                        <div>{{__('clans.lien_invitation')}} </div>
                         <div>{{ $lienInvitation }}</div>
                         <i class="fa-regular fa-copy copier"></i>
                     </div>
