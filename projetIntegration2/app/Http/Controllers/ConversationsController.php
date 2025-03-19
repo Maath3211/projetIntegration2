@@ -42,12 +42,12 @@ class ConversationsController extends Controller
 
         $utilisateur = auth()->id();
         $utilisateur = User::findOrFail($utilisateur);
-         
+
         if (!$utilisateur){
             Log::info('Utilisateur pas connecté.');
             return redirect('/connexion')->with('erreur', 'Vous devez être connectés pour afficher les clans.');
         }
-         
+
         $clans = $utilisateur->clans()->get();
 
         $userId = auth()->id();
@@ -78,12 +78,12 @@ class ConversationsController extends Controller
     {
         $utilisateur = auth()->id();
         $utilisateur = User::findOrFail($utilisateur);
-         
+
         if (!$utilisateur){
             Log::info('Utilisateur pas connecté.');
             return redirect('/connexion')->with('erreur', 'Vous devez être connectés pour afficher les clans.');
         }
-         
+
         $clans = $utilisateur->clans()->get();
 
         $userId = auth()->id();
@@ -100,14 +100,14 @@ class ConversationsController extends Controller
             })
             ->where('users.id', '!=', $userId)
             ->get();
-    
+
         $messages = $this->ConvRepository->getMessageFor(auth()->id(), $user->id);
-    
+
         return view('conversations.show', [
             'users' => $users,
             'user' => $user,
             'messages' => $messages,
-            'clans' => $clans,  
+            'clans' => $clans,
         ]);
     }
 
@@ -241,13 +241,19 @@ class ConversationsController extends Controller
     //Modification pour avoir mes points
 
     public function showModificationMessage(){
-        $messages = \DB::table('utilisateur_clan')
+        $messagesClan = \DB::table('utilisateur_clan')
+            ->select('id', 'message', 'created_at', 'fichier')
+            ->where('idEnvoyer', auth()->id())
+            ->get();
+
+        $messagesAmi = \DB::table('user_ami')
             ->select('id', 'message', 'created_at', 'fichier')
             ->where('idEnvoyer', auth()->id())
             ->get();
 
         return view('conversations.modification',[
-            'messages' => $messages
+            'messages' => $messagesClan,
+            'messagesAmi' => $messagesAmi,
         ]);
     }
 
@@ -258,6 +264,25 @@ class ConversationsController extends Controller
         ]);
 
         $message = UtilisateurClan::findOrFail($id);
+
+        if (auth()->id() !== $message->idEnvoyer) {
+            return response()->json(['error' => 'Action non autorisée'], 403);
+        }
+
+        $message->message = $request->nouveau_message;
+        $message->save();
+
+        return redirect()->route('conversations.showModificationMessage');
+    }
+
+
+    public function updateMessageAmi(Request $request, $id)
+    {
+        $request->validate([
+            'nouveau_message' => 'required|string',
+        ]);
+
+        $message = Message::findOrFail($id);
 
         if (auth()->id() !== $message->idEnvoyer) {
             return response()->json(['error' => 'Action non autorisée'], 403);

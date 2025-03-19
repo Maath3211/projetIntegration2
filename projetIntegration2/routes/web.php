@@ -85,6 +85,7 @@ Route::GET('/modificationMessage', [ConversationsController::class, 'showModific
 
 Route::delete('/messages/{message}', [ConversationsController::class, 'destroy'])->middleware('auth')->name('messages.destroy');
 Route::put('/messages/{id}', [ConversationsController::class, 'updateMessage'])->name('messages.update');
+Route::put('/messagesAmi/{id}', [ConversationsController::class, 'updateMessageAmi'])->name('messagesAmi.update');
 
 
 
@@ -330,6 +331,6 @@ Route::post('/switch-language', function (\Illuminate\Http\Request $request) {
         app()->setLocale($locale);
         \Log::info('Switching language to: ' . $locale);
     }
-    
+
     return response()->json(['success' => true, 'locale' => app()->getLocale(), 'session_locale' => session('locale')]);
 })->name('switchLanguage');

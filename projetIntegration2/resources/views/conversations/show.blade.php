@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" style="text/css" href="{{ asset('css/Clans/clans.css') }}">
     <link rel="stylesheet" style="text/css" href="{{ asset('css/Clans/canalClan.css') }}">
+
 @endsection()
 
 @section('contenu')

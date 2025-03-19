@@ -50,27 +50,56 @@
 <body>
     <div class="container mt-5">
         <h1 class="text-center mb-4">{{ __('messages.modifier_conversation') }}</h1>
-        <ul class="list-group">
+        <h1>Message Clan</h1>
+        <div class="scrollview" style="max-height: 400px; overflow-y: auto;">
+            <ul class="list-group">
             @foreach($messages as $message)
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 <div class="col-3 message-content">
-                    <span>{{ $message->message }}</span>
+                <span>{{ $message->message }}</span>
                 </div>
                 <div class="col-2 message-content">
-                    <span>{{ $message->fichier }}</span>
+                <span>{{ $message->fichier }}</span>
                 </div>
                 <div class="col-3">
-                    <span>{{ $message->created_at }}</span>
+                <span>{{ $message->created_at }}</span>
                 </div>
                 <form action="{{ route('messages.update', $message->id) }}" method="POST" class="d-flex align-items-center">
-                    @csrf
-                    @method('PUT')
-                    <input type="text" name="nouveau_message" class="form-control" placeholder="{{ __('chat.nouveau_message') }}">
-                    <button type="submit" class="btn btn-primary btn-sm">{{ __('messages.modifier') }}</button>
+                @csrf
+                @method('PUT')
+                <input type="text" name="nouveau_message" class="form-control" placeholder="{{ __('chat.nouveau_message') }}">
+                <button type="submit" class="btn btn-primary btn-sm">{{ __('messages.modifier') }}</button>
                 </form>
             </li>
             @endforeach
-        </ul>
+            </ul>
+        </div>
+
+
+        <h1>Message Ami</h1>
+        <div class="scrollview" style="max-height: 400px; overflow-y: auto;">
+            <ul class="list-group">
+            @foreach($messagesAmi as $message)
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div class="col-3 message-content">
+                <span>{{ $message->message }}</span>
+                </div>
+                <div class="col-2 message-content">
+                <span>{{ $message->fichier }}</span>
+                </div>
+                <div class="col-3">
+                <span>{{ $message->created_at }}</span>
+                </div>
+                <form action="{{ route('messagesAmi.update', $message->id) }}" method="POST" class="d-flex align-items-center">
+                @csrf
+                @method('PUT')
+                <input type="text" name="nouveau_message" class="form-control" placeholder="{{ __('chat.nouveau_message') }}">
+                <button type="submit" class="btn btn-primary btn-sm">{{ __('messages.modifier') }}</button>
+                </form>
+            </li>
+            @endforeach
+            </ul>
+        </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>

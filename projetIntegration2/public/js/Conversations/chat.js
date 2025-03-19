@@ -1,3 +1,6 @@
+
+//console.log("Chargement du script chat.js");
+
 // ---------------------------
 // Scroll to the bottom of the chat messages
 // ---------------------------
@@ -69,8 +72,21 @@ $(document).on("click", "#cancel-preview", function () {
 // Gestion des emojis
 // ---------------------------
 document.addEventListener("DOMContentLoaded", async function () {
+
     const emojiButton = document.getElementById("emoji-btn");
+    if (!emojiButton) {
+        //console.error("Le bouton emoji avec l'ID 'emoji-btn' est introuvable.");
+        return;
+    }
+    //console.log("Bouton emoji trouvé :", emojiButton);
+
     const emojiPicker = document.getElementById("emoji-picker-container");
+    if (!emojiPicker) {
+        //console.error("Le conteneur emoji avec l'ID 'emoji-picker-container' est introuvable.");
+        return;
+    }
+    //console.log("Conteneur emoji trouvé :", emojiPicker);
+
     let isPickerVisible = false;
     let allEmojis = [];
 
@@ -93,7 +109,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     searchContainer.style.padding = "5px";
     const searchInput = document.createElement("input");
     searchInput.type = "text";
-    searchInput.placeholder = translations.emojiSearch;
+    searchInput.placeholder = "Rechercher un emoji...";
     searchInput.style.width = "100%";
     searchInput.style.padding = "5px";
     searchInput.style.border = "1px solid #ccc";
@@ -104,17 +120,32 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // 🛠 Charger les emojis depuis l'API
     async function loadEmojis() {
+        //console.log("Chargement des emojis...");
         try {
-            let response = await fetch(
-                "https://emoji-api.com/emojis?access_key=fbb83db9397a3267754dfb56209380fd8df13813"
-            );
-            let emojis = await response.json();
-            allEmojis = emojis; // Stocker tous les emojis pour la recherche
+            allEmojis = [
+                            { character: "😀", unicodeName: "visage souriant" },
+                            { character: "😁", unicodeName: "visage rayonnant avec des yeux souriants" },
+                            { character: "😂", unicodeName: "visage avec des larmes de joie" },
+                            { character: "🤣", unicodeName: "rouler par terre de rire" },
+                            { character: "😊", unicodeName: "visage souriant avec des yeux souriants" },
+                            { character: "😎", unicodeName: "visage souriant avec des lunettes de soleil" },
+                            { character: "😍", unicodeName: "visage souriant avec des yeux en forme de cœur" },
+                            { character: "😜", unicodeName: "visage faisant un clin d'œil avec la langue" },
+                            { character: "😡", unicodeName: "visage en colère" },
+                            { character: "😭", unicodeName: "visage pleurant bruyamment" },
+                            { character: "😱", unicodeName: "visage criant de peur" },
+                            { character: "❤️", unicodeName: "cœur rouge" },
+                            { character: "🔥", unicodeName: "feu" },
+                            { character: "🎉", unicodeName: "confettis" },
+                            { character: "💯", unicodeName: "cent points" },
+                        ];
+            //console.log("✅ Emojis chargés localement :", allEmojis);
             displayEmojis(allEmojis);
         } catch (error) {
-            console.error("Erreur de chargement des emojis :", error);
+            //console.error("Erreur de chargement des emojis :", error);
         }
     }
+
 
     // 🔄 Fonction d'affichage des emojis
     function displayEmojis(emojis) {
@@ -145,23 +176,28 @@ document.addEventListener("DOMContentLoaded", async function () {
         displayEmojis(filteredEmojis);
     });
 
+
     // Charger les emojis au chargement de la page
     await loadEmojis();
+
 
     // 🎭 Affichage du picker
     emojiButton.addEventListener("click", (e) => {
         e.stopPropagation();
+        //console.log("Bouton emoji cliqué"); // Vérifiez si le clic est détecté
         if (!isPickerVisible) {
             emojiPicker.style.display = "block";
             setTimeout(() => {
                 emojiPicker.classList.add("active");
                 isPickerVisible = true;
+                //console.log("Emoji picker affiché"); // Vérifiez si le picker est affiché
             }, 10);
         } else {
             emojiPicker.classList.remove("active");
             setTimeout(() => {
                 emojiPicker.style.display = "none";
                 isPickerVisible = false;
+                //console.log("Emoji picker masqué"); // Vérifiez si le picker est masqué
             }, 200);
         }
     });
