@@ -205,8 +205,16 @@ class StatistiqueController extends Controller
     {
         $request->validate([
             'stats' => 'required|array',
-            'stats.*.nomStatistique' => 'required|string',
-            'stats.*.score' => 'required|numeric',
+            'stats.*.nomStatistique' => 'required|regex:/^[a-zA-Z]+$/|max:100',
+            'stats.*.score' => 'required|numeric|gt:0',
+        ], [
+            'stats.required' => 'Les statistiques sont requises.',
+            'stats.*.nomStatistique.required' => 'Le nom de la statistique est requis.',
+            'stats.*.nomStatistique.regex' => 'Le nom de la statistique doit contenir uniquement des lettres.',
+            'stats.*.nomStatistique.max' => 'Le nom de la statistique ne doit pas dépasser 100 caractères.',
+            'stats.*.score.required' => 'Le score est requis.',
+            'stats.*.score.numeric' => 'Le score doit être un nombre.',
+            'stats.*.score.gt' => 'Le score doit être supérieur à 0.',
         ]);
 
         foreach ($request->stats as $stat) {
