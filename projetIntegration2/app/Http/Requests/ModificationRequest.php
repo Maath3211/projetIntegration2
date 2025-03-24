@@ -22,10 +22,6 @@ class ModificationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            /* 'email' => [
-                'required',
-                'email',
-            ], */
             'prenom' => [
                 'required',
             ],
@@ -62,8 +58,6 @@ class ModificationRequest extends FormRequest
     {
         return
             [
-                'email.required' => 'L\'email est requis',
-                'email.email' => 'L\'email doit être valide',
                 'prenom.required' => 'Le prénom est requis',
                 'nom.required' => 'Le nom est requis',
                 'imageProfil.required' => 'L\'image de profil est requise',
