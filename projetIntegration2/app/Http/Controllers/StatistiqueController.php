@@ -142,8 +142,12 @@ class StatistiqueController extends Controller
     public function ajouterPoids(Request $request)
     {
         $request->validate([
-            'poids' => 'required|numeric',
-            'poids' => 'gt:0',
+            'poids' => 'required|numeric|gt:0|lt:1000',
+        ], [
+            'poids.required' => 'Le poids est requis.',
+            'poids.numeric' => 'Le poids doit être un nombre.',
+            'poids.gt' => 'Le poids doit être supérieur à 0.',
+            'poids.lt' => 'Le poids doit être inférieur à 1000.',
         ]);
 
         $user = Auth::user();
