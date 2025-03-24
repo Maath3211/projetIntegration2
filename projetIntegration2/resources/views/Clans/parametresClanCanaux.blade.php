@@ -38,7 +38,7 @@
                 <div class="col-md-10 colonneParametres">
                     <div class="conteneurParametres ">
 
-                        <div class="titreParametre">{{ __('clans.renommer_categorie_canal') }}</div>
+                        <div class="titreParametre">{{ __('clans.categories_canal') }}</div>
                         <a href="{{ route('clan.montrer', ['id' => $id]) }}">
                             <div class="boutonRetour">
                                 <i class="fa-regular fa-circle-xmark fa-3x"></i>
@@ -82,10 +82,10 @@
                     <div id="confirmationSuppression" class="fenetreCategorie">
                         <div class="conteneurConfirmation">
                             <div class="titreConfirmation">
-                                <div>{{ __('clans.supprimer_channel_category') }}</div>
+                                <div>{{ __('clans.supression_categorie_canal') }}</div>
                             </div>
                             <div class="texteConfirmation">
-                                <div>{{ __('clans.supprimer_channel_category_warning') }}</div>
+                                <div>{{ __('clans.supression_categorie_canal_avertissement') }}</div>
                             </div>
 
                             <div class="boutonsConfirmation">
