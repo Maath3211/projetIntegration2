@@ -105,11 +105,13 @@ class StatistiqueController extends Controller
     public function ajouterScoreExercice(Request $request, Statistiques $exercice)
     {
         $request->validate([
-            'score' => 'required|numeric|gt:0',
+            'score' => 'required|numeric|gt:0|lt:1000',
         ], [
             'score.required' => 'Le score est requis.',
             'score.numeric' => 'Le score doit être un nombre.',
             'score.gt' => 'Le score doit être supérieur à 0.',
+            'score.lt' => 'Le score doit être inférieur à 1000.',
+
         ]);
         
         $statistique = Statistiques::find($exercice->id);
@@ -141,11 +143,12 @@ class StatistiqueController extends Controller
 public function ajouterPoids(Request $request)
 {
     $request->validate([
-        'poids' => 'required|numeric|gt:0',
+        'poids' => 'required|numeric|gt:0|lt:1000',
     ], [
         'poids.required' => 'Le poids est requis.',
         'poids.numeric' => 'Le poids doit être un nombre.',
         'poids.gt' => 'Le poids doit être supérieur à 0.',
+        'poids.lt' => 'Le poids doit être inférieur à 1000.',
     ]);
     
     $user = Auth::user();
@@ -207,13 +210,13 @@ public function ajouterPoids(Request $request)
     {
         $request->validate([
             'stats' => 'required|array',
-            'stats.*.nomStatistique' => 'required|regex:/^[a-zA-Z]+$/|max:255',
+            'stats.*.nomStatistique' => 'required|regex:/^[a-zA-Z]+$/|max:100',
             'stats.*.score' => 'required|numeric|gt:0',
         ], [
             'stats.required' => 'Les statistiques sont requises.',
             'stats.*.nomStatistique.required' => 'Le nom de la statistique est requis.',
             'stats.*.nomStatistique.regex' => 'Le nom de la statistique doit contenir uniquement des lettres.',
-            'stats.*.nomStatistique.max' => 'Le nom de la statistique ne doit pas dépasser 255 caractères.',
+            'stats.*.nomStatistique.max' => 'Le nom de la statistique ne doit pas dépasser 100 caractères.',
             'stats.*.score.required' => 'Le score est requis.',
             'stats.*.score.numeric' => 'Le score doit être un nombre.',
             'stats.*.score.gt' => 'Le score doit être supérieur à 0.',
