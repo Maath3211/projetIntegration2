@@ -17,28 +17,28 @@ class PusherBroadcast implements ShouldBroadcastNow
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $message;
-    public $senderId;
-    public $receiverId;
-    public $deleted; // Ajout du flag de suppression
-    public $lastId;
+    public $idExpediteur;
+    public $idDestinataire;
+    public $supprime; 
+    public $dernierId;
     public $photo;
     public $email;
 
-    public function __construct($message, $senderId, $receiverId, $deleted = false, $lastId, $photo = null, $email)
+    public function __construct($message, $idExpediteur, $idDestinataire, $supprime = false, $dernierId, $photo = null, $email)
     {
         $this->message = $message;
-        $this->senderId = $senderId;
-        $this->receiverId = $receiverId;
-        $this->deleted = $deleted; // Défaut à false
-        $this->lastId = $lastId;
+        $this->idExpediteur = $idExpediteur;
+        $this->idDestinataire = $idDestinataire;
+        $this->supprime = $supprime; 
+        $this->dernierId = $dernierId;
         $this->photo = $photo;
         $this->email = $email;
     }
 
     public function broadcastOn()
     {
-        // Canal unique pour chaque conversation
-        $channelName = "chat-" . min($this->senderId, $this->receiverId) . "-" . max($this->senderId, $this->receiverId);
+        
+        $channelName = "chat-" . min($this->idExpediteur, $this->idDestinataire) . "-" . max($this->idExpediteur, $this->idDestinataire);
         return new Channel($channelName);
     }
 
@@ -51,10 +51,10 @@ class PusherBroadcast implements ShouldBroadcastNow
     {
         return [
             'message' => $this->message,
-            'sender_id' => $this->senderId,
-            'receiver_id' => $this->receiverId,
-            'deleted' => $this->deleted,
-            'last_id' => $this->lastId,
+            'id_expediteur' => $this->idExpediteur,
+            'id_destinataire' => $this->idDestinataire,
+            'supprime' => $this->supprime,
+            'dernier_id' => $this->dernierId,
             'photo' => $this->photo,
             'email' => $this->email
         ];
