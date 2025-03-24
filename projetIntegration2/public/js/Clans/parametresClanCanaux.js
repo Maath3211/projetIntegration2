@@ -163,6 +163,7 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById('ajoutCategorie').style.display = 'none';
             let valeurEntree = this.parentElement.parentElement.querySelector('.entreeNomCategorie').value;
 
+            if(!(valeurEntree.length > 50) && /^[A-Za-z\u00C0-\u00FF-]+$/.test(valeurEntree) && valeurEntree.length !== 0){
 
             // ajouter la catégorie à la liste de catégories affichée
             document.querySelector('.parametresCanal').innerHTML = document.querySelector('.parametresCanal').innerHTML + `<div class="categorie ${valeurEntree}">
@@ -204,6 +205,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             // effacer la valeur entrée initialement
             this.parentElement.parentElement.querySelector('.entreeNomCategorie').value = '';
+            }
         }
     });
 

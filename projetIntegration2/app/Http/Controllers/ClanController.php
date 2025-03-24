@@ -58,7 +58,7 @@ class ClanController extends Controller
             return redirect()->route('clan.canal', ['id' => $id, 'canal' => $canauxParCategorie->first()->first()->id]);
         }
 
-        return View('Clans.accueilClans', compact('id', 'clans', 'clan', 'membres', 'categories', 'canauxParCategorie', 'utilisateur'));
+        return View('Clans.accueilclans', compact('id', 'clans', 'clan', 'membres', 'categories', 'canauxParCategorie', 'utilisateur'));
     }
 
     // Paramètres d'un clan
@@ -73,18 +73,18 @@ class ClanController extends Controller
         
         if(Route::currentRouteName() === "clan.parametres"){
             //les paramètres généraux
-            return View('Clans.parametresClan', compact('id', 'clan' ));
+            return View('Clans.parametresclan', compact('id', 'clan' ));
         }
         else if (Route::currentRouteName() === "clan.parametres.canaux") {
             //les paramètres de catégories de canaux
             $categories = CategorieCanal::where('clanId', '=', $clan->id)->get();
-            return View('Clans.parametresClanCanaux', compact('id', 'clan', 'categories'));
+            return View('Clans.parametresclancanaux', compact('id', 'clan', 'categories'));
         }
         else if (Route::currentRouteName() === "clan.parametres.membres"){
             // les paramètres des membres du clan
             $lienInvitation = $this->genererLienInvitation($clan);
             $membres = $clan->utilisateurs;
-            return View('Clans.parametresClanMembres', compact('id', 'clan', 'lienInvitation', 'membres'));
+            return View('Clans.parametresclanmembres', compact('id', 'clan', 'lienInvitation', 'membres'));
         }
     }
 
@@ -95,13 +95,14 @@ class ClanController extends Controller
             // la validation du formulaire
             $request->validate([
                 'imageClan' => 'image|mimes:jpeg,png,jpg,gif,webp|max:4096',
-                'nomClan' => 'string|max:50',
+                'nomClan' => 'string|max:50|regex:/^[\p{L}\s\-]+$/u',
             ], [
                 'imageClan.image' => 'Erreur lors du chargement de l\'image.',
                 'imageClan.mimes' => 'Format d\'image invaide.',
                 'imageClan.max' => 'L\'image du clan ne doit pas dépasser 4MB.',
                 'nomClan.string' => 'Le nom du clan doit être du texte.',
                 'nomClan.max' => 'Le nom du clan ne doit pas dépasser les 50 caractères.',
+                'nomClan.regex' => 'Le nom du clan ne peut contenir que des lettres UTF-8, des espaces et des tirets (-)',
             ]);
 
             $nomClan = $request->input('nomClan');
@@ -356,6 +357,9 @@ class ClanController extends Controller
                     $utilisateur = User::findOrFail($membre);
                     if($utilisateur && $utilisateur->id != $clan->adminId){
                         $utilisateur->clans()->detach($id);
+                    }
+                    else if ($utilisateur->id == $clan->adminId){
+                        return redirect()->route('clan.parametres.membres', ['id' => $id])->with('erreur', 'Vous ne pouvez pas supprimer l\'administrateur du clan.');
                     }
                 }
             }
@@ -617,7 +621,7 @@ class ClanController extends Controller
         Log::info('CLANS: ' . json_encode($clans->toArray()));
         Log::info('CATEGORIES: ' . json_encode($categories->pluck('id')->toArray()));
         Log::info('CANAUX: ' . json_encode($canauxParCategorie->toArray()));
-        return View('Clans.canalClan', 
+        return View('Clans.canalclan', 
         compact(
         'id', 
         'clans', 

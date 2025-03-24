@@ -63,13 +63,60 @@
                     </div>
                 </div>
               </div>
-              <div class="row barreEnregistrerConteneur">
-                  <div class="col-md-10 rangeeEnregistrer">
-                      <div>N'oubliez pas d'enregistrer vos modifications avant de quitter!</div>
-                      <button type="submit" class="btn btn-success">Enregistrer</button>
+            </a>
+          </div>
+          <form action="{{ route('clan.miseajour.general', ['id' => $id]) }}" method="POST" enctype="multipart/form-data" id="formulaireSoumission">
+            @csrf
+            <div class="row">
+              <div class="col-md-12 parametresGeneraux">
+                <img src="{{asset($clan->image)}}" alt="erreur lors de l'affichage de votre image.">
+                <div class="formulaireAjoutImage">
+                  <div>{{ __('clans.recommendation_image')}}</div>
+                  <div class="form-group">
+                    <label for="imageClan" class="televerser">{{__('clans.televerser_image')}}</label>
+                    <input type="file" class="form-control-file" id="imageClan" name="imageClan" accept="image/*">
                   </div>
               </div>
-            </form>
+            </div>
+            <div class="row barreEnregistrerConteneur">
+              <div class="col-md-10 rangeeEnregistrer">
+                <div>{{ __('clans.rappel_sauvegarde')}}</div>
+                <button type="submit" class="btn btn-success">{{ __('clans.sauvegarde')}}</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="col-md-10 colonneParametres">
+        <div class="conteneurParametres ">
+
+          <div class="titreParametre">{{ __('clans.parametres_generaux') }}</div>
+          <a href="{{ route('clan.montrer', ['id' => $id]) }}">
+            <div class="boutonRetour">
+              <i class="fa-regular fa-circle-xmark fa-3x"></i>
+              <div>{{ __('clans.quitter') }}</div>
+            </div>
+          </a>
+        </div>
+        <!-- TODO - CHANGER L'IMAGE QUI APPARAIT POUR CELLE DU CLAN -->
+        <form action="{{ route('clan.miseajour.general', ['id' => $id]) }}" method="POST" enctype="multipart/form-data" id="formulaireSoumission">
+          @csrf
+          <div class="row">
+            <div class="col-md-12 parametresGeneraux">
+              <img src="{{asset($clan->image)}}" alt="erreur lors de l'affichage de votre image.">
+              <div class="formulaireAjoutImage">
+                <div>{{ __('clans.recommendation_image') }}</div>
+                <div class="form-group">
+                  <label for="imageClan" class="televerser">{{ __('clans.televerser_image') }}</label>
+                  <input type="file" class="form-control-file" id="imageClan" name="imageClan" accept="image/*">
+                </div>
+              </div>
+              <div class="nomClan">
+                <label for="nomClan">{{ __('clans.nom_clan') }}</label>
+                <input type="text" class="form-control" id="nomClan" name="nomClan" value="{{$clan->nom}}">
+              </div>
+            </div>
           </div>
         </div>
         <!-- Fenêtre contextuelle pour confirmer la suppression du clan -->

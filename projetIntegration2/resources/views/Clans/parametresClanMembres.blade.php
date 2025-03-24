@@ -43,7 +43,7 @@
                 </div>
             </a>
             </div>
-            <form action="{{ route('clan.miseAJour.membres', ['id' => $id]) }}" method="POST" enctype="multipart/form-data" id="formulaireSoumission">
+            <form action="{{ route('clan.miseajour.membres', ['id' => $id]) }}" method="POST" enctype="multipart/form-data" id="formulaireSoumission">
             @csrf
                 <div class="row">
                     <div class="col-md-12 parametresCanal">
