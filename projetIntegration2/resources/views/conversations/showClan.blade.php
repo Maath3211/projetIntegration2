@@ -1,4 +1,4 @@
-@extends('Layouts.app')
+@extends('layouts.app')
 @section('titre', {{ __('chat.titre_conversation_ami') }})
 
 <body>

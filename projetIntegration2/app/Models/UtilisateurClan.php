@@ -12,7 +12,7 @@ class UtilisateurClan extends Model
 {
     use HasFactory;
 
-    protected $table = "utilisateur_clan";
+    protected $table = "conversation_clan";
     protected $fillable = [
         'idEnvoyer',
         'idClan',
@@ -22,6 +22,7 @@ class UtilisateurClan extends Model
         'created_at',
     ];
 
+    //Laravel les creer en englais
     protected $dates = ['created_at', 'read_at']; 
 
     public $timestamps = false;

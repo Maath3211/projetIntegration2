@@ -11,14 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_ami', function (Blueprint $table) {
+        Schema::create('conversation_clan', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('idEnvoyer');
-            $table->unsignedBigInteger('idReceveur');
+            $table->unsignedBigInteger('idClan');
+            $table->unsignedBigInteger('idCanal');
             $table->text('message')->nullable();
             $table->string('fichier')->nullable();
             $table->timestamps();
             $table->foreign('idEnvoyer')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('idClan')->references('id')->on('clans')->onDelete('cascade');
         });
     }
 
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_ami');
+        Schema::dropIfExists('conversation_clan');
     }
 };

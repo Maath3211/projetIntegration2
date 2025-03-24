@@ -1,4 +1,4 @@
-@extends('Layouts.app')
+@extends('layouts.app')
 @section('titre', 'Conversation avec ' . $user->email)
 
 

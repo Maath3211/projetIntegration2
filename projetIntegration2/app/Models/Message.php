@@ -12,7 +12,7 @@ class Message extends Model
 {
     use HasFactory;
 
-    protected $table = "user_ami";
+    protected $table = "conversation_ami";
     protected $fillable = [
         'message',
         'idEnvoyer',
