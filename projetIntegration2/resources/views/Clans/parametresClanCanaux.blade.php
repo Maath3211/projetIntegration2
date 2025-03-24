@@ -38,7 +38,7 @@
                 <div class="col-md-10 colonneParametres">
                     <div class="conteneurParametres ">
 
-                        <div class="titreParametre">{{ __('clans.renommer_categorie_canal') }}</div>
+                        <div class="titreParametre">{{ __('clans.categories_canal') }}</div>
                         <a href="{{ route('clan.montrer', ['id' => $id]) }}">
                             <div class="boutonRetour">
                                 <i class="fa-regular fa-circle-xmark fa-3x"></i>
