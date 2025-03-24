@@ -42,12 +42,12 @@ Route::middleware([VerifierAdminClan::class])->group(function () {
     Route::POST('/clan/{id}/action/canal', [ClanController::class, 'actionsCanal'])->name('canal.actions');
     Route::POST('/clan/{id}/parametres/general',  [ClanController::class, 'parametres'])->name('clan.parametres.post');
     Route::GET('/clan/{id}/parametres/canaux', [ClanController::class, 'parametres'])->name('clan.parametres.canaux');
-    Route::POST('/clan/{id}/enregistrerCanaux', [ClanController::class, 'miseAJourCanaux'])->name('clan.miseajour.canaux');
-    Route::POST('/clan/{id}/enregistrerGeneral', [ClanController::class, 'miseAJourGeneral'])->name('clan.miseajour.general');
+    Route::POST('/clan/{id}/enregistrerCanaux', [ClanController::class, 'miseAJourCanaux'])->name('clan.miseAJour.canaux');
+    Route::POST('/clan/{id}/enregistrerGeneral', [ClanController::class, 'miseAJourGeneral'])->name('clan.miseAJour.general');
     Route::GET('/clan/{id}/parametres/membres', [ClanController::class, 'parametres'])->name('clan.parametres.membres');
-    Route::POST('/clan/{id}/enregistrerMembres', [ClanController::class, 'miseAJourMembres'])->name('clan.miseajour.membres');
+    Route::POST('/clan/{id}/enregistrerMembres', [ClanController::class, 'miseAJourMembres'])->name('clan.miseAJour.membres');
     Route::POST('/clan/{id}/supprimer', [ClanController::class, 'supprimer'])->name('clan.supprimer');
-    Route::POST('/clan/{id}/televerser', [ClanController::class, 'televerserImage'])->name('clan.televerserimage');
+    Route::POST('/clan/{id}/televerser', [ClanController::class, 'televerserImage'])->name('clan.televerserImage');
 });
 
 
