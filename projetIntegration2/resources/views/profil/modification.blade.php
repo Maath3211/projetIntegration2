@@ -157,10 +157,10 @@
                                 <div class="col-md-4 d-flex flex-column align-items-center">
                                     <select class="form-select inputModification form-control" name="pays">
                                         <option>{{ __('profile.choisir') }}</option>
-                                        @foreach ($countries as $country)
-                                            <option value="{{ $country['name'] }}"
-                                                {{ Auth::user()->pays == $country['name'] ? 'selected' : '' }}>
-                                                {{ $country['name'] }}
+                                        @foreach ($pays as $pay)
+                                            <option value="{{ $pay['name'] }}"
+                                                {{ Auth::user()->pays == $pay['name'] ? 'selected' : '' }}>
+                                                {{ $pay['name'] }}
                                             </option>
                                         @endforeach
                                     </select>
