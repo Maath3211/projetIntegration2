@@ -1,4 +1,4 @@
-@extends('Layouts.app')
+@extends('layouts.app')
 
 @section('contenu')
     <link rel="stylesheet" href="{{ asset('css/Profil/modification.css') }}">
