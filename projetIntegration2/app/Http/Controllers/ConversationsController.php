@@ -259,12 +259,12 @@ class ConversationsController extends Controller
     //Modification pour avoir mes points
 
     public function showModificationMessage(){
-        $messagesClan = \DB::table('utilisateur_clan')
+        $messagesClan = \DB::table('conversation_clan')
             ->select('id', 'message', 'created_at', 'fichier')
             ->where('idEnvoyer', auth()->id())
             ->get();
 
-        $messagesAmi = \DB::table('user_ami')
+        $messagesAmi = \DB::table('conversation_ami')
             ->select('id', 'message', 'created_at', 'fichier')
             ->where('idEnvoyer', auth()->id())
             ->get();
