@@ -109,8 +109,13 @@ class StatistiqueController extends Controller
     public function ajouterScoreExercice(Request $request, Statistiques $exercice)
     {
         $request->validate([
-            'score' => 'required|numeric',
-            'score' => 'gt:0',
+            'score' => 'required|numeric|gt:0|lt:1000',
+        ], [
+            'score.required' => 'Le score est requis.',
+            'score.numeric' => 'Le score doit être un nombre.',
+            'score.gt' => 'Le score doit être supérieur à 0.',
+            'score.lt' => 'Le score doit être inférieur à 1000.',
+
         ]);
 
         $statistique = Statistiques::find($exercice->id);
