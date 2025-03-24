@@ -15,6 +15,8 @@
         <script src="https://cdn.tailwindcss.com"></script> <!-- nous rajoute <aside> et <main> entre autres -->
         <script src="https://kit.fontawesome.com/55ec8bd5f8.js" crossorigin="anonymous"></script> <!-- importation de Font Awesome pour les icônes -->
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet"> <!-- famille de police -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
         @yield('style')
         <meta charset="UTF-8">
 </head>
@@ -40,6 +42,13 @@
     <a href="#">
       <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee">
         <i class="fa-solid fa-ranking-star fa-2xl"></i>
+      </div>
+    </a>
+
+    <!-- Bouton pour la page de localisation -->
+    <a href="/localisation">
+      <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee">
+        <i class="fa-solid fa-location-dot fa-2xl"></i>
       </div>
     </a>
 
@@ -109,6 +118,13 @@
       <a href="{{route('scores.meilleursGroupes')}}">
         <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee"><i
             class="fa-solid fa-ranking-star fa-2xl"></i></div>
+      </a>
+
+      <!-- Bouton pour la page de localisation -->
+      <a href="/localisation">
+        <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee">
+          <i class="fa-solid fa-location-dot fa-2xl"></i>
+        </div>
       </a>
 
       <!-- Tous les clans dont l'utilisateur actuel fait partie -->
