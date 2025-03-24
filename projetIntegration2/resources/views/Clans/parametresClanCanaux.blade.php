@@ -37,20 +37,20 @@
             <div class="col-md-10 colonneParametres">
                 <div class="conteneurParametres ">
 
-                        <div class="titreParametre">{{ __('clans.categories_canal') }}</div>
-                        <a href="{{ route('clan.montrer', ['id' => $id]) }}">
-                            <div class="boutonRetour">
-                                <i class="fa-regular fa-circle-xmark fa-3x"></i>
-                                <div>{{ __('clans.quitter') }}</div>
-                            </div>
-                        </a>
+                <div class="titreParametre">Catégories de canaux</div>
+                <a href="{{ route('clan.montrer', ['id' => $id]) }}">
+                    <div class="boutonRetour">
+                    <i class="fa-regular fa-circle-xmark fa-3x"></i>
+                    <div>QUITTER</div>
                     </div>
-                    <form action="{{ route('clan.miseAJour.canaux', ['id' => $id]) }}" method="POST" enctype="multipart/form-data" id="formulaireSoumission">
-                        @csrf
-                        <div class="row">
-                            <div class="col-md-12 parametresCanal">
-                                <!-- Montrer les catégories de canaux -->
-                                @if(isset($categories))
+                </a>
+                </div>
+                <form action="{{ route('clan.miseAJour.canaux', ['id' => $id]) }}" method="POST" enctype="multipart/form-data" id="formulaireSoumission">
+                @csrf
+                    <div class="row">
+                        <div class="col-md-12 parametresCanal">
+                            <!-- Montrer les catégories de canaux -->
+                            @if(isset($categories))
                                 @foreach($categories as $cat)
                                     <div class="categorie {{$cat->categorie}}">
                                         <i class="fa-solid fa-x supprimer"></i>
@@ -60,33 +60,8 @@
                                 @endforeach
                             @endif
                         </div>
-                        <!-- entrée caché pour enregistrer les modifications à faire. -->
-                        <input type="hidden" name="categoriesASupprimer" id="categoriesASupprimer">
-                        <input type="hidden" name="categoriesAAjouter" id="categoriesAAjouter">
-                        <input type="hidden" name="categoriesARenommer" id="categoriesARenommer">
-
-                        <div class="row barreEnregistrerConteneur">
-                            <div class="col-md-10 rangeeEnregistrer">
-                                <div>{{ __('clans.modification_sauvegarde') }}</div>
-                                <button type="submit" class="btn btn-success">{{ __('clans.sauvegarde') }}</button>
-                            </div>
-                        </div>
-                    </form>
-
-                    <!-- Fenêtre contextuelle pour confirmer la suppression d'une catégorie de canal -->
-                    <div id="confirmationSuppression" class="fenetreCategorie">
-                        <div class="conteneurConfirmation">
-                            <div class="titreConfirmation">
-                                <div>{{ __('clans.supression_categorie_canal') }}</div>
-                            </div>
-                            <div class="texteConfirmation">
-                                <div>{{ __('clans.supression_categorie_canal_avertissement') }}</div>
-                            </div>
-
-                            <div class="boutonsConfirmation">
-                                <button class="annuler" type="button">{{ __('clans.annuler') }}</button>
-                                <button id="confirmerSuppression" type="button">{{ __('clans.supprimer') }}</button>
-                            </div>
+                        <div>
+                            <button type="button" class="ajouterCategorie">Ajouter une catégorie</button>
                         </div>
                     </div>
                     <!-- entrée caché pour enregistrer les modifications à faire. -->

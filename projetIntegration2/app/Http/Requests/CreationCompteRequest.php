@@ -42,7 +42,7 @@ class CreationCompteRequest extends FormRequest
                 'required',
                 'date',
                 'before:today',
-                'after:1899-12-31'
+                'after:1900-01-01'
             ],
             'password' => [
                 'required',

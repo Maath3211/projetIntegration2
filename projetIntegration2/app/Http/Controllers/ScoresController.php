@@ -98,35 +98,21 @@ class ScoresController extends Controller
             ->limit(10)
             ->get();
 
-        $filename = 'meilleurs_membres_global_' . date('d-m-Y') . '.csv';
+        $filename = 'meilleurs_membres_global_' . '_' . date('d-m-Y') . '.csv';
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
 
-        // Create a temporary file handle for our CSV
-        $handle = fopen('php://temp', 'r+');
+        $output = fopen('php://output', 'w');
+        // CSV Header: include position column
+        fputcsv($output, ['Position', 'Prenom', 'Nom', 'Total Score']);
 
-        // Write CSV header
-        fputcsv($handle, ['Position', 'Prenom', 'Nom', 'Total Score']);
-
-        // Write data rows
         $position = 1;
         foreach ($topUsers as $user) {
-            fputcsv($handle, [$position, $user->prenom, $user->nom, $user->total_score]);
+            fputcsv($output, [$position, $user->prenom, $user->nom, $user->total_score]);
             $position++;
         }
-
-        // Reset the file pointer to the beginning
-        rewind($handle);
-
-        // Get the content
-        $content = '';
-        while (!feof($handle)) {
-            $content .= fread($handle, 8192);
-        }
-        fclose($handle);
-
-        // Return as a response with appropriate headers
-        return response($content)
-            ->header('Content-Type', 'text/csv; charset=UTF-8')
-            ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
+        fclose($output);
+        exit;
     }
 
     public function exportTopClans()
@@ -140,35 +126,21 @@ class ScoresController extends Controller
             ->limit(10)
             ->get();
 
-        $filename = 'meilleurs_clans_global_' . date('d-m-Y') . '.csv';
+        $filename = 'meilleurs_clans_global' . '_' . date('d-m-Y') . '.csv';
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
 
-        // Create a temporary file handle for our CSV
-        $handle = fopen('php://temp', 'r+');
+        $output = fopen('php://output', 'w');
+        // CSV Header: First column is the position
+        fputcsv($output, ['Position', 'Clan Name', 'Total Score']);
 
-        // Write CSV header
-        fputcsv($handle, ['Position', 'Clan Name', 'Total Score']);
-
-        // Write data rows
         $position = 1;
         foreach ($topClans as $clan) {
-            fputcsv($handle, [$position, $clan->clan_nom, $clan->clan_total_score]);
+            fputcsv($output, [$position, $clan->clan_nom, $clan->clan_total_score]);
             $position++;
         }
-
-        // Reset the file pointer to the beginning
-        rewind($handle);
-
-        // Get the content
-        $content = '';
-        while (!feof($handle)) {
-            $content .= fread($handle, 8192);
-        }
-        fclose($handle);
-
-        // Return as a response with appropriate headers
-        return response($content)
-            ->header('Content-Type', 'text/csv; charset=UTF-8')
-            ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
+        fclose($output);
+        exit;
     }
 
     public function exportTopMembres($clanId)
@@ -181,45 +153,29 @@ class ScoresController extends Controller
                 'users.imageProfil as user_image',
                 'users.nom as user_nom',
                 'users.prenom as user_prenom',
-                'users.email as user_email',
                 DB::raw('SUM(scores.score) as user_total_score')
             )
-            ->groupBy('users.id', 'users.imageProfil', 'users.nom', 'users.prenom', 'users.email')
+            ->groupBy('users.id', 'users.imageProfil', 'users.nom', 'users.prenom')
             ->orderByDesc('user_total_score')
             ->limit(10)
             ->get();
-
         $clan = DB::table('clans')->where('id', $clanId)->first();
         $clanSlug = strtolower(str_replace(' ', '_', $clan->nom));
         $filename = 'meilleurs_membres_' . $clanSlug . '_' . date('d-m-Y') . '.csv';
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
 
-        // Create a temporary file handle for our CSV
-        $handle = fopen('php://temp', 'r+');
+        $output = fopen('php://output', 'w');
+        // CSV Header: include position column
+        fputcsv($output, ['Position', 'Prenom', 'Nom', 'Total Score']);
 
-        // Write CSV header
-        fputcsv($handle, ['Position', 'Prenom', 'Nom', 'Total Score']);
-
-        // Write data rows
         $position = 1;
         foreach ($topMembres as $membre) {
-            fputcsv($handle, [$position, $membre->user_prenom, $membre->user_nom, $membre->user_total_score]);
+            fputcsv($output, [$position, $membre->user_prenom, $membre->user_nom, $membre->user_total_score]);
             $position++;
         }
-
-        // Reset the file pointer to the beginning
-        rewind($handle);
-
-        // Get the content
-        $content = '';
-        while (!feof($handle)) {
-            $content .= fread($handle, 8192);
-        }
-        fclose($handle);
-
-        // Return as a response with appropriate headers
-        return response($content)
-            ->header('Content-Type', 'text/csv; charset=UTF-8')
-            ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
+        fclose($output);
+        exit;
     }
 
     public function exportTopAmelioration($clanId)
@@ -235,10 +191,9 @@ class ScoresController extends Controller
                 'users.imageProfil as user_image',
                 'users.nom as user_nom',
                 'users.prenom as user_prenom',
-                'users.email as user_email',
                 DB::raw('SUM(scores.score) as score_improvement')
             )
-            ->groupBy('users.id', 'users.imageProfil', 'users.nom', 'users.prenom', 'users.email')
+            ->groupBy('users.id', 'users.imageProfil', 'users.nom', 'users.prenom')
             ->orderByDesc('score_improvement')
             ->limit(10)
             ->get();
@@ -246,34 +201,20 @@ class ScoresController extends Controller
         $clan = DB::table('clans')->where('id', $clanId)->first();
         $clanSlug = strtolower(str_replace(' ', '_', $clan->nom));
         $filename = 'meilleurs_ameliorations_' . $clanSlug . '_' . date('d-m-Y') . '.csv';
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
 
-        // Create a temporary file handle for our CSV
-        $handle = fopen('php://temp', 'r+');
+        $output = fopen('php://output', 'w');
+        // CSV Header: include position column
+        fputcsv($output, ['Position', 'Prenom', 'Nom', 'Improvement Score']);
 
-        // Write CSV header
-        fputcsv($handle, ['Position', 'Prenom', 'Nom', 'Improvement Score']);
-
-        // Write data rows
         $position = 1;
         foreach ($topAmelioration as $user) {
-            fputcsv($handle, [$position, $user->user_prenom, $user->user_nom, $user->score_improvement]);
+            fputcsv($output, [$position, $user->user_prenom, $user->user_nom, $user->score_improvement]);
             $position++;
         }
-
-        // Reset the file pointer to the beginning
-        rewind($handle);
-
-        // Get the content
-        $content = '';
-        while (!feof($handle)) {
-            $content .= fread($handle, 8192);
-        }
-        fclose($handle);
-
-        // Return as a response with appropriate headers
-        return response($content)
-            ->header('Content-Type', 'text/csv; charset=UTF-8')
-            ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
+        fclose($output);
+        exit;
     }
 
     public function testChart()

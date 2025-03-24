@@ -63,6 +63,7 @@
                     </div>
                 </div>
               </div>
+<<<<<<< HEAD
             </a>
           </div>
           <form action="{{ route('clan.miseAJour.general', ['id' => $id]) }}" method="POST" enctype="multipart/form-data" id="formulaireSoumission">
@@ -117,6 +118,15 @@
                 <input type="text" class="form-control" id="nomClan" name="nomClan" value="{{$clan->nom}}">
               </div>
             </div>
+=======
+              <div class="row barreEnregistrerConteneur">
+                  <div class="col-md-10 rangeeEnregistrer">
+                      <div>N'oubliez pas d'enregistrer vos modifications avant de quitter!</div>
+                      <button type="submit" class="btn btn-success">Enregistrer</button>
+                  </div>
+              </div>
+            </form>
+>>>>>>> parent of b3aa6d4 (Merge branch 'main' into Stattistique)
           </div>
         </div>
         <!-- Fenêtre contextuelle pour confirmer la suppression du clan -->

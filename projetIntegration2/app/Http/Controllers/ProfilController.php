@@ -248,16 +248,13 @@ class ProfilController extends Controller
         return View('profil.profil', compact('utilisateur', 'clansAway', 'clans'));
     }
 
-    public function suppressionProfil(Request $request)
+    public function suppressionProfil()
     {
         $utilisateur = Auth::user();
         if ($utilisateur->imageProfil && file_exists(public_path($utilisateur->imageProfil))) {
             unlink(public_path($utilisateur->imageProfil));
         }
         $utilisateur->delete();
-        Auth::guard()->logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
         return redirect()->route('profil.pageConnexion')->with('message', 'Votre compte a été supprimé avec succès');
     }
 

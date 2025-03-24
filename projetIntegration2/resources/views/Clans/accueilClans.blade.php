@@ -23,7 +23,44 @@
                             </div>
                         @endif
                         <div class="conteneurCanaux">
-                            <p>{{ __('clans.sans_categorie') }}</p>
+                            <!-- Afficher toutes les catégories ainsi que leurs canaux dans l'ordre -->
+                            @if(isset($categories))
+                                @foreach($categories as $categorie)
+                                    <div class="categorieCanal">
+                                        <div class="titreCategorieCanal categorie_{{ $categorie->id }}">
+                                            <div>
+                                                <i class="fa-solid fa-minus"></i>
+                                                {{ $categorie->categorie }}
+                                            </div>
+                                            @if($utilisateur->id == $clan->adminId)
+                                                <i class="fa-solid fa-plus fa-xs"></i>
+                                            @endif
+                                        </div>
+                                        @if(isset($canauxParCategorie[$categorie->id]))
+                                            @foreach($canauxParCategorie[$categorie->id] as $canal)
+                                                <div class="canal">
+                                                    <a href="/clan/{{ $id }}/canal/{{ $canal->id }}" class="canal_{{ $canal->id }}">
+                                                        <div>
+                                                            <i class="fa-solid fa-hashtag"></i>
+                                                            {{ $canal->titre }}
+                                                        </div>
+                                                    </a>
+                                                    @if($utilisateur->id == $clan->adminId)
+                                                    <div class="iconesModificationCanal">
+                                                        <i class="fa-solid fa-pen modifier"></i>
+                                                        <i class="fa-solid fa-x supprimer"></i>
+                                                    </div>
+                                                    @endif
+                                                </div>
+                                            @endforeach
+                                        @else
+                                            <p>Aucun canal n'est créé pour ce clan. Veuillez en créer une pour commencer.</p>
+                                        @endif
+                                    </div>
+                                @endforeach
+                            @else
+                                <p>Aucune catégorie de canal n'a été créée pour ce clan. Veuillez en créer une pour ajout des canaux.</p>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -33,25 +70,26 @@
                     <!-- COLONNE POUR LES MESSAGES POUR XAVIER -->
                 </div>
                 <div class="entreeFixe">
-                    <input type="text" placeholder="{{ __('clans.entrer_message') }}" maxlength="1000">
+                    <input type="text" placeholder="Entrez votre message içi..." maxlength="1000">
                     <i class="fa-solid fa-play aly fa-xl"></i>
                 </div>
             </div>
             <div class="col-md-2 colonneMembres">
                 <div class="contenuScrollableMembres">
-                    @if (isset($membres))
-                    @foreach ($membres as $membre)
-                    <div class="membre">
-                        <a href="{{ route('profil.profilPublic', ['email' => $membre->email]) }}">
-                            <img src="{{ asset($membre->imageProfil) }}">
-                            <div>
-                                @if ($membre->id == $clan->adminId)
-                                                ADMIN -
-                                            @endif{{ $membre->prenom }} {{ $membre->nom }}
+                    <!-- Afficher tous les membres du clan, admin en premier-->
+                    @if(isset($membres))
+                        @foreach($membres as $membre)
+                            <div class="membre">
+                                <a href="{{ route('profil.profilPublic', ['email' => $membre->email]) }}">
+                                    <img src="{{asset($membre->imageProfil)}}" > 
+                                    <div>
+                                        @if($membre->id == $clan->adminId)ADMIN - @endif{{$membre->prenom}} {{$membre->nom}}
+                                    </div>
+                                </a>
                             </div>
                         @endforeach
                     @else
-                    <p>{{ __('clans.invitation_vue')}}</p>
+                        <p>Invitez quelqu'un au clan pour afficher les membres!</p>
                     @endif
                 </div>
             </div>

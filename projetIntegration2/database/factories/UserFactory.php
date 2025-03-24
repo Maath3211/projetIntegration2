@@ -17,7 +17,7 @@ class UserFactory extends Factory
             'email' => $this->faker->unique()->safeEmail,
             'prenom' => $this->faker->firstName,
             'nom' => $this->faker->lastName,
-            'imageProfil' => 'img/Utilistateurs/default8.jpg', // Add this line
+            'imageProfil' => $this->faker->imageUrl,
             'pays' => $this->faker->country,
             'aPropos' => $this->faker->sentence,
             'genre' => $this->faker->randomElement(['male', 'female']),

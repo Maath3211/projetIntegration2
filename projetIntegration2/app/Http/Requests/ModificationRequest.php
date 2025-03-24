@@ -22,10 +22,10 @@ class ModificationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            /* 'email' => [
+            'email' => [
                 'required',
                 'email',
-            ], */
+            ],
             'prenom' => [
                 'required',
             ],

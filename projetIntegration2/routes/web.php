@@ -162,12 +162,12 @@ Route::GET(
     [ProfilController::class, 'modification']
 )->name('profil.modification')->middleware('auth');
 
-Route::delete(
+Route::POST(
     '/profil/suppressionProfil',
     [ProfilController::class, 'suppressionProfil']
 )->name('profil.suppressionProfil')->middleware('auth');
 
-Route::patch(
+Route::POST(
     '/profil/modification/update',
     [ProfilController::class, 'updateModification']
 )->name('profil.updateModification')->middleware('auth');
