@@ -46,7 +46,7 @@
               </div>
             </a>
           </div>
-          <form action="{{ route('clan.miseajour.general', ['id' => $id]) }}" method="POST" enctype="multipart/form-data" id="formulaireSoumission">
+          <form action="{{ route('clan.miseAJour.general', ['id' => $id]) }}" method="POST" enctype="multipart/form-data" id="formulaireSoumission">
             @csrf
             <div class="row">
               <div class="col-md-12 parametresGeneraux">
@@ -86,7 +86,7 @@
           </a>
         </div>
         <!-- TODO - CHANGER L'IMAGE QUI APPARAIT POUR CELLE DU CLAN -->
-        <form action="{{ route('clan.miseajour.general', ['id' => $id]) }}" method="POST" enctype="multipart/form-data" id="formulaireSoumission">
+        <form action="{{ route('clan.miseAJour.general', ['id' => $id]) }}" method="POST" enctype="multipart/form-data" id="formulaireSoumission">
           @csrf
           <div class="row">
             <div class="col-md-12 parametresGeneraux">

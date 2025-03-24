@@ -15,7 +15,7 @@ return [
     'avertissement_suppression_clan' => 'Are you sure you want to delete the clan? This action is irreversible.',
     'telecharger' => '📄 Download',
     
-    // New translations for parametresclancanaux.blade.php
+    // New translations for parametresClanCanaux.blade.php
     'parametres' => 'Settings',
     'general' => 'General',
     'canaux' => 'Channels',
@@ -35,7 +35,7 @@ return [
     'suppression_membre_avertissement' => 'Are you sure you want to remove this member from the clan?',
     'expulser' => 'Kick out',
 
-    // Traductions accueilclans.blade.php
+    // Traductions accueilClans.blade.php
     'clan' => 'Clan',
     'creation_clan' => 'Create a clan',
     'joindre_clan' => 'Join a clan',
