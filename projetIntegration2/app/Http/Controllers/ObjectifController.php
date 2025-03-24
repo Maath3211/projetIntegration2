@@ -46,11 +46,17 @@ class ObjectifController extends Controller
     public function update(Request $request, $id)
     {
 
-    $request->validate([
-        'titre' => 'required|string|max:255',
-        'description' => 'required|string|max:1000',
-        'complet' => 'nullable|boolean',
-    ]);
+        $request->validate([
+            'titre' => 'required|string|max:50',
+            'description' => 'required|string|max:255',
+        ], [
+            'titre.required' => 'Le titre est obligatoire.',
+            'titre.string' => 'Le titre doit être une chaîne de caractères.',
+            'titre.max' => 'Le titre ne peut pas dépasser 50 caractères.',
+            'description.required' => 'La description est obligatoire.',
+            'description.string' => 'La description doit être une chaîne de caractères.',
+            'description.max' => 'La description ne peut pas dépasser 255 caractères.',
+        ]);
 
   
     $objectif = Objectif::findOrFail($id);
