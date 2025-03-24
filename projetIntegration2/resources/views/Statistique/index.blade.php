@@ -1,4 +1,4 @@
-@extends('Layouts.app')
+@extends('layouts.app')
 @section('contenu')
 
 <link rel="stylesheet" style="text/css" href="\css\Statistique\statistiqueIndex.css"> 
