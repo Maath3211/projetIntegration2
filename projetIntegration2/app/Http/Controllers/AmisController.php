@@ -33,33 +33,20 @@ class AmisController extends Controller
         $userId = auth()->check() ? auth()->user()->id : 999;
 
         // Récupérer la liste des IDs des amis déjà ajoutés par l'utilisateur
-        $friendIds = \DB::table('user_ami')
-            ->where('idEnvoyer', $userId)
-            ->pluck('idReceveur')
+        $friendIds = \DB::table('amis')
+            ->where('user_id', $userId)
+            ->pluck('friend_id')
             ->toArray();
 
         // S'assurer d'exclure également l'utilisateur lui-même
         $friendIds[] = $userId;
 
         // Rechercher les utilisateurs dont le nom correspond à la recherche et qui ne sont pas déjà amis
-        $utilisateurs = User::where(function($queryBuilder) use ($query) {
-            $queryBuilder->where('prenom', 'like', "%{$query}%")
-                         ->orWhere('nom', 'like', "%{$query}%");
-        })
-        ->whereNotIn('id', $friendIds)
-        ->get();
+        $utilisateurs = User::where('username', 'like', "%{$query}%")
+            ->whereNotIn('id', $friendIds)
+            ->get();
 
-<<<<<<< Updated upstream
         return view('amis.index', compact('utilisateurs', 'utilisateurConnecteId'));
-=======
-        // Récupérer les IDs auxquels une demande a déjà été envoyée par l'utilisateur connecté
-        $sentRequests = \DB::table('demande_amis')
-            ->where('requester_id', $userId)
-            ->pluck('requested_id')
-            ->toArray();
-
-        return view('amis.index', compact('utilisateurs', 'sentRequests'));
->>>>>>> Stashed changes
     }
 
     public function rechercheClan(Request $request)

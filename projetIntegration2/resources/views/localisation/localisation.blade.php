@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
 
@@ -6,16 +5,9 @@
     <title>{{ __('gyms.titre_page') }}</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-=======
-@extends('layouts.app')
-
-
-@section('style')
->>>>>>> Stashed changes
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-        integrity="sha512-p/..." crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-p/..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <style>
         body {
             display: flex;
@@ -45,8 +37,6 @@
             display: flex;
             align-items: center;
             position: relative;
-            margin-right: 25px;
-            margin-top: 15px;
         }
 
         #search-bar {
@@ -103,7 +93,6 @@
         #results-list {
             list-style-type: none;
             padding: 0;
-            margin-top: 15px;
         }
 
         .result-card {
@@ -136,16 +125,9 @@
         }
 
         #map-container {
-<<<<<<< Updated upstream
             width: 70%;
             margin-top: 20px;
             margin-bottom: 20px;
-=======
-            width: 65%;
-            margin-top: 30px;
-            margin-bottom: 10px;
-            margin-right: 10px;
->>>>>>> Stashed changes
             height: calc(100vh - 80px);
             /* Hauteur totale moins les marges en haut et en bas */
             position: relative;
@@ -181,15 +163,6 @@
             height: 100%;
             border-radius: 50%;
             /* Coins arrondis */
-<<<<<<< Updated upstream
-=======
-        }
-
-        .toggle-container {
-            display: flex;
-            align-items: center;
-            height: 13px;
->>>>>>> Stashed changes
         }
 
         .label {
@@ -225,32 +198,10 @@
         #current-location-btn i {
             font-size: 24px;
             /* Increase as needed */
-<<<<<<< Updated upstream
-=======
-        }
-
-        .result-card {
-            position: relative;
-            /* Enlever toute hauteur fixe */
-            height: auto;
-            overflow: visible;
-            transition: all 0.3s ease;
-        }
-
-        .result-details {
-            display: none;
-            margin-top: 10px;
-        }
-
-        /* Lorsque les détails sont affichés, on passe à display block */
-        .result-card.active .result-details {
-            display: block;
->>>>>>> Stashed changes
         }
     </style>
-@endsection
+</head>
 
-<<<<<<< Updated upstream
 <body>
     <div id="search-container">
         <h1>{{ __('gyms.gyms_proche') }}</h1>
@@ -274,38 +225,6 @@
         </div>
         <button id="current-location-btn"><i class="fa-solid fa-location-crosshairs"></i></button>
     </div>
-=======
-@section('contenu')
-    <div id="localisation-wrapper" style="display: flex; flex-direction: row; gap: 20px;">
-        <div id="search-container" style="width: 35%;">
-            <h1>Position des gyms à proximité</h1>
-            <div id="search-input-container">
-                <input type="text" id="search-bar" placeholder="Rechercher un gym (ex: Econofitness)" style="width: 100%;">
-                <button id="clear-search">x</button>
-            </div>
-            <div id="no-results-container">
-                Aucun résultat trouvé pour la recherche "<span id="search-term"></span>"
-            </div>
-            <div id="results-container" style="width: 100%;">
-                <h2>Voici les résultats de recherche :</h2>
-                <ul id="results-list" style="width: 100%;"></ul>
-            </div>
-        </div>
-        <div id="map-container" style="width: 65%; position: relative;">
-            <div id="map"></div>
-            <div
-                style="position: absolute; top: 10px; right: 10px; z-index: 1000; background: rgba(0,0,0,0.5); padding: 5px; border-radius: 4px;">
-                <input type="checkbox" id="toggle-circles" checked>
-                <label for="toggle-circles" style="color: white;">Afficher les cercles d'achalandage</label>
-            </div>
-            <button id="current-location-btn"><i class="fa-solid fa-location-crosshairs"></i></button>
-        </div>
-    </div>
-@endsection
-
-@section('scripts')
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
->>>>>>> Stashed changes
     <script>
         const translations = {
             youAreHere: "{{ __('gyms.vous_etes_ici') }}",
@@ -430,11 +349,7 @@
                                 centerColor = 'hsla(30,100%,50%,1)'; // orange
                                 edgeColor = 'hsla(30,100%,50%,0)';
                             } else {
-<<<<<<< Updated upstream
                                 centerColor = 'hsla(0,100%,50%,1)'; // rouge
-=======
-                                centerColor = 'hsla(0,100%,50%,1)';  // rouge
->>>>>>> Stashed changes
                                 edgeColor = 'hsla(0,100%,50%,0)';
                             }
 
@@ -447,24 +362,18 @@
                                 iconSize: [baseSize, baseSize],
                                 iconAnchor: [baseSize / 2, baseSize / 2],
                                 html: `<div style="
-                                                      width: ${baseSize}px;
-                                                      height: ${baseSize}px;
-                                                      border-radius: 50%;
-                                                      background: radial-gradient(circle, ${centerColor} 0%, ${edgeColor} 70%);
-                                                   "></div>`
+                                          width: ${baseSize}px;
+                                          height: ${baseSize}px;
+                                          border-radius: 50%;
+                                          background: radial-gradient(circle, ${centerColor} 0%, ${edgeColor} 70%);
+                                       "></div>`
                             });
 
                             // Créer un marqueur (pin) pour le gym avec un grand zIndexOffset pour qu'il soit au-dessus
                             var marker = L.marker([element.lat, element.lon], {
-<<<<<<< Updated upstream
                                     icon: customIcon,
                                     zIndexOffset: 1000
                                 }).addTo(map)
-=======
-                                icon: customIcon,
-                                zIndexOffset: 1000
-                            }).addTo(map)
->>>>>>> Stashed changes
                                 .bindPopup(gymName || 'Gymnase');
                             markers.push(marker);
 
@@ -491,24 +400,24 @@
 
                             // Construire l'élément de résultat pour le menu de gauche
                             var gymDetails = `
-                                            <div class="result-details" style="display: none;">
-                                                <p><strong>Name:</strong> ${gymName || 'N/A'}</p>
-                                                <p><strong>Address:</strong> ${element.tags['addr:street'] || 'N/A'}, ${element.tags['addr:city'] || 'N/A'} ${element.tags['addr:postcode'] || ''}</p>
-                                                <p><strong>Phone:</strong> ${element.tags['contact:phone'] || element.tags.phone || 'N/A'}</p>
-                                                <p><strong>Website:</strong> ${element.tags.website ? '<a href="' + element.tags.website + '" target="_blank">' + element.tags.website + '</a>' : 'N/A'}</p>
-                                                <p><strong>Email:</strong> ${element.tags['contact:email'] || element.tags.email || 'N/A'}</p>
-                                                <p><strong>Achalandage:</strong> ${achalandage}</p>
-                                            </div>
-                                        `;
+                                <div class="result-details" style="display: none;">
+                                    <p><strong>Name:</strong> ${gymName || 'N/A'}</p>
+                                    <p><strong>Address:</strong> ${element.tags['addr:street'] || 'N/A'}, ${element.tags['addr:city'] || 'N/A'} ${element.tags['addr:postcode'] || ''}</p>
+                                    <p><strong>Phone:</strong> ${element.tags['contact:phone'] || element.tags.phone || 'N/A'}</p>
+                                    <p><strong>Website:</strong> ${element.tags.website ? '<a href="' + element.tags.website + '" target="_blank">' + element.tags.website + '</a>' : 'N/A'}</p>
+                                    <p><strong>Email:</strong> ${element.tags['contact:email'] || element.tags.email || 'N/A'}</p>
+                                    <p><strong>Achalandage:</strong> ${achalandage}</p>
+                                </div>
+                            `;
                             var listItem = document.createElement('li');
                             listItem.className = 'result-card';
                             listItem.innerHTML = `
-                                            <h3>${gymName}${gymLocation}</h3>
-                                            <div class="toggle-container">
-                                                <button onclick="toggleDetails(this)">+</button>
-                                                ${gymDetails}
-                                            </div>
-                                        `;
+                                <h3>${gymName}${gymLocation}</h3>
+                                <div class="toggle-container">
+                                    <button onclick="toggleDetails(this)">+</button>
+                                    ${gymDetails}
+                                </div>
+                            `;
                             resultsList.appendChild(listItem);
                         });
                     }
@@ -521,24 +430,24 @@
             var gymName = element.tags.name;
             var gymLocation = element.tags['addr:street'] ? ' - ' + element.tags['addr:street'] : '';
             var gymDetails = `
-                            <div class="result-details">
-                                <p>Adresse: ${element.tags['addr:street'] || 'N/A'}</p>
-                                <p>Téléphone: ${element.tags['contact:phone'] || 'N/A'}</p>
-                                <p>Site Web: ${element.tags['website'] ? '<a href="' + element.tags['website'] + '" target="_blank">' + element.tags['website'] + '</a>' : 'N/A'}</p>
-                                <p>Email: ${element.tags['contact:email'] || 'N/A'}</p>
-                            </div>
-                        `;
+                <div class="result-details">
+                    <p>Adresse: ${element.tags['addr:street'] || 'N/A'}</p>
+                    <p>Téléphone: ${element.tags['contact:phone'] || 'N/A'}</p>
+                    <p>Site Web: ${element.tags['website'] ? '<a href="' + element.tags['website'] + '" target="_blank">' + element.tags['website'] + '</a>' : 'N/A'}</p>
+                    <p>Email: ${element.tags['contact:email'] || 'N/A'}</p>
+                </div>
+            `;
             resultsList.innerHTML = `
-                            <li class="result-card">
-                                <h3>${gymName}${gymLocation}</h3>
-                                <div class="toggle-container">
-                                    <button onclick="toggleDetails(this)">-</button>
-                                    <div class="result-details" style="display: block;">
-                                        ${gymDetails}
-                                    </div>
-                                </div>
-                            </li>
-                        `;
+                <li class="result-card">
+                    <h3>${gymName}${gymLocation}</h3>
+                    <div class="toggle-container">
+                        <button onclick="toggleDetails(this)">-</button>
+                        <div class="result-details" style="display: block;">
+                            ${gymDetails}
+                        </div>
+                    </div>
+                </li>
+            `;
         }
 
         // Fonction pour afficher/masquer les détails des gyms
@@ -581,21 +490,21 @@
             }
         });
 
-        map.on('zoomend', function () {
+        map.on('zoomend', function() {
             var currentZoom = map.getZoom();
             // Exponential scaling: adjust the exponent (e.g., 2) to shrink circles more when zooming out
             var newSize = baseSize * Math.pow(currentZoom / baseZoom, 5);
-            gradientMarkers.forEach(function (item) {
+            gradientMarkers.forEach(function(item) {
                 var newIcon = L.divIcon({
                     className: 'gradient-circle',
                     iconSize: [newSize, newSize],
                     iconAnchor: [newSize / 2, newSize / 2],
                     html: `<div style="
-                                          width: ${newSize}px;
-                                          height: ${newSize}px;
-                                          border-radius: 50%;
-                                          background: radial-gradient(circle, ${item.centerColor} 0%, ${item.edgeColor} 70%);
-                                       "></div>`
+                              width: ${newSize}px;
+                              height: ${newSize}px;
+                              border-radius: 50%;
+                              background: radial-gradient(circle, ${item.centerColor} 0%, ${item.edgeColor} 70%);
+                           "></div>`
                 });
                 item.marker.setIcon(newIcon);
             });
@@ -620,15 +529,11 @@
         });
 
         // Create a legend control and add it to the map (bottom left)
-<<<<<<< Updated upstream
         var legend = L.control({
             position: 'bottomleft'
         });
-=======
-        var legend = L.control({ position: 'bottomleft' });
->>>>>>> Stashed changes
 
-        legend.onAdd = function (map) {
+        legend.onAdd = function(map) {
             var div = L.DomUtil.create('div', 'info legend');
             div.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
             div.style.padding = '10px';
@@ -636,7 +541,6 @@
             div.style.fontSize = '14px';
             div.style.color = '#333';
 
-<<<<<<< Updated upstream
             // Use translations for the legend
             div.innerHTML = 
                 "<div style='text-align: center;'><strong>" + translations.legendTitle + "</strong><br></div>" +
@@ -647,24 +551,13 @@
                 "<i style='background: hsla(0,100%,50%,1); width:18px; height:18px; display:inline-block; margin-right:5px;'></i> " + translations.veryHighTraffic + "<br>" +
                 "<br><em>" + translations.doubleClickTip + "</em>";
             
-=======
-            // Contenu de la légende en français
-            div.innerHTML =
-                "<div style='text-align: center;'><strong>Légende Achalandage</strong><br></div>" +
-                "<i style='background: hsla(210,100%,80%,1); width:18px; height:18px; display:inline-block; margin-right:5px;'></i> Très peu achalandé (<=20)<br>" +
-                "<i style='background: hsla(120,100%,50%,1); width:18px; height:18px; display:inline-block; margin-right:5px;'></i> Peu achalandé (<=40)<br>" +
-                "<i style='background: hsla(60,100%,50%,1); width:18px; height:18px; display:inline-block; margin-right:5px;'></i> Achalandage moyen (<=60)<br>" +
-                "<i style='background: hsla(30,100%,50%,1); width:18px; height:18px; display:inline-block; margin-right:5px;'></i> Très achalandé (<=80)<br>" +
-                "<i style='background: hsla(0,100%,50%,1); width:18px; height:18px; display:inline-block; margin-right:5px;'></i> Énormément achalandé (>80)<br>" +
-                "<br><em>Double-cliquez sur la carte pour relocaliser</em>";
->>>>>>> Stashed changes
             return div;
         };
 
         legend.addTo(map);
     </script>
     <script>
-        document.getElementById('search-bar').addEventListener('input', function () {
+        document.getElementById('search-bar').addEventListener('input', function() {
             var searchBar = document.getElementById('search-bar');
             var clearButton = document.getElementById('clear-search');
             if (searchBar.value.length > 0) {
@@ -674,7 +567,7 @@
             }
         });
 
-        document.getElementById('clear-search').addEventListener('click', function () {
+        document.getElementById('clear-search').addEventListener('click', function() {
             var searchBar = document.getElementById('search-bar');
             searchBar.value = '';
             this.style.display = 'inline';
@@ -709,7 +602,7 @@
 
         // Ajoutez un écouteur d'événement pour le double-clic sur la carte
         // Vous pouvez changer 'dblclick' en 'click' si vous préférez un simple clic
-        map.on('dblclick', function (e) {
+        map.on('dblclick', function(e) {
             var newLatLng = e.latlng;
             // Remove the old current position marker if it exists
             if (typeof currentPosMarker !== 'undefined' && currentPosMarker) {
@@ -730,16 +623,11 @@
 
         // Créer le marqueur initial avec le tooltip "Vous êtes ici"
         if (navigator.geolocation) {
-<<<<<<< Updated upstream
             navigator.geolocation.getCurrentPosition(function(position) {
-=======
-            navigator.geolocation.getCurrentPosition(function (position) {
->>>>>>> Stashed changes
                 var lat = position.coords.latitude;
                 var lon = position.coords.longitude;
                 var initialLatLng = [lat, lon];
                 map.setView(initialLatLng, 13);
-<<<<<<< Updated upstream
                 currentPosMarker = L.marker(initialLatLng, {
                     icon: currentLocationIcon,
                     draggable: false
@@ -749,27 +637,17 @@
                     direction: 'top',
                     offset: [1, -37],
                     className: 'current-position-tooltip'
-=======
-                currentPosMarker = L.marker(initialLatLng, { icon: currentLocationIcon, draggable: false }).addTo(map);
-                currentPosMarker.bindTooltip("Vous êtes ici", {
-                    permanent: true, direction: 'top', offset: [1, -37], className: 'current-position-tooltip'
->>>>>>> Stashed changes
                 }).openTooltip();
                 getGyms(lat, lon);
             });
         }
 
         // Sur double-clic (ou clic) sur la carte, déplacez le marqueur et mettez à jour la tooltip
-<<<<<<< Updated upstream
         map.on('dblclick', function(e) {
-=======
-        map.on('dblclick', function (e) {
->>>>>>> Stashed changes
             var newLatLng = e.latlng;
             if (currentPosMarker) {
                 currentPosMarker.setLatLng(newLatLng);
                 // Réactualiser la tooltip pour qu'elle suive le marqueur
-<<<<<<< Updated upstream
                 currentPosMarker.bindTooltip(translations.youAreHere, {
                     permanent: true,
                     direction: 'top',
@@ -786,15 +664,6 @@
                     direction: 'top',
                     offset: [0, -15],
                     className: 'current-position-tooltip'
-=======
-                currentPosMarker.bindTooltip("Vous êtes ici", {
-                    permanent: true, direction: 'top', offset: [0, -15], className: 'current-position-tooltip'
-                }).openTooltip();
-            } else {
-                currentPosMarker = L.marker(newLatLng, { icon: currentLocationIcon, draggable: false }).addTo(map);
-                currentPosMarker.bindTooltip("Vous êtes ici", {
-                    permanent: true, direction: 'top', offset: [0, -15], className: 'current-position-tooltip'
->>>>>>> Stashed changes
                 }).openTooltip();
             }
             map.setView(newLatLng);
@@ -807,48 +676,32 @@
 
         // Créer le marqueur initial sans le tooltip "Vous êtes ici"
         if (navigator.geolocation) {
-<<<<<<< Updated upstream
             navigator.geolocation.getCurrentPosition(function(position) {
-=======
-            navigator.geolocation.getCurrentPosition(function (position) {
->>>>>>> Stashed changes
                 var lat = position.coords.latitude;
                 var lon = position.coords.longitude;
                 var initialLatLng = [lat, lon];
                 map.setView(initialLatLng, 13);
-<<<<<<< Updated upstream
                 currentPosMarker = L.marker(initialLatLng, {
                     icon: currentLocationIcon,
                     draggable: false
                 }).addTo(map);
-=======
-                currentPosMarker = L.marker(initialLatLng, { icon: currentLocationIcon, draggable: false }).addTo(map);
->>>>>>> Stashed changes
                 getGyms(lat, lon);
             });
         }
 
         // Lors d'un double-clic sur la carte, supprimez le marqueur actuel
         // et affichez un nouveau pin sans aucun tooltip
-<<<<<<< Updated upstream
         map.on('dblclick', function(e) {
-=======
-        map.on('dblclick', function (e) {
->>>>>>> Stashed changes
             var newLatLng = e.latlng;
             // Supprimer le marqueur actuel s'il existe
             if (currentPosMarker) {
                 map.removeLayer(currentPosMarker);
             }
             // Créer un nouveau marqueur et le stocker dans currentPosMarker
-<<<<<<< Updated upstream
             currentPosMarker = L.marker(newLatLng, {
                 icon: currentLocationIcon,
                 draggable: false
             }).addTo(map);
-=======
-            currentPosMarker = L.marker(newLatLng, { icon: currentLocationIcon, draggable: false }).addTo(map);
->>>>>>> Stashed changes
             map.setView(newLatLng, 13);
             getGyms(newLatLng.lat, newLatLng.lng);
         });
@@ -860,16 +713,11 @@
 
         // Créer le marqueur initial avec le tooltip "Vous êtes ici"
         if (navigator.geolocation) {
-<<<<<<< Updated upstream
             navigator.geolocation.getCurrentPosition(function(position) {
-=======
-            navigator.geolocation.getCurrentPosition(function (position) {
->>>>>>> Stashed changes
                 var lat = position.coords.latitude;
                 var lon = position.coords.longitude;
                 var initialLatLng = [lat, lon];
                 map.setView(initialLatLng, 13);
-<<<<<<< Updated upstream
                 currentPosMarker = L.marker(initialLatLng, {
                     icon: currentLocationIcon,
                     draggable: false
@@ -879,16 +727,10 @@
                     direction: 'top',
                     offset: [1, -37],
                     className: 'current-position-tooltip'
-=======
-                currentPosMarker = L.marker(initialLatLng, { icon: currentLocationIcon, draggable: false }).addTo(map);
-                currentPosMarker.bindTooltip("Vous êtes ici", {
-                    permanent: true, direction: 'top', offset: [1, -37], className: 'current-position-tooltip'
->>>>>>> Stashed changes
                 }).openTooltip();
                 getGyms(lat, lon);
             });
         }
-<<<<<<< Updated upstream
 
         // Sur double-clic (ou clic) sur la carte, déplacez le marqueur, enregistrez la position, et mettez à jour la tooltip
         map.on('dblclick', function(e) {
@@ -1007,105 +849,5 @@
         });
     </script>
 </body>
-=======
->>>>>>> Stashed changes
 
-        // Sur double-clic (ou clic) sur la carte, déplacez le marqueur, enregistrez la position, et mettez à jour la tooltip
-        map.on('dblclick', function (e) {
-            var newLatLng = e.latlng;
-            lastDoubleClickLatLng = newLatLng; // Enregistrer la dernière position double-clic
-            if (currentPosMarker) {
-                currentPosMarker.setLatLng(newLatLng);
-                currentPosMarker.bindTooltip("Vous êtes ici", {
-                    permanent: true, direction: 'top', offset: [0, -15], className: 'current-position-tooltip'
-                }).openTooltip();
-            } else {
-                currentPosMarker = L.marker(newLatLng, { icon: currentLocationIcon, draggable: false }).addTo(map);
-                currentPosMarker.bindTooltip("Vous êtes ici", {
-                    permanent: true, direction: 'top', offset: [0, -15], className: 'current-position-tooltip'
-                }).openTooltip();
-            }
-            map.setView(newLatLng);
-        });
-
-        // Lorsque l'utilisateur clique sur le bouton "x" de la barre de recherche, revenir à la dernière position double-cliquée
-        document.getElementById('clear-search').addEventListener('click', function () {
-            // Réinitialiser la barre de recherche
-            document.getElementById('search-bar').value = '';
-            // Revenir à la dernière position double clic si définie
-            if (lastDoubleClickLatLng) {
-                map.setView(lastDoubleClickLatLng);
-            }
-        });
-    </script>
-    <script>
-        // Place this JavaScript code after your map/legend initialization code
-        document.getElementById('current-location-btn').addEventListener('click', function () {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function (position) {
-                    var lat = position.coords.latitude;
-                    var lon = position.coords.longitude;
-                    var currentLatLng = [lat, lon];
-                    map.setView(currentLatLng, 13);
-
-                    // Remove the old marker if it exists
-                    if (currentPosMarker) {
-                        map.removeLayer(currentPosMarker);
-                    }
-                    // Add a new marker at the current location
-                    currentPosMarker = L.marker(currentLatLng, { icon: currentLocationIcon, draggable: false }).addTo(map);
-
-                    // Optionally update nearby gyms
-                    getGyms(lat, lon);
-                });
-            } else {
-                alert('La géolocalisation n\'est pas supportée par ce navigateur.');
-            }
-        });
-    </script>
-    <script>
-        // Variables globales pour le marqueur et la dernière position double-clic
-        var currentPosMarker;
-        var lastDoubleClickLatLng;
-
-        // Créer le marqueur initial avec la géolocalisation
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function (position) {
-                var lat = position.coords.latitude;
-                var lon = position.coords.longitude;
-                var initialLatLng = [lat, lon];
-                map.setView(initialLatLng, 13);
-                currentPosMarker = L.marker(initialLatLng, { icon: currentLocationIcon, draggable: false }).addTo(map);
-                // Afficher les gyms autour de la position initiale
-                getGyms(lat, lon);
-            });
-        }
-
-        // Écouteur pour le double-clic sur la carte
-        map.on('dblclick', function (e) {
-            var newLatLng = e.latlng;
-            // Enregsitrer la dernière position double-clic
-            lastDoubleClickLatLng = newLatLng;
-
-            // Supprimer l'ancien marqueur s'il existe, puis en ajouter un nouveau
-            if (currentPosMarker) {
-                map.removeLayer(currentPosMarker);
-            }
-            currentPosMarker = L.marker(newLatLng, { icon: currentLocationIcon, draggable: false }).addTo(map);
-            map.setView(newLatLng, 13);
-            getGyms(newLatLng.lat, newLatLng.lng);
-        });
-
-        // Attendre que le DOM soit chargé pour ajouter l'événement au bouton "x"
-        window.addEventListener('DOMContentLoaded', function () {
-            document.getElementById('clear-search').addEventListener('click', function () {
-                // Réinitialiser la barre de recherche
-                document.getElementById('search-bar').value = '';
-                // Si une position double-clic a été enregistrée, recentrer la vue dessus
-                if (lastDoubleClickLatLng) {
-                    map.setView(lastDoubleClickLatLng, 13);
-                }
-            });
-        });
-    </script>
-@endsection
+</html>
