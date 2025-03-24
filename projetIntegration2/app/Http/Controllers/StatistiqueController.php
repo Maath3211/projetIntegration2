@@ -262,7 +262,7 @@ class StatistiqueController extends Controller
 
     public function updateWeight(Request $request)
     {
-        \Log::info('Request received for updateWeight', ['request' => $request->all()]);
+        \Log::info('modiferPoids', ['request' => $request->all()]);
 
         $user = Auth::user();
         $poid = $user->poids()->first();
@@ -270,10 +270,10 @@ class StatistiqueController extends Controller
         if ($poid) {
             $poid->score = $request->input('poids');
             $poid->save();
-            \Log::info('Weight updated successfully', ['poid' => $poid]);
+            \Log::info('Poids modifier avec succes', ['poid' => $poid]);
             return response()->json(['success' => true]);
         } else {
-            \Log::error('Weight update failed: Weight not found');
+            \Log::error('Poids non trouvé');
             return response()->json(['success' => false]);
         }
     }
