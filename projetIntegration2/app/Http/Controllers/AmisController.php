@@ -32,8 +32,11 @@ class AmisController extends Controller
         // Utiliser l'utilisateur authentifié ou l'ID 999 pour les tests
         $userId = auth()->check() ? auth()->user()->id : 999;
 
+        // Définir la variable utilisateurConnecteId
+        $utilisateurConnecteId = $userId;
+
         // Récupérer la liste des IDs des amis déjà ajoutés par l'utilisateur
-        $friendIds = \DB::table('user_ami') // Remplacer "amis" par "user_ami"
+        $friendIds = \DB::table('amis') // Remplacer "amis" par "user_ami"
             ->where('user_id', $userId)
             ->pluck('friend_id')
             ->toArray();
@@ -65,58 +68,44 @@ class AmisController extends Controller
     public function ajouter(Request $request)
     {
         $request->validate([
-            'friend_id' => 'required|integer|exists:users,id',
+            'user_id' => 'required|exists:users,id',
+            'friend_id' => 'required|exists:users,id',
         ]);
 
-        // Utiliser l'utilisateur authentifié ou assigner l'ID 999 si personne n'est connecté
-        if (auth()->check()) {
-            $user = auth()->user();
-        } else {
-            // Pour les tests, si pas d'utilisateur connecté, considérer l'utilisateur 999
-            $user = (object) ['id' => 999];
-        }
-
-        $friendId = $request->input('friend_id');
-
-        // Empêcher d'envoyer une demande à soi-même
-        if ($user->id == $friendId) {
-            return back()->withErrors('Vous ne pouvez pas vous ajouter vous-même.');
-        }
-
-        // Vérifier qu'une demande n'existe pas déjà
-        $exists = \DB::table('demande_amis')
-            ->where('requester_id', $user->id)
-            ->where('requested_id', $friendId)
+        // Vérifiez si la relation existe déjà
+        $existe = \DB::table('amis')
+            ->where('user_id', $request->input('user_id'))
+            ->where('friend_id', $request->input('friend_id'))
             ->exists();
 
-        if ($exists) {
-            return back()->withErrors('Une demande d\'ami a déjà été envoyée.');
+        if ($existe) {
+            return redirect()->route('amis.index')
+                             ->withErrors(['message' => 'Cette demande d\'ami existe déjà.']);
         }
 
-        // Insérer la demande d'ami dans la table
-        \DB::table('demande_amis')->insert([
-            'requester_id' => $user->id,
-            'requested_id' => $friendId,
-            'status'       => 'pending',
-            'created_at'   => now(),
-            'updated_at'   => now(),
+        // Ajoutez la demande d'ami
+        \DB::table('amis')->insert([
+            'user_id'    => $request->input('user_id'),
+            'friend_id'  => $request->input('friend_id'),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
-        return redirect()->back()->with('success', __('friends.succes_requete_envoyer'));
+        return redirect()->route('amis.index')
+                         ->with('success', 'Demande d\'ami envoyée avec succès.');
     }
 
     // Affiche les demandes d'amis destinées à l'utilisateur connecté (ou 999 en test)
     public function demandes(Request $request)
     {
-        // Utiliser l'utilisateur authentifié ou l'ID 999 pour les tests
+        // Utiliser l'utilisateur authentifié ou un ID de test (ici 999)
         $userId = auth()->check() ? auth()->user()->id : 999;
 
-        // Récupérer les demandes reçues en joignant la table users pour obtenir l'avatar et le username du demandeur
+        // Récupérer les demandes d'amis en faisant une jointure pour récupérer l'email et l'imageProfil de l'expéditeur
         $demandes = \DB::table('demande_amis')
             ->join('users', 'demande_amis.requester_id', '=', 'users.id')
-            ->select('demande_amis.*', 'users.username as requester_username', 'users.avatar as requester_avatar')
             ->where('demande_amis.requested_id', $userId)
-            ->where('demande_amis.status', 'pending')
+            ->select('demande_amis.*', 'users.email', 'users.imageProfil as requester_imageProfil')
             ->get();
 
         return view('amis.demandes', compact('demandes'));

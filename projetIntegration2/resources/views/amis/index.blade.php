@@ -124,13 +124,47 @@
 .add-button:hover {
     background-color: #98e96a;
 }
+
+/* Style appliqué exclusivement aux boutons ciblés */
+.back-button, .unit-btn {
+    background: linear-gradient(135deg, #a9fe77, #60c22c);
+    border: none;
+    padding: 12px 25px;
+    cursor: pointer;
+    font-size: 16px; /* Text réduit */
+    color: black;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 2px 2px 10px rgba(169, 254, 119, 0.5);
+    text-transform: uppercase;
+    margin-right: 10px; /* Espacement entre les boutons */
+}
+
+.back-button:hover, .unit-btn:hover {
+    background: linear-gradient(135deg, #60c22c, #a9fe77);
+    transform: scale(1.05);
+}
+
+.back-button:active, .unit-btn:active {
+    transform: scale(0.95);
+    box-shadow: 1px 1px 5px rgba(169, 254, 119, 0.8);
+}
+
+/* Classe spécifique pour réduire la taille du texte du bouton "ajouter" */
+.ajouter-btn {
+    font-size: 14px; /* Texte réduit pour le bouton "ajouter" */
+}
     </style>
 
-    <div class="top-buttons" style="margin-bottom: 20px;">
-        <a href="{{ route('amis.index') }}" class="search-button" style="text-decoration: none; padding: 10px 20px; background-color: #a9fe77; color: #000; border: 1px solid #999; border-radius: 5px; margin-right: 10px;">
+    <!-- Ajoutez un margin-top sur le conteneur des deux boutons -->
+    <div class="top-buttons" style="margin-top: 20px; margin-bottom: 20px;">
+        <!-- Bouton "Recherche d'amis" -->
+        <a href="{{ route('amis.index') }}" class="back-button" style="text-decoration: none;">
             {{ __('friends.recherche_amis') }}
         </a>
-        <a href="{{ route('amis.demandes') }}" class="add-button" style="text-decoration: none; padding: 10px 20px; background-color: #a9fe77; color: #000; border: 1px solid #999; border-radius: 5px;">
+        <!-- Bouton "Liste de demandes d'amis" -->
+        <a href="{{ route('amis.demandes') }}" class="unit-btn" style="text-decoration: none;">
             {{ __('friends.liste_demandes_amis') }}
         </a>
     </div>
@@ -152,7 +186,8 @@
         <form action="{{ route('amis.recherche') }}" method="POST">
             @csrf
             <input type="text" name="q" placeholder="{{ __('friends.recherche_exemple') }}" required class="search-input">
-            <button type="submit" class="search-button">{{ __('friends.bouton_recherche') }}</button>
+            <!-- Bouton "Rechercher" modifié pour utiliser le style "back-button" -->
+            <button type="submit" class="back-button">{{ __('friends.bouton_recherche') }}</button>
         </form>
     </div>
 
@@ -179,7 +214,7 @@
                             <!-- Ici, "user_id" serait l'expéditeur de la demande et "friend_id" le destinataire -->
                             <input type="hidden" name="user_id" value="{{ $utilisateurConnecteId ?? 0 }}">
                             <input type="hidden" name="friend_id" value="{{ $utilisateur->id }}">
-                            <button type="submit" class="add-button">{{ __('friends.ajouter_amis') }}</button>
+                            <button type="submit" class="back-button ajouter-btn">{{ __('friends.ajouter_amis') }}</button>
                         </form>
                     </li>
 
