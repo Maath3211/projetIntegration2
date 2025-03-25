@@ -11,15 +11,16 @@
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-md-8 profile-container-mod">
-                <h1 class="mt-3 fs-1"><strong>Modifier le profil</strong></h1>
+                <h1 class="mt-3 fs-1"><strong>{{ __('profile.parametres_profil') }}</strong></h1>
                 <form action="{{ route('profil.updateModification') }}" method="POST" enctype="multipart/form-data">
+                    @method('PATCH')
                     @csrf
                     <div class="form-scrollable-wrapper">
                         <div class="d-flex row justify-content-center">
 
                             <div class="row mb-4">
                                 <div class="col-md-4 offset-md-2 d-flex align-items-center">
-                                    <p class="greenText h5">Photo de profil</p>
+                                    <p class="greenText h5">{{ __('profile.image_profil') }}</p>
                                 </div>
                                 <div class="col-md-4 d-flex flex-column align-items-center">
                                     <img src="{{ asset(Auth::user()->imageProfil) }}" alt="Profile Picture"
@@ -29,7 +30,7 @@
 
                             <div class="row mb-1">
                                 <div class="col-md-4 offset-md-2 d-flex align-items-center">
-                                    <p class="greenText h5 ">Image</p>
+                                    <p class="greenText h5 ">{{ __('profile.image') }}</p>
                                 </div>
                                 <div class="col-md-4 d-flex flex-column align-items-center">
                                     <input type="file" class="form-control" name="imageProfil" accept="image/*">
@@ -49,11 +50,12 @@
 
                             <div class="row mb-1">
                                 <div class="col-md-4 offset-md-2 d-flex align-items-center">
-                                    <p class="greenText h5 ">Prénom</p>
+                                    <p class="greenText h5 ">{{ __('profile.prenom') }}</p>
                                 </div>
                                 <div class="col-md-4 d-flex flex-column align-items-center">
                                     <input type="text" class="inputModification form-control"
-                                        value="{{ Auth::user()->prenom }}" placeholder="Prénom" name="prenom">
+                                        value="{{ Auth::user()->prenom }}" placeholder="{{ __('profile.prenom') }}"
+                                        name="prenom">
                                 </div>
                                 <div class="conteneurErreur col-md-4 offset-md-6">
                                     @error('prenom')
@@ -69,11 +71,12 @@
 
                             <div class="row mb-1">
                                 <div class="col-md-4 offset-md-2 d-flex align-items-center">
-                                    <p class="greenText h5 ">Nom</p>
+                                    <p class="greenText h5 ">{{ __('profile.nom') }}</p>
                                 </div>
                                 <div class="col-md-4 d-flex flex-column align-items-center">
                                     <input type="text" class="inputModification form-control"
-                                        value="{{ Auth::user()->nom }}" placeholder="Nom" name="nom">
+                                        value="{{ Auth::user()->nom }}" placeholder="{{ __('profile.nom') }}"
+                                        name="nom">
                                 </div>
                                 <div class="conteneurErreur col-md-4 offset-md-6">
                                     @error('nom')
@@ -88,11 +91,11 @@
                             </div>
                             <div class="row mb-1">
                                 <div class="col-md-4 offset-md-2 d-flex align-items-center">
-                                    <p class="greenText h5 ">A propos</p>
+                                    <p class="greenText h5 ">{{ __('profile.a_propos') }}</p>
                                 </div>
                                 <div class="col-md-4 d-flex flex-column align-items-center">
-                                    <textarea class="inputModification form-control" 
-                                        placeholder="A propos de vous" name="aPropos" rows="3">{{ Auth::user()->aPropos }}</textarea>
+                                    <textarea class="inputModification form-control" placeholder="{{ __('profile.a_propos_de_vous') }}" name="aPropos"
+                                        rows="3">{{ Auth::user()->aPropos }}</textarea>
                                 </div>
                                 <div class="conteneurErreur col-md-4 offset-md-6">
                                     @error('aPropos')
@@ -108,7 +111,7 @@
 
                             <div class="row mb-1">
                                 <div class="col-md-4 offset-md-2 d-flex align-items-center">
-                                    <p class="greenText h5">Adresse courriel</p>
+                                    <p class="greenText h5">{{ __('profile.courriel') }}</p>
                                 </div>
                                 <div class="col-md-4 d-flex flex-column align-items-center">
                                     <input type="email" class="inputModification form-control"
@@ -128,7 +131,7 @@
 
                             <div class="row mb-1">
                                 <div class="col-md-4 offset-md-2 d-flex align-items-center">
-                                    <p class="greenText h5">Date de naissance</p>
+                                    <p class="greenText h5">{{ __('profile.date_naissance') }}</p>
                                 </div>
                                 <div class="col-md-4 d-flex flex-column align-items-center">
                                     <input type="date" class="inputModification form-control"
@@ -149,15 +152,16 @@
 
                             <div class="row mb-1">
                                 <div class="col-md-4 offset-md-2 d-flex align-items-center">
-                                    <p class="greenText h5">Pays</p>
+                                    <p class="greenText h5">{{ __('profile.pays') }}</p>
                                 </div>
                                 <div class="col-md-4 d-flex flex-column align-items-center">
                                     <select class="form-select inputModification form-control" name="pays">
-                                        <option selected>Choisir</option>
+                                        <option>{{ __('profile.choisir') }}</option>
                                         @foreach ($countries as $country)
                                             <option value="{{ $country['name'] }}"
                                                 {{ Auth::user()->pays == $country['name'] ? 'selected' : '' }}>
-                                                {{ $country['name'] }}</option>
+                                                {{ $country['name'] }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -173,23 +177,22 @@
                                 </div>
                             </div>
 
-                            <div class="row ">
+                            <div class="row mb-4">
                                 <div class="col-md-4 offset-md-2 d-flex align-items-center">
-                                    <p class="greenText h5">Genre</p>
+                                    <p class="greenText h5">{{ __('profile.genre') }}</p>
                                 </div>
                                 <div class="col-md-4 d-flex flex-column align-items-center">
                                     <select class="form-select inputModification form-control" name="genre">
-                                        <option>Choisir</option>
+                                        <option>{{ __('profile.choisir') }}</option>
                                         <option value="Homme" {{ Auth::user()->genre == 'Homme' ? 'selected' : '' }}>
-                                            Homme
+                                            {{ __('auth.homme') }}
                                         </option>
                                         <option value="Femme" {{ Auth::user()->genre == 'Femme' ? 'selected' : '' }}>
-                                            Femme
+                                            {{ __('auth.femme') }}
                                         </option>
                                         <option value="Prefere ne pas dire"
-                                            {{ Auth::user()->genre == 'Prefere ne pas dire' ? 'selected' : '' }}>Préfère ne
-                                            pas
-                                            dire
+                                            {{ Auth::user()->genre == 'Prefere ne pas dire' ? 'selected' : '' }}>
+                                            {{ __('auth.pas_indiquer') }}
                                         </option>
                                     </select>
                                 </div>
@@ -204,46 +207,79 @@
                                     @enderror
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4 form-buttons">
-                        <div class="col-md-4 offset-md-2 align-items-center" id="divButton">
-                            <button type="submit" class="btn btn-save btn-green">Sauvegarder</button>
-                            <p class="btn btn-retour" id="btRetour">Retour</p>
-                            <p class="btn btn-suppression" data-bs-toggle="modal"
-                                data-bs-target="#deleteConfirmationModal">Suppression</p>
-                        </div>
-                    </div>
+                            <div class="row mb-4 form-buttons">
+
+
+                                <div class="col-md-4 offset-md-2 d-flex align-items-center">
+
+
+                                    <div class="col-md-4 offset-md-2 align-items-center" id="divButton">
+
+                                        <button type="submit" class="btn btn-save btn-green">Sauvegarder</button>
+
+                                        <p class="btn btn-retour" id="btRetour">Retour</p>
+
+                                        <p class="btn btn-suppression" data-bs-toggle="modal"
+                                            data-bs-target="#deleteConfirmationModal">Suppression</p>
+
+                                    </div>
+
+                                </div>
+
                 </form>
+
+
 
                 <div class="modal fade" id="deleteConfirmationModal" tabindex="-1"
                     aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+
                     <div class="modal-dialog">
+
                         <div class="modal-content">
+
                             <div class="modal-header">
+
                                 <h5 class="modal-title h3" id="deleteConfirmationModalLabel">Confirmation de suppression
+
                                 </h5>
+
                                 <button type="button" class="btn-close fermerModal" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
+
                             </div>
+
                             <div class="modal-body">
+
                                 Êtes-vous sûr de vouloir supprimer votre compte ? <strong>Cette action est
+
                                     irréversible.</strong>
+
                             </div>
+
                             <div class="modal-footer">
+
                                 <button type="button" class="btn btn-save" data-bs-dismiss="modal">Annuler</button>
+
                                 <form action="{{ route('profil.suppressionProfil') }}" method="POST">
+                                    @method('delete')
                                     @csrf
+
                                     <button type="submit" class="btn btn-suppression">Supprimer mon compte</button>
+
                                 </form>
+
                             </div>
+
                         </div>
+
                     </div>
+
                 </div>
-
-
             </div>
+
+
         </div>
+    </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('js/Profil/modification.js') }}"></script>

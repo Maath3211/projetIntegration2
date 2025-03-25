@@ -12,8 +12,15 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // Alias definitions
         $middleware->alias([
             'auth' => \App\Http\Middleware\AuthMiddleware::class,
+            'locale' => \App\Http\Middleware\SetLocale::class, // Add the locale middleware
+        ]);
+
+        // Define the web middleware group
+        $middleware->web(append: [
+            \App\Http\Middleware\SetLocale::class, // Add SetLocale to the web middleware group
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

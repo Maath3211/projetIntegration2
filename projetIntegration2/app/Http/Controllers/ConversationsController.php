@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\UtilisateurClan;
 use App\Models\Message;
 use App\Models\Canal;
+
 use App\Repository\ConversationsRepository;
 use App\Repository\ConversationsClan;
 use App\Http\Requests\StoreMessage;
@@ -38,6 +39,17 @@ class ConversationsController extends Controller
 
     public function index()
     {
+
+        $utilisateur = auth()->id();
+        $utilisateur = User::findOrFail($utilisateur);
+
+        if (!$utilisateur){
+            Log::info('Utilisateur pas connecté.');
+            return redirect('/connexion')->with('erreur', 'Vous devez être connectés pour afficher les clans.');
+        }
+
+        $clans = $utilisateur->clans()->get();
+
         $userId = auth()->id();
         $users = \DB::table('demande_amis')
             ->join('users', function ($join) use ($userId) {
@@ -53,13 +65,27 @@ class ConversationsController extends Controller
             ->where('users.id', '!=', $userId)
             ->get();
 
+
+
+
         return view('conversations.index', [
             'users' => $users,
+            'clans' => $clans,
         ]);
     }
 
     public function show(User $user)
     {
+        $utilisateur = auth()->id();
+        $utilisateur = User::findOrFail($utilisateur);
+
+        if (!$utilisateur) {
+            Log::info('Utilisateur pas connecté.');
+            return redirect('/connexion')->with('erreur', 'Vous devez être connectés pour afficher les clans.');
+        }
+
+        $clans = $utilisateur->clans()->get();
+
         $userId = auth()->id();
         $users = \DB::table('demande_amis')
             ->join('users', function ($join) use ($userId) {
@@ -75,10 +101,31 @@ class ConversationsController extends Controller
             ->where('users.id', '!=', $userId)
             ->get();
 
+        // Vérifier si l'utilisateur est ami
+        $isFriend = \DB::table('demande_amis')
+            ->where(function ($query) use ($userId, $user) {
+                $query->where('requester_id', $userId)
+                    ->where('requested_id', $user->id);
+            })
+            ->orWhere(function ($query) use ($userId, $user) {
+                $query->where('requester_id', $user->id)
+                    ->where('requested_id', $userId);
+            })
+            ->where('status', 'accepted')
+            ->exists();
+
+        if (!$isFriend) {
+            \Log::info('Tentative d\'accès à une conversation sans être ami.', ['user_id' => $userId, 'target_id' => $user->id]);
+            return redirect()->route('conversations.index')->with('erreur', 'Vous devez être ami pour accéder à cette conversation.');
+        }
+
+        $messages = $this->ConvRepository->getMessageFor(auth()->id(), $user->id);
+
         return view('conversations.show', [
             'users' => $users,
             'user' => $user,
-            'messages' => $this->ConvRepository->getMessageFor(auth()->id(), $user->id)->paginate(300)
+            'messages' => $messages,
+            'clans' => $clans,
         ]);
     }
 
@@ -127,7 +174,7 @@ class ConversationsController extends Controller
             //\Log::info('Message créé avec succès', ['message_id' => $message->id]);
 
             // Diffuser l’événement via Pusher
-            broadcast(new PusherBroadcast($request->message, auth()->id(), $request->to, false, $message->id, $fichierNom, auth()->user()->email))
+            broadcast(new PusherBroadcast(e($request->message), auth()->id(), $request->to, false, $message->id, $fichierNom, auth()->user()->email))
                 ->toOthers();
 
             //\Log::info('Message diffusé avec succès', ['message_id' => $message->id]);
@@ -212,20 +259,26 @@ class ConversationsController extends Controller
     //Modification pour avoir mes points
 
     public function showModificationMessage(){
-        $messages = \DB::table('utilisateur_clan')
+        $messagesClan = \DB::table('utilisateur_clan')
+            ->select('id', 'message', 'created_at', 'fichier')
+            ->where('idEnvoyer', auth()->id())
+            ->get();
+
+        $messagesAmi = \DB::table('user_ami')
             ->select('id', 'message', 'created_at', 'fichier')
             ->where('idEnvoyer', auth()->id())
             ->get();
 
         return view('conversations.modification',[
-            'messages' => $messages
+            'messages' => $messagesClan,
+            'messagesAmi' => $messagesAmi,
         ]);
     }
 
     public function updateMessage(Request $request, $id)
     {
         $request->validate([
-            'new_message' => 'required|string',
+            'nouveau_message' => 'required|string',
         ]);
 
         $message = UtilisateurClan::findOrFail($id);
@@ -234,7 +287,26 @@ class ConversationsController extends Controller
             return response()->json(['error' => 'Action non autorisée'], 403);
         }
 
-        $message->message = $request->new_message;
+        $message->message = $request->nouveau_message;
+        $message->save();
+
+        return redirect()->route('conversations.showModificationMessage');
+    }
+
+
+    public function updateMessageAmi(Request $request, $id)
+    {
+        $request->validate([
+            'nouveau_message' => 'required|string',
+        ]);
+
+        $message = Message::findOrFail($id);
+
+        if (auth()->id() !== $message->idEnvoyer) {
+            return response()->json(['error' => 'Action non autorisée'], 403);
+        }
+
+        $message->message = $request->nouveau_message;
         $message->save();
 
         return redirect()->route('conversations.showModificationMessage');

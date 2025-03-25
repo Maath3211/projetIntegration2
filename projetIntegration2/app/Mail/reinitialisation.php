@@ -8,6 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\App;
 
 class reinitialisation extends Mailable
 {
@@ -17,9 +18,10 @@ class reinitialisation extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct($token)
+    public function __construct($token, $locale = null)
     {
         $this->token = $token;
+        $this->locale = $locale ?? App::getLocale(); // Use current locale if not specified
     }
 
     /**
@@ -27,8 +29,9 @@ class reinitialisation extends Mailable
      */
     public function envelope(): Envelope
     {
+        App::setLocale($this->locale);
         return new Envelope(
-            subject: 'Reinitialisation',
+            subject: __('emails.reinitialisation_mdp.subject'),
         );
     }
 
@@ -37,6 +40,7 @@ class reinitialisation extends Mailable
      */
     public function content(): Content
     {
+        App::setLocale($this->locale);
         return new Content(
             view: 'Emails.reinitialisation',
         );

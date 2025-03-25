@@ -205,10 +205,10 @@
             <button id="clear-search">x</button>
         </div>
         <div id="no-results-container">
-            Aucun résultat trouvé pour la recherche "<span id="search-term"></span>"
+            {{ __('gyms.aucun_resultats') }}<span id="search-term"></span>"
         </div>
         <div id="results-container">
-            <h2>Voici les résultats de recherche :</h2>
+            <h2>{{ __('gyms.resultats_recherche') }}</h2>
             <ul id="results-list"></ul>
         </div>
     </div>
@@ -218,12 +218,28 @@
         <div id="map"></div>
         <div style="position: absolute; top: 10px; right: 10px; z-index: 1000; background: rgba(0,0,0,0.5); padding: 5px; border-radius: 4px;">
             <input type="checkbox" id="toggle-circles" checked>
-            <label for="toggle-circles" style="color: white;">Afficher les cercles d'achalandage</label>
+            <label for="toggle-circles" style="color: white;">{{ __('gyms.voir_cercle_traffic') }}</label>
         </div>
         <button id="current-location-btn"><i class="fa-solid fa-location-crosshairs"></i></button>
     </div>
 </div>
     <script>
+        const translations = {
+            youAreHere: "{{ __('gyms.vous_etes_ici') }}",
+            geolocationNotSupported: "{{ __('gyms.geolocalisation_non_supporte') }}",
+            address: "{{ __('gyms.adresse') }}",
+            phone: "{{ __('gyms.telephone') }}",
+            website: "{{ __('gyms.site_web') }}",
+            email: "{{ __('gyms.email') }}",
+            traffic: "{{ __('gyms.traffic') }}",
+            legendTitle: "{{ __('gyms.titre_legendre') }}",
+            veryLowTraffic: "{{ __('gyms.traffic_super_faible') }}",
+            lowTraffic: "{{ __('gyms.traffic_faible') }}",
+            mediumTraffic: "{{ __('gyms.traffic_moyen') }}",
+            highTraffic: "{{ __('gyms.traffic_eleve') }}",
+            veryHighTraffic: "{{ __('gyms.traffic_tres_eleve') }}",
+            doubleClickTip: "{{ __('gyms.double_click_tip') }}"
+        };
         // Initialiser la carte avec les coordonnées du Cégep de Trois-Rivières---------------------------------------------------------------------
         var map = L.map('map').setView([46.35503515618501, -72.57240632483241], 13); // Coordonnées du Cégep de Trois-Rivières
 
@@ -265,7 +281,10 @@
             var hue = (1 - ratio) * 240;
             // L'opacité varie de 0.3 à 1.0
             var opacity = 0.3 + 0.7 * ratio;
-            return { color: `hsla(${hue}, 100%, 50%, ${opacity})`, opacity: opacity };
+            return {
+                color: `hsla(${hue}, 100%, 50%, ${opacity})`,
+                opacity: opacity
+            };
         }
 
         // Fonction pour obtenir les gymnases dans un rayon de 5 km
@@ -281,13 +300,17 @@
                     markers = [];
 
                     // Ajouter un marqueur pour la position actuelle avec un label
-                    var currentLocationMarker = L.marker([lat, lon], { icon: currentLocationIcon }).addTo(map);
+                    var currentLocationMarker = L.marker([lat, lon], {
+                        icon: currentLocationIcon
+                    }).addTo(map);
                     var currentLocationLabel = L.divIcon({
                         className: 'label',
                         iconSize: [100, 20],
                         iconAnchor: [50, 60]
                     });
-                    L.marker([lat, lon], { icon: currentLocationLabel }).addTo(map);
+                    L.marker([lat, lon], {
+                        icon: currentLocationLabel
+                    }).addTo(map);
                     markers.push(currentLocationMarker);
 
                     // Filtrer les gymnases
@@ -368,7 +391,7 @@
                             });
 
                             // Lorsqu'on clique sur le marker, mettre le nom dans la barre de recherche et relancer la recherche
-                            marker.on('click', function () {
+                            marker.on('click', function() {
                                 document.getElementById('search-bar').value = gymName;
                                 getGyms(lat, lon, gymName);
                             });
@@ -439,7 +462,7 @@
 
         // Utiliser la géolocalisation pour centrer la carte et obtenir les gymnases
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function (position) {
+            navigator.geolocation.getCurrentPosition(function(position) {
                 var lat = position.coords.latitude;
                 var lon = position.coords.longitude;
                 map.setView([lat, lon], 13);
@@ -451,10 +474,10 @@
         }
 
         // Ajouter un écouteur d'événement pour la barre de recherche
-        document.getElementById('search-bar').addEventListener('input', function (e) {
+        document.getElementById('search-bar').addEventListener('input', function(e) {
             var filter = e.target.value;
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function (position) {
+                navigator.geolocation.getCurrentPosition(function(position) {
                     var lat = position.coords.latitude;
                     var lon = position.coords.longitude;
                     map.setView([lat, lon], 13);
@@ -486,9 +509,9 @@
         });
 
         // Assuming gradientMarkers is an array storing all your gradient marker objects.
-        document.getElementById('toggle-circles').addEventListener('change', function (e) {
+        document.getElementById('toggle-circles').addEventListener('change', function(e) {
             var showCircles = e.target.checked;
-            gradientMarkers.forEach(function (item) {
+            gradientMarkers.forEach(function(item) {
                 if (showCircles) {
                     // If the circle was removed, add it back to the map
                     if (!map.hasLayer(item.marker)) {
@@ -552,12 +575,21 @@
 
         // Si la géolocalisation a été utilisée, créez le marqueur initial
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function (position) {
+            navigator.geolocation.getCurrentPosition(function(position) {
                 var lat = position.coords.latitude;
                 var lon = position.coords.longitude;
                 var initialLatLng = [lat, lon];
                 map.setView(initialLatLng, 13);
-                currentPosMarker = L.marker(initialLatLng, { icon: currentLocationIcon, draggable: false }).addTo(map);
+                currentPosMarker = L.marker(initialLatLng, {
+                    icon: currentLocationIcon,
+                    draggable: false
+                }).addTo(map);
+                currentPosMarker.bindTooltip(translations.youAreHere, {
+                    permanent: true,
+                    direction: 'top',
+                    offset: [1, -37],
+                    className: 'current-position-tooltip'
+                }).openTooltip();
                 // Afficher les gyms autour de la position initiale
                 getGyms(lat, lon);
             });
@@ -572,7 +604,10 @@
                 map.removeLayer(currentPosMarker);
             }
             // Add a new marker at the double-clicked location
-            currentPosMarker = L.marker(newLatLng, { icon: currentLocationIcon, draggable: false }).addTo(map);
+            currentPosMarker = L.marker(newLatLng, {
+                icon: currentLocationIcon,
+                draggable: false
+            }).addTo(map);
             map.setView(newLatLng, 13);
             getGyms(newLatLng.lat, newLatLng.lng);
         });

@@ -10,53 +10,53 @@
     </div>
 
     <div class="flex flex-wrap justify-center space-x-4 mt-4">
-        <h1>Statistiques de {{ $usager->prenom }}</h1>
+        <h1>{{ __('stats.statistique_de') }} {{ $usager->prenom }}</h1>
     </div>
 
     
     <div class="flex flex-wrap justify-center space-x-4 mt-4">
-      <a href="/ajouterFoisGym">  <button class="bouton">ajouter compteur gym</button></a>
-      <a href="/profil">  <button class="bouton">Profil</button></a>
-      <a href="/objectif">  <button class="bouton">Voir mes objectifs</button></a>
+      <a href="/ajouterFoisGym">  <button class="bouton">{{ __('stats.ajouter_compteur_gym') }}</button></a>
+      <a href="/profil">  <button class="bouton">{{ __('stats.profil') }}</button></a>
+      <a href="/objectif">  <button class="bouton">{{ __('stats.voir_objectifs') }}</button></a>
     </div>
     
 
     <div class="statContainer space-y-4">
         <div class="statRow">
-            <span>Vos statistiques :</span>
-            <a href="/thermique" class="text-gray-400">Voir mon calendrier</a>
+            <span>{{ __('stats.vos_statistiques') }}</span>
+            <a href="/thermique" class="text-gray-400">{{ __('stats.voir_calendrier') }}</a>
         </div>
         
         <div class="statRow">
-            <span>Nombre de fois au gym: {{ isset($foisGym) ? $foisGym->first()->score : 'N/A' }} fois</span>
+            <span>{{ __('stats.visites_gym') }} {{ isset($foisGym) ? $foisGym->first()->score : 'N/A' }} {{ __('stats.fois') }}</span>
         </div>
         
         <div class="statRow">
             <span id="poidsValue" data-lbs="{{ isset($poids) ? $poids : 'N/A' }}">
-              Votre poids le plus bas : {{ isset($poids) ? $poids : 'N/A' }} lbs
+              {{ __('stats.poids_min') }} {{ isset($poids) ? $poids : 'N/A' }} lbs
             </span>
             <div class="flex space-x-2">
                 <button class="bouton" onclick="convertWeight('lbs')">Lbs</button>
                 <button class="bouton" onclick="convertWeight('kg')">Kg</button>
-                <a href="/graphique" class="text-gray-400">Voir mon graphique</a>
+                <a href="/graphique" class="text-gray-400">{{ __('stats.voir_graphique') }}</a>
             </div>
         </div>
     
         <div class="flex justify-center mt-4">
-            <button class="bouton" onclick="showAddExerciseForm()">Ajouter un exercice</button>
+            <button class="bouton" onclick="showAddExerciseForm()">{{ __('stats.ajout_exercice') }}</button>
         </div>
 
      
         <div id="addExerciseForm" class="statRow hidden">
-            <input type="text" id="exerciseName" placeholder="Nom de l'exercice" class="input" />
-            <input type="number" id="exerciseScore" placeholder="Score lbs ou km" class="input" />
-            <button class="bouton" onclick="saveExercise()">Sauvegarder</button>
-            <button type="button" class="bouton" onclick="cancelForm()">Annuler</button>
+            <input type="text" id="exerciseName" placeholder="{{ __('stats.nom_exercice') }}" class="input" />
+            <input type="number" id="exerciseScore" placeholder="{{ __('stats.score') }}" class="input" />
+            <button class="bouton" onclick="saveExercise()">{{ __('stats.sauvegarde') }}</button>
+            <button type="button" class="bouton" onclick="cancelForm()">{{ __('stats.annuler') }}</button>
         </div>
 
         @foreach($statistiques as $stat)
             <div class="statRow" id="exercise-{{ $stat->id }}">
-                <span>Score le plus haut pour {{$stat->nomStatistique}}: {{ $scoreHaut->firstWhere('statistique_id', $stat->id)->max_score ?? 'N/A' }}
+                <span>{{__('stats.score_plus_haut')}} {{$stat->nomStatistique}}: {{ $scoreHaut->firstWhere('statistique_id', $stat->id)->max_score ?? 'N/A' }}
                 {{ in_array($stat->nomStatistique, ['course', 'run', 'marathon', 'marche', 'sprint', 'jogging', 'trail', 'velo', 'bike', 'cycling']) ? 'km' : 'lbs' }}
                 </span>
                 <div class="flex space-x-2">
@@ -68,7 +68,7 @@
                         <button class="bouton" onclick="convertWeightUnit(this, 'kg')">Kg</button>
                     @endif
                     <button class="bouton"  onclick="deleteExercise({{ $stat->id }})">🗑️</button>
-                    <a href="{{route('statistique.graphiqueExercice', [$stat->id])}}" class="text-gray-400">Voir mon graphique</a>
+                    <a href="{{route('statistique.graphiqueExercice', [$stat->id])}}" class="text-gray-400">{{ __('stats.voir_graphique') }}</a>
                 </div>
             </div>
         @endforeach

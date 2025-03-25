@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 
+
 class Message extends Model
 {
+    use HasFactory;
+
     protected $table = "user_ami";
     protected $fillable = [
         'message',
@@ -22,6 +26,7 @@ class Message extends Model
     public $timestamps = false;
 
 
+    
 /**
  * Get the from that owns the Message
  *
@@ -29,7 +34,7 @@ class Message extends Model
  */
     public function from(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'receveur_id');
+        return $this->belongsTo(User::class, 'idEnvoyer');
     }
 
     
