@@ -621,9 +621,9 @@ class ClanController extends Controller
         $messages = $this->ClanRepository->getMessageClanFor($id, $canal);
 
 
-        Log::info('CLANS: ' . json_encode($clans->toArray()));
-        Log::info('CATEGORIES: ' . json_encode($categories->pluck('id')->toArray()));
-        Log::info('CANAUX: ' . json_encode($canauxParCategorie->toArray()));
+        //Log::info('CLANS: ' . json_encode($clans->toArray()));
+        //Log::info('CATEGORIES: ' . json_encode($categories->pluck('id')->toArray()));
+        //Log::info('CANAUX: ' . json_encode($canauxParCategorie->toArray()));
         return View('Clans.canalClan', 
         compact(
         'id', 

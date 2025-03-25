@@ -80,7 +80,7 @@
 
                                                 @if ($isImage)
                                                     <img src="{{ asset($dossier . $message->fichier) }}" alt="Image envoyée"
-                                                        class="w-32 h-32 object-cover">
+                                                        class="message-img">
                                                 @else
                                                     <a href="{{ asset($dossier . $message->fichier) }}" target="_blank"
                                                         class="text-blue-500">
@@ -320,7 +320,7 @@
 
             if (res.fichier) {
                 if (estImage) {
-                    contenuFichier = `<img src="${res.fichier}" class="message-image" alt="Image envoyée">`;
+                    contenuFichier = `<img src="${res.fichier}" class="message-img" alt="Image envoyée">`;
                 } else {
                     contenuFichier = `<a href="${res.fichier}" target="_blank" class="text-blue-500">
                         📄 Télécharger ${res.fichier.split('/').pop()}
