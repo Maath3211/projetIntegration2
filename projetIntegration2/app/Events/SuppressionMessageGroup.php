@@ -37,7 +37,7 @@ class SuppressionMessageGroup implements ShouldBroadcastNow
 
     public function broadcastAs(): string
     {
-        return 'message-deleted'; // Utiliser un événement spécifique pour la suppression
+        return 'message-supression'; // Utiliser un événement spécifique pour la suppression
     }
 
     public function broadcastWith(): array

@@ -425,7 +425,7 @@
 
             // Ajouter le message au chat
             $("#chat-messages").append(`
-        <div class="messageTotal" id="message-${data.last_id}">
+        <div class="messageTotal" id="message-${data.dernier_id}">
             <div class="message received-message">
                 <div class="avatar bg-primary text-white rounded-circle p-2">
                     <!-- Affiche la première lettre de l'email -->
@@ -569,11 +569,11 @@
         });
 
         // Écouter l'événement de suppression spécifique diffusé par Pusher
-        channel.bind('message-deleted', function(data) {
+        channel.bind('message-supression', function(data) {
             console.log("Message supprimé via Pusher:", data); // Affiche l'ID du message supprimé pour le débogage
             // Supprime le message correspondant du DOM
-            $(`#message-${data.messageId}`).remove();
-            console.log("Message supprimé du DOM via Pusher:", data.messageId);
+            $(`#message-${data.idMessage}`).remove();
+            console.log("Message supprimé du DOM via Pusher:", data.idMessage);
         });
     </script>
 
