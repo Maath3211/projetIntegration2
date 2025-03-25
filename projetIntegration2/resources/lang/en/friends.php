@@ -6,7 +6,7 @@ return [
     'liste_demandes_amis' => 'Friend Requests List',
     
     // Search form
-    'recherche_exemple' => 'Username',
+    'recherche_exemple' => 'Email',
     'bouton_recherche' => 'Search',
     
     // Messages

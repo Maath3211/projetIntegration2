@@ -19,6 +19,7 @@ use App\Repository\ConversationsClan;
 use App\Events\MessageGroup;
 use App\Events\SuppressionMessageGroup;
 use Exception;
+use Illuminate\Support\Facades\DB;
 
 class ClanController extends Controller
 {
@@ -556,7 +557,7 @@ class ClanController extends Controller
                     ->where('public', true)
                     ->whereNotIn('id', function($q) use ($userId) {
                         $q->select('clan_id')
-                          ->from('clan_user')
+                          ->from('clan_users')
                           ->where('user_id', $userId);
                     })
                     ->get();
@@ -571,7 +572,7 @@ class ClanController extends Controller
     public function rejoindre(Request $request)
     {
         $request->validate([
-            'clan_id' => 'required|integer|exists:clan,id',
+            'clan_id' => 'required|integer|exists:clans,id',
         ]);
 
         $userId = auth()->check() ? auth()->user()->id : 999;
@@ -589,7 +590,8 @@ class ClanController extends Controller
         DB::table('clan_users')->insert([
             'clan_id'    => $request->input('clan_id'),
             'user_id'    => $userId,
-            'joined_at' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
         return back()->with('success', 'Vous avez rejoint le clan !');

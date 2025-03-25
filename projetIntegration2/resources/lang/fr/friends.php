@@ -13,7 +13,7 @@ return [
     'success_sent' => 'Demande d\'ami envoyée avec succès !',
     
     // Search form
-    'recherche_exemple' => 'Nom d\'utilisateur',
+    'recherche_exemple' => 'Email',
     'bouton_recherche' => 'Rechercher',
     
     // Messages
