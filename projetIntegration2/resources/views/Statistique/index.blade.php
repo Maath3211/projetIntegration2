@@ -36,22 +36,22 @@
               {{ __('stats.poids_min') }} {{ isset($poids) ? $poids : 'N/A' }} lbs
             </span>
             <div class="flex space-x-2">
-                <button class="bouton" onclick="convertWeight('lbs')">Lbs</button>
-                <button class="bouton" onclick="convertWeight('kg')">Kg</button>
+                <button class="bouton" onclick="convertirPoids('lbs')">Lbs</button>
+                <button class="bouton" onclick="convertirPoids('kg')">Kg</button>
                 <a href="/graphique" class="text-gray-400">{{ __('stats.voir_graphique') }}</a>
             </div>
         </div>
     
         <div class="flex justify-center mt-4">
-            <button class="bouton" onclick="showAddExerciseForm()">{{ __('stats.ajout_exercice') }}</button>
+            <button class="bouton" onclick="afficherAjouterExerciceFormulaire()">{{ __('stats.ajout_exercice') }}</button>
         </div>
 
      
-        <div id="addExerciseForm" class="statRow hidden">
-            <input type="text" id="exerciseName" placeholder="{{ __('stats.nom_exercice') }}" class="input" />
+        <div id="ajouterExerciceFormulaire" class="statRow hidden">
+            <input type="text" id="exerciseNom" placeholder="{{ __('stats.nom_exercice') }}" class="input" />
             <input type="number" id="exerciseScore" placeholder="{{ __('stats.score') }}" class="input" />
-            <button class="bouton" onclick="saveExercise()">{{ __('stats.sauvegarde') }}</button>
-            <button type="button" class="bouton" onclick="cancelForm()">{{ __('stats.annuler') }}</button>
+            <button class="bouton" onclick="sauvegarderExercice()">{{ __('stats.sauvegarde') }}</button>
+            <button type="button" class="bouton" onclick="annulerFormulaire()">{{ __('stats.annuler') }}</button>
         </div>
 
         @foreach($statistiques as $stat)
@@ -61,13 +61,13 @@
                 </span>
                 <div class="flex space-x-2">
                     @if(in_array($stat->nomStatistique, ['course', 'run', 'marathon', 'marche', 'sprint', 'jogging', 'trail', 'velo', 'bike', 'cycling']))
-                        <button class="bouton" onclick="convertRunUnit(this, 'km')">Km</button>
-                        <button class="bouton" onclick="convertRunUnit(this, 'miles')">Miles</button>
+                        <button class="bouton" onclick="convertirCourseUnite(this, 'km')">Km</button>
+                        <button class="bouton" onclick="convertirCourseUnite(this, 'miles')">Miles</button>
                     @else
-                        <button class="bouton" onclick="convertWeightUnit(this, 'lbs')">Lbs</button>
-                        <button class="bouton" onclick="convertWeightUnit(this, 'kg')">Kg</button>
+                        <button class="bouton" onclick="convertirPoidsUnite(this, 'lbs')">Lbs</button>
+                        <button class="bouton" onclick="convertirPoidsUnite(this, 'kg')">Kg</button>
                     @endif
-                    <button class="bouton"  onclick="deleteExercise({{ $stat->id }})">🗑️</button>
+                    <button class="bouton"  onclick="supprimerExercise({{ $stat->id }})">🗑️</button>
                     <a href="{{route('statistique.graphiqueExercice', [$stat->id])}}" class="text-gray-400">{{ __('stats.voir_graphique') }}</a>
                 </div>
             </div>

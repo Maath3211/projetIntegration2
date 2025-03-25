@@ -1,9 +1,9 @@
-function convertWeight(unit) {
+function convertirPoids(unite) {
     let poidsSpan = document.getElementById('poidsValue');
     let lbs = parseFloat(poidsSpan.getAttribute('data-lbs'));
 
     if (!isNaN(lbs)) {
-        if (unit === 'kg') {
+        if (unite === 'kg') {
             let kg = (lbs * 0.453592).toFixed(2);
             poidsSpan.innerHTML = ` Votre poids le plus bas : ${kg} kg`;
         } else {
@@ -14,24 +14,24 @@ function convertWeight(unit) {
 
 
 
-function showAddExerciseForm() {
-    document.getElementById('addExerciseForm').classList.remove('hidden');
+function afficherAjouterExerciceFormulaire() {
+    document.getElementById('ajouterExerciceFormulaire').classList.remove('hidden');
 }
 
 // Fonction pour enregistrer un exercice dans la base de données
-function saveExercise() {
-    let name = document.getElementById('exerciseName').value.toLowerCase();
+function sauvegarderExercice() {
+    let nom = document.getElementById('exerciseNom').value.toLowerCase();
     let score = document.getElementById('exerciseScore').value;
-
-    if (name && score) {
+    console.log(nom, score);
+    if (nom && score) {
         let formData = new FormData();
-        formData.append('stats[0][nomStatistique]', name);
+        formData.append('stats[0][nomStatistique]', nom);
         formData.append('stats[0][score]', score);
         
         const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
         const csrfToken = csrfTokenMeta ? csrfTokenMeta.getAttribute('content') : '';
 
-        // Add the CSRF token to the FormData instead of headers
+        
         if (csrfToken) {
             formData.append('_token', csrfToken);
         }
@@ -53,32 +53,32 @@ function saveExercise() {
             console.log('Success:', data);
             if (data.message) {
                 // Détecter si c'est un exercice de course
-                let isRunning = name.includes('course') || name.includes('run') || name.includes('marathon') || name.includes('marche') || 
-                                name.includes('sprint') || name.includes('jogging') || name.includes('trail') ||
-                                name.includes('velo') || name.includes('bike') || name.includes('cycling');
-                // Choisir l'unité de mesure
-                let unitOptions = isRunning
-                    ? `<button class="bouton" onclick="convertRunUnit(this, 'km')">Km</button>
-                       <button class="bouton" onclick="convertRunUnit(this, 'Miles')">Miles</button>`
-                    : `<button class="bouton" onclick="convertWeightUnit(this, 'lbs')">Lbs</button>
-                       <button class="bouton" onclick="convertWeightUnit(this, 'kg')">Kg</button>`;
+                let course = nom.includes('course') || nom.includes('run') || nom.includes('marathon') || nom.includes('marche') || 
+                                nom.includes('sprint') || nom.includes('jogging') || nom.includes('trail') ||
+                                nom.includes('velo') || nom.includes('bike') || nom.includes('cycling');
+                // Choisir l'uniteé de mesure
+                let uniteOptions = course
+                    ? `<button class="bouton" onclick="convertirCourseUnite(this, 'km')">Km</button>
+                       <button class="bouton" onclick="convertirCourseUnite(this, 'Miles')">Miles</button>`
+                    : `<button class="bouton" onclick="convertirPoidsUnite(this, 'lbs')">Lbs</button>
+                       <button class="bouton" onclick="convertirPoidsUnite(this, 'kg')">Kg</button>`;
 
-                let newExercise = document.createElement('div');
-                newExercise.classList.add('statRow');
-                newExercise.id = `exercise-${data.id}`;
-                newExercise.innerHTML = `
-                    <span>${name} : ${score} ${isRunning ? 'km' : 'lbs'}</span>
+                let nouveauExercise = document.createElement('div');
+                nouveauExercise.classList.add('statRow');
+                nouveauExercise.id = `exercise-${data.id}`;
+                nouveauExercise.innerHTML = `
+                    <span>${nom} : ${score} ${course ? 'km' : 'lbs'}</span>
                     <div class="flex space-x-2">
-                        ${unitOptions}
+                        ${uniteOptions}
                         <a href="/statistique/graphiqueExercice/${data.id}" class="text-gray-400">Voir mon graphique</a>
                     </div>
                 `;
 
-                document.querySelector('.statContainer').appendChild(newExercise);
-                document.getElementById('exerciseName').value = '';
+                document.querySelector('.statContainer').appendChild(nouveauExercise);
+                document.getElementById('exerciseNom').value = '';
                 document.getElementById('exerciseScore').value = '';
-                document.getElementById('addExerciseForm').classList.add('hidden');
-                console.log('Exercise added successfully');
+                document.getElementById('ajouterExerciceFormulaire').classList.add('hidden');
+                console.log('Exercise ajoute avec succes !');
                 
                 // Wait a moment before reloading to ensure data is saved
                 setTimeout(() => {
@@ -97,7 +97,7 @@ function saveExercise() {
     }
 }
 // Fonction pour supprimer un exercice
-function deleteExercise(id) {
+function supprimerExercise(id) {
     if (confirm('Êtes-vous sûr de vouloir supprimer cet exercice ?')) {
         // Utiliser AJAX pour envoyer une requête DELETE au serveur
         fetch(`/statistiques/${id}`, {
@@ -123,48 +123,48 @@ function deleteExercise(id) {
     }
 }
 
-function cancelForm() {
+function annulerFormulaire() {
     // Cacher le formulaire
-    document.getElementById('addExerciseForm').classList.add('hidden');
+    document.getElementById('ajouterExerciceFormulaire').classList.add('hidden');
     
     // Réinitialiser les champs du formulaire
-    document.getElementById('exerciseName').value = '';
+    document.getElementById('exerciseNom').value = '';
     document.getElementById('exerciseScore').value = '';
 }
 
-function convertRunUnit(button, unit) {
+function convertirCourseUnite(button, unite) {
     let exerciseRow = button.closest('.statRow');
     let scoreSpan = exerciseRow.querySelector('span');
     
-    let textParts = scoreSpan.innerHTML.split(': ');
-    let scoreText = textParts[1].split(' ')[0];
+    let texteParti = scoreSpan.innerHTML.split(': ');
+    let scoreText = texteParti[1].split(' ')[0];
     let score = parseFloat(scoreText);
 
     if (!isNaN(score)) {
-        if (unit === 'km' && !scoreSpan.innerHTML.includes('km')) {
+        if (unite === 'km' && !scoreSpan.innerHTML.includes('km')) {
             let km = (score * 1.60934).toFixed(2); // Convert miles to kilometers and round to 2 decimal places
-            scoreSpan.innerHTML = `${textParts[0]} : ${km} km`;
-        } else if (unit === 'miles' && !scoreSpan.innerHTML.includes('miles')) {
+            scoreSpan.innerHTML = `${texteParti[0]} : ${km} km`;
+        } else if (unite === 'miles' && !scoreSpan.innerHTML.includes('miles')) {
             let miles = (score / 1.60934).toFixed(2); // Convert kilometers to miles
-            scoreSpan.innerHTML = `${textParts[0]} : ${miles} miles`;
+            scoreSpan.innerHTML = `${texteParti[0]} : ${miles} miles`;
         }
     }
 }
-function convertWeightUnit(button, unit) {
+function convertirPoidsUnite(button, unite) {
     let exerciseRow = button.closest('.statRow');
     let scoreSpan = exerciseRow.querySelector('span');
     
-    let textParts = scoreSpan.innerHTML.split(': ');
-    let scoreText = textParts[1].split(' ')[0];
+    let texteParti = scoreSpan.innerHTML.split(': ');
+    let scoreText = texteParti[1].split(' ')[0];
     let score = parseFloat(scoreText);
 
     if (!isNaN(score)) {
-        if (unit === 'kg' && !scoreSpan.innerHTML.includes('kg')) {
+        if (unite === 'kg' && !scoreSpan.innerHTML.includes('kg')) {
             let kg = (score * 0.453592).toFixed(2); 
-            scoreSpan.innerHTML = `${textParts[0]} : ${kg} kg`;
-        } else if (unit === 'lbs' && !scoreSpan.innerHTML.includes('lbs')) {
+            scoreSpan.innerHTML = `${texteParti[0]} : ${kg} kg`;
+        } else if (unite === 'lbs' && !scoreSpan.innerHTML.includes('lbs')) {
             let lbs = (score / 0.453592).toFixed(2);
-            scoreSpan.innerHTML = `${textParts[0]} : ${lbs} lbs`;
+            scoreSpan.innerHTML = `${texteParti[0]} : ${lbs} lbs`;
         }
     }
 }
