@@ -18,7 +18,7 @@ class reinitialisation extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct($token, $locale = null)
+    public function __construct($token, $locale)
     {
         $this->token = $token;
         $this->locale = $locale ?? App::getLocale(); // Use current locale if not specified
