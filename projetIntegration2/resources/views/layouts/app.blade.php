@@ -51,7 +51,7 @@
     </a>
 
     <!-- Navigation aux classements -->
-    <a href="#">
+    <a href="{{route('scores.meilleursGroupes')}}" title="{{__('layout.classements')}}">
       <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee">
         <i class="fa-solid fa-ranking-star fa-2xl"></i>
       </div>
