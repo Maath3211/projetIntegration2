@@ -376,25 +376,25 @@
         const clanId = "{{ request()->id }}"; // ID du clan
         const canalId = "{{ request()->canal }}";
         const nomCanal = "chat-" + clanId + "-" + canalId;
-        console.log("Nom du canal:", nomCanal); // Ajout pour le débogage
+        //console.log("Nom du canal:", nomCanal); // Ajout pour le débogage
 
         const pusher = new Pusher('{{ config('broadcasting.connections.pusher.key') }}', {
         cluster: '{{ config('broadcasting.connections.pusher.options.cluster') }}',
         encrypted: true
     });
-        console.log('Pusher:', pusher); // Ajout pour le débogage
+        //console.log('Pusher:', pusher); // Ajout pour le débogage
 
         pusher.connection.bind('connected', function() {
             console.log('Connecté avec succès à Pusher');
         });
 
         pusher.connection.bind('error', function(erreur) {
-            console.error('Erreur de connexion Pusher:', erreur); // Ajout pour afficher les erreurs
+            //console.error('Erreur de connexion Pusher:', erreur); // Ajout pour afficher les erreurs
         });
 
         // Ajout d'un gestionnaire pour vérifier l'état de connexion
         pusher.connection.bind('state_change', function(etats) {
-            console.log('État de Pusher modifié:', etats); // Affiche les changements d'état
+            //console.log('État de Pusher modifié:', etats); // Affiche les changements d'état
         });
 
         pusher.connection.bind('error', function(erreur) {});
@@ -476,7 +476,7 @@
             e.preventDefault();
 
             if (envoiEnCours) {
-                console.log("Un message est déjà en cours d'envoi.");
+                //console.log("Un message est déjà en cours d'envoi.");
                 return; // Empêche l'envoi multiple
             }
 
@@ -549,7 +549,7 @@
                 $("input[name='content']").val("");
                 $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
             }).fail(function(xhr, status, erreur) {
-                console.error("Erreur d'envoi :", erreur);
+                //console.error("Erreur d'envoi :", erreur);
             }).always(function() {
                 envoiEnCours = false; // Réinitialise la variable après la requête
             });
@@ -567,7 +567,7 @@
         $(document).on('click', '.delete-btn', function(e) {
             e.preventDefault();
             let messageId = $(this).data('id');
-            console.log("Suppression du message avec l'ID:", messageId); // Ajout pour le débogage
+            //console.log("Suppression du message avec l'ID:", messageId); // Ajout pour le débogage
 
             $.ajax({
                 type: "DELETE",
@@ -576,26 +576,26 @@
                     _token: "{{ csrf_token() }}"
                 }
             }).done(function(res) {
-                console.log("Réponse de l'API:", res); // Ajout pour le débogage
+                //console.log("Réponse de l'API:", res); // Ajout pour le débogage
                 if (res.success) {
                     // Supprime le message du DOM
                     $(`#message-${messageId}`).remove();
-                    console.log("Message supprimé du DOM:", messageId);
+                    //console.log("Message supprimé du DOM:", messageId);
                 } else {
                     alert("Erreur lors de la suppression du message.");
                 }
             }).fail(function(xhr, status, error) {
-                console.error("Erreur lors de la requête de suppression:", error); // Ajout pour le débogage
+                //console.error("Erreur lors de la requête de suppression:", error); // Ajout pour le débogage
                 alert("Erreur lors de la suppression du message.");
             });
         });
 
         // Écouter l'événement de suppression spécifique diffusé par Pusher
         canal.bind('message-supression', function(data) {
-            console.log("Message supprimé via Pusher:", data); // Affiche l'ID du message supprimé pour le débogage
+            //console.log("Message supprimé via Pusher:", data); // Affiche l'ID du message supprimé pour le débogage
             // Supprime le message correspondant du DOM
             $(`#message-${data.idMessage}`).remove();
-            console.log("Message supprimé du DOM via Pusher:", data.idMessage);
+            //console.log("Message supprimé du DOM via Pusher:", data.idMessage);
         });
     </script>
 

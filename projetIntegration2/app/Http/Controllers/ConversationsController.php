@@ -17,7 +17,7 @@ use App\Events\MessageGroup;
 use App\Events\SuppressionMessageGroup;
 use App\Events\SuppressionMessageAmis;
 
-//TODO : BUG A CORRIGER
+
 
 
 
@@ -102,6 +102,8 @@ class ConversationsController extends Controller
             ->get();
 
         // Vérifier si l'utilisateur est ami
+        //nom des tables son en englais
+        // Je n'ai pas créé cette table
         $isFriend = \DB::table('demande_amis')
             ->where(function ($query) use ($userId, $user) {
                 $query->where('requester_id', $userId)
@@ -115,7 +117,7 @@ class ConversationsController extends Controller
             ->exists();
 
         if (!$isFriend) {
-            \Log::info('Tentative d\'accès à une conversation sans être ami.', ['user_id' => $userId, 'target_id' => $user->id]);
+            //\Log::info('Tentative d\'accès à une conversation sans être ami.', ['user_id' => $userId, 'target_id' => $user->id]);
             return redirect()->route('conversations.index')->with('erreur', 'Vous devez être ami pour accéder à cette conversation.');
         }
 
@@ -132,7 +134,7 @@ class ConversationsController extends Controller
     //Pour utilisation du pusher nom de variable en englais
     public function broadcast(Request $request)
     {
-        \Log::info('Début de la diffusion du message', ['user_id' => auth()->id()]);
+        ////\Log::info('Début de la diffusion du message', ['user_id' => auth()->id()]);
 
         $request->validate([
             'message' => 'nullable|string',
@@ -140,7 +142,7 @@ class ConversationsController extends Controller
         ]);
 
         if (!$request->filled('message') && !$request->hasFile('fichier')) {
-            \Log::warning('Aucun message ou fichier fourni', ['user_id' => auth()->id()]);
+            //\Log::warning('Aucun message ou fichier fourni', ['user_id' => auth()->id()]);
             return response()->json(['error' => 'Vous devez envoyer soit un message, soit un fichier, soit les deux.'], 422);
         }
 
@@ -159,7 +161,7 @@ class ConversationsController extends Controller
 
                 // Stocker le fichier
                 $fichier->move(public_path($dossier), $fichierNom);
-                //\Log::info('Fichier téléchargé avec succès', ['fichier_nom' => $fichierNom, 'dossier' => $dossier]);
+                ////\Log::info('Fichier téléchargé avec succès', ['fichier_nom' => $fichierNom, 'dossier' => $dossier]);
             }
 
             // Insérer le message dans la base de données en utilisant le modèle Message
@@ -171,17 +173,17 @@ class ConversationsController extends Controller
                 'created_at' => now(),
             ]);
 
-            //\Log::info('Message créé avec succès', ['message_id' => $message->id]);
+            ////\Log::info('Message créé avec succès', ['message_id' => $message->id]);
 
             // Diffuser l’événement via Pusher
             //Obliger en englais
             broadcast(new PusherBroadcast(e($request->message), auth()->id(), $request->vers, false, $message->id, $fichierNom, auth()->user()->email))
                 ->toOthers();
 
-            //\Log::info('Message diffusé avec succès', ['message_id' => $message->id]);
+            ////\Log::info('Message diffusé avec succès', ['message_id' => $message->id]);
 
         } catch (\Exception $e) {
-            //\Log::error('❌ Erreur lors du broadcast: ' . $e->getMessage());
+            ////\Log::error('❌ Erreur lors du broadcast: ' . $e->getMessage());
         }
 
         return response()->json([
@@ -198,7 +200,7 @@ class ConversationsController extends Controller
 
     //Pour utilisation du pusher nom de variable en englais
     public function receive(Request $request){
-        \Log::info('❌ Erreur lors du broadcast: ' . $request);
+        //\Log::info('❌ Erreur lors du broadcast: ' . $request);
     return response()->json([
         'message' => $request->message,
         'idEnvoyer' => $request->sender_id,
@@ -213,14 +215,14 @@ class ConversationsController extends Controller
 
     public function destroy(Message $message)
     {
-        \Log::info('Tentative de suppression du message', ['message_id' => $message->id, 'user_id' => auth()->id()]);
+        ////\Log::info('Tentative de suppression du message', ['message_id' => $message->id, 'user_id' => auth()->id()]);
 
         if (auth()->id() !== $message->idEnvoyer) {
-            \Log::warning('Action non autorisée pour la suppression du message', ['message_id' => $message->id, 'user_id' => auth()->id()]);
+            //\Log::warning('Action non autorisée pour la suppression du message', ['message_id' => $message->id, 'user_id' => auth()->id()]);
             return response()->json(['error' => 'Action non autorisée'], 403);
         }
 
-        \Log::info('Détails du message avant suppression', ['message_id' => $message->id, 'fichier' => $message->fichier]);
+        ////\Log::info('Détails du message avant suppression', ['message_id' => $message->id, 'fichier' => $message->fichier]);
 
         if ($message->fichier) {
             $fichierNom = $message->fichier;
@@ -232,22 +234,22 @@ class ConversationsController extends Controller
 
             $fichierPath = public_path($dossier . $fichierNom);
 
-            \Log::info('Chemin du fichier à supprimer', ['fichier_path' => $fichierPath]);
+            ////\Log::info('Chemin du fichier à supprimer', ['fichier_path' => $fichierPath]);
 
             if (file_exists($fichierPath)) {
                 unlink($fichierPath);
-                \Log::info('Fichier supprimé', ['fichier_path' => $fichierPath]);
+                ////\Log::info('Fichier supprimé', ['fichier_path' => $fichierPath]);
             } else {
-                \Log::warning('Le fichier n\'existe pas', ['fichier_path' => $fichierPath]);
+                ////\Log::warning('Le fichier n\'existe pas', ['fichier_path' => $fichierPath]);
             }
         } else {
-            \Log::info('Aucun fichier associé au message', ['message_id' => $message->id]);
+            ////\Log::info('Aucun fichier associé au message', ['message_id' => $message->id]);
         }
 
         $messageId = $message->id;
         $message->delete();
 
-        \Log::info('Message supprimé avec succès', ['message_id' => $messageId]);
+        ////\Log::info('Message supprimé avec succès', ['message_id' => $messageId]);
 
         broadcast(new SuppressionMessageAmis($messageId, $message->idEnvoyer, $message->idReceveur))->toOthers();
 

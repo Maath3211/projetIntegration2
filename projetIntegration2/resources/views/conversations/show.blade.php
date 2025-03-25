@@ -18,26 +18,7 @@
                     <div class="col-md-2 colonneCanaux">
                         <div class="container">
                             <div class="column">
-                                <div class="conteneurImage">
-                                    <div class="col-md-12">
-                                        <div class="col-md-12">
-                                            <div class="texteSurImage">Ajouter ami</div>
-        
-                                        </div>
-                                        <div class="col-md-12">
-        
-                                        <a href="{{ route('amis.index') }}">
-                                            <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee">
-                                                <i class="fa-solid fa-user-plus fa-xl"></i>
-                                            </div>
-                                          </a>
-                                    </div>
-                                    </div>
-                                    
-        
-        
-                                <div></div>
-                            </div>
+
                                 <!-- column est en anglais parce que c'est le nom de la classe bootstrap c'est pas mon choix -->
                                 <div class="conteneurImage">
                                     <div class="col-md-12">
@@ -224,7 +205,7 @@
     // Construire un canal unique basé sur les deux IDs (ex: "chat-3-7")
     const nomCanal = "chat-" + Math.min(utilisateurId, amiId) + "-" + Math.max(utilisateurId, amiId);
 
-    console.log("Abonnement au canal :", nomCanal);
+    ////console.log("Abonnement au canal :", nomCanal);
 
     const pusher = new Pusher('{{ config('broadcasting.connections.pusher.key') }}', {
         cluster: '{{ config('broadcasting.connections.pusher.options.cluster') }}',
@@ -236,11 +217,11 @@
     });
 
     pusher.connection.bind('error', function(erreur) {
-        console.error('Erreur de connexion :', erreur);
+        //console.error('Erreur de connexion :', erreur);
     });
 
     const canal = pusher.subscribe(nomCanal);
-    console.log("Canal :", canal);
+    ////console.log("Canal :", canal);
 
     // Fonction pour échapper les caractères spéciaux
     function echapperHtml(nonSecurise) {
@@ -314,7 +295,7 @@
         e.preventDefault();
 
         if (envoiEnCours) {
-            console.log("Un message est déjà en cours d'envoi.");
+            ////console.log("Un message est déjà en cours d'envoi.");
             return; // Empêche l'envoi multiple
         }
 
@@ -384,7 +365,7 @@
             $("input[name='content']").val("");
             $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
         }).fail(function(xhr, status, erreur) {
-            console.error("Erreur d'envoi :", erreur);
+            //console.error("Erreur d'envoi :", erreur);
         }).always(function() {
             envoiEnCours = false; // Réinitialise la variable après la requête
         });
@@ -398,7 +379,7 @@
     $(document).on('click', '.delete-btn', function(e) {
         e.preventDefault();
         let messageId = $(this).data('id');
-        console.log("Suppression du message avec ID:", messageId); // Ajout de console
+        ////console.log("Suppression du message avec ID:", messageId); // Ajout de //console
         $.ajax({
             type: "DELETE",
             url: `/messages/${messageId}`,
@@ -406,7 +387,7 @@
                 _token: "{{ csrf_token() }}"
             }
         }).done(function(res) {
-            console.log("Réponse de suppression:", res); // Ajout de console
+            ////console.log("Réponse de suppression:", res); // Ajout de //console
             if (res.success) {
                 // Supprime le message du DOM
                 $(`#message-${messageId}`).remove();
@@ -414,14 +395,14 @@
                 alert("Erreur lors de la suppression du message.");
             }
         }).fail(function() {
-            console.error("Erreur lors de la suppression du message."); // Ajout de console
+            //console.error("Erreur lors de la suppression du message."); // Ajout de //console
             alert("Erreur lors de la suppression du message.");
         });
     });
 
     // Écouter l'événement de suppression spécifique diffusé par Pusher
     canal.bind('message-supprime-ami', function(donnees) {
-        console.log("Message supprimé :", donnees); // Affiche l'ID du message supprimé pour le débogage
+        ////console.log("Message supprimé :", donnees); // Affiche l'ID du message supprimé pour le débogage
         // Supprime le message correspondant du DOM
         $(`#message-${donnees.idMessage}`).remove();
     });

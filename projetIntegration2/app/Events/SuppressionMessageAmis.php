@@ -26,11 +26,12 @@ class SuppressionMessageAmis implements ShouldBroadcastNow
         $this->idReceveur = $idReceveur;
         $this->idEnvoyeur = $idEnvoyeur;
 
-        Log::info('SuppressionMessageAmis event created', [
+        /*Log::info('SuppressionMessageAmis event created', [
             'idMessage' => $this->idMessage,
             'idReceveur' => $this->idReceveur,
             'idEnvoyeur' => $this->idEnvoyeur,
         ]);
+        */
     }
 
     public function broadcastOn(): array

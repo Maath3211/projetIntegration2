@@ -658,7 +658,7 @@
 
         const channelName = "chat-" + friendId;
 
-        console.log("Subscribing to:", channelName);
+        //console.log("Subscribing to:", channelName);
 
         const pusher = new Pusher('{{ config('
             broadcasting.connections.pusher.key ') }}', {
@@ -668,11 +668,11 @@
             });
 
         pusher.connection.bind('connected', function() {
-            console.log('Successfully connected to Pusher');
+            //console.log('Successfully connected to Pusher');
         });
 
         pusher.connection.bind('error', function(err) {
-            console.error('Connection error:', err);
+            //console.error('Connection error:', err);
         });
 
         const channel = pusher.subscribe(channelName);
@@ -689,7 +689,7 @@
             } else {
                 // Détermine le contenu du message (texte, image ou fichier)
                 let messageContent = data.message ? `<p>${data.message}</p>` : "";
-                console.log(data);
+                //console.log(data);
                 // Déterminer si c'est une image ou un fichier à télécharger
                 let fileExtension = data.photo ? data.photo.split('.').pop().toLowerCase() : "";
                 let isImage = ["jpg", "jpeg", "png", "gif"].includes(fileExtension);
@@ -766,7 +766,7 @@
                 processData: false, // Ne pas traiter les données
                 contentType: false, // Ne pas définir de type de contenu
             }).done(function(res) {
-                console.log(res);
+                //console.log(res);
 
                 $("#preview-container").html("");
                 $("input[name='fichier']").val("");
@@ -813,7 +813,7 @@
                 $("input[name='content']").val("");
                 $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
             }).fail(function(xhr, status, error) {
-                console.error("Erreur d'envoi :", error);
+                //console.error("Erreur d'envoi :", error);
             });
         });
 
@@ -849,7 +849,7 @@
 
         // Écouter l'événement de suppression spécifique diffusé par Pusher
         channel.bind('message-deleted', function(data) {
-            console.log("Message supprimé:", data); // Affiche l'ID du message supprimé pour le débogage
+            //console.log("Message supprimé:", data); // Affiche l'ID du message supprimé pour le débogage
             // Supprime le message correspondant du DOM
             $(`#message-${data.messageId}`).remove();
         });
