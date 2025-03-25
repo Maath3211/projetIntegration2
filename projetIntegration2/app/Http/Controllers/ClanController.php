@@ -577,7 +577,7 @@ class ClanController extends Controller
         $userId = auth()->check() ? auth()->user()->id : 999;
 
         // Vérifier si l'utilisateur a déjà rejoint le clan
-        $exists = DB::table('clan_user')
+        $exists = DB::table('clan_users')
             ->where('clan_id', $request->input('clan_id'))
             ->where('user_id', $userId)
             ->exists();
@@ -586,7 +586,7 @@ class ClanController extends Controller
             return back()->withErrors('Vous avez déjà rejoint ce clan.');
         }
 
-        DB::table('clan_user')->insert([
+        DB::table('clan_users')->insert([
             'clan_id'    => $request->input('clan_id'),
             'user_id'    => $userId,
             'joined_at' => now(),

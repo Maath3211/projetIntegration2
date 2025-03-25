@@ -39,4 +39,8 @@ return [
     
     // Alt text for images
     'avatar' => 'Avatar',
+
+    // Demande d'amis
+    'aucune_demande' => 'Aucune demande d\'amis.',
+    'demandes_recues' => 'Demandes d\'amis :',
 ];

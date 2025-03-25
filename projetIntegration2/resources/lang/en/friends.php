@@ -32,4 +32,8 @@ return [
     
     // Alt text for images
     'avatar' => 'Avatar',
+
+    // Friend requests list
+    'aucune_demande' => 'No friend requests',
+    'demandes_recues' => 'Friend requests:',
 ];
