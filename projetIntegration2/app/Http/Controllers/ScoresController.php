@@ -43,6 +43,8 @@ class ScoresController extends Controller
 
     public function meilleursGroupes()
     {
+        $utilisateur = Auth::user();
+        $clans = $utilisateur->clans;
         $selectedClanId = 'global';
         $userScores = DB::table('scores')
             ->select('user_id', DB::raw('SUM(score) as total_score'))
@@ -80,7 +82,7 @@ class ScoresController extends Controller
             ->get();
 
 
-        return view('leaderboard.topClans', compact('topClans', 'topUsers', 'userClans', 'selectedClanId')); // Send the result to a view
+        return view('leaderboard.topClans', compact('topClans', 'topUsers', 'userClans', 'selectedClanId', 'clans')); // Send the result to a view
     }
 
 
