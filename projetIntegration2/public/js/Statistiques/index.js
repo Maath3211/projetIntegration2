@@ -160,10 +160,10 @@ function convertWeightUnit(button, unit) {
 
     if (!isNaN(score)) {
         if (unit === 'kg' && !scoreSpan.innerHTML.includes('kg')) {
-            let kg = (score * 0.453592).toFixed(2); 
+            let kg = (score * 0.453592).toFixed(2); // Convert lbs to kg
             scoreSpan.innerHTML = `${textParts[0]} : ${kg} kg`;
         } else if (unit === 'lbs' && !scoreSpan.innerHTML.includes('lbs')) {
-            let lbs = (score / 0.453592).toFixed(2);
+            let lbs = (score / 0.453592).toFixed(2); // Convert kg to lbs
             scoreSpan.innerHTML = `${textParts[0]} : ${lbs} lbs`;
         }
     }
