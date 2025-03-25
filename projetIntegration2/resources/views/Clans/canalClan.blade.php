@@ -345,6 +345,19 @@
 
     <script>
 
+    //*
+    //**
+    //** Avertissement : Ce code utilise Pusher pour la diffusion en temps réel.
+    //** Pusher pour la raison qui m'echape ne fonctionne pas sur un js a pars
+    //** donc je suis obligé de le mettre ici.
+    //** Je ne sais pas si c'est la bonne pratique, mais je n'ai pas trouvé d'autre solution.
+    //**
+    //** Et malheureusement il y a beaucoup de code en englais
+    //** Encore une fois
+    //** Merci pusher
+    //**
+    //*
+
 
     // Fonction pour échapper les caractères spéciaux
     function escapeHtml(unsafe) {
@@ -457,8 +470,17 @@
         // ---------------------------
         // Gestion envoi du formulaire
         // ---------------------------
+        let envoiEnCours = false; // Variable pour vérifier si un envoi est en cours
+
         $("form").submit(function(e) {
             e.preventDefault();
+
+            if (envoiEnCours) {
+                console.log("Un message est déjà en cours d'envoi.");
+                return; // Empêche l'envoi multiple
+            }
+
+            envoiEnCours = true; // Bloque l'envoi jusqu'à la fin de la requête
 
             let formData = new FormData();
             formData.append("_token", "{{ csrf_token() }}");
@@ -530,6 +552,8 @@
                 $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
             }).fail(function(xhr, status, error) {
                 console.error("Erreur d'envoi :", error);
+            }).always(function() {
+                envoiEnCours = false; // Réinitialise la variable après la requête
             });
         });
 
