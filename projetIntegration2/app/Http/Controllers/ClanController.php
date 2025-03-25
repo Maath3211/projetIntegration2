@@ -671,7 +671,7 @@ class ClanController extends Controller
             }
     
             // Insérer le message dans la base de données
-            $lastId = \DB::table('utilisateur_clan')->insertGetId([
+            $lastId = \DB::table('conversation_clan')->insertGetId([
                 'idEnvoyer' => auth()->id(),
                 'idClan'    => $request->to,
                 'idCanal'   => $request->canal,

@@ -1,4 +1,4 @@
-@extends('Layouts.app')
+@extends('layouts.app')
 @section('contenu')
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -98,7 +98,7 @@
             });
             document.getElementById('btnLbs').addEventListener('click', function() {
                 if (!isLbs) {
-                    convertToLbs();
+                    convertirLbs();
                     isLbs = true;
                     chart.options.scales.y.title.text = '{{ __("stats.poids_lbs") }}';
                     chart.data.datasets[0].label = '{{ __("stats.poids_lbs") }}';
@@ -108,7 +108,7 @@
 
             document.getElementById('btnKg').addEventListener('click', function() {
                 if (isLbs) {
-                    convertToKg();
+                    convertirKg();
                     isLbs = false;
                     chart.options.scales.y.title.text = '{{ __("stats.poids_kg") }}';
                     chart.data.datasets[0].label = '{{ __("stats.poids_kg") }}';
@@ -116,11 +116,11 @@
                 }
             });
 
-            function convertToLbs() {
+            function convertirLbs() {
                 chart.data.datasets[0].data = chart.data.datasets[0].data.map(kg => kg * 2.20462);
             }
 
-            function convertToKg() {
+            function convertirKg() {
                 chart.data.datasets[0].data = chart.data.datasets[0].data.map(lbs => lbs / 2.20462);
             }
         });

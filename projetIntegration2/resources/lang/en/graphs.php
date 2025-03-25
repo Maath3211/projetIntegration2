@@ -53,6 +53,7 @@ return [
     
     // Confirmation messages
     'confirmation_suppression' => 'Are you sure you want to delete this graph?',
+    'supprime_avec_succes' => 'Graph deleted successfully',
 
     // Information labels
     'informations' => 'Informations',

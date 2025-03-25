@@ -92,9 +92,9 @@
                         <label for="pays" class="text-vert">{{ __('auth.pays') }}</label>
                         <select class="form-select inputConnexion form-control" name="pays">
                             <option>{{ __('auth.choisir') }}</option>
-                            @foreach ($countries as $country)
-                            <option value="{{ $country['name'] }}"
-                                {{ old('pays') == $country['name'] ? 'selected' : '' }}>{{ $country['name'] }}
+                            @foreach ($pays as $pay)
+                            <option value="{{ $pay['name'] }}"
+                                {{ old('pays') == $pay['name'] ? 'selected' : '' }}>{{ $pay['name'] }}
                             </option>
                             @endforeach
                         </select>

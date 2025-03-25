@@ -48,8 +48,8 @@ class ProfilController extends Controller
 
     public function creerCompte()
     {
-        $countries = $this->listePays();
-        return View('profil.creerCompte', compact('countries'));
+        $pays = $this->listePays();
+        return View('profil.creerCompte', compact('pays'));
     }
 
     public function storeCreerCompte(CreationCompteRequest $request)
@@ -68,10 +68,10 @@ class ProfilController extends Controller
         $utilisateur->codeVerification = Str::random(64);
 
         if ($request->hasFile('imageProfil')) {
-            $uploadedFile = $request->file('imageProfil');
-            $nomFichierUnique = 'img/Utilisateurs/' . uniqid() . '.' . $uploadedFile->extension();
+            $fichier = $request->file('imageProfil');
+            $nomFichierUnique = 'img/Utilisateurs/' . uniqid() . '.' . $fichier->extension();
             try {
-                $uploadedFile->move(public_path('img/Utilisateurs'), $nomFichierUnique);
+                $fichier->move(public_path('img/Utilisateurs'), $nomFichierUnique);
                 $utilisateur->imageProfil = $nomFichierUnique;
             } catch (\Exception $e) {
                 Log::error(__('profile.erreur_tel_image'), [$e]);
@@ -80,8 +80,8 @@ class ProfilController extends Controller
         } else {
             $utilisateur->imageProfil = 'img/Utilisateurs/utilisateurParDefaut.jpg';
         }
-
-        Mail::to($utilisateur->email)->send(new confirmation($utilisateur));
+        $locale = app()->getLocale();
+        Mail::to($utilisateur->email)->send(new confirmation($utilisateur, $locale));
         $utilisateur->save();
         
         Statistiques::create([
@@ -104,8 +104,8 @@ class ProfilController extends Controller
 
     public function creerCompteGoogle()
     {
-        $countries = $this->listePays();
-        return view('profil.creerCompteGoogle', compact('countries'));
+        $pays = $this->listePays();
+        return view('profil.creerCompteGoogle', compact('pays'));
     }
 
     public function connexionGoogle()
@@ -116,32 +116,32 @@ class ProfilController extends Controller
     public function googleCallback()
     {
         try {
-            $googleUser = Socialite::driver('google')->user();
+            $utilisateurGoogle = Socialite::driver('google')->user();
 
-            $existingUser = User::where('google_id', $googleUser->getId())
-                ->orWhere('email', $googleUser->getEmail())
+            $utilisateurExistant = User::where('google_id', $utilisateurGoogle->getId())
+                ->orWhere('email', $utilisateurGoogle->getEmail())
                 ->first();
 
-            if ($existingUser) {
-                if ($existingUser->email_verified_at == null) {
+            if ($utilisateurExistant) {
+                if ($utilisateurExistant->email_verified_at == null) {
                     return redirect()->route('profil.connexion')->withErrors(['email' => __('auth.compte_non_verifie')]);
                 }
-                Auth::login($existingUser);
+                Auth::login($utilisateurExistant);
                 return redirect()->route('profil.profil');
             }
 
             $client = new \Google_Client();
-            $client->setAccessToken($googleUser->token);
+            $client->setAccessToken($utilisateurGoogle->token);
             $peopleService = new \Google_Service_PeopleService($client);
             $profile = $peopleService->people->get('people/me', [
                 'personFields' => 'addresses,birthdays,genders,locations'
             ]);
 
-            $birthday = null;
+            $dateNaissance = null;
             if ($profile->getBirthdays()) {
                 foreach ($profile->getBirthdays() as $bday) {
                     if ($bday->getDate() && $bday->getDate()->getYear()) {
-                        $birthday = sprintf(
+                        $dateNaissance = sprintf(
                             '%d-%02d-%02d',
                             $bday->getDate()->getYear(),
                             $bday->getDate()->getMonth(),
@@ -152,10 +152,10 @@ class ProfilController extends Controller
                 }
             }
 
-            $gender = null;
+            $genre = null;
             if ($profile->getGenders()) {
-                $gender = $profile->getGenders()[0]->getValue();
-                $gender = match ($gender) {
+                $genre = $profile->getGenders()[0]->getValue();
+                $genre = match ($genre) {
                     'male' => __('auth.homme'),
                     'female' => __('auth.femme'),
                     default => __('auth.pas_indiquer')
@@ -164,13 +164,13 @@ class ProfilController extends Controller
 
             session([
                 'google_data' => [
-                    'email' => $googleUser->getEmail(),
-                    'prenom' => $googleUser->user['given_name'],
-                    'nom' => $googleUser->user['family_name'],
-                    'image_url' => $googleUser->getAvatar(),
-                    'google_id' => $googleUser->getId(),
-                    'dateNaissance' => $birthday,
-                    'genre' => $gender
+                    'email' => $utilisateurGoogle->getEmail(),
+                    'prenom' => $utilisateurGoogle->user['given_name'],
+                    'nom' => $utilisateurGoogle->user['family_name'],
+                    'image_url' => $utilisateurGoogle->getAvatar(),
+                    'google_id' => $utilisateurGoogle->getId(),
+                    'dateNaissance' => $dateNaissance,
+                    'genre' => $genre
                 ]
             ]);
 
@@ -195,10 +195,10 @@ class ProfilController extends Controller
         $utilisateur->google_id = session('google_data.google_id');
         $utilisateur->codeVerification = Str::random(64);
 
-        $googleData = session('google_data');
-        if ($googleData && isset($googleData['image_url'])) {
+        $dataGoogle = session('google_data');
+        if ($dataGoogle && isset($dataGoogle['image_url'])) {
             try {
-                $imageContent = file_get_contents($googleData['image_url']);
+                $imageContent = file_get_contents($dataGoogle['image_url']);
                 $nomFichierUnique = 'img/Utilisateurs/' . str_replace(' ', '_', $utilisateur->google_id) . '-' . uniqid() . '.jpg';
 
                 if (file_put_contents(public_path($nomFichierUnique), $imageContent)) {
@@ -220,8 +220,8 @@ class ProfilController extends Controller
             Auth::login($utilisateur);
             return redirect()->route('profil.profil');
         }
-
-        Mail::to($utilisateur->email)->send(new confirmation($utilisateur));
+        $locale = app()->getLocale();
+        Mail::to($utilisateur->email)->send(new confirmation($utilisateur, $locale));
         return redirect()->route('profil.connexion')->with('message', __('profile.confirmation_profil'));
     }
 
@@ -269,28 +269,27 @@ class ProfilController extends Controller
 
     public function modification()
     {
-        $countries = $this->listePays();
-        return view('profil.modification', compact('countries'));
+        $pays = $this->listePays();
+        return view('profil.modification', compact('pays'));
     }
 
     public function updateModification(ModificationRequest $request)
     {
         // Get the authenticated user
-        $user = Auth::user();
+        $utilisateur = Auth::user();
         // ... other validation and processing
         
         // Update basic user info
-        $user->prenom = $request->prenom;
-        $user->nom = $request->nom;
-        $user->email = $request->email;
-        $user->pays = $request->pays;  // Save the country name in the current locale
-        $user->dateNaissance = $request->dateNaissance;
-        $user->genre = $request->genre;
-        $user->aPropos = $request->aPropos;
+        $utilisateur->prenom = $request->prenom;
+        $utilisateur->nom = $request->nom;
+        $utilisateur->pays = $request->pays;  // Save the country name in the current locale
+        $utilisateur->dateNaissance = $request->dateNaissance;
+        $utilisateur->genre = $request->genre;
+        $utilisateur->aPropos = $request->aPropos;
         
         // ... handle profile image if provided
         
-        $user->save();
+        $utilisateur->save();
         
         return redirect()->back()->with('message', __('profile.profil_modifier_succes'));
     }
@@ -309,15 +308,15 @@ class ProfilController extends Controller
     {
         $request->validate(['email' => 'required|email']);
 
-        $user = User::where('email', $request->email)->first();
-        if (!$user) {
+        $utilisateur = User::where('email', $request->email)->first();
+        if (!$utilisateur) {
             return redirect()->route('profil.connexion')->with('message', __('profile.message_succes'));
         }
 
         $token = Str::random(64);
 
-        $existingToken = DB::table('password_reset_tokens')->where('email', $request->email)->first();
-        if ($existingToken) {
+        $tokenExistant = DB::table('password_reset_tokens')->where('email', $request->email)->first();
+        if ($tokenExistant) {
             DB::table('password_reset_tokens')->where('email', $request->email)->delete();
         }
 
@@ -326,8 +325,8 @@ class ProfilController extends Controller
             'token' => $token,
             'created_at' => Carbon::now()
         ]);
-
-        Mail::to($request->email)->send(new reinitialisation($token));
+        $locale = app()->getLocale();
+        Mail::to($request->email)->send(new reinitialisation($token, $locale));
         return redirect()->route('profil.connexion')->with('message', __('profile.message_succes'));
     }
 
@@ -365,13 +364,13 @@ class ProfilController extends Controller
             'token.required' => __('profile.token_requis')
         ]);
 
-        $updatePassword = DB::table('password_reset_tokens')
+        $nouveauMDP = DB::table('password_reset_tokens')
             ->where([
                 'email' => $request->email,
                 'token' => $request->token
             ])->first();
 
-        if (!$updatePassword) {
+        if (!$nouveauMDP) {
             return back()->withErrors(['email' => __('profile.invalid_token')]);
         }
 
@@ -385,13 +384,13 @@ class ProfilController extends Controller
 
     public function confCourriel($codeVerification)
     {
-        $user = User::where('codeVerification', $codeVerification)->first();
-        if (!$user) {
+        $utilisateur = User::where('codeVerification', $codeVerification)->first();
+        if (!$utilisateur) {
             return redirect()->route('profil.connexion')->withErrors(['message' => 'Code de vérification invalide']);
         }
-        $user->email_verified_at = now();
-        $user->codeVerification = null;
-        $user->save();
+        $utilisateur->email_verified_at = now();
+        $utilisateur->codeVerification = null;
+        $utilisateur->save();
         return redirect()->route('profil.connexion')->with('message', __('auth.compte_verifie'));
     }
 
@@ -399,14 +398,14 @@ class ProfilController extends Controller
     {
         // Get current locale
         $locale = app()->getLocale();
-        $cacheKey = 'countries_list_' . $locale;
+        $cleCache = 'countries_list_' . $locale;
         
         // Use locale-specific cache key
-        return Cache::remember($cacheKey, now()->addDay(), function () use ($locale) {
-            $response = Http::withoutVerifying()->get('https://restcountries.com/v3.1/all');
+        return Cache::remember($cleCache, now()->addDay(), function () use ($locale) {
+            $reponse = Http::withoutVerifying()->get('https://restcountries.com/v3.1/all');
             
-            if ($response->successful()) {
-                return collect($response->json())->map(function ($country) use ($locale) {
+            if ($reponse->successful()) {
+                return collect($reponse->json())->map(function ($country) use ($locale) {
                     // Get country name in current locale
                     if ($locale === 'fr') {
                         $name = $country['translations']['fra']['common'] ?? $country['name']['common'];
