@@ -16,7 +16,7 @@ return [
     'voir_objectifs' => 'View my objectives',
     'vos_statistiques' => 'Your statistics:',
     'voir_calendrier' => 'View my calendar',
-    'visites_gym' => 'Gym visits:',
+    'objectif_completer' => 'Number of objectives complete:',
     'fois' => 'times',
     'poids_min' => 'Your lowest weight:',
     'ajout_exercice' => 'Add an exercise',
