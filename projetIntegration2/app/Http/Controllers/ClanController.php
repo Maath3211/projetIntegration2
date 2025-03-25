@@ -714,15 +714,15 @@ class ClanController extends Controller
                 ? 'img/conversations_photo/'
                 : 'fichier/conversations_fichier/';
     
-            $fichierPath = public_path($dossier . $fichierNom);
+            $fichierChemin = public_path($dossier . $fichierNom);
     
-            \Log::info('Chemin du fichier à supprimer', ['fichier_path' => $fichierPath]);
+            \Log::info('Chemin du fichier à supprimer', ['fichier_path' => $fichierChemin]);
     
-            if (file_exists($fichierPath)) {
-                unlink($fichierPath);
-                \Log::info('Fichier supprimé', ['fichier_path' => $fichierPath]);
+            if (file_exists($fichierChemin)) {
+                unlink($fichierChemin);
+                \Log::info('Fichier supprimé', ['fichier_path' => $fichierChemin]);
             } else {
-                \Log::warning('Le fichier n\'existe pas', ['fichier_path' => $fichierPath]);
+                \Log::warning('Le fichier n\'existe pas', ['fichier_path' => $fichierChemin]);
             }
         } else {
             \Log::info('Aucun fichier associé au message', ['message_id' => $message->id]);
