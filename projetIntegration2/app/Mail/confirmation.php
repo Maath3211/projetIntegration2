@@ -30,7 +30,7 @@ class confirmation extends Mailable
     {
         App::setLocale($this->locale);
         return new Envelope(
-            subject: __('emails.confirmation.subject'),
+            subject: __('emails.confirmation.sujet'),
         );
     }
 

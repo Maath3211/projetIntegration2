@@ -80,7 +80,7 @@ class ScoresController extends Controller
             ->get();
 
 
-        return view('Leaderboard.topClans', compact('topClans', 'topUsers', 'userClans', 'selectedClanId')); // Send the result to a view
+        return view('leaderboard.topClans', compact('topClans', 'topUsers', 'userClans', 'selectedClanId')); // Send the result to a view
     }
 
 

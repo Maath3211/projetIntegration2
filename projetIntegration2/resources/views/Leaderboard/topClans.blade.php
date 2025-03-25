@@ -1,4 +1,4 @@
-@extends('Layouts.app')
+@extends('layouts.app')
 @section('titre', 'Leaderboards')
 
 @section('style')
