@@ -53,7 +53,7 @@ class MessageGroup implements ShouldBroadcastNow
 
     public function broadcastAs(): string
     {
-        return 'event-groupe';
+        return 'event-group';
     }
 
     public function broadcastWith(): array

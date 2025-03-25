@@ -363,16 +363,25 @@
         const friendId = "{{ request()->id }}"; // ID de l'ami avec qui il discute :: Plutot le clan avec qui il discute
         const canal = "{{ request()->canal }}";
         const channelName = "chat-" + friendId + "-" + canal;
+        console.log("Nom du canal:", channelName); // Ajout pour le débogage
 
-    const pusher = new Pusher('{{ config('
-        broadcasting.connections.pusher.key ') }}', {
-            cluster: '{{ config('
-            broadcasting.connections.pusher.options.cluster ') }}',
-            encrypted: true
-        });
+        const pusher = new Pusher('{{ config('broadcasting.connections.pusher.key') }}', {
+        cluster: '{{ config('broadcasting.connections.pusher.options.cluster') }}',
+        encrypted: true
+    });
+        console.log('Pusher:', pusher); // Ajout pour le débogage
 
         pusher.connection.bind('connected', function() {
             console.log('Successfully connected to Pusher');
+        });
+
+        pusher.connection.bind('error', function(err) {
+            console.error('Pusher connection error:', err); // Ajout pour afficher les erreurs
+        });
+
+        // Ajout d'un gestionnaire pour vérifier l'état de connexion
+        pusher.connection.bind('state_change', function(states) {
+            console.log('Pusher state changed:', states); // Affiche les changements d'état
         });
 
         pusher.connection.bind('error', function(err) {});
@@ -385,7 +394,9 @@
         // Recevoir les messages de la conversation
         // ---------------------------
         channel.bind('event-group', function(data) {
+            
             // Vérifier si le message a été supprimé
+
             if (data.deleted === true) {
                 // Si le message a été supprimé, le retirer du DOM
                 $(`#message-${data.last_id}`).remove();

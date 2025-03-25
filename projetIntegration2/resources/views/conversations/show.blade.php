@@ -96,8 +96,8 @@
                                         @if ($message->idEnvoyer != auth()->id())
                                             <!-- Pas de bouton de suppression pour les messages reçus -->
                                         @else
-                                            <div class="avatar ">
-                                                <img src="{{ asset($message->from->imageProfil) }}" alt="Image de profil" class="w-32 h-32 object-cover">
+                                            <div class="avatar bg-primary text-white rounded-circle p-2 ">
+                                                {{ substr($message->from->nom, 0, 2)  }}
                                             </div>
                                         @endif
                                     </div>

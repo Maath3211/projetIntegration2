@@ -699,6 +699,7 @@ class ClanController extends Controller
     }
 
     public function receiveClan(Request $request){
+        
 
         return response()->json([
             'message' => $request->message,
