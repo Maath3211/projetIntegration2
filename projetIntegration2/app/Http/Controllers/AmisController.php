@@ -32,7 +32,7 @@ class AmisController extends Controller
         $userId = auth()->check() ? auth()->user()->id : 999;
 
         // Récupérer la liste des IDs des amis déjà ajoutés par l'utilisateur
-        $friendIds = \DB::table('amis')
+        $friendIds = \DB::table('user_ami') // Remplacer "amis" par "user_ami"
             ->where('user_id', $userId)
             ->pluck('friend_id')
             ->toArray();
@@ -40,8 +40,8 @@ class AmisController extends Controller
         // S'assurer d'exclure également l'utilisateur lui-même
         $friendIds[] = $userId;
 
-        // Rechercher les utilisateurs dont le nom correspond à la recherche et qui ne sont pas déjà amis
-        $utilisateurs = User::where('username', 'like', "%{$query}%")
+        // Rechercher les utilisateurs dont l'email correspond à la recherche et qui ne sont pas déjà amis
+        $utilisateurs = User::where('email', 'like', "%{$query}%")
             ->whereNotIn('id', $friendIds)
             ->get();
 
