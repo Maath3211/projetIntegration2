@@ -641,25 +641,23 @@ class ClanController extends Controller
     // Xavier : communication dans le clan
     public function broadcastClan(Request $request)
     {
-        
         $request->validate([
             'message' => 'nullable|string',
             'fichier' => 'nullable|file|max:20480', // 20 Mo 
         ]);
         
         if (!$request->filled('message') && !$request->hasFile('fichier')) {
-            return response()->json(['error' => 'Vous devez envoyer soit un message, soit un fichier, soit les deux.'], 422);
+            return response()->json(['erreur' => 'Vous devez envoyer soit un message, soit un fichier, soit les deux.'], 422);
         }
         
-    
         try {
-            $fichierNom = null;
+            $nomFichier = null;
             // Si un fichier est envoyé
             if ($request->hasFile('fichier')) {
                 $fichier = $request->file('fichier');
         
                 // Générer un nom unique avec horodatage
-                $fichierNom = time() . '_' . $fichier->getClientOriginalName();
+                $nomFichier = time() . '_' . $fichier->getClientOriginalName();
         
                 // Déterminer le dossier en fonction du type de fichier
                 $dossier = in_array($fichier->getClientOriginalExtension(), ['jpg', 'jpeg', 'png', 'gif'])
@@ -667,22 +665,22 @@ class ClanController extends Controller
                     : 'fichier/conversations_fichier/';
         
                 // Stocker le fichier
-                $fichier->move(public_path($dossier), $fichierNom);
+                $fichier->move(public_path($dossier), $nomFichier);
             }
     
             // Insérer le message dans la base de données
-            $lastId = \DB::table('conversation_clan')->insertGetId([
+            $dernierId = \DB::table('conversation_clan')->insertGetId([
                 'idEnvoyer' => auth()->id(),
-                'idClan'    => $request->to,
+                'idClan'    => $request->vers,
                 'idCanal'   => $request->canal,
                 'message'   => $request->message,
-                'fichier'   => $fichierNom, // Stocke le chemin public
+                'fichier'   => $nomFichier, // Stocke le chemin public
                 'created_at'=> now(),
                 'updated_at'=> now()
             ]);
     
             // Diffuser l’événement via Pusher
-            broadcast(new MessageGroup(e($request->message), auth()->id(), $request->canal ,$request->to, false, $lastId, $fichierNom, auth()->user()->email))
+            broadcast(new MessageGroup(e($request->message), auth()->id(), $request->canal, $request->vers, false, $dernierId, $nomFichier, auth()->user()->email))
                 ->toOthers();
     
         } catch (\Exception $e) {
@@ -690,28 +688,15 @@ class ClanController extends Controller
         }
     
         return response()->json([
-            'message'      => $request->message,
-            'last_id'      => $lastId,
-            'sender_id'    => auth()->id(),
-            'sender_email' => auth()->user()->email,
-            'fichier'      => $fichierNom ? asset($dossier . $fichierNom) : null // Retourne l'URL complète
+            'message'         => $request->message,
+            'dernier_id'      => $dernierId,
+            'expediteur_id'   => auth()->id(),
+            'email_expediteur'=> auth()->user()->email,
+            'fichier'         => $nomFichier ? asset($dossier . $nomFichier) : null // Retourne l'URL complète
         ]);
     }
 
-    public function receiveClan(Request $request){
-        
 
-        return response()->json([
-            'message' => $request->message,
-            'sender_id' => $request->sender_id,
-            'group_id' => $request->group_id,
-            'canal_id' => $request->canal_id,
-            'deleted' => $request->deleted,
-            'last_id' => $request->last_id,
-            'photo' => $request->photo,
-            
-        ]);
-    }
 
     public function destroy(UtilisateurClan $message)
     {

@@ -227,7 +227,6 @@
         } else {
             // Détermine le contenu du message (texte, image ou fichier)
             let contenuMessage = donnees.message ? `<p>${echapperHtml(donnees.message)}</p>` : "";
-            console.log(donnees);
             // Déterminer si c'est une image ou un fichier à télécharger
             let extensionFichier = donnees.photo ? donnees.photo.split('.').pop().toLowerCase() : "";
             let estImage = ["jpg", "jpeg", "png", "gif"].includes(extensionFichier);
@@ -236,12 +235,12 @@
             if (donnees.photo) {
                 if (estImage) {
                     contenuFichier = `<div class="message-image">
-                        <img src="/img/conversations_photo/${echapperHtml(donnees.photo)}" alt="Image" class="message-img">
+                        <img src="/img/conversations_photo/${echapperHtml(donnees.photo)}" alt="Image envoyée" class="message-img">
                     </div>`;
                 } else {
                     const nomFichier = donnees.photo.split('/').pop(); // Récupérer le nom du fichier
                     contenuFichier = `<div class="message-file">
-                        <a href="${echapperHtml(donnees.photo)}" target="_blank" download class="btn btn-sm btn-primary">
+                        <a href="/fichier/conversations_fichier/${echapperHtml(donnees.photo)}" target="_blank" download class="btn btn-sm btn-primary">
                             📎 Télécharger ${echapperHtml(nomFichier)}
                         </a>
                     </div>`;

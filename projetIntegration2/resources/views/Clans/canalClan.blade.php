@@ -372,11 +372,11 @@
         // ---------------------------
         // Gestion de l'envoi du formulaire
         // ---------------------------
-        const userId = "{{ auth()->id() }}"; // ID de l'utilisateur connecté
-        const friendId = "{{ request()->id }}"; // ID de l'ami avec qui il discute :: Plutot le clan avec qui il discute
-        const canal = "{{ request()->canal }}";
-        const channelName = "chat-" + friendId + "-" + canal;
-        console.log("Nom du canal:", channelName); // Ajout pour le débogage
+        const utilisateurId = "{{ auth()->id() }}"; // ID de l'utilisateur connecté
+        const clanId = "{{ request()->id }}"; // ID du clan
+        const canalId = "{{ request()->canal }}";
+        const nomCanal = "chat-" + clanId + "-" + canalId;
+        console.log("Nom du canal:", nomCanal); // Ajout pour le débogage
 
         const pusher = new Pusher('{{ config('broadcasting.connections.pusher.key') }}', {
         cluster: '{{ config('broadcasting.connections.pusher.options.cluster') }}',
@@ -385,28 +385,28 @@
         console.log('Pusher:', pusher); // Ajout pour le débogage
 
         pusher.connection.bind('connected', function() {
-            console.log('Successfully connected to Pusher');
+            console.log('Connecté avec succès à Pusher');
         });
 
-        pusher.connection.bind('error', function(err) {
-            console.error('Pusher connection error:', err); // Ajout pour afficher les erreurs
+        pusher.connection.bind('error', function(erreur) {
+            console.error('Erreur de connexion Pusher:', erreur); // Ajout pour afficher les erreurs
         });
 
         // Ajout d'un gestionnaire pour vérifier l'état de connexion
-        pusher.connection.bind('state_change', function(states) {
-            console.log('Pusher state changed:', states); // Affiche les changements d'état
+        pusher.connection.bind('state_change', function(etats) {
+            console.log('État de Pusher modifié:', etats); // Affiche les changements d'état
         });
 
-        pusher.connection.bind('error', function(err) {});
+        pusher.connection.bind('error', function(erreur) {});
 
-    const channel = pusher.subscribe(channelName);
+    const canal = pusher.subscribe(nomCanal);
 
 
 
         // ---------------------------
         // Recevoir les messages de la conversation
         // ---------------------------
-        channel.bind('event-group', function(data) {
+        canal.bind('event-group', function(data) {
             
             // Vérifier si le message a été supprimé
 
@@ -415,48 +415,48 @@
                 $(`#message-${data.last_id}`).remove();
             } else {
                 // Détermine le contenu du message (texte, image ou fichier)
-                let messageContent = data.message ? `<p>${data.message}</p>` : "";
+                let messageContent = data.message ? `<p>${escapeHtml(data.message)}</p>` : "";
                 // Déterminer si c'est une image ou un fichier à télécharger
                 let fileExtension = data.photo ? data.photo.split('.').pop().toLowerCase() : "";
                 let isImage = ["jpg", "jpeg", "png", "gif"].includes(fileExtension);
                 let fileContent = "";
 
-            if (data.photo) {
-                if (isImage) {
-                    fileContent = `<div class="message-image">
-            <img src="/img/conversations_photo/${data.photo}" alt="Image" class="message-img">
-        </div>`;
-                } else {
-                    const fileName = data.photo.split('/').pop(); // Récupérer le nom du fichier
-                    fileContent = `<div class="message-file">
-            <a href="${data.photo}" target="_blank" download class="btn btn-sm btn-primary">
-                📎 Télécharger ${fileName}
-            </a>
-        </div>`;
+                if (data.photo) {
+                    if (isImage) {
+                        fileContent = `<div class="message-image">
+                            <img src="/img/conversations_photo/${data.photo}" alt="Image envoyée" class="message-img">
+                        </div>`;
+                    } else {
+                        const fileName = data.photo.split('/').pop(); // Récupérer le nom du fichier
+                        fileContent = `<div class="message-file">
+                            <a href="/fichier/conversations_fichier/${data.photo}" target="_blank" download class="btn btn-sm btn-primary">
+                                📎 Télécharger ${fileName}
+                            </a>
+                        </div>`;
+                    }
                 }
-            }
 
-            // Ajouter le message au chat
-            $("#chat-messages").append(`
-        <div class="messageTotal" id="message-${data.dernier_id}">
-            <div class="message received-message">
-                <div class="avatar bg-primary text-white rounded-circle p-2">
-                    <!-- Affiche la première lettre de l'email -->
-                    {{ isset($message) ? substr($message->user->email, 0, 2) : 'rien' }}
-                </div>
-                <div class="bubble">
-                    <strong>${data.email ?? 'Email inconnu'}</strong>
-                    <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
-                    <br>
-                    <div class="message-text">
-                        ${messageContent}
+                // Ajouter le message au chat
+                $("#chat-messages").append(`
+                    <div class="messageTotal" id="message-${data.dernier_id}">
+                        <div class="message received-message">
+                            <div class="avatar bg-primary text-white rounded-circle p-2">
+                                <!-- Affiche la première lettre de l'email -->
+                                ${data.email ? data.email.substring(0, 2) : '??'}
+                            </div>
+                            <div class="bubble">
+                                <strong>${data.email ?? 'Email inconnu'}</strong>
+                                <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
+                                <br>
+                                <div class="message-text">
+                                    ${messageContent}
+                                </div>
+                                ${fileContent}
+                            </div>
+                        </div>
+                        <div class="separator"></div>
                     </div>
-                    ${fileContent}
-                </div>
-            </div>
-            <div class="separator"></div>
-        </div>
-    `);
+                `);
 
                 // Scroll au bas des messages
                 $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
@@ -482,17 +482,16 @@
 
             envoiEnCours = true; // Bloque l'envoi jusqu'à la fin de la requête
 
-            let formData = new FormData();
-            formData.append("_token", "{{ csrf_token() }}");
-            formData.append("message", $("input[name='content']").val());
-            formData.append("from", userId);
-            formData.append("to", friendId);
-            formData.append("canal", canal);
+            let donneesFormulaire = new FormData();
+            donneesFormulaire.append("_token", "{{ csrf_token() }}");
+            donneesFormulaire.append("message", $("input[name='content']").val());
+            donneesFormulaire.append("de", utilisateurId);
+            donneesFormulaire.append("vers", clanId);
+            donneesFormulaire.append("canal", canalId);
 
-
-            let fileInput = $("input[name='fichier']")[0]; // Assurez-vous que l'input file a name='fichier'
-            if (fileInput.files.length > 0) {
-                formData.append("fichier", fileInput.files[0]); // Ajoute l'image ou le fichier si présent
+            let fichierInput = $("input[name='fichier']")[0]; // Assurez-vous que l'input file a name='fichier'
+            if (fichierInput.files.length > 0) {
+                donneesFormulaire.append("fichier", fichierInput.files[0]); // Ajoute l'image ou le fichier si présent
             }
 
             $.ajax({
@@ -501,48 +500,47 @@
                 headers: {
                     "X-Socket-Id": pusher.connection.socket_id,
                 },
-                data: formData,
+                data: donneesFormulaire,
                 processData: false, // Ne pas traiter les données
                 contentType: false, // Ne pas définir de type de contenu
-            }).done(function(res) {
+            }).done(function(reponse) {
 
                 $("#preview-container").html("");
                 $("input[name='fichier']").val(""); // Réinitialiser l'input file
 
-                let avatarText = res.sender_email.substring(0, 2);
-                let messageContent = res.message ? `<p>${escapeHtml(res.message)}</p>` : "";
-
+                let texteAvatar = reponse.email_expediteur.substring(0, 2);
+                let contenuMessage = reponse.message ? `<p>${escapeHtml(reponse.message)}</p>` : "";
 
                 // Déterminer si c'est une image ou un fichier à télécharger
-                let fileExtension = res.fichier ? res.fichier.split('.').pop().toLowerCase() : "";
-                let isImage = ["jpg", "jpeg", "png", "gif"].includes(fileExtension);
-                let fileContent = "";
+                let extensionFichier = reponse.fichier ? reponse.fichier.split('.').pop().toLowerCase() : "";
+                let estImage = ["jpg", "jpeg", "png", "gif"].includes(extensionFichier);
+                let contenuFichier = "";
 
-                if (res.fichier) {
-                    if (isImage) {
-                        fileContent =
-                            `<img src="${res.fichier}" class="message-image" alt="Image envoyée">`;
+                if (reponse.fichier) {
+                    if (estImage) {
+                        contenuFichier =
+                            `<img src="${reponse.fichier}" class="message-image" alt="Image envoyée">`;
                     } else {
-                        fileContent = `<a href="${res.fichier}" target="_blank" class="text-blue-500">
-                📄 Télécharger ${res.fichier.split('/').pop()}
+                        contenuFichier = `<a href="${reponse.fichier}" target="_blank" class="text-blue-500">
+                📄 Télécharger ${reponse.fichier.split('/').pop()}
             </a>`;
                     }
                 }
 
                 $("#chat-messages").append(`
-        <div class="messageTotal" id="message-${res.last_id}">
+        <div class="messageTotal" id="message-${reponse.dernier_id}">
             <div class="message own-message">
-                <button class="delete-btn" data-id="${res.last_id}">🗑️</button>
+                <button class="delete-btn" data-id="${reponse.dernier_id}">🗑️</button>
                 <div class="bubble">
-                    <strong>${res.sender_email}</strong>
+                    <strong>${reponse.email_expediteur}</strong>
                     <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
                     <br>
                     <div class="message-text">
-                        ${messageContent}
+                        ${contenuMessage}
                     </div>
-                    ${fileContent}
+                    ${contenuFichier}
                 </div>
-                <div class="ml-4 avatar bg-primary text-white rounded-circle p-2">${avatarText}</div>
+                <div class="ml-4 avatar bg-primary text-white rounded-circle p-2">${texteAvatar}</div>
             </div>
             <div class="separator"></div>
         </div>
@@ -550,8 +548,8 @@
 
                 $("input[name='content']").val("");
                 $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
-            }).fail(function(xhr, status, error) {
-                console.error("Erreur d'envoi :", error);
+            }).fail(function(xhr, status, erreur) {
+                console.error("Erreur d'envoi :", erreur);
             }).always(function() {
                 envoiEnCours = false; // Réinitialise la variable après la requête
             });
@@ -593,7 +591,7 @@
         });
 
         // Écouter l'événement de suppression spécifique diffusé par Pusher
-        channel.bind('message-supression', function(data) {
+        canal.bind('message-supression', function(data) {
             console.log("Message supprimé via Pusher:", data); // Affiche l'ID du message supprimé pour le débogage
             // Supprime le message correspondant du DOM
             $(`#message-${data.idMessage}`).remove();
