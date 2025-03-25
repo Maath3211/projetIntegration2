@@ -36,11 +36,10 @@ class StatistiqueController extends Controller
             $scoreHaut = ScoreExercice::select('statistique_id', \DB::raw('MAX(score) as max_score'))
                 ->groupBy('statistique_id')
                 ->get();
-            $streak = Statistiques::where('user_id', Auth::id())->where('nomStatistique', 'Streak')->get();
             $foisGym = Statistiques::where('user_id', Auth::id())->where('nomStatistique', 'FoisGym')->get();
         }
         
-        return view("statistique.index", compact('statistiques', 'usager', 'poids', 'streak', 'foisGym', 'scoreExercice', 'scoreHaut'));
+        return view("statistique.index", compact('statistiques', 'usager', 'poids', 'foisGym', 'scoreExercice', 'scoreHaut'));
     }
 
 
