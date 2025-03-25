@@ -165,7 +165,7 @@ class ConversationsController extends Controller
             // Insérer le message dans la base de données en utilisant le modèle Message
             $message = Message::create([
                 'idEnvoyer' => auth()->id(),
-                'idReceveur' => $request->to,
+                'idReceveur' => $request->vers,
                 'message' => $request->message,
                 'fichier' => $fichierNom, // Stocke le chemin public
                 'created_at' => now(),
@@ -175,7 +175,7 @@ class ConversationsController extends Controller
 
             // Diffuser l’événement via Pusher
             //Obliger en englais
-            broadcast(new PusherBroadcast(e($request->message), auth()->id(), $request->to, false, $message->id, $fichierNom, auth()->user()->email))
+            broadcast(new PusherBroadcast(e($request->message), auth()->id(), $request->vers, false, $message->id, $fichierNom, auth()->user()->email))
                 ->toOthers();
 
             //\Log::info('Message diffusé avec succès', ['message_id' => $message->id]);

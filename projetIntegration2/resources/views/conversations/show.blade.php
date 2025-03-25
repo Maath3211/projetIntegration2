@@ -289,8 +289,8 @@
         let donneesFormulaire = new FormData();
         donneesFormulaire.append("_token", "{{ csrf_token() }}");
         donneesFormulaire.append("message", $("input[name='content']").val());
-        donneesFormulaire.append("from", utilisateurId);
-        donneesFormulaire.append("to", amiId);
+        donneesFormulaire.append("de", utilisateurId);
+        donneesFormulaire.append("vers", amiId);
 
         let fichierInput = $("input[name='fichier']")[0]; // Assurez-vous que l'input file a name='fichier'
         if (fichierInput.files.length > 0) {
