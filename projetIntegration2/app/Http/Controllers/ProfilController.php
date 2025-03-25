@@ -80,8 +80,8 @@ class ProfilController extends Controller
         } else {
             $utilisateur->imageProfil = 'img/Utilisateurs/utilisateurParDefaut.jpg';
         }
-
-        Mail::to($utilisateur->email)->send(new confirmation($utilisateur));
+        $locale = app()->getLocale();
+        Mail::to($utilisateur->email)->send(new confirmation($utilisateur, $locale));
         $utilisateur->save();
         
         Statistiques::create([
@@ -220,8 +220,8 @@ class ProfilController extends Controller
             Auth::login($utilisateur);
             return redirect()->route('profil.profil');
         }
-
-        Mail::to($utilisateur->email)->send(new confirmation($utilisateur));
+        $locale = app()->getLocale();
+        Mail::to($utilisateur->email)->send(new confirmation($utilisateur, $locale));
         return redirect()->route('profil.connexion')->with('message', __('profile.confirmation_profil'));
     }
 
@@ -325,8 +325,8 @@ class ProfilController extends Controller
             'token' => $token,
             'created_at' => Carbon::now()
         ]);
-
-        Mail::to($request->email)->send(new reinitialisation($token));
+        $locale = app()->getLocale();
+        Mail::to($request->email)->send(new reinitialisation($token, $locale));
         return redirect()->route('profil.connexion')->with('message', __('profile.message_succes'));
     }
 

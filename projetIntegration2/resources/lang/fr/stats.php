@@ -17,7 +17,7 @@ return [
     'voir_objectifs' => 'Voir mes objectifs',
     'vos_statistiques' => 'Vos statistiques :',
     'voir_calendrier' => 'Voir mon calendrier',
-    'visites_gym' => 'Nombre de fois au gym :',
+    'objectif_completer' => 'Nombre d\'objectif completer :',
     'fois' => 'fois',
     'poids_min' => 'Votre poids le plus bas :',
     'ajout_exercice' => 'Ajouter un exercice',

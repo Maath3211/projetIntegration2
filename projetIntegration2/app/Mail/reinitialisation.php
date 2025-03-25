@@ -18,7 +18,7 @@ class reinitialisation extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct($token, $locale = null)
+    public function __construct($token, $locale)
     {
         $this->token = $token;
         $this->locale = $locale ?? App::getLocale(); // Use current locale if not specified
@@ -31,7 +31,7 @@ class reinitialisation extends Mailable
     {
         App::setLocale($this->locale);
         return new Envelope(
-            subject: __('emails.reinitialisation_mdp.subject'),
+            subject: __('emails.reinitialisation_mdp.sujet'),
         );
     }
 

@@ -8,6 +8,7 @@ use App\Models\Statistiques;
 use App\Models\StatThermique;
 use App\Models\PoidsUtilisateur;
 use App\Models\ScoreExercice;
+use App\Models\Objectif;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
@@ -37,10 +38,10 @@ class StatistiqueController extends Controller
                 ->groupBy('statistique_id')
                 ->get();
             $streak = Statistiques::where('user_id', Auth::id())->where('nomStatistique', 'Streak')->get();
-            $foisGym = Statistiques::where('user_id', Auth::id())->where('nomStatistique', 'FoisGym')->get();
+            $foisGym = Objectif::where('user_id', Auth::id())->where('completer', true)->count();
         }
         
-        return view("statistique.index", compact('statistiques', 'usager', 'poids', 'streak', 'foisGym', 'scoreExercice', 'scoreHaut'));
+        return view("statistique.index", compact('statistiques', 'usager', 'poids', 'foisGym', 'scoreExercice', 'scoreHaut'));
     }
 
 
@@ -262,7 +263,7 @@ class StatistiqueController extends Controller
 
     public function updateWeight(Request $request)
     {
-        \Log::info('Request received for updateWeight', ['request' => $request->all()]);
+        \Log::info('modiferPoids', ['request' => $request->all()]);
 
         $user = Auth::user();
         $poid = $user->poids()->first();
@@ -270,10 +271,10 @@ class StatistiqueController extends Controller
         if ($poid) {
             $poid->score = $request->input('poids');
             $poid->save();
-            \Log::info('Weight updated successfully', ['poid' => $poid]);
+            \Log::info('Poids modifier avec succes', ['poid' => $poid]);
             return response()->json(['success' => true]);
         } else {
-            \Log::error('Weight update failed: Weight not found');
+            \Log::error('Poids non trouvé');
             return response()->json(['success' => false]);
         }
     }

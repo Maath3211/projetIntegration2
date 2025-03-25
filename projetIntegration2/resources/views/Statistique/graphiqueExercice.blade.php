@@ -97,7 +97,7 @@
             });
             document.getElementById('btnLbs').addEventListener('click', function() {
                 if (!isLbs) {
-                    convertToLbs();
+                    convertirLbs();
                     isLbs = true;
                     chart.options.scales.y.title.text = '{{ __("stats.score_lbs") }}';
                     chart.data.datasets[0].label = '{{ __("stats.score_lbs") }}';
@@ -107,7 +107,7 @@
 
             document.getElementById('btnKg').addEventListener('click', function() {
                 if (isLbs) {
-                    convertToKg();
+                    convertirKg();
                     isLbs = false;
                     chart.options.scales.y.title.text = '{{ __("stats.score_kg") }}';
                     chart.data.datasets[0].label = '{{ __("stats.score_kg") }}';
@@ -115,11 +115,11 @@
                 }
             });
 
-            function convertToLbs() {
+            function convertirLbs() {
                 chart.data.datasets[0].data = chart.data.datasets[0].data.map(kg => kg * 2.20462);
             }
 
-            function convertToKg() {
+            function convertirKg() {
                 chart.data.datasets[0].data = chart.data.datasets[0].data.map(lbs => lbs / 2.20462);
             }
         });

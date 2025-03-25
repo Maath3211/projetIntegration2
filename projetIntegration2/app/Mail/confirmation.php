@@ -17,7 +17,7 @@ class confirmation extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct($utilisateur, $locale = null)
+    public function __construct($utilisateur, $locale)
     {
         $this->utilisateur = $utilisateur;
         $this->locale = $locale ?? App::getLocale(); // Use current locale if not specified
@@ -30,7 +30,7 @@ class confirmation extends Mailable
     {
         App::setLocale($this->locale);
         return new Envelope(
-            subject: __('emails.confirmation.subject'),
+            subject: __('emails.confirmation.sujet'),
         );
     }
 
