@@ -38,15 +38,23 @@ class SidebarClans extends Component
     
     private function loadUserClans()
     {
+        // Debug the auth state
+        Log::debug('Loading user clans, Auth::check(): ' . (Auth::check() ? 'true' : 'false'));
+        
         if (Auth::check()) {
-            $user = Auth::user();
-            $this->userClans = $user->clans()
+            $userId = Auth::id();
+            
+            // Load clans through database query
+            $this->userClans = DB::table('clan_users')
+                ->join('clans', 'clans.id', '=', 'clan_users.clan_id')
+                ->where('clan_users.user_id', $userId)
                 ->select('clans.id as clan_id', 'clans.nom as clan_nom', 'clans.image as clan_image')
                 ->get();
                 
-            Log::debug('Loaded clans using Eloquent relationship', [
-                'user_id' => $user->id,
-                'clans_count' => $this->userClans->count()
+            Log::debug('Loaded clans for user', [
+                'user_id' => $userId,
+                'clans_count' => $this->userClans->count(),
+                'clans' => $this->userClans->toArray()
             ]);
         } else {
             // For development/testing, load some test data when not authenticated
