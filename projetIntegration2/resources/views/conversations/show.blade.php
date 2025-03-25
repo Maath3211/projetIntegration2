@@ -18,6 +18,26 @@
                     <div class="col-md-2 colonneCanaux">
                         <div class="container">
                             <div class="column">
+                                <div class="conteneurImage">
+                                    <div class="col-md-12">
+                                        <div class="col-md-12">
+                                            <div class="texteSurImage">Ajouter ami</div>
+        
+                                        </div>
+                                        <div class="col-md-12">
+        
+                                        <a href="{{ route('amis.index') }}">
+                                            <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee">
+                                                <i class="fa-solid fa-user-plus fa-xl"></i>
+                                            </div>
+                                          </a>
+                                    </div>
+                                    </div>
+                                    
+        
+        
+                                <div></div>
+                            </div>
                                 <!-- column est en anglais parce que c'est le nom de la classe bootstrap c'est pas mon choix -->
 
                                 <div class="conteneurCanaux">
