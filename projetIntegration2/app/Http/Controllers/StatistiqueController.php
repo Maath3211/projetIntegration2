@@ -8,6 +8,7 @@ use App\Models\Statistiques;
 use App\Models\StatThermique;
 use App\Models\PoidsUtilisateur;
 use App\Models\ScoreExercice;
+use App\Models\Objectif;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
@@ -36,7 +37,8 @@ class StatistiqueController extends Controller
             $scoreHaut = ScoreExercice::select('statistique_id', \DB::raw('MAX(score) as max_score'))
                 ->groupBy('statistique_id')
                 ->get();
-            $foisGym = Statistiques::where('user_id', Auth::id())->where('nomStatistique', 'FoisGym')->get();
+            $streak = Statistiques::where('user_id', Auth::id())->where('nomStatistique', 'Streak')->get();
+            $foisGym = Objectif::where('user_id', Auth::id())->where('completer', true)->count();
         }
         
         return view("statistique.index", compact('statistiques', 'usager', 'poids', 'foisGym', 'scoreExercice', 'scoreHaut'));
