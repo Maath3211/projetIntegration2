@@ -53,6 +53,7 @@ return [
     
     // Confirmation messages
     'confirmation_suppression' => 'Êtes-vous sûr de vouloir supprimer ce graphique?',
+    'supprime_avec_succes' => 'Graphique supprimé avec succès',
 
     // Information labels
     'informations' => 'Informations',
