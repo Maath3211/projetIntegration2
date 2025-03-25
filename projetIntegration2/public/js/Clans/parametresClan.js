@@ -42,6 +42,11 @@ document.addEventListener("DOMContentLoaded", function() {
         document.querySelector('#formulaireSuppressionClan').submit();
     });
 
+    // pour annuler la suppression du clan
+    supprimerClan.querySelector('.annuler').addEventListener('click', function() {
+        this.parentElement.parentElement.parentElement.style.display = 'none';
+    });
+
     // pour fermer une fenêtre contextuelle de message d'erreur ou de succès
     document.querySelectorAll('.close-btn').forEach(bouton => {
         bouton.addEventListener('click', function(){
