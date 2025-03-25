@@ -19,12 +19,7 @@
                         <div class="container">
                             <div class="column">
                                 <!-- column est en anglais parce que c'est le nom de la classe bootstrap c'est pas mon choix -->
-                                <div class="conteneurImage">
-                                    <div class="texteSurImage">Workout Master</div>
-                                    {{-- <div><a href="{{ route('clan.parametres', ['id' => $clan->id]) }}"><i class="fa-solid fa-ellipsis"></i></a></div> --}}
-                                    <div><a href="{{ route('clan.parametres', ['id' => 1]) }}"><i
-                                                class="fa-solid fa-ellipsis"></i></a></div>
-                                </div>
+
                                 <div class="conteneurCanaux">
                                     <!-- Afficher amis  -->
                                     <h1>{{ __('chat.amis') }}</h1>
