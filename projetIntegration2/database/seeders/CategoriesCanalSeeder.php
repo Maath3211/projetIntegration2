@@ -70,6 +70,66 @@ class CategoriesCanalSeeder extends Seeder
             [
                 'clanId' => 5,
                 'categorie' => 'Compétition'
+            ],
+            [
+                'clanId' => 6,
+                'categorie' => 'Général'
+            ],
+            [
+                'clanId' => 6,
+                'categorie' => 'Aide'
+            ],
+            [
+                'clanId' => 6,
+                'categorie' => 'Compétition'
+            ],
+            [
+                'clanId' => 7,
+                'categorie' => 'Général'
+            ],
+            [
+                'clanId' => 7,
+                'categorie' => 'Aide'
+            ],
+            [
+                'clanId' => 7,
+                'categorie' => 'Compétition'
+            ],
+            [
+                'clanId' => 8,
+                'categorie' => 'Général'
+            ],
+            [
+                'clanId' => 8,
+                'categorie' => 'Aide'
+            ],
+            [
+                'clanId' => 8,
+                'categorie' => 'Compétition'
+            ],
+            [
+                'clanId' => 9,
+                'categorie' => 'Général'
+            ],
+            [
+                'clanId' => 9,
+                'categorie' => 'Aide'
+            ],
+            [
+                'clanId' => 9,
+                'categorie' => 'Compétition'
+            ],
+            [
+                'clanId' => 10,
+                'categorie' => 'Général'
+            ],
+            [
+                'clanId' => 10,
+                'categorie' => 'Aide'
+            ],
+            [
+                'clanId' => 10,
+                'categorie' => 'Compétition'
             ]
         ]);
     }

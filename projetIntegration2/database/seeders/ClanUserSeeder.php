@@ -180,7 +180,153 @@ class ClanUserSeeder extends Seeder
                 'user_id'    => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
-            ]
+            ],
+            [
+                'id' => 25, 
+                'clan_id' => 6, 
+                'user_id' => 2, 
+                'created_at' => now(), 
+                'updated_at' => now()
+            ],
+            [
+                'id' => 26, 
+                'clan_id' => 6, 
+                'user_id' => 6, 
+                'created_at' => now(), 
+                'updated_at' => now()
+            ],
+            [
+                'id' => 27, 
+                'clan_id' => 6, 
+                'user_id' => 10, 
+                'created_at' => now(), 
+                'updated_at' => now()
+            ],
+            [
+                'id' => 28, 
+                'clan_id' => 6, 
+                'user_id' => 14, 
+                'created_at' => now(), 
+                'updated_at' => now()
+            ],
+            [
+                'id' => 29, 
+                'clan_id' => 7, 
+                'user_id' => 3, 
+                'created_at' => now(), 
+                'updated_at' => now()
+            ],
+            [
+                'id' => 30, 
+                'clan_id' => 7, 
+                'user_id' => 7, 
+                'created_at' => now(), 
+                'updated_at' => now()
+            ],
+            [
+                'id' => 31, 
+                'clan_id' => 7, 
+                'user_id' => 11, 
+                'created_at' => now(), 
+                'updated_at' => now()
+            ],
+            [
+                'id' => 32, 
+                'clan_id' => 7, 
+                'user_id' => 15, 
+                'created_at' => now(), 
+                'updated_at' => now()
+            ],
+
+            // Users for Clan 8
+            [
+                'id' => 33, 
+                'clan_id' => 8, 
+                'user_id' => 4, 
+                'created_at' => now(), 
+                'updated_at' => now()
+            ],
+            [
+                'id' => 34, 
+                'clan_id' => 8, 
+                'user_id' => 8, 
+                'created_at' => now(), 
+                'updated_at' => now()
+            ],
+            [
+                'id' => 35, 
+                'clan_id' => 8, 
+                'user_id' => 12, 
+                'created_at' => now(), 
+                'updated_at' => now()
+            ],
+            [
+                'id' => 36, 
+                'clan_id' => 8, 
+                'user_id' => 16, 
+                'created_at' => now(), 
+                'updated_at' => now()
+            ],
+
+            // Users for Clan 9
+            [
+                'id' => 37, 
+                'clan_id' => 9, 
+                'user_id' => 5, 
+                'created_at' => now(), 
+                'updated_at' => now()
+            ],
+            [
+                'id' => 38, 
+                'clan_id' => 9, 
+                'user_id' => 9, 
+                'created_at' => now(), 
+                'updated_at' => now()
+            ],
+            [
+                'id' => 39, 
+                'clan_id' => 9, 
+                'user_id' => 13, 
+                'created_at' => now(), 
+                'updated_at' => now()
+            ],
+            [
+                'id' => 40, 
+                'clan_id' => 9, 
+                'user_id' => 17, 
+                'created_at' => now(), 
+                'updated_at' => now()
+            ],
+
+            // Users for Clan 10
+            [
+                'id' => 41, 
+                'clan_id' => 10, 
+                'user_id' => 1, 
+                'created_at' => now(), 
+                'updated_at' => now()
+            ],
+            [
+                'id' => 42, 
+                'clan_id' => 10, 
+                'user_id' => 18, 
+                'created_at' => now(), 
+                'updated_at' => now()
+            ],
+            [
+                'id' => 43, 
+                'clan_id' => 10, 
+                'user_id' => 19, 
+                'created_at' => now(), 
+                'updated_at' => now()
+            ],
+            [
+                'id' => 44, 
+                'clan_id' => 10, 
+                'user_id' => 20, 
+                'created_at' => now(), 
+                'updated_at' => now()
+            ],
         ]);
     }
 }

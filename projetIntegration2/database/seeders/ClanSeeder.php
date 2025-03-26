@@ -55,6 +55,51 @@ class ClanSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'id'         => 6,
+                'adminId'    => 6,
+                'image'      => 'img/Clans/clan_6_.jpg',
+                'nom'        => 'Clan Zeta',
+                'public'     => true,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'id'         => 7,
+                'adminId'    => 7,
+                'image'      => 'img/Clans/clan_7_.png',
+                'nom'        => 'Clan Eta',
+                'public'     => true,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'id'         => 8,
+                'adminId'    => 8,
+                'image'      => 'img/Clans/clan_8_.jpg',
+                'nom'        => 'Clan Theta',
+                'public'     => true,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'id'         => 9,
+                'adminId'    => 9,
+                'image'      => 'img/Clans/clan_9_.jpg',
+                'nom'        => 'Clan Iota',
+                'public'     => true,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'id'         => 10,
+                'adminId'    => 10,
+                'image'      => 'img/Clans/clan_10_.jpg',
+                'nom'        => 'Clan Kappa',
+                'public'     => true,
+                'created_at' => now(),
+                'updated_at' => now()
+            ]
         ]);
     }
 }
