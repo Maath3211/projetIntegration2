@@ -93,7 +93,9 @@ class ObjectifController extends Controller
      */
     public function create()
     {
-        return view('Objectif.create');
+        $utilisateur = Auth::user();
+        $clans = $utilisateur->clans; // Fetch all clans associated with the user
+        return view('Objectif.create', compact('clans'));
     }
 
     /**
