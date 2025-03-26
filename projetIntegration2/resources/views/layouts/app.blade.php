@@ -176,7 +176,7 @@
         </div>
       </a>
       <!-- Language Switcher -->
-      <div class="w-16 text-center mb-4">
+      <div class="w-16 text-center mb-4 languageOptionsDiv">
         <div class="language-option {{ app()->getLocale() == 'en' ? 'active' : '' }}"
           style="background: #444; color: white; padding: 5px; border-radius: 4px; margin-bottom: 4px; cursor: pointer;"
           data-locale="en"
@@ -190,29 +190,29 @@
           <span style="color: {{ app()->getLocale() == 'fr' ? '#fff' : '#aaa' }}; text-decoration: none; display: block;">FR</span>
         </div>
       </div>
-      <div class="mt-auto sectionProfil">
-        <button id="profileMenuBtn" class="w-16 h-16 overflow-hidden rounded-full">
-          <img src="{{ asset(Auth::user()->imageProfil) }}" class="object-cover w-full h-full">
-        </button>
-        <div id="profileMenu" class="absolute bottom-full left-0 mb-2 w-48 bg-white shadow-lg rounded-lg hidden">
-          <ul>
-            <li class="py-2 px-4 hover:bg-gray-100">
-              <a href="{{ route('profil.profil') }}" class="block text-gray-800">{{__('layout.mon_profil')}}</a>
-            </li>
-            <li class="py-2 px-4 hover:bg-gray-100">
-              <a href="{{ route('profil.modification') }}" class="block text-gray-800">{{__('layout.parametres')}}</a>
-            </li>
-            <li class="border-t border-gray-200">
-              <form action="{{ route('profil.deconnexion') }}" method="post">
-                @csrf
-                <button type="submit" class="w-full text-left py-2 px-4 text-red-600 hover:bg-gray-100">{{__('layout.deconnexion')}}</button>
-              </form>
-            </li>
-          </ul>
-        </div>
-      </div>
 
     </aside>
+    <div class="mt-auto sectionProfil">
+      <button id="profileMenuBtn" class="w-16 h-16 overflow-hidden rounded-full">
+        <img src="{{ asset(Auth::user()->imageProfil) }}" class="object-cover w-full h-full">
+      </button>
+      <div id="profileMenu" class="absolute bottom-full left-0 mb-2 w-48 bg-white shadow-lg rounded-lg hidden">
+        <ul>
+          <li class="py-2 px-4 hover:bg-gray-100">
+            <a href="{{ route('profil.profil') }}" class="block text-gray-800">{{__('layout.mon_profil')}}</a>
+          </li>
+          <li class="py-2 px-4 hover:bg-gray-100">
+            <a href="{{ route('profil.modification') }}" class="block text-gray-800">{{__('layout.parametres')}}</a>
+          </li>
+          <li class="border-t border-gray-200">
+            <form action="{{ route('profil.deconnexion') }}" method="post">
+              @csrf
+              <button type="submit" class="w-full text-left py-2 px-4 text-red-600 hover:bg-gray-100">{{__('layout.deconnexion')}}</button>
+            </form>
+          </li>
+        </ul>
+      </div>
+    </div>
   </header>
   {{-- ** Fin navigation ** --}}
 
