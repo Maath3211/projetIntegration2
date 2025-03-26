@@ -644,7 +644,7 @@ class ClanController extends Controller
     public function broadcastClan(Request $request)
     {
         $request->validate([
-            'message' => 'nullable|string',
+            'message' => 'nullable|string|max:2000',
             'fichier' => 'nullable|file|max:20480', // 20 Mo 
         ]);
         

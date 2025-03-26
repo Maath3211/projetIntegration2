@@ -137,7 +137,7 @@ class ConversationsController extends Controller
         ////\Log::info('Début de la diffusion du message', ['user_id' => auth()->id()]);
 
         $request->validate([
-            'message' => 'nullable|string',
+            'message' => 'nullable|string|max:2000',
             'fichier' => 'nullable|file|max:20480', // 20 Mo
         ]);
 
