@@ -116,8 +116,10 @@ class ObjectifController extends Controller
      */
     public function edit(string $id)
     {
+        $utilisateur = Auth::user();
+        $clans = $utilisateur->clans; // Fetch all clans associated with the user
         $objectif = Objectif::findOrFail($id);
-        return view('Objectif.edit', compact('objectif'));
+        return view('Objectif.edit', compact('objectif', 'clans'));
     }
 
 
