@@ -194,17 +194,17 @@ Route::post(
 Route::GET(
     '/stats',
     [StatistiqueController::class, 'index']
-)->name('statistique.index');
+)->name('Statistique.index');
 
 Route::GET(
     '/graphique',
     [StatistiqueController::class, 'graphique']
-)->name('statistique.graphique');
+)->name('Statistique.graphique');
 
 Route::GET(
     '/thermique',
     [StatistiqueController::class, 'thermique']
-)->name('statistique.thermique');
+)->name('Statistique.thermique');
 
 Route::GET(
     '/localisation',
@@ -214,25 +214,25 @@ Route::GET(
 Route::get(
     '/ajouterFoisGym',
     [StatistiqueController::class, 'ajouterFoisGym']
-)->name('statistique.ajouterFoisGym');
+)->name('Statistique.ajouterFoisGym');
 
 Route::GET(
     '/graphiqueExercice/{exercice}',
     [StatistiqueController::class, 'graphiqueExercice']
-)->name('statistique.graphiqueExercice');
+)->name('Statistique.graphiqueExercice');
 
 Route::GET(
     '/thermique',
     [StatistiqueController::class, 'thermique']
-)->name('statistique.thermique');
+)->name('Statistique.thermique');
 
-Route::post('/statistique/storeThermique', [StatistiqueController::class, 'storeThermique'])->name('statistique.storeThermique');
+Route::post('/statistique/storeThermique', [StatistiqueController::class, 'storeThermique'])->name('Statistique.storeThermique');
 
-Route::post('/statistiques/save', [StatistiqueController::class, 'save'])->name('statistiques.save');
+Route::post('/statistiques/save', [StatistiqueController::class, 'save'])->name('Statistiques.save');
 
-Route::delete('/statistiques/{id}', [StatistiqueController::class, 'delete'])->name('statistiques.delete');
+Route::delete('/statistiques/{id}', [StatistiqueController::class, 'delete'])->name('Statistiques.delete');
 
-Route::post('/statistiques/{id}/update-poids', [StatistiqueController::class, 'updatePoids'])->name('statistiques.updatePoids');
+Route::post('/statistiques/{id}/update-poids', [StatistiqueController::class, 'updatePoids'])->name('Statistiques.updatePoids');
 
 
 Route::post('/ajouter-poids', [StatistiqueController::class, 'ajouterPoids'])->name('ajouter-poids');
@@ -244,38 +244,38 @@ Route::post('/ajouter-score/{exercice}', [StatistiqueController::class, 'ajouter
 Route::GET(
     '/objectif',
     [ObjectifController::class, 'index']
-)->name('objectif.index');
+)->name('Objectif.index');
 
 Route::GET(
     '/objectif/ajouter',
     [ObjectifController::class, 'create']
-)->name('objectif.create');
+)->name('Objectif.create');
 
 
 Route::GET(
     '/objectif/edit/{id}',
     [ObjectifController::class, 'edit']
-)->name('objectif.edit');
+)->name('Objectif.edit');
 
 Route::post(
     '/objectif',
     [ObjectifController::class, 'store']
-)->name('objectif.store');
+)->name('Objectif.store');
 
 Route::put(
     '/objectif/{id}',
     [ObjectifController::class, 'update']
-)->name('objectif.update');
+)->name('Objectif.update');
 
 Route::put(
     '/objectif/update/{id}',
     [ObjectifController::class, 'updateComplet']
-)->name('objectif.updateComplet');
+)->name('Objectif.updateComplet');
 
 Route::delete(
     '/objectif/{id}',
     [ObjectifController::class, 'destroy']
-)->name('objectif.destroy');
+)->name('Objectif.destroy');
 
 
 Route::GET(

@@ -18,7 +18,7 @@ class ObjectifController extends Controller
         $objectifNonCompleter = Objectif::where("user_id", Auth::id())->where("completer", false)->get();
         $utilisateur = Auth::user();
         $clans = $utilisateur->clans; // Fetch all clans associated with the user
-        return view('objectif.index', compact('objectifCompleter', 'objectifNonCompleter', 'clans'));
+        return view('Objectif.index', compact('objectifCompleter', 'objectifNonCompleter', 'clans'));
     }
 
     public function store(Request $request)
@@ -42,7 +42,7 @@ class ObjectifController extends Controller
             'user_id' => auth()->id(),
         ]);
      
-        return redirect()->route('objectif.index')->with('success', __('objectives.cree_avec_success'));
+        return redirect()->route('Objectif.index')->with('success', __('objectives.cree_avec_success'));
     }
 
     public function update(Request $request, $id)
@@ -68,7 +68,7 @@ class ObjectifController extends Controller
     ]);
 
 
-    return redirect()->route('objectif.index')->with('success', __('objectives.mis_a_jourd_successfully'));
+    return redirect()->route('Objectif.index')->with('success', __('objectives.mis_a_jourd_successfully'));
     }
     
 
@@ -79,14 +79,14 @@ class ObjectifController extends Controller
         $objectif->update([
             'completer' => $request->input('completer'),
         ]);
-        return redirect()->route('objectif.index')->with('success', 'Objectif mis à jour avec succès !');
+        return redirect()->route('Objectif.index')->with('success', 'Objectif mis à jour avec succès !');
     }  
 
 
     public function destroy($id)
     {
         Objectif::destroy($id);
-        return redirect()->route('objectif.index')->with('success', __('objectives.supprimer_avec_success'));
+        return redirect()->route('Objectif.index')->with('success', __('objectives.supprimer_avec_success'));
     }
     /**
      * Show the form for creating a new resource.
@@ -115,7 +115,7 @@ class ObjectifController extends Controller
     public function edit(string $id)
     {
         $objectif = Objectif::findOrFail($id);
-        return view('objectif.edit', compact('objectif'));
+        return view('Objectif.edit', compact('objectif'));
     }
 
 

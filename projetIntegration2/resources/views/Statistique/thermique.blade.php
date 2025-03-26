@@ -5,7 +5,7 @@
 <body>
     <div class="boutonContainer">
         <a href="/stats"><button class="bouton">{{ __('stats.retourpage') }}</button></a>
-        <form id="thermiqueForm" action="{{ route('statistique.storeThermique') }}" method="POST">
+        <form id="thermiqueForm" action="{{ route('Statistique.storeThermique') }}" method="POST">
             @csrf
             <input type="hidden" name="donnees" id="donnees">
             <button class="bouton" id="sauvegarder">{{ __('stats.sauvegarde') }}</button>

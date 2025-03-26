@@ -6,10 +6,10 @@
     <h1 class="mb-4">{{ __('objectives.titre_liste') }}</h1>
     
     <div class="d-flex justify-content-between mb-4">
-        <a href="{{ route('statistique.index') }}">
+        <a href="{{ route('Statistique.index') }}">
             <button type="button" class="bouton me-2">{{ __('objectives.retour') }}</button>
         </a>
-        <a href="{{ route('objectif.create') }}">
+        <a href="{{ route('Objectif.create') }}">
             <button type="button" class="bouton ms-2">{{ __('objectives.ajout_objectif') }}</button>
         </a>
     </div>
@@ -24,18 +24,18 @@
             </div>
             
             <div class="d-flex align-items-center">
-                <form action="{{ route('objectif.updateComplet', $objectif->id) }}" method="POST" class="d-inline me-2">
+                <form action="{{ route('Objectif.updateComplet', $objectif->id) }}" method="POST" class="d-inline me-2">
                     @csrf
                     @method('PUT')
                     <input type="hidden" name="completer" value="0">
                     <input type="checkbox" name="completer" value="1" onchange="this.form.submit()" {{ $objectif->completer ? 'checked' : '' }} />
                 </form>
                 
-                <a href="{{ route('objectif.edit', $objectif->id) }}" class="btn">
+                <a href="{{ route('Objectif.edit', $objectif->id) }}" class="btn">
                     <i class="fas fa-cog" style="color: #a9fe77;"></i>
                 </a>
                 
-                <form action="{{ route('objectif.destroy', $objectif->id) }}" method="POST" class="d-inline">
+                <form action="{{ route('Objectif.destroy', $objectif->id) }}" method="POST" class="d-inline">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn">
@@ -57,18 +57,18 @@
             </div>
             
             <div class="d-flex align-items-center">
-                <form action="{{ route('objectif.updateComplet', $objectif->id) }}" method="POST" class="d-inline me-2">
+                <form action="{{ route('Objectif.updateComplet', $objectif->id) }}" method="POST" class="d-inline me-2">
                     @csrf
                     @method('PUT')
                     <input type="hidden" name="completer" value="0">
                     <input type="checkbox" name="completer" value="1" onchange="this.form.submit()" {{ $objectif->completer ? 'checked' : '' }} />
                 </form>
                 
-                <a href="{{ route('objectif.edit', $objectif->id) }}" class="btn">
+                <a href="{{ route('Objectif.edit', $objectif->id) }}" class="btn">
                     <i class="fas fa-cog" style="color: #a9fe77;"></i>
                 </a>
                 
-                <form action="{{ route('objectif.destroy', $objectif->id) }}" method="POST" class="d-inline">
+                <form action="{{ route('Objectif.destroy', $objectif->id) }}" method="POST" class="d-inline">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn">

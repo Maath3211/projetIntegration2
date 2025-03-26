@@ -6,7 +6,7 @@
     <div class="form-box">
         <h1>{{ __('objectives.creer_titre') }}</h1>
 
-        <form action="{{ route('objectif.store') }}" method="POST">
+        <form action="{{ route('Objectif.store') }}" method="POST">
             @csrf
 
             <label for="titre" class="label">{{ __('objectives.titre_objectif') }}</label>
@@ -18,7 +18,7 @@
             <button type="submit" class="bouton">{{ __('objectives.ajout_bouton') }}</button>
         </form>
 
-        <a href="{{ route('objectif.index') }}" class="bouton bouton-retour">{{ __('objectives.retour') }}</a>
+        <a href="{{ route('Objectif.index') }}" class="bouton bouton-retour">{{ __('objectives.retour') }}</a>
     </div>
 </div>
 @endsection

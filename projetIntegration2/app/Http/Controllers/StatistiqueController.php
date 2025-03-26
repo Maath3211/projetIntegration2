@@ -43,7 +43,7 @@ class StatistiqueController extends Controller
             $clans = $utilisateur->clans; // Fetch all clans associated with the user
         }
         
-        return view("statistique.index", compact('statistiques', 'usager', 'poids', 'foisGym', 'scoreExercice', 'scoreHaut', 'streak', 'clans'));
+        return view("Statistique.index", compact('statistiques', 'usager', 'poids', 'foisGym', 'scoreExercice', 'scoreHaut', 'streak', 'clans'));
     }
 
 
@@ -82,7 +82,7 @@ class StatistiqueController extends Controller
         $poids = $donnees->pluck('poids')->toArray();
         $utilisateur = Auth::user();
         $clans = $utilisateur->clans; // Fetch all clans associated with the user
-        return view("statistique.graphique", compact('dateCreationCompte', 'semaines', 'poids', 'diffSemaines', 'clans'));
+        return view("Statistique.graphique", compact('dateCreationCompte', 'semaines', 'poids', 'diffSemaines', 'clans'));
     }
 
 
@@ -106,7 +106,7 @@ class StatistiqueController extends Controller
         $score = $donnees->pluck('score')->toArray();
         $utilisateur = Auth::user();
         $clans = $utilisateur->clans; // Fetch all clans associated with the user
-        return view("statistique.graphiqueExercice", compact('dateCreationExercice', 'semaines', 'score', 'diffSemaines', 'exercice', 'clans'));
+        return view("Statistique.graphiqueExercice", compact('dateCreationExercice', 'semaines', 'score', 'diffSemaines', 'exercice', 'clans'));
     }
 
 
@@ -187,7 +187,7 @@ class StatistiqueController extends Controller
         $donnees = StatThermique::where('user_id', Auth::id())->get();
         $utilisateur = Auth::user();     
         $clans = $utilisateur->clans; // Fetch all clans associated with the user          // Récupère toutes les données, vous pouvez filtrer par date si nécessaire
-        return view("statistique.thermique", compact('donnees', 'clans'));
+        return view("Statistique.thermique", compact('donnees', 'clans'));
     }
 
     public function storeThermique(Request $request)

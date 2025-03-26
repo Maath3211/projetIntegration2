@@ -67,7 +67,7 @@
                         <button class="bouton" onclick="convertirPoidsUnite(this, 'kg')">Kg</button>
                     @endif
                     <button class="bouton"  onclick="supprimerExercise({{ $stat->id }})">🗑️</button>
-                    <a href="{{route('statistique.graphiqueExercice', [$stat->id])}}" class="text-gray-400">{{ __('stats.voir_graphique') }}</a>
+                    <a href="{{route('Statistique.graphiqueExercice', [$stat->id])}}" class="text-gray-400">{{ __('stats.voir_graphique') }}</a>
                 </div>
             </div>
         @endforeach
