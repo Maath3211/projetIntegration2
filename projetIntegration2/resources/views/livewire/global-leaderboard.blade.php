@@ -37,7 +37,7 @@
                     <div class="d-flex align-items-center">
                         <a href="{{ route('clan.montrer', ['id' => $clan->clan_id])}}" class="clan-link {{ request()->routeIs('clan.montrer') && request('id') == $clan->clan_id ? 'active' : '' }}">
                             <div class="position mr-3">{{ $index + 1 }}</div>
-                            <img src="{{ asset('img/clans/' . $clan->clan_image) }}" alt="Clan Image" class="rounded-circle" style="width:40px; height:40px;">
+                            <img src="{{$clan->clan_image}}" alt="Clan Image" class="rounded-circle" style="width:40px; height:40px;">
                             <span class="clan-nom ml-3">{{ $clan->clan_nom }}</span>
                         </a>
                     </div>
@@ -51,7 +51,7 @@
                     <div class="d-flex align-items-center">
                         <a href="{{ route('clan.montrer', ['id' => $clan->clan_id])}}" class="clan-link {{ request()->routeIs('clan.montrer') && request('id') == $clan->clan_id ? 'active' : '' }}">
                             <div class="position mr-3">{{ $index + 6 }}</div>
-                            <img src="{{ asset('img/clans/' . $clan->clan_image) }}" alt="Clan Image" class="rounded-circle" style="width:40px; height:40px;">
+                            <img src="{{$clan->clan_image}}" alt="Clan Image" class="rounded-circle" style="width:40px; height:40px;">
                             <span class="clan-nom ml-3">{{ $clan->clan_nom }}</span>
                         </a>
                     </div>
