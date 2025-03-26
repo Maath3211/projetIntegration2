@@ -18,6 +18,10 @@ aside {
     overflow-y: auto;
 }
 
+.languageOptionsDiv {
+    margin-bottom: 100px !important;
+}
+
 .sectionProfil {
     position: fixed;
     bottom: 0;

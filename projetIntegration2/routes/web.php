@@ -194,88 +194,88 @@ Route::post(
 Route::GET(
     '/stats',
     [StatistiqueController::class, 'index']
-)->name('statistique.index');
+)->name('Statistique.index')->middleware('auth');
 
 Route::GET(
     '/graphique',
     [StatistiqueController::class, 'graphique']
-)->name('statistique.graphique');
+)->name('Statistique.graphique')->middleware('auth');
 
 Route::GET(
     '/thermique',
     [StatistiqueController::class, 'thermique']
-)->name('statistique.thermique');
+)->name('Statistique.thermique')->middleware('auth');
 
 Route::GET(
     '/localisation',
     [GymController::class, 'index']
-)->name('localisation.index');
+)->name('localisation.index')->middleware('auth');
 
 Route::get(
     '/ajouterFoisGym',
     [StatistiqueController::class, 'ajouterFoisGym']
-)->name('statistique.ajouterFoisGym');
+)->name('Statistique.ajouterFoisGym');
 
 Route::GET(
     '/graphiqueExercice/{exercice}',
     [StatistiqueController::class, 'graphiqueExercice']
-)->name('statistique.graphiqueExercice');
+)->name('Statistique.graphiqueExercice')->middleware('auth');
 
 Route::GET(
     '/thermique',
     [StatistiqueController::class, 'thermique']
-)->name('statistique.thermique');
+)->name('Statistique.thermique')->middleware('auth');
 
-Route::post('/statistique/storeThermique', [StatistiqueController::class, 'storeThermique'])->name('statistique.storeThermique');
+Route::post('/statistique/storeThermique', [StatistiqueController::class, 'storeThermique'])->name('Statistique.storeThermique')->middleware('auth');
 
-Route::post('/statistiques/save', [StatistiqueController::class, 'save'])->name('statistiques.save');
+Route::post('/statistiques/save', [StatistiqueController::class, 'save'])->name('Statistiques.save')->middleware('auth');
 
-Route::delete('/statistiques/{id}', [StatistiqueController::class, 'delete'])->name('statistiques.delete');
+Route::delete('/statistiques/{id}', [StatistiqueController::class, 'delete'])->name('Statistiques.delete')->middleware('auth');
 
-Route::post('/statistiques/{id}/update-poids', [StatistiqueController::class, 'updatePoids'])->name('statistiques.updatePoids');
+Route::post('/statistiques/{id}/update-poids', [StatistiqueController::class, 'updatePoids'])->name('Statistiques.updatePoids')->middleware('auth');
 
 
-Route::post('/ajouter-poids', [StatistiqueController::class, 'ajouterPoids'])->name('ajouter-poids');
+Route::post('/ajouter-poids', [StatistiqueController::class, 'ajouterPoids'])->name('ajouter-poids')->middleware('auth');
 
-Route::post('/ajouter-score/{exercice}', [StatistiqueController::class, 'ajouterScoreExercice'])->name('ajouter-score');
+Route::post('/ajouter-score/{exercice}', [StatistiqueController::class, 'ajouterScoreExercice'])->name('ajouter-score')->middleware('auth');
 
 
 
 Route::GET(
     '/objectif',
     [ObjectifController::class, 'index']
-)->name('objectif.index');
+)->name('Objectif.index')->middleware('auth');
 
 Route::GET(
     '/objectif/ajouter',
     [ObjectifController::class, 'create']
-)->name('objectif.create');
+)->name('Objectif.create')->middleware('auth');
 
 
 Route::GET(
     '/objectif/edit/{id}',
     [ObjectifController::class, 'edit']
-)->name('objectif.edit');
+)->name('Objectif.edit')->middleware('auth');
 
 Route::post(
     '/objectif',
     [ObjectifController::class, 'store']
-)->name('objectif.store');
+)->name('Objectif.store')->middleware('auth');
 
 Route::put(
     '/objectif/{id}',
     [ObjectifController::class, 'update']
-)->name('objectif.update');
+)->name('Objectif.update')->middleware('auth');
 
 Route::put(
     '/objectif/update/{id}',
     [ObjectifController::class, 'updateComplet']
-)->name('objectif.updateComplet');
+)->name('Objectif.updateComplet')->middleware('auth');
 
 Route::delete(
     '/objectif/{id}',
     [ObjectifController::class, 'destroy']
-)->name('objectif.destroy');
+)->name('Objectif.destroy')->middleware('auth');
 
 
 Route::GET(
@@ -294,23 +294,23 @@ Route::get('/scores/chart-page', [App\Http\Controllers\ScoresController::class, 
     ->name('scores.chart-page');
 
 //Route pour l'ajout/recherche d'amis/clans
-Route::get('amis', [AmisController::class, 'index'])->name('amis.index');
-Route::match(['get', 'post'], 'amis/recherche', [AmisController::class, 'recherche'])->name('amis.recherche');
-Route::post('amis/ajouter', [AmisController::class, 'ajouter'])->name('amis.ajouter');
-Route::post('clans/recherche', [AmisController::class, 'rechercheClan'])->name('clans.recherche');
+Route::get('amis', [AmisController::class, 'index'])->name('amis.index')->middleware('auth');
+Route::match(['get', 'post'], 'amis/recherche', [AmisController::class, 'recherche'])->name('amis.recherche')->middleware('auth');
+Route::post('amis/ajouter', [AmisController::class, 'ajouter'])->name('amis.ajouter')->middleware('auth');
+Route::post('clans/recherche', [AmisController::class, 'rechercheClan'])->name('clans.recherche')->middleware('auth');
 
 // Affichage de la liste des demandes d'amis
-Route::get('amis/demandes', [AmisController::class, 'demandes'])->name('amis.demandes');
+Route::get('amis/demandes', [AmisController::class, 'demandes'])->name('amis.demandes')->middleware('auth');
 
 // Traitement de l'acceptation d'une demande d'ami
-Route::post('amis/accepter', [AmisController::class, 'accepter'])->name('amis.accepter');
+Route::post('amis/accepter', [AmisController::class, 'accepter'])->name('amis.accepter')->middleware('auth');
 
 // Traitement du refus d'une demande d'ami
-Route::post('amis/refuser', [AmisController::class, 'refuser'])->name('amis.refuser');
+Route::post('amis/refuser', [AmisController::class, 'refuser'])->name('amis.refuser')->middleware('auth');
 
 // Routes pour la recherche et la gestion des clans
-Route::match(['get', 'post'], 'clans/recherche', [ClanController::class, 'rechercheClans'])->name('clans.recherche');
-Route::post('clans/rejoindre', [ClanController::class, 'rejoindre'])->name('clans.rejoindre');
+Route::match(['get', 'post'], 'clans/recherche', [ClanController::class, 'rechercheClans'])->name('clans.recherche')->middleware('auth');
+Route::post('clans/rejoindre', [ClanController::class, 'rejoindre'])->name('clans.rejoindre')->middleware('auth');
 
 // Custom Graph Routes
 Route::middleware(['auth'])->group(function () {

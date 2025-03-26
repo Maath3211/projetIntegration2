@@ -39,9 +39,11 @@ class StatistiqueController extends Controller
                 ->get();
             $streak = Statistiques::where('user_id', Auth::id())->where('nomStatistique', 'Streak')->get();
             $foisGym = Objectif::where('user_id', Auth::id())->where('completer', true)->count();
+            $utilisateur = Auth::user();
+            $clans = $utilisateur->clans; // Fetch all clans associated with the user
         }
         
-        return view("statistique.index", compact('statistiques', 'usager', 'poids', 'foisGym', 'scoreExercice', 'scoreHaut'));
+        return view("Statistique.index", compact('statistiques', 'usager', 'poids', 'foisGym', 'scoreExercice', 'scoreHaut', 'streak', 'clans'));
     }
 
 
@@ -78,9 +80,9 @@ class StatistiqueController extends Controller
         // Extraire les semaines et poids
         $semaines = $donnees->pluck('semaine')->toArray();
         $poids = $donnees->pluck('poids')->toArray();
-
-
-        return view("statistique.graphique", compact('dateCreationCompte', 'semaines', 'poids', 'diffSemaines'));
+        $utilisateur = Auth::user();
+        $clans = $utilisateur->clans; // Fetch all clans associated with the user
+        return view("Statistique.graphique", compact('dateCreationCompte', 'semaines', 'poids', 'diffSemaines', 'clans'));
     }
 
 
@@ -102,8 +104,9 @@ class StatistiqueController extends Controller
 
         $semaines = $donnees->pluck('semaine')->toArray();
         $score = $donnees->pluck('score')->toArray();
-
-        return view("statistique.graphiqueExercice", compact('dateCreationExercice', 'semaines', 'score', 'diffSemaines', 'exercice'));
+        $utilisateur = Auth::user();
+        $clans = $utilisateur->clans; // Fetch all clans associated with the user
+        return view("Statistique.graphiqueExercice", compact('dateCreationExercice', 'semaines', 'score', 'diffSemaines', 'exercice', 'clans'));
     }
 
 
@@ -181,8 +184,10 @@ class StatistiqueController extends Controller
 
     public function thermique()
     {
-        $donnees = StatThermique::where('user_id', Auth::id())->get();;                  // Récupère toutes les données, vous pouvez filtrer par date si nécessaire
-        return view("statistique.thermique", compact('donnees'));
+        $donnees = StatThermique::where('user_id', Auth::id())->get();
+        $utilisateur = Auth::user();     
+        $clans = $utilisateur->clans; // Fetch all clans associated with the user          // Récupère toutes les données, vous pouvez filtrer par date si nécessaire
+        return view("Statistique.thermique", compact('donnees', 'clans'));
     }
 
     public function storeThermique(Request $request)

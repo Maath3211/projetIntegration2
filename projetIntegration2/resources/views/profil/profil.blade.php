@@ -21,7 +21,7 @@
             @endif
 
             <div class="d-flex justify-content-between mt-3">
-                <form action="{{ route('statistique.index') }}" method="get">
+                <form action="{{ route('Statistique.index') }}" method="get">
                     @csrf
                     <button class="btn bouton">{{ __('profile.statistiques') }}</button>
                 </form>
