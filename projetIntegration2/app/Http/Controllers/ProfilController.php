@@ -220,6 +220,21 @@ class ProfilController extends Controller
             Auth::login($utilisateur);
             return redirect()->route('profil.profil');
         }
+        Statistiques::create([
+            'user_id' => $utilisateur->id,
+            'nomStatistique' => 'poids',
+            'score' => 0
+        ]);
+        Statistiques::create([
+            'user_id' => $utilisateur->id,
+            'nomStatistique' => 'FoisGym',
+            'score' => 0
+        ]);
+        PoidsUtilisateur::create([
+            'user_id' => $utilisateur->id,
+            'semaine' => 1,
+            'poids' => 0
+        ]);
         $locale = app()->getLocale();
         Mail::to($utilisateur->email)->send(new confirmation($utilisateur, $locale));
         return redirect()->route('profil.connexion')->with('message', __('profile.confirmation_profil'));
