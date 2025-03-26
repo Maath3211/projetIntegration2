@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('contenu')
-<link rel="stylesheet" style="text/css" href="\css\statistique\thermique.css">
+<link rel="stylesheet" style="text/css" href="\css\Statistique\thermique.css">
 
 <body>
     <div class="boutonContainer">
