@@ -20,25 +20,11 @@
                             <div class="column">
                                 <!-- column est en anglais parce que c'est le nom de la classe bootstrap c'est pas mon choix -->
                                 <div class="conteneurImage">
-                                    <div class="col-md-12">
-                                        <div class="col-md-12">
-                                            <div class="texteSurImage">Ajouter ami</div>
-        
-                                        </div>
-                                        <div class="col-md-12">
-        
-                                        <a href="#">
-                                            <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee">
-                                                <i class="fa-solid fa-user-plus fa-xl"></i>
-                                            </div>
-                                          </a>
-                                    </div>
-                                    </div>
-                                    
-        
-        
-                                <div></div>
-                            </div>
+                                    <div class="texteSurImage">Workout Master</div>
+                                    {{-- <div><a href="{{ route('clan.parametres', ['id' => $clan->id]) }}"><i class="fa-solid fa-ellipsis"></i></a></div> --}}
+                                    <div><a href="{{ route('clan.parametres', ['id' => 1]) }}"><i
+                                                class="fa-solid fa-ellipsis"></i></a></div>
+                                </div>
                                 <div class="conteneurCanaux">
                                     <!-- Afficher amis  -->
                                     <h1>{{ __('chat.amis') }}</h1>
@@ -71,7 +57,7 @@
                                             <button class="delete-btn" data-id="{{ $message->id }}">🗑️</button>
                                         @else
                                             <div class="avatar bg-primary text-white rounded-circle p-2">
-                                                {{ substr($message->from->nom, 0, 2)  }}
+                                                {{ substr($message->from->email, 0, 2)  }}
                                             </div>
                                         @endif
 
@@ -94,7 +80,7 @@
 
                                                 @if ($isImage)
                                                     <img src="{{ asset($dossier . $message->fichier) }}" alt="Image envoyée"
-                                                        class="message-img">
+                                                        class="w-32 h-32 object-cover">
                                                 @else
                                                     <a href="{{ asset($dossier . $message->fichier) }}" target="_blank"
                                                         class="text-blue-500">
@@ -110,8 +96,8 @@
                                         @if ($message->idEnvoyer != auth()->id())
                                             <!-- Pas de bouton de suppression pour les messages reçus -->
                                         @else
-                                            <div class="avatar bg-primary text-white rounded-circle p-2 ">
-                                                {{ substr($message->from->nom, 0, 2)  }}
+                                            <div class="avatar bg-primary text-white rounded-circle p-2">
+                                                {{ substr($message->from->email, 0, 2) }}
                                             </div>
                                         @endif
                                     </div>
@@ -177,34 +163,18 @@
 @endsection()
 
 
-
 @section('scripts')
 <script src="{{ asset('js/Clans/clans.js') }}" crossorigin="anonymous"></script>
 <script src="{{ asset('js/Conversations/chat.js') }}"></script>
 
 <script>
-
-    //*
-    //**
-    //** Avertissement : Ce code utilise Pusher pour la diffusion en temps réel.
-    //** Pusher pour la raison qui m'echape ne fonctionne pas sur un js a pars
-    //** donc je suis obligé de le mettre ici.
-    //** Je ne sais pas si c'est la bonne pratique, mais je n'ai pas trouvé d'autre solution.
-    //**
-    //** Et malheureusement il y a beaucoup de code en englais
-    //** Encore une fois
-    //** Merci pusher
-    //**
-    //*
-
-
-    const utilisateurId = "{{ auth()->id() }}"; // ID de l'utilisateur connecté
-    const amiId = "{{ $user->id }}"; // ID de l'ami avec qui il discute
+    const userId = "{{ auth()->id() }}"; // ID de l'utilisateur connecté
+    const friendId = "{{ $user->id }}"; // ID de l'ami avec qui il discute
 
     // Construire un canal unique basé sur les deux IDs (ex: "chat-3-7")
-    const nomCanal = "chat-" + Math.min(utilisateurId, amiId) + "-" + Math.max(utilisateurId, amiId);
+    const channelName = "chat-" + Math.min(userId, friendId) + "-" + Math.max(userId, friendId);
 
-    console.log("Abonnement au canal :", nomCanal);
+    console.log("Subscribing to:", channelName);
 
     const pusher = new Pusher('{{ config('broadcasting.connections.pusher.key') }}', {
         cluster: '{{ config('broadcasting.connections.pusher.options.cluster') }}',
@@ -212,19 +182,19 @@
     });
 
     pusher.connection.bind('connected', function() {
-        console.log('Connecté avec succès à Pusher');
+        console.log('Successfully connected to Pusher');
     });
 
-    pusher.connection.bind('error', function(erreur) {
-        console.error('Erreur de connexion :', erreur);
+    pusher.connection.bind('error', function(err) {
+        console.error('Connection error:', err);
     });
 
-    const canal = pusher.subscribe(nomCanal);
-    console.log("Canal :", canal);
+    const channel = pusher.subscribe(channelName);
+    console.log("Channel:", channel);
 
     // Fonction pour échapper les caractères spéciaux
-    function echapperHtml(nonSecurise) {
-        return nonSecurise
+    function escapeHtml(unsafe) {
+        return unsafe
             .replace(/&/g, "&amp;")
             .replace(/</g, "&lt;")
             .replace(/>/g, "&gt;")
@@ -233,29 +203,30 @@
     }
 
     // Recevoir les messages de la conversation
-    canal.bind('mon-event', function(donnees) {
+    channel.bind('mon-event', function(data) {
         // Vérifier si le message a été supprimé
-        if (donnees.supprimer === true) {
+        if (data.deleted === true) {
             // Si le message a été supprimé, le retirer du DOM
-            $(`#message-${donnees.dernier_id}`).remove();
+            $(`#message-${data.last_id}`).remove();
         } else {
             // Détermine le contenu du message (texte, image ou fichier)
-            let contenuMessage = donnees.message ? `<p>${echapperHtml(donnees.message)}</p>` : "";
+            let messageContent = data.message ? `<p>${escapeHtml(data.message)}</p>` : "";
+            console.log(data);
             // Déterminer si c'est une image ou un fichier à télécharger
-            let extensionFichier = donnees.photo ? donnees.photo.split('.').pop().toLowerCase() : "";
-            let estImage = ["jpg", "jpeg", "png", "gif"].includes(extensionFichier);
-            let contenuFichier = "";
+            let fileExtension = data.photo ? data.photo.split('.').pop().toLowerCase() : "";
+            let isImage = ["jpg", "jpeg", "png", "gif"].includes(fileExtension);
+            let fileContent = "";
 
-            if (donnees.photo) {
-                if (estImage) {
-                    contenuFichier = `<div class="message-image">
-                        <img src="/img/conversations_photo/${echapperHtml(donnees.photo)}" alt="Image envoyée" class="message-img">
+            if (data.photo) {
+                if (isImage) {
+                    fileContent = `<div class="message-image">
+                        <img src="/img/conversations_photo/${escapeHtml(data.photo)}" alt="Image" class="message-img">
                     </div>`;
                 } else {
-                    const nomFichier = donnees.photo.split('/').pop(); // Récupérer le nom du fichier
-                    contenuFichier = `<div class="message-file">
-                        <a href="/fichier/conversations_fichier/${echapperHtml(donnees.photo)}" target="_blank" download class="btn btn-sm btn-primary">
-                            📎 Télécharger ${echapperHtml(nomFichier)}
+                    const fileName = data.photo.split('/').pop(); // Récupérer le nom du fichier
+                    fileContent = `<div class="message-file">
+                        <a href="${escapeHtml(data.photo)}" target="_blank" download class="btn btn-sm btn-primary">
+                            📎 Télécharger ${escapeHtml(fileName)}
                         </a>
                     </div>`;
                 }
@@ -263,20 +234,20 @@
 
             // Ajouter le message au chat
             $("#chat-messages").append(`
-                <div class="messageTotal" id="message-${donnees.dernier_id}">
+                <div class="messageTotal" id="message-${data.last_id}">
                     <div class="message received-message">
                         <div class="avatar bg-primary text-white rounded-circle p-2">
                             <!-- Affiche la première lettre de l'email -->
-                            ${echapperHtml(donnees.email ? donnees.email.substring(0, 2) : '??')}
+                            ${escapeHtml(data.email ? data.email.substring(0, 2) : '??')}
                         </div>
                         <div class="bubble">
-                            <strong>${echapperHtml(donnees.email ?? 'Email inconnu')}</strong>
+                            <strong>${escapeHtml(data.email ?? 'Email inconnu')}</strong>
                             <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
                             <br>
                             <div class="message-text">
-                                ${contenuMessage}
+                                ${messageContent}
                             </div>
-                            ${contenuFichier}
+                            ${fileContent}
                         </div>
                     </div>
                     <div class="separator"></div>
@@ -288,27 +259,18 @@
         }
     });
 
-    let envoiEnCours = false; // Variable pour vérifier si un envoi est en cours
-
     $("form").submit(function(e) {
         e.preventDefault();
 
-        if (envoiEnCours) {
-            console.log("Un message est déjà en cours d'envoi.");
-            return; // Empêche l'envoi multiple
-        }
+        let formData = new FormData();
+        formData.append("_token", "{{ csrf_token() }}");
+        formData.append("message", $("input[name='content']").val());
+        formData.append("from", userId);
+        formData.append("to", friendId);
 
-        envoiEnCours = true; // Bloque l'envoi jusqu'à la fin de la requête
-
-        let donneesFormulaire = new FormData();
-        donneesFormulaire.append("_token", "{{ csrf_token() }}");
-        donneesFormulaire.append("message", $("input[name='content']").val());
-        donneesFormulaire.append("de", utilisateurId);
-        donneesFormulaire.append("vers", amiId);
-
-        let fichierInput = $("input[name='fichier']")[0]; // Assurez-vous que l'input file a name='fichier'
-        if (fichierInput.files.length > 0) {
-            donneesFormulaire.append("fichier", fichierInput.files[0]); // Ajoute l'image ou le fichier si présent
+        let fileInput = $("input[name='fichier']")[0]; // Assurez-vous que l'input file a name='fichier'
+        if (fileInput.files.length > 0) {
+            formData.append("fichier", fileInput.files[0]); // Ajoute l'image ou le fichier si présent
         }
 
         $.ajax({
@@ -317,45 +279,45 @@
             headers: {
                 "X-Socket-Id": pusher.connection.socket_id,
             },
-            data: donneesFormulaire,
+            data: formData,
             processData: false, // Ne pas traiter les données
             contentType: false, // Ne pas définir de type de contenu
         }).done(function(res) {
             $("#preview-container").html("");
             $("input[name='fichier']").val(""); // Réinitialiser l'input file
 
-            let texteAvatar = res.email.substring(0, 2);
-            let contenuMessage = res.message ? `<p>${echapperHtml(res.message)}</p>` : "";
+            let avatarText = res.sender_email.substring(0, 2);
+            let messageContent = res.message ? `<p>${escapeHtml(res.message)}</p>` : "";
 
             // Déterminer si c'est une image ou un fichier à télécharger
-            let extensionFichier = res.fichier ? res.fichier.split('.').pop().toLowerCase() : "";
-            let estImage = ["jpg", "jpeg", "png", "gif"].includes(extensionFichier);
-            let contenuFichier = "";
+            let fileExtension = res.fichier ? res.fichier.split('.').pop().toLowerCase() : "";
+            let isImage = ["jpg", "jpeg", "png", "gif"].includes(fileExtension);
+            let fileContent = "";
 
             if (res.fichier) {
-                if (estImage) {
-                    contenuFichier = `<img src="${res.fichier}" class="message-img" alt="Image envoyée">`;
+                if (isImage) {
+                    fileContent = `<img src="${res.fichier}" class="message-image" alt="Image envoyée">`;
                 } else {
-                    contenuFichier = `<a href="${res.fichier}" target="_blank" class="text-blue-500">
+                    fileContent = `<a href="${res.fichier}" target="_blank" class="text-blue-500">
                         📄 Télécharger ${res.fichier.split('/').pop()}
                     </a>`;
                 }
             }
 
             $("#chat-messages").append(`
-                <div class="messageTotal" id="message-${res.dernier_id}">
+                <div class="messageTotal" id="message-${res.last_id}">
                     <div class="message own-message">
-                        <button class="delete-btn" data-id="${res.dernier_id}">🗑️</button>
+                        <button class="delete-btn" data-id="${res.last_id}">🗑️</button>
                         <div class="bubble">
-                            <strong>${res.email}</strong>
+                            <strong>${res.sender_email}</strong>
                             <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
                             <br>
                             <div class="message-text">
-                                ${contenuMessage}
+                                ${messageContent}
                             </div>
-                            ${contenuFichier}
+                            ${fileContent}
                         </div>
-                        <div class="ml-4 avatar bg-primary text-white rounded-circle p-2">${texteAvatar}</div>
+                        <div class="ml-4 avatar bg-primary text-white rounded-circle p-2">${avatarText}</div>
                     </div>
                     <div class="separator"></div>
                 </div>
@@ -363,10 +325,8 @@
 
             $("input[name='content']").val("");
             $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight);
-        }).fail(function(xhr, status, erreur) {
-            console.error("Erreur d'envoi :", erreur);
-        }).always(function() {
-            envoiEnCours = false; // Réinitialise la variable après la requête
+        }).fail(function(xhr, status, error) {
+            console.error("Erreur d'envoi :", error);
         });
     });
 
@@ -400,11 +360,10 @@
     });
 
     // Écouter l'événement de suppression spécifique diffusé par Pusher
-    canal.bind('message-supprime-ami', function(donnees) {
-        console.log("Message supprimé :", donnees); // Affiche l'ID du message supprimé pour le débogage
+    channel.bind('message-deleted-ami', function(data) {
+        console.log("Message supprimé:", data); // Affiche l'ID du message supprimé pour le débogage
         // Supprime le message correspondant du DOM
-        $(`#message-${donnees.idMessage}`).remove();
+        $(`#message-${data.messageId}`).remove();
     });
 </script>
 @endsection
-

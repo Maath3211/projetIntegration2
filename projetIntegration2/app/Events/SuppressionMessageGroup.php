@@ -18,32 +18,32 @@ class SuppressionMessageGroup implements ShouldBroadcastNow
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
 
-    public $idMessage;
-    public $idGroupe;
+    public $messageId;
+    public $groupId;
     public $canal;
     
 
-    public function __construct($idMessage, $idGroupe, $canal)
+    public function __construct($messageId, $groupId, $canal)
     {
-        $this->idMessage = $idMessage;
-        $this->idGroupe = $idGroupe;
+        $this->messageId = $messageId;
+        $this->groupId = $groupId;
         $this->canal = $canal;
     }
 
     public function broadcastOn(): array
     {
-        return [new Channel("chat-" . $this->idGroupe) . "-" . $this->canal];
+        return [new Channel("chat-" . $this->groupId) . "-" . $this->canal];
     }
 
     public function broadcastAs(): string
     {
-        return 'message-supression'; // Utiliser un événement spécifique pour la suppression
+        return 'message-deleted'; // Utiliser un événement spécifique pour la suppression
     }
 
     public function broadcastWith(): array
     {
         return [
-            'idMessage' => $this->idMessage,
+            'messageId' => $this->messageId,
         ];
     }
 }

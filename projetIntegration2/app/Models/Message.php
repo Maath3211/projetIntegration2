@@ -21,13 +21,12 @@ class Message extends Model
         'created_at',
     ];
 
-    //obliger en englais
     protected $dates = ['created_at', 'read_at']; 
 
     public $timestamps = false;
 
 
-    //Obliger d'être en anglais
+    
 /**
  * Get the from that owns the Message
  *

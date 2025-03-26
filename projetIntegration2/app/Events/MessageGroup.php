@@ -17,38 +17,40 @@ class MessageGroup implements ShouldBroadcastNow
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $message;
-    public $idExpediteur;
-    public $idGroupe;
-    public $idCanal;
-    public $supprime; // Ajout du flag de suppression
-    public $dernierId;
+    public $senderId;
+    public $groupId;
+    public $canalId;
+    public $deleted; // Ajout du flag de suppression
+    public $lastId;
     public $photo;
     public $email;
 
+
     /**
-     * Crée une nouvelle instance de l'événement.
+     * Create a new event instance.
      */
-    public function __construct($message, $idExpediteur, $idGroupe, $idCanal, $supprime = false, $dernierId, $photo = null, $email)
+    public function __construct($message, $senderId, $groupId, $canalId ,$deleted = false, $lastId, $photo = null, $email)
     {
         $this->message = $message;
-        $this->idExpediteur = $idExpediteur;
-        $this->idGroupe = $idGroupe;
-        $this->idCanal = $idCanal;
-        $this->supprime = $supprime; // Défaut à false
-        $this->dernierId = $dernierId;
+        $this->senderId = $senderId;
+        $this->groupId = $groupId;
+        $this->canalId = $canalId;
+        $this->deleted = $deleted; // Défaut à false
+        $this->lastId = $lastId;
         $this->photo = $photo;
         $this->email = $email;
     }
 
+
     /**
-     * Obtenez les canaux sur lesquels l'événement doit être diffusé.
+     * Get the channels the event should broadcast on.
      *
      * @return array<int, \Illuminate\Broadcasting\Channel>
      */
     public function broadcastOn(): array
     {
-        $nomCanal = "chat-" . $this->idGroupe . "-" . $this->idCanal;
-        return [new Channel($nomCanal)];
+        $channelName = "chat-" . $this->groupId . "-" . $this->canalId;
+        return [new Channel($channelName)];
     }
 
     public function broadcastAs(): string
@@ -60,11 +62,11 @@ class MessageGroup implements ShouldBroadcastNow
     {
         return [
             'message' => $this->message,
-            'id_expediteur' => $this->idExpediteur,
-            'id_groupe' => $this->idGroupe,
-            'id_canal' => $this->idCanal,
-            'supprime' => $this->supprime,
-            'dernier_id' => $this->dernierId,
+            'sender_id' => $this->senderId,
+            'group_id' => $this->groupId,
+            'canal_id' => $this->canalId,
+            'deleted' => $this->deleted,
+            'last_id' => $this->lastId,
             'photo' => $this->photo,
             'email' => $this->email
         ];

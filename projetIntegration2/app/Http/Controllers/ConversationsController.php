@@ -165,7 +165,7 @@ class ConversationsController extends Controller
             // Insérer le message dans la base de données en utilisant le modèle Message
             $message = Message::create([
                 'idEnvoyer' => auth()->id(),
-                'idReceveur' => $request->vers,
+                'idReceveur' => $request->to,
                 'message' => $request->message,
                 'fichier' => $fichierNom, // Stocke le chemin public
                 'created_at' => now(),
@@ -174,8 +174,7 @@ class ConversationsController extends Controller
             //\Log::info('Message créé avec succès', ['message_id' => $message->id]);
 
             // Diffuser l’événement via Pusher
-            //Obliger en englais
-            broadcast(new PusherBroadcast(e($request->message), auth()->id(), $request->vers, false, $message->id, $fichierNom, auth()->user()->email))
+            broadcast(new PusherBroadcast(e($request->message), auth()->id(), $request->to, false, $message->id, $fichierNom, auth()->user()->email))
                 ->toOthers();
 
             //\Log::info('Message diffusé avec succès', ['message_id' => $message->id]);
@@ -186,9 +185,9 @@ class ConversationsController extends Controller
 
         return response()->json([
             'message' => $request->message,
-            'dernier_id' => $message->id,
-            'idEnvoyer' => auth()->id(),
-            'envoyerEmail' => auth()->user()->email,
+            'last_id' => $message->id,
+            'sender_id' => auth()->id(),
+            'sender_email' => auth()->user()->email,
             'fichier' => $fichierNom ? asset($dossier . $fichierNom) : null, // Retourne l'URL complète
             'email' => auth()->user()->email,
         ]);
@@ -201,10 +200,10 @@ class ConversationsController extends Controller
         \Log::info('❌ Erreur lors du broadcast: ' . $request);
     return response()->json([
         'message' => $request->message,
-        'idEnvoyer' => $request->sender_id,
-        'idReceveur' => $request->receiver_id,
-        'supprimer' => $request->deleted,
-        'dernier_id' => $request->last_id,
+        'sender_id' => $request->sender_id,
+        'receiver_id' => $request->receiver_id,
+        'deleted' => $request->deleted,
+        'last_id' => $request->last_id,
         'photo' => $request->photo,
         'email' => $request->email,
 

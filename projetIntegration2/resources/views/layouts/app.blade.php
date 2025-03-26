@@ -51,16 +51,9 @@
     </a>
 
     <!-- Navigation aux classements -->
-    <a href="{{route('scores.meilleursGroupes')}}" title="{{__('layout.classements')}}">
+    <a href="#">
       <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee">
         <i class="fa-solid fa-ranking-star fa-2xl"></i>
-      </div>
-    </a>
-
-    <!-- Bouton pour la page de localisation -->
-    <a href="/localisation">
-      <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee">
-        <i class="fa-solid fa-location-dot fa-2xl"></i>
       </div>
     </a>
 
@@ -148,12 +141,12 @@
             class="fa-solid fa-ranking-star fa-2xl"></i></div>
       </a>
 
-      <!-- Bouton pour la page de localisation -->
-      <a href="/localisation">
-        <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee">
-          <i class="fa-solid fa-location-dot fa-2xl"></i>
-        </div>
-      </a>
+      <!-- Nouveau bouton pour la page localisation -->
+    <a href="{{ route('localisation.index') }}">
+      <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee">
+        <i class="fa-solid fa-location-dot fa-2xl"></i>
+      </div>
+    </a>
 
       <!-- Tous les clans dont l'utilisateur actuel fait partie -->
       @if (isset($clans))

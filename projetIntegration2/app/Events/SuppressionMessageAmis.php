@@ -16,33 +16,33 @@ class SuppressionMessageAmis implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $idMessage;
-    public $idReceveur;
-    public $idEnvoyeur;
+    public $messageId;
+    public $receveurId;
+    public $envoyeurId;
 
-    public function __construct($idMessage, $idReceveur, $idEnvoyeur)
+    public function __construct($messageId, $receveurId, $envoyeurId)
     {
-        $this->idMessage = $idMessage;
-        $this->idReceveur = $idReceveur;
-        $this->idEnvoyeur = $idEnvoyeur;
+        $this->messageId = $messageId;
+        $this->receveurId = $receveurId;
+        $this->envoyeurId = $envoyeurId;
 
         Log::info('SuppressionMessageAmis event created', [
-            'idMessage' => $this->idMessage,
-            'idReceveur' => $this->idReceveur,
-            'idEnvoyeur' => $this->idEnvoyeur,
+            'messageId' => $this->messageId,
+            'receveurId' => $this->receveurId,
+            'envoyeurId' => $this->envoyeurId,
         ]);
     }
 
     public function broadcastOn(): array
     {
-        $channel = new Channel("chat-" . min($this->idReceveur, $this->idEnvoyeur) . "-" . max($this->idEnvoyeur, $this->idReceveur));
+        $channel = new Channel("chat-" . min($this->receveurId, $this->envoyeurId) . "-" . max($this->envoyeurId, $this->receveurId));
         //Log::info('Broadcasting on channel', ['channel' => $channel->name]);
         return [$channel];
     }
 
     public function broadcastAs(): string
     {
-        $eventName = 'message-supprime-ami';
+        $eventName = 'message-deleted-ami';
         //Log::info('Broadcasting as event', ['event' => $eventName]);
         return $eventName;
     }
@@ -50,7 +50,7 @@ class SuppressionMessageAmis implements ShouldBroadcastNow
     public function broadcastWith(): array
     {
         $data = [
-            'idMessage' => $this->idMessage,
+            'messageId' => $this->messageId,
         ];
         //Log::info('Broadcasting with data', $data);
         return $data;

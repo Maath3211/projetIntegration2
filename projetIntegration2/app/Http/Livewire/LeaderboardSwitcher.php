@@ -46,10 +46,9 @@ class LeaderboardSwitcher extends Component
                         'users.prenom',
                         'users.nom',
                         'users.imageProfil',
-                        'users.email as email',
                         DB::raw('SUM(scores.score) as total_score')
                     )
-                    ->groupBy('users.id', 'users.prenom', 'users.nom', 'users.imageProfil', 'users.email')
+                    ->groupBy('users.id', 'users.prenom', 'users.nom', 'users.imageProfil')
                     ->orderByDesc('total_score')
                     ->limit(10)
                     ->get();
