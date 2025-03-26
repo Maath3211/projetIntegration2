@@ -16,7 +16,9 @@ class ObjectifController extends Controller
     {
         $objectifCompleter = Objectif::where("user_id", Auth::id())->where("completer", true)->get();
         $objectifNonCompleter = Objectif::where("user_id", Auth::id())->where("completer", false)->get();
-        return view('objectif.index', compact('objectifCompleter', 'objectifNonCompleter'));
+        $utilisateur = Auth::user();
+        $clans = $utilisateur->clans; // Fetch all clans associated with the user
+        return view('objectif.index', compact('objectifCompleter', 'objectifNonCompleter', 'clans'));
     }
 
     public function store(Request $request)
