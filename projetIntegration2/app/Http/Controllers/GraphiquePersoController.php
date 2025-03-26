@@ -17,12 +17,13 @@ class GraphiquePersoController extends Controller
     public function index()
     {
         $user = Auth::user();
+        $clans = $user->clans;
         $graphs = GraphSauvegarde::where('user_id', $user->id)
             ->where('date_expiration', '>=', now())
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('graphs.index', compact('graphs'));
+        return view('graphs.index', compact('graphs', 'clans'));
     }
 
     /**

@@ -31,10 +31,23 @@
                 <div class="container">
                     <div class="column"> <!-- column est en anglais parce que c'est le nom de la classe bootstrap c'est pas mon choix -->
                         <div class="conteneurImage">
-                            <div class="texteSurImage">Workout Master</div>
-                            {{-- <div><a href="{{ route('clan.parametres', ['id' => $clan->id]) }}"><i class="fa-solid fa-ellipsis"></i></a>
-                        </div> --}}
-                        {{-- Test pour tester la route clan A CHANGER --}}
+                            <div class="col-md-12">
+                                <div class="col-md-12">
+                                    <div class="texteSurImage">Ajouter ami</div>
+
+                                </div>
+                                <div class="col-md-12">
+
+                                <a href="#">
+                                    <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee">
+                                        <i class="fa-solid fa-user-plus fa-xl"></i>
+                                    </div>
+                                  </a>
+                            </div>
+                            </div>
+                            
+
+
                         <div></div>
                     </div>
                     <div class="conteneurCanaux">

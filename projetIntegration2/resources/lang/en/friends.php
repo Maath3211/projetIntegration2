@@ -6,7 +6,7 @@ return [
     'liste_demandes_amis' => 'Friend Requests List',
     
     // Search form
-    'recherche_exemple' => 'Username',
+    'recherche_exemple' => 'Email',
     'bouton_recherche' => 'Search',
     
     // Messages
@@ -32,4 +32,8 @@ return [
     
     // Alt text for images
     'avatar' => 'Avatar',
+
+    // Friend requests list
+    'aucune_demande' => 'No friend requests',
+    'demandes_recues' => 'Friend requests:',
 ];

@@ -22,7 +22,7 @@ class MessageClanTest extends TestCase
             'message' => 'Salut, ça va ?',
         ]);
 
-        $this->assertDatabaseHas('utilisateur_clan', [
+        $this->assertDatabaseHas('conversation_clan', [
             'message' => 'Salut, ça va ?',
         ]);
     }
@@ -193,7 +193,7 @@ class MessageClanTest extends TestCase
 
         $message->delete();
 
-        $this->assertDatabaseMissing('utilisateur_clan', ['id' => $message->id]);
+        $this->assertDatabaseMissing('conversation_clan', ['id' => $message->id]);
     }
 
     #[Test]
@@ -205,12 +205,12 @@ class MessageClanTest extends TestCase
     
         $message->update(['message' => 'Message modifié']);
     
-        $this->assertDatabaseHas('utilisateur_clan', [
+        $this->assertDatabaseHas('conversation_clan', [
             'id' => $message->id,
             'message' => 'Message modifié',
         ]);
     
-        $this->assertDatabaseMissing('utilisateur_clan', [
+        $this->assertDatabaseMissing('conversation_clan', [
             'id' => $message->id,
             'message' => 'Message original',
         ]);

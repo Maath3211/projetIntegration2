@@ -43,6 +43,8 @@ class ScoresController extends Controller
 
     public function meilleursGroupes()
     {
+        $utilisateur = Auth::user();
+        $clans = $utilisateur->clans;
         $selectedClanId = 'global';
         $userScores = DB::table('scores')
             ->select('user_id', DB::raw('SUM(score) as total_score'))
@@ -55,7 +57,7 @@ class ScoresController extends Controller
                 'users.prenom',
                 'users.nom',
                 'users.imageProfil',
-                'users.email',
+                'users.email as email',
                 DB::raw('SUM(scores.score) as total_score')
             )
             ->groupBy('users.id', 'users.prenom', 'users.nom', 'users.imageProfil', 'users.email')
@@ -80,7 +82,7 @@ class ScoresController extends Controller
             ->get();
 
 
-        return view('leaderboard.topClans', compact('topClans', 'topUsers', 'userClans', 'selectedClanId')); // Send the result to a view
+        return view('leaderboard.topClans', compact('topClans', 'topUsers', 'userClans', 'selectedClanId', 'clans')); // Send the result to a view
     }
 
 
@@ -182,7 +184,7 @@ class ScoresController extends Controller
                 'users.imageProfil as user_image',
                 'users.nom as user_nom',
                 'users.prenom as user_prenom',
-                'users.email as user_email',
+                'users.email as email',
                 DB::raw('SUM(scores.score) as user_total_score')
             )
             ->groupBy('users.id', 'users.imageProfil', 'users.nom', 'users.prenom', 'users.email')
@@ -236,7 +238,7 @@ class ScoresController extends Controller
                 'users.imageProfil as user_image',
                 'users.nom as user_nom',
                 'users.prenom as user_prenom',
-                'users.email as user_email',
+                'users.email as email',
                 DB::raw('SUM(scores.score) as score_improvement')
             )
             ->groupBy('users.id', 'users.imageProfil', 'users.nom', 'users.prenom', 'users.email')
