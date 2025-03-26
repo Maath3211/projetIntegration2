@@ -541,34 +541,47 @@ class ClanController extends Controller
      */
     public function rechercheClans(Request $request)
     {
-        if ($request->isMethod('get')) {
-            return view('Clans.rechercheClans');
+        // Vérifier l'authentification de l'utilisateur
+        $utilisateurId = auth()->id();
+        if (!$utilisateurId) {
+            Log::info('Utilisateur pas connecté.');
+            return redirect('/connexion')->with('erreur', 'Vous devez être connecté pour afficher les clans.');
         }
 
+        // Récupérer l'objet utilisateur à partir de son ID
+        $utilisateur = User::findOrFail($utilisateurId);
+
+        // Récupérer les clans auxquels l'utilisateur appartient
+        $clans = $utilisateur->clans()->get();
+
+        // Si la requête est en GET, renvoyer la vue avec les clans de l'utilisateur
+        if ($request->isMethod('get')) {
+            return view('Clans.rechercheClans', compact('clans'));
+        }
+
+        // Pour une recherche par POST, valider et effectuer la recherche des clans publics non rejoints
         $request->validate([
             'q' => 'required|string'
         ]);
 
         $query = $request->input('q');
-        $userId = auth()->check() ? auth()->user()->id : 999;
 
-        // Récupérer uniquement les clans publics qui correspondent à la recherche et non déjà rejoints
-        $clans = Clan::where('nom', 'like', "%{$query}%")
-                    ->where('public', true)
-                    ->whereNotIn('id', function($q) use ($userId) {
-                        $q->select('clan_id')
-                          ->from('clan_users')
-                          ->where('user_id', $userId);
-                    })
-                    ->get();
+        // Rechercher uniquement les clans publics correspondant à la recherche et
+        // dont l'utilisateur n'est pas déjà membre.
+        // On stocke les résultats dans $mesClans (anciennement $clans)
+        $mesClans = Clan::where('nom', 'like', "%{$query}%")
+            ->where('public', true)
+            ->whereNotIn('id', function ($q) use ($utilisateurId) {
+                $q->select('clan_id')
+                    ->from('clan_users')
+                    ->where('user_id', $utilisateurId);
+            })
+            ->get();
 
-        return view('Clans.rechercheClans', compact('clans'));
+        // Inverser les noms des variables si nécessaire :
+        // Retourner la vue avec $mesClans contenant la recherche et $clans contenant les clans existants de l'utilisateur.
+        return view('Clans.rechercheClans', compact('mesClans', 'clans'));
     }
-
-    /**
-     * Permet à l'utilisateur de rejoindre un clan.
-     * L'utilisateur est déterminé par l'authentification, ou 999 pour les tests.
-     */
     public function rejoindre(Request $request)
     {
         $request->validate([
@@ -596,6 +609,7 @@ class ClanController extends Controller
 
         return back()->with('success', 'Vous avez rejoint le clan !');
     }
+
 
 
 

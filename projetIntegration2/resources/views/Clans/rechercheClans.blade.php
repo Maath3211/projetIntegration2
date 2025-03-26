@@ -51,12 +51,12 @@
         </button>
     </form>
 
-    @isset($clans)
-        @if($clans->isEmpty())
+    @isset($mesClans)
+        @if($mesClans->isEmpty())
             <p>{{ __('clans.aucun_clans_trouve') }}</p>
         @else
             <ul class="result-list" style="list-style:none; padding:0;">
-                @foreach($clans as $clan)
+                @foreach($mesClans as $clan)
                     <li class="result-item"
                         style="display:flex; justify-content: space-between; align-items:center; padding:10px; border-bottom:1px solid #ccc;">
                         <div style="display: flex; align-items: center;">

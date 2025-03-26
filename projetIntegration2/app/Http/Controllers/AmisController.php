@@ -5,13 +5,28 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User; // Utilisé pour la recherche d'amis
 use App\Models\Clan; // Utilisé pour la recherche de clans
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class AmisController extends Controller
 {
     // Affiche le formulaire de recherche
     public function index()
     {
-        return view('amis.index');
+        $utilisateur = auth()->id();
+        $utilisateur = User::findOrFail($utilisateur);
+
+        // Si l'utilisateur est pas connecté
+        if (!$utilisateur){
+            Log::info('Utilisateur pas connecté.');
+            return redirect('/connexion')->with('erreur', 'Vous devez être connectés pour afficher les clans.');
+        }
+
+        //obtenir les clans dont l'utilisateur fait partie
+        $clans = $utilisateur->clans()->get();
+
+
+        return view('amis.index', compact('clans'));
     }
 
     // Recherche les utilisateurs par nom d'utilisateur
@@ -48,6 +63,8 @@ class AmisController extends Controller
         $utilisateurs = User::where('email', 'like', "%{$query}%")
             ->whereNotIn('id', $friendIds)
             ->get();
+
+        
 
         return view('amis.index', compact('utilisateurs', 'utilisateurConnecteId'));
     }
@@ -105,10 +122,24 @@ class AmisController extends Controller
         $demandes = \DB::table('demande_amis')
             ->join('users', 'demande_amis.requester_id', '=', 'users.id')
             ->where('demande_amis.requested_id', $userId)
+            ->where('demande_amis.status', 'pending')
             ->select('demande_amis.*', 'users.email', 'users.imageProfil as requester_imageProfil')
             ->get();
 
-        return view('amis.demandes', compact('demandes'));
+            $utilisateur = auth()->id();
+            $utilisateur = User::findOrFail($utilisateur);
+    
+            // Si l'utilisateur est pas connecté
+            if (!$utilisateur){
+                Log::info('Utilisateur pas connecté.');
+                return redirect('/connexion')->with('erreur', 'Vous devez être connectés pour afficher les clans.');
+            }
+    
+            //obtenir les clans dont l'utilisateur fait partie
+            $clans = $utilisateur->clans()->get();
+    
+
+        return view('amis.demandes', compact('demandes','clans'));
     }
 
     // Accepte une demande d'ami
