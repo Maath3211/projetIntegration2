@@ -21,8 +21,16 @@ class SetLocale
         if (Session::has('locale')) {
             $locale = Session::get('locale');
             App::setLocale($locale);
-            // Debug logging
-            Log::info('Middleware set locale to: ' . $locale);
+            
+            // Ensure session is properly handled when locale changes
+            if ($request->session()->get('_previous_locale') !== $locale) {
+                $request->session()->put('_previous_locale', $locale);
+                
+                // Only regenerate CSRF token if we're not in the middle of a form submission
+                if (!$request->isMethod('POST') && !$request->isMethod('PUT') && !$request->isMethod('DELETE')) {
+                    $request->session()->regenerateToken();
+                }
+            }
         }
 
         return $next($request);

@@ -303,40 +303,73 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 <script>
-  // Replace the original switchLanguage function
   function switchLanguageWithLivewire(locale) {
     console.log('Switching language to:', locale);
-
+    
+    // Save current URL before language switch
+    const currentUrl = window.location.href;
+    
     // Update server locale
     fetch('/switch-language', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-          'X-Requested-With': 'XMLHttpRequest'
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'X-Requested-With': 'XMLHttpRequest'
         },
         body: JSON.stringify({
-          locale: locale
-        })
-      })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Language switch response:', data);
-
-        // Notify all Livewire components with the correct parameter format
-        if (window.Livewire) {
-          window.Livewire.dispatch('localeChanged', {
             locale: locale
-          });
-        }
-
-        // Force page reload to apply changes globally
-        window.location.reload();
-      })
-      .catch(error => {
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Language switch response:', data);
+        
+        // Store locale in localStorage
+        localStorage.setItem('userLocale', locale);
+        
+        // Force full page reload to ensure CSRF tokens are in sync
+        window.location.href = currentUrl;
+    })
+    .catch(error => {
         console.error('Error switching language:', error);
-      });
-  }
+    });
+}
+</script>
+<script>
+// Enhance logout functionality to work around CSRF issues
+document.addEventListener('DOMContentLoaded', function() {
+    // Get all logout forms
+    const logoutForms = document.querySelectorAll('form[action*="deconnexion"]');
+    
+    logoutForms.forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get the current CSRF token (which should be up-to-date)
+            const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            
+            // Send a POST request directly
+            fetch('{{ route('profil.deconnexion') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token,
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                credentials: 'same-origin'
+            })
+            .then(response => {
+                window.location.href = '{{ route('profil.pageConnexion') }}';
+            })
+            .catch(error => {
+                console.error('Logout error:', error);
+                // Fallback - try to navigate to the login page anyway
+                window.location.href = '{{ route('profil.pageConnexion') }}';
+            });
+        });
+    });
+});
 </script>
 @yield('scripts')
 
