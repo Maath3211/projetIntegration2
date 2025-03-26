@@ -681,9 +681,28 @@ class ClanController extends Controller
                 'updated_at'=> now()
             ]);
     
+            // Log des données envoyées à Pusher
+            \Log::info('Données diffusées via Pusher', [
+                'message' => e($request->message),
+                'idExpediteur' => auth()->id(),
+                'idCanal' => $request->canal,
+                'idGroupe' => $request->vers,
+                'dernierId' => $dernierId,
+                'photo' => $nomFichier,
+                'email' => auth()->user()->email,
+            ]);
+    
             // Diffuser l’événement via Pusher
-            broadcast(new MessageGroup(e($request->message), auth()->id(), $request->canal, $request->vers, false, $dernierId, $nomFichier, auth()->user()->email))
-                ->toOthers();
+            broadcast(new MessageGroup(
+                e($request->message),
+                auth()->id(),
+                $request->vers, // idGroupe (idClan)
+                $request->canal, // idCanal
+                false,
+                $dernierId,
+                $nomFichier,
+                auth()->user()->email
+            ))->toOthers();
     
         } catch (\Exception $e) {
             \Log::error('❌ Erreur lors du broadcast: ' . $e->getMessage());
@@ -695,6 +714,22 @@ class ClanController extends Controller
             'expediteur_id'   => auth()->id(),
             'email_expediteur'=> auth()->user()->email,
             'fichier'         => $nomFichier ? asset($dossier . $nomFichier) : null // Retourne l'URL complète
+        ]);
+    }
+
+    public function receiveClan(Request $request){
+        
+
+        return response()->json([
+ 
+            'message' => $request->message,
+            'id_expediteur' => $request->sender_id,
+            'id_groupe' => $request->group_id,
+            'id_canal' => $request->canal_id,
+            'supprime' => $request->deleted,
+            'last_id' => $request->last_id,
+            'photo' => $request->photo,
+            
         ]);
     }
 

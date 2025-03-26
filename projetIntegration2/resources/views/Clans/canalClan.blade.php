@@ -379,8 +379,8 @@
         const utilisateurId = "{{ auth()->id() }}"; // ID de l'utilisateur connecté
         const clanId = "{{ request()->id }}"; // ID du clan
         const canalId = "{{ request()->canal }}";
-        const nomCanal = "chat-" + clanId + "-" + canalId;
-        //console.log("Nom du canal:", nomCanal); // Ajout pour le débogage
+        const nomCanal = "chat-" + clanId + "-" + canalId; // Assurez-vous que clanId (idGroupe) vient avant canalId (idCanal)
+        console.log("Nom du canal:", nomCanal); // Ajout pour le débogage
 
         const pusher = new Pusher('{{ config('broadcasting.connections.pusher.key') }}', {
         cluster: '{{ config('broadcasting.connections.pusher.options.cluster') }}',
@@ -393,7 +393,7 @@
         });
 
         pusher.connection.bind('error', function(erreur) {
-            //console.error('Erreur de connexion Pusher:', erreur); // Ajout pour afficher les erreurs
+            console.error('Erreur de connexion Pusher:', erreur);
         });
 
         // Ajout d'un gestionnaire pour vérifier l'état de connexion
@@ -411,27 +411,27 @@
         // Recevoir les messages de la conversation
         // ---------------------------
         canal.bind('event-group', function(data) {
-            
-            // Vérifier si le message a été supprimé
+            console.log("Données reçues de Pusher:", data); // Debugging
 
-            if (data.deleted === true) {
+            // Vérifier si le message a été supprimé
+            if (data.supprime === true) {
                 // Si le message a été supprimé, le retirer du DOM
-                $(`#message-${data.last_id}`).remove();
+                $(`#message-${data.dernier_id}`).remove();
             } else {
                 // Détermine le contenu du message (texte, image ou fichier)
                 let messageContent = data.message ? `<p>${escapeHtml(data.message)}</p>` : "";
-                // Déterminer si c'est une image ou un fichier à télécharger
-                let fileExtension = data.photo ? data.photo.split('.').pop().toLowerCase() : "";
-                let isImage = ["jpg", "jpeg", "png", "gif"].includes(fileExtension);
                 let fileContent = "";
 
                 if (data.photo) {
+                    let fileExtension = data.photo.split('.').pop().toLowerCase();
+                    let isImage = ["jpg", "jpeg", "png", "gif"].includes(fileExtension);
+
                     if (isImage) {
                         fileContent = `<div class="message-image">
                             <img src="/img/conversations_photo/${data.photo}" alt="Image envoyée" class="message-img">
                         </div>`;
                     } else {
-                        const fileName = data.photo.split('/').pop(); // Récupérer le nom du fichier
+                        const fileName = data.photo.split('/').pop();
                         fileContent = `<div class="message-file">
                             <a href="/fichier/conversations_fichier/${data.photo}" target="_blank" download class="btn btn-sm btn-primary">
                                 📎 Télécharger ${fileName}
@@ -445,7 +445,6 @@
                     <div class="messageTotal" id="message-${data.dernier_id}">
                         <div class="message received-message">
                             <div class="avatar bg-primary text-white rounded-circle p-2">
-                                <!-- Affiche la première lettre de l'email -->
                                 ${data.email ? data.email.substring(0, 2) : '??'}
                             </div>
                             <div class="bubble">
