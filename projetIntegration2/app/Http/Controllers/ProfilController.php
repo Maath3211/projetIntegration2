@@ -270,7 +270,9 @@ class ProfilController extends Controller
     public function modification()
     {
         $pays = $this->listePays();
-        return view('profil.modification', compact('pays'));
+        $utilisateur = Auth::user();
+        $clans = $utilisateur->clans;
+        return view('profil.modification', compact('pays', 'clans'));
     }
 
     public function updateModification(ModificationRequest $request)
