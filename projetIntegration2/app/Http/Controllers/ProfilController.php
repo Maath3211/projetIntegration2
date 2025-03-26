@@ -280,7 +280,19 @@ class ProfilController extends Controller
         // Get the authenticated user
         $utilisateur = Auth::user();
         // ... other validation and processing
-        
+        if ($request->hasFile('imageProfil')) {
+            $fichier = $request->file('imageProfil');
+            $nomFichierUnique = 'img/Utilisateurs/' . uniqid() . '.' . $fichier->extension();
+            try {
+                $fichier->move(public_path('img/Utilisateurs'), $nomFichierUnique);
+                $utilisateur->imageProfil = $nomFichierUnique;
+            } catch (\Exception $e) {
+                Log::error(__('profile.erreur_tel_image'), [$e]);
+                return redirect()->back()->withErrors(['imageProfil' => __('profile.erreur_tel_image')]);
+            }
+        } else {
+            $utilisateur->imageProfil = 'img/Utilisateurs/utilisateurParDefaut.jpg';
+        }
         // Update basic user info
         $utilisateur->prenom = $request->prenom;
         $utilisateur->nom = $request->nom;
