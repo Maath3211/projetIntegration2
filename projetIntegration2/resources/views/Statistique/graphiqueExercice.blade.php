@@ -52,7 +52,7 @@
                         x: {
                             title: {
                                 display: true,
-                                text: '{{ __("stats.semaines") }}',
+                                text: '{{ __("stats.semaine") }}',
                                 color: '#e5e5e5',
                                 font: {
                                     size: 16
