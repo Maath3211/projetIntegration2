@@ -2,11 +2,6 @@
 
 @section('contenu')
     <link rel="stylesheet" href="{{ asset('css/Profil/modification.css') }}">
-    @if (session('message'))
-        <div class="alert alert-success">
-            <p class="text-center msgErreur">{{ session('message') }}</p>
-        </div>
-    @endif
 
     <div class="container-fluid">
         <div class="row justify-content-center">
