@@ -111,7 +111,9 @@ class GraphiquePersoController extends Controller
             // Log for debugging
             \Log::debug('Graph data:', ['data' => $graph->data]);
 
-            return view('graphs.show', compact('graph'));
+            $user = Auth::user();
+            $clans = $user->clans()->get();
+            return view('graphs.show', compact('graph', 'clans'));
         } catch (\Exception $e) {
             return redirect()->route('graphs.index')
                 ->with('error', __('graphs.erreur_affichage') . ': ' . $e->getMessage());
