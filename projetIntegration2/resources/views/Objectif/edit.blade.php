@@ -27,7 +27,7 @@
                 <label for="description" class="form-label">{{ __('objectives.description') }}</label>
                 <textarea class="form-control" id="description" name="description" rows="4" required>{{ old('description', $objectif->description) }}</textarea>
             </div>
-            <button type="submit" class="btn bouton mt-3">{{ __('objectives.mis_a_jour_button') }}</button>
+            <button type="submit" class="btn bouton mt-3">{{ __('objectives.bouton_mis_a_jour') }}</button>
         </form>
 
         <a href="{{ route('objectif.index') }}" class="btn btn-secondary mt-3 bouton-retour bouton">{{ __('objectives.retour') }}</a>
