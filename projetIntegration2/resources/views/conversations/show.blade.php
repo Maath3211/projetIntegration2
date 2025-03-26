@@ -226,11 +226,11 @@
     // Fonction pour échapper les caractères spéciaux
     function echapperHtml(nonSecurise) {
         return nonSecurise
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
+            .replace(/&/g, "et")
+            .replace(/</g, "-=")
+            .replace(/>/g, "+=")
+            .replace(/"/g, "")
+            .replace(/'/g, "");
     }
 
     // Recevoir les messages de la conversation
