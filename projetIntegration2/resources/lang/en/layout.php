@@ -8,6 +8,7 @@ return [
     'creer_clan' => 'Create Clan',
     'classements' => 'Rankings',
     'messagerie' => 'Messaging',
+    'localisation' => 'Location',
 
     // Clan creation
     'creation_clan' => 'Create Clan',

@@ -93,7 +93,7 @@ class ObjectifController extends Controller
      */
     public function create()
     {
-        return view('objectif.create');
+        return view('Objectif.create');
     }
 
     /**
