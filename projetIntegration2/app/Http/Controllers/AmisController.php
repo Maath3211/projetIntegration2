@@ -90,7 +90,7 @@ class AmisController extends Controller
         ]);
 
         // Vérifiez si la relation existe déjà
-        $existe = \DB::table('amis')
+        $existe = \DB::table('demande_amis')
             ->where('user_id', $request->input('user_id'))
             ->where('friend_id', $request->input('friend_id'))
             ->exists();
