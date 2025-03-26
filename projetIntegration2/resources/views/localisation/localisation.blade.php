@@ -12,7 +12,7 @@
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             height: 100vh;
             overflow: hidden;
-            /* Empêcher le défilement */
+            /* Empêcher le défilement ER */
         }
 
         #search-container {
