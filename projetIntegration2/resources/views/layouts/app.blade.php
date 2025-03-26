@@ -306,37 +306,43 @@
   // Replace the original switchLanguage function
   function switchLanguageWithLivewire(locale) {
     console.log('Switching language to:', locale);
-
+    
+    // Save current URL before language switch
+    const currentUrl = window.location.href;
+    
     // Update server locale
     fetch('/switch-language', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-          'X-Requested-With': 'XMLHttpRequest'
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'X-Requested-With': 'XMLHttpRequest'
         },
         body: JSON.stringify({
-          locale: locale
+            locale: locale
         })
-      })
-      .then(response => response.json())
-      .then(data => {
+    })
+    .then(response => response.json())
+    .then(data => {
         console.log('Language switch response:', data);
-
+        
         // Notify all Livewire components with the correct parameter format
         if (window.Livewire) {
-          window.Livewire.dispatch('localeChanged', {
-            locale: locale
-          });
+            window.Livewire.dispatch('localeChanged', {
+                locale: locale
+            });
         }
-
-        // Force page reload to apply changes globally
-        window.location.reload();
-      })
-      .catch(error => {
+        
+        // Store locale in localStorage to prevent issues with CSRF
+        localStorage.setItem('userLocale', locale);
+        
+        // Reload the page while preserving the current URL
+        window.location.href = currentUrl;
+    })
+    .catch(error => {
         console.error('Error switching language:', error);
-      });
-  }
+    });
+}
 </script>
 @yield('scripts')
 
