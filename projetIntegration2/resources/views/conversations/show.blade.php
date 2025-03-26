@@ -42,15 +42,11 @@
                                 </div>
                             </div>
 
-
-
-                            <div></div>
-                        </div>
-                        <div class="conteneurCanaux">
-                            <!-- Afficher amis  -->
-                            <h1>{{ __('chat.amis') }}</h1>
-                            @include('conversations.utilisateurs', ['users' => $users])
-                        </div>
+                            <!-- Liste des utilisateurs -->
+                            <div class="conteneurCanaux mt-4">
+                                <h1>{{ __('chat.amis') }}</h1>
+                                @include('conversations.utilisateurs', ['users' => $users])
+                            </div>
                     </div>
                 </div>
             </div>
