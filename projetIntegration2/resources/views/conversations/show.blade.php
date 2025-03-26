@@ -28,7 +28,7 @@
                                         </div>
                                         <div class="col-md-12">
         
-                                        <a href="#">
+                                        <a href="{{ route('amis.index') }}">
                                             <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee">
                                                 <i class="fa-solid fa-user-plus fa-xl"></i>
                                             </div>
