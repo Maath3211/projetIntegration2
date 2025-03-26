@@ -282,16 +282,17 @@ Route::GET(
     '/localisation',
     [GymController::class, 'index']
 )->name('localisation.index');
-Route::get('/export/top-users', [ScoresController::class, 'exportTopUsers'])->name('export.topUsers');
-Route::get('/export/top-clans', [ScoresController::class, 'exportTopClans'])->name('export.topClans');
-Route::get('/export/top-membres/{clanId}', [ScoresController::class, 'exportTopMembres'])->name('export.topMembres');
-Route::get('/export/top-amelioration/{clanId}', [ScoresController::class, 'exportTopAmelioration'])->name('export.topAmelioration');
+
+Route::get('/export/top-users', [ScoresController::class, 'exportTopUsers'])->name('export.topUsers')->middleware('auth');
+Route::get('/export/top-clans', [ScoresController::class, 'exportTopClans'])->name('export.topClans')->middleware('auth');
+Route::get('/export/top-membres/{clanId}', [ScoresController::class, 'exportTopMembres'])->name('export.topMembres')->middleware('auth');
+Route::get('/export/top-amelioration/{clanId}', [ScoresController::class, 'exportTopAmelioration'])->name('export.topAmelioration')->middleware('auth');
 Route::get('/scores/view-graph', [App\Http\Controllers\ScoresController::class, 'viewScoreGraph'])
-    ->name('scores.view-graph');
+    ->name('scores.view-graph')->middleware('auth');
 Route::get('/test-chart', [App\Http\Controllers\ScoresController::class, 'testChart'])
-    ->name('test.chart');
+    ->name('test.chart')->middleware('auth');
 Route::get('/scores/chart-page', [App\Http\Controllers\ScoresController::class, 'showChart'])
-    ->name('scores.chart-page');
+    ->name('scores.chart-page')->middleware('auth');
 
 //Route pour l'ajout/recherche d'amis/clans
 Route::get('amis', [AmisController::class, 'index'])->name('amis.index')->middleware('auth');
@@ -314,13 +315,13 @@ Route::post('clans/rejoindre', [ClanController::class, 'rejoindre'])->name('clan
 
 // Custom Graph Routes
 Route::middleware(['auth'])->group(function () {
-    Route::get('/graphs/create', [GraphiquePersoController::class, 'create'])->name('graphs.create');
-    Route::post('/graphs', [GraphiquePersoController::class, 'store'])->name('graphs.store');
-    Route::get('/graphs', [GraphiquePersoController::class, 'index'])->name('graphs.index');
-    Route::get('/graphs/{id}', [GraphiquePersoController::class, 'show'])->name('graphs.show');
-    Route::get('/graphs/{id}/edit', [GraphiquePersoController::class, 'edit'])->name('graphs.edit');
-    Route::put('/graphs/{id}', [GraphiquePersoController::class, 'update'])->name('graphs.update');
-    Route::delete('/graphs/{id}', [GraphiquePersoController::class, 'destroy'])->name('graphs.delete');
+    Route::get('/graphs/create', [GraphiquePersoController::class, 'create'])->name('graphs.create')->middleware('auth');
+    Route::post('/graphs', [GraphiquePersoController::class, 'store'])->name('graphs.store')->middleware('auth');
+    Route::get('/graphs', [GraphiquePersoController::class, 'index'])->name('graphs.index')->middleware('auth');
+    Route::get('/graphs/{id}', [GraphiquePersoController::class, 'show'])->name('graphs.show')->middleware('auth');
+    Route::get('/graphs/{id}/edit', [GraphiquePersoController::class, 'edit'])->name('graphs.edit')->middleware('auth');
+    Route::put('/graphs/{id}', [GraphiquePersoController::class, 'update'])->name('graphs.update')->middleware('auth');
+    Route::delete('/graphs/{id}', [GraphiquePersoController::class, 'destroy'])->name('graphs.delete')->middleware('auth');
 });
 
 // Add this to web.php if not already present
