@@ -13,7 +13,7 @@ return [
     'success_sent' => 'Demande d\'ami envoyée avec succès !',
     
     // Search form
-    'recherche_exemple' => 'Nom d\'utilisateur',
+    'recherche_exemple' => 'Email',
     'bouton_recherche' => 'Rechercher',
     
     // Messages
@@ -39,4 +39,8 @@ return [
     
     // Alt text for images
     'avatar' => 'Avatar',
+
+    // Demande d'amis
+    'aucune_demande' => 'Aucune demande d\'amis.',
+    'demandes_recues' => 'Demandes d\'amis :',
 ];

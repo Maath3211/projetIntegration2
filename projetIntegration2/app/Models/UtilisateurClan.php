@@ -28,6 +28,7 @@ class UtilisateurClan extends Model
     public $timestamps = false;
 
 
+    //Obliger d'être en englais
     /**
      * Get the user that owns the message.
      *

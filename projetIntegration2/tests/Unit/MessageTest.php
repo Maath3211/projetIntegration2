@@ -21,7 +21,7 @@ class MessageTest extends TestCase
             'message' => 'Salut, ça va ?',
         ]);
 
-        $this->assertDatabaseHas('user_ami', [
+        $this->assertDatabaseHas('conversation_ami', [
             'message' => 'Salut, ça va ?',
         ]);
     }
@@ -171,7 +171,7 @@ class MessageTest extends TestCase
 
         $message->delete();
 
-        $this->assertDatabaseMissing('user_ami', ['id' => $message->id]);
+        $this->assertDatabaseMissing('conversation_ami', ['id' => $message->id]);
     }
 
     #[Test]
@@ -195,12 +195,12 @@ class MessageTest extends TestCase
     
         $message->update(['message' => 'Message modifié']);
     
-        $this->assertDatabaseHas('user_ami', [
+        $this->assertDatabaseHas('conversation_ami', [
             'id' => $message->id,
             'message' => 'Message modifié',
         ]);
     
-        $this->assertDatabaseMissing('user_ami', [
+        $this->assertDatabaseMissing('conversation_ami', [
             'id' => $message->id,
             'message' => 'Message original',
         ]);

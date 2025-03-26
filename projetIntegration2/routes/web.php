@@ -209,7 +209,7 @@ Route::GET(
 Route::GET(
     '/localisation',
     [GymController::class, 'index']
-)->name('localisation.index')->middleware('auth');
+)->name('localisation.index');
 
 Route::get(
     '/ajouterFoisGym',
@@ -294,23 +294,23 @@ Route::get('/scores/chart-page', [App\Http\Controllers\ScoresController::class, 
     ->name('scores.chart-page');
 
 //Route pour l'ajout/recherche d'amis/clans
-Route::get('amis', [AmisController::class, 'index'])->name('amis.index')->middleware('auth');
-Route::match(['get', 'post'], 'amis/recherche', [AmisController::class, 'recherche'])->name('amis.recherche')->middleware('auth');
-Route::post('amis/ajouter', [AmisController::class, 'ajouter'])->name('amis.ajouter')->middleware('auth');
-Route::post('clans/recherche', [AmisController::class, 'rechercheClan'])->name('clans.recherche')->middleware('auth');
+Route::get('amis', [AmisController::class, 'index'])->name('amis.index');
+Route::match(['get', 'post'], 'amis/recherche', [AmisController::class, 'recherche'])->name('amis.recherche');
+Route::post('amis/ajouter', [AmisController::class, 'ajouter'])->name('amis.ajouter');
+Route::post('clans/recherche', [AmisController::class, 'rechercheClan'])->name('clans.recherche');
 
 // Affichage de la liste des demandes d'amis
-Route::get('amis/demandes', [AmisController::class, 'demandes'])->name('amis.demandes')->middleware('auth');
+Route::get('amis/demandes', [AmisController::class, 'demandes'])->name('amis.demandes');
 
 // Traitement de l'acceptation d'une demande d'ami
-Route::post('amis/accepter', [AmisController::class, 'accepter'])->name('amis.accepter')->middleware('auth');
+Route::post('amis/accepter', [AmisController::class, 'accepter'])->name('amis.accepter');
 
 // Traitement du refus d'une demande d'ami
-Route::post('amis/refuser', [AmisController::class, 'refuser'])->name('amis.refuser')->middleware('auth');
+Route::post('amis/refuser', [AmisController::class, 'refuser'])->name('amis.refuser');
 
 // Routes pour la recherche et la gestion des clans
-Route::match(['get', 'post'], 'clans/recherche', [ClanController::class, 'rechercheClans'])->name('clans.recherche')->middleware('auth');
-Route::post('clans/rejoindre', [ClanController::class, 'rejoindre'])->name('clans.rejoindre')->middleware('auth');
+Route::match(['get', 'post'], 'clans/recherche', [ClanController::class, 'rechercheClans'])->name('clans.recherche');
+Route::post('clans/rejoindre', [ClanController::class, 'rejoindre'])->name('clans.rejoindre');
 
 // Custom Graph Routes
 Route::middleware(['auth'])->group(function () {

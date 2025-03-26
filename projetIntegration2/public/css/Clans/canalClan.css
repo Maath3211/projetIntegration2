@@ -122,28 +122,24 @@
 }
 
 .message-img {
-    width: 100%;
-    max-height: 100%;
-    object-fit: cover;
-    /* Maintain aspect ratio while covering area */
-
-    /* Rounded corners */
-
-    /* Subtle shadow */
-    transition: transform 0.2s;
-    /* Smooth hover effect */
+    max-width: 150%;
+    max-height: 500px; /* Augmente la hauteur maximale */
+    object-fit: contain; /* Maintient les proportions de l'image */
+    border-radius: 10px; /* Ajoute des coins arrondis */
+    margin: 15px 0; /* Augmente l'espacement autour de l'image */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Ajoute une ombre plus prononcée */
 }
 
 .message-img:hover {
-    transform: scale(1.02);
-    /* Slight zoom on hover */
+    transform: scale(1.05); /* Augmente légèrement le zoom au survol */
+    transition: transform 0.3s ease; /* Rend l'effet de zoom plus fluide */
 }
 
 .message img {
     min-width: 60px;
-    max-width: 60px;
+    max-width: 250px;
     min-height: 60px;
-    max-height: 60px;
+    max-height: 250px;
     border-radius: 0px;
     margin: 10px;
 }
@@ -229,22 +225,30 @@ z-index: 1000;
         .emoji-search-container {
             margin-bottom: 10px;
         }
-    
+
         .emoji-search-container input {
             width: 100%;
             padding: 5px;
             border: 1px solid #ccc;
             border-radius: 5px;
         }
-    
+
         #emoji-list {
             flex-grow: 1;
             overflow-y: auto;
         }
-    
+
         .emoji-item {
             display: inline-block;
             padding: 5px;
             font-size: 24px;
             cursor: pointer;
         }
+
+.avatar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* Makes the image circular */
+    object-fit: cover; /* Ensures the image fits within the circle */
+    border: 2px solid #ccc; /* Optional: Adds a border around the image */
+}
