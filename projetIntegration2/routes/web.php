@@ -31,11 +31,21 @@ Route::get('/', function () {
 
 Route::middleware([VerifierMembreClan::class])->group(function () {
     Route::GET('/clan/{id}', [ClanController::class, 'index'])->name('clan.montrer');
+    Route::GET('/clan/{id}/canal/{canal}', [ClanController::class, 'showCanalClan'])->name('clan.canal');
 });
 
 Route::middleware([AuthMiddleware::class])->group(function () {
     Route::POST('/clan/creer', [ClanController::class, 'creerClan'])->name('clan.creer');
     Route::GET('/clan/invitation/{clan}', [ClanController::class, 'accepterInvitation'])->name('invitation.accepter');
+    Route::delete('/messagesClan/{message}', [ClanController::class, 'destroy'])->middleware('auth')->name('messages.destroy');
+    Route::GET('/conversations/{user}', [ConversationsController::class, 'show'])->name('conversations.show');
+    Route::POST('/conversations/{user}', [ConversationsController::class, 'store']);
+    Route::GET('/conversations', [ConversationsController::class, 'index'])->name('conversations.index');
+    Route::GET('/modificationMessage', [ConversationsController::class, 'showModificationMessage'])->name('conversations.showModificationMessage');
+    Route::delete('/messages/{message}', [ConversationsController::class, 'destroy'])->middleware('auth')->name('messages.destroy');
+    Route::put('/messages/{id}', [ConversationsController::class, 'updateMessage'])->name('messages.update');
+    Route::put('/messagesAmi/{id}', [ConversationsController::class, 'updateMessageAmi'])->name('messagesAmi.update');
+    Route::GET('/classements', [ScoresController::class, 'meilleursGroupes'])->name('scores.meilleursGroupes');
 });
 
 Route::middleware([VerifierAdminClan::class])->group(function () {
@@ -52,44 +62,16 @@ Route::middleware([VerifierAdminClan::class])->group(function () {
 });
 
 
-// POUR XAVIER, METTRE LES ROUTES QUE TU AS BESOIN
-Route::GET(
-    '/clan/{id}/canal/{canal}',
-    [ClanController::class, 'showCanalClan']
-)->name('clan.canal');
-//Envoyer un message dans un canal
 Route::POST('/broadcastClan', [ClanController::class,'broadcastClan']);
 Route::POST('/receiveClan', [ClanController::class,'receiveClan']);
-Route::delete('/messagesClan/{message}', [ClanController::class, 'destroy'])->middleware('auth')->name('messages.destroy');
 
-
-
-
-
-Route::GET(
-    '/yup',
-    [UserCommunication::class, 'index']
-)->name('user.index');
-
-Route::GET('/conversations/{user}', [ConversationsController::class, 'show'])->name('conversations.show');
-Route::POST('/conversations/{user}', [ConversationsController::class, 'store']);
 Route::POST('/broadcast', [ConversationsController::class, 'broadcast']);
 Route::POST('/receive', [ConversationsController::class, 'receive']);
-Route::GET('/conversations', [ConversationsController::class, 'index'])->name('conversations.index');
 
 Route::GET('/testClan/{clans}', [ConversationsController::class, 'showClan'])->name('conversations.showClan');
 //Test Clan Message
 //Route::POST('/broadcastClan', [ConversationsController::class,'broadcastClan']);
 //Route::POST('/receiveClan', [ConversationsController::class,'receiveClan']);
-Route::GET('/modificationMessage', [ConversationsController::class, 'showModificationMessage'])->name('conversations.showModificationMessage');
-
-Route::delete('/messages/{message}', [ConversationsController::class, 'destroy'])->middleware('auth')->name('messages.destroy');
-Route::put('/messages/{id}', [ConversationsController::class, 'updateMessage'])->name('messages.update');
-Route::put('/messagesAmi/{id}', [ConversationsController::class, 'updateMessageAmi'])->name('messagesAmi.update');
-
-
-
-
 
 Route::GET(
     '/connexion',
@@ -141,10 +123,6 @@ Route::GET(
     [ProfilController::class, 'confCourriel']
 )->name('profil.confirmation');
 
-Route::GET(
-    '/classements',
-    [ScoresController::class, 'meilleursGroupes']
-)->name('scores.meilleursGroupes');
 
 Route::GET(
     '/profil',
