@@ -35,7 +35,9 @@
                                         <i class="fa-solid fa-minus"></i>
                                         {{ $categorie->categorie }}
                                     </div>
-                                    <i class="fa-solid fa-plus fa-xs"></i>
+                                    @if ($utilisateur->id == $clan->adminId)
+                                        <i class="fa-solid fa-plus fa-xs"></i>
+                                    @endif
                                 </div>
                                 @if (isset($canauxParCategorie[$categorie->id]))
                                 @foreach ($canauxParCategorie[$categorie->id] as $canal)
@@ -48,8 +50,10 @@
                                         </div>
                                     </a>
                                     <div class="iconesModificationCanal">
+                                        @if ($utilisateur->id == $clan->adminId)
                                         <i class="fa-solid fa-pen modifier"></i>
                                         <i class="fa-solid fa-x supprimer"></i>
+                                        @endif
                                     </div>
                                 </div>
                                 @endforeach
