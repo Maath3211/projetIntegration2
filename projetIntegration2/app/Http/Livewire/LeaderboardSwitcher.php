@@ -45,16 +45,14 @@ class LeaderboardSwitcher extends Component
      */
     public function updateSelectedClan($clanId)
     {
-        // Stocke l'ID du clan précédemment sélectionné pour comparaison
         $previousClanId = $this->selectedClanId;
 
-        // Ne rafraîchit que si le clan sélectionné a changé
         if ($previousClanId !== $clanId) {
             $this->selectedClanId = $clanId;
-            // Utilise une clé de rafraîchissement plus robuste avec l'ID du clan + timestamp
-            $this->refreshKey = $clanId . '-' . now()->timestamp;
-
-            // Si la vue globale est sélectionnée, rafraîchit les données globales
+            
+            // Create a completely unique refresh key
+            $this->refreshKey = uniqid() . '-' . now()->timestamp;
+            
             if ($clanId === 'global') {
                 // Récupère les 10 meilleurs utilisateurs par score total
                 $this->topUsers = DB::table('users')
@@ -82,8 +80,8 @@ class LeaderboardSwitcher extends Component
                     ->limit(10)                                           // Limite aux 10 premiers résultats
                     ->get();
             }
-
-            // Émet un événement pour informer les autres composants du changement de clan
+            
+            // Use dispatch instead of emit for Livewire 3
             $this->dispatch('switchedClan', clanId: $clanId);
         }
     }

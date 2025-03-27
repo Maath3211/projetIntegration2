@@ -373,6 +373,20 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+<script>
+document.addEventListener('livewire:initialized', function() {
+    if (typeof window.leaderboardFunctions !== 'undefined') {
+        window.leaderboardFunctions.init();
+    }
+});
+
+// Also run after navigation or component updates
+document.addEventListener('livewire:navigated', function() {
+    if (typeof window.leaderboardFunctions !== 'undefined') {
+        setTimeout(window.leaderboardFunctions.init, 100);
+    }
+});
+</script>
 @yield('scripts')
 
 <script src="{{ asset('js/gabaritJs.js') }}" crossorigin="anonymous"></script>

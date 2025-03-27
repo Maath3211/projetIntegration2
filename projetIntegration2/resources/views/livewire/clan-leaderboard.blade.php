@@ -1,6 +1,12 @@
-<!-- Conteneur principal avec hauteur 100vh et défilement personnalisé -->
-<div style="height: 100vh; overflow-y: auto; scrollbar-width: thin; scrollbar-color: transparent transparent;">
-
+<div wire:init="loadData" style="height: 100vh; overflow-y: auto; scrollbar-width: thin; scrollbar-color: transparent transparent;">
+    <!-- Loading indicator while component is initializing -->
+    @if(!isset($dataLoaded))
+    <div class="d-flex justify-content-center p-5">
+        <div class="spinner-border text-success" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    @else
     @if(!$showingGraph)
     <!-- Début de la section d'affichage du classement des membres -->
     <div id="topMembresContainer" style="scrollbar-width: thin; scrollbar-color: transparent transparent;">
@@ -185,3 +191,13 @@
         }
     </style>
 </div>
+</div>
+
+<?php
+public $dataLoaded = false;
+
+public function loadData()
+{
+    $this->dataLoaded = true;
+}
+?>

@@ -19,7 +19,7 @@ class ClanLeaderboard extends Component
     public $showingGraph = false;     // État d'affichage du graphique (visible ou caché)
     public $chartType = 'members';    // Type de graphique à afficher: membres ou améliorations
     public $refreshKey = 0;           // Clé pour forcer le rafraîchissement du composant
-
+    public $dataLoaded = false;
 
     /**
      * Définit les événements que ce composant écoute
@@ -42,11 +42,11 @@ class ClanLeaderboard extends Component
         if (Session::has('locale')) {
             App::setLocale(Session::get('locale'));
         }
-        
+
         // Reset graph state when component is mounted/remounted
         $this->showingGraph = false;
         $this->chartType = 'members';
-        
+
         // Initialize the clan selection
         $this->updateClan($selectedClanId);
     }
@@ -123,6 +123,10 @@ class ClanLeaderboard extends Component
     {
         $this->chartType = 'improvements'; // Définit le type de graphique à afficher
         $this->showingGraph = true;        // Affiche le graphique
+    }
+    public function loadData()
+    {
+        $this->dataLoaded = true;
     }
 
     /**

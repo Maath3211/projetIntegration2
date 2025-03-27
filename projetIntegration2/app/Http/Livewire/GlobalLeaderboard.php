@@ -14,6 +14,7 @@ class GlobalLeaderboard extends Component
     public $showingGraph = false;      // État d'affichage du graphique (visible ou caché)
     public $chartType = 'clans';       // Type de graphique à afficher: clans ou utilisateurs
     public $refreshKey = 0;            // Clé utilisée pour forcer les rafraîchissements de composant
+    public $dataLoaded = false;
 
     /**
      * Définit les événements que ce composant écoute
@@ -24,6 +25,10 @@ class GlobalLeaderboard extends Component
             'localeChanged' => 'handleLocaleChanged',   // Événement de changement de langue
             'scoreGraphClosed' => 'hideGraph'           // Événement de fermeture du graphique
         ];
+    }
+    public function loadData()
+    {
+        $this->dataLoaded = true;
     }
 
     /**
@@ -36,11 +41,11 @@ class GlobalLeaderboard extends Component
     {
         $this->topClans = $topClans ?? collect();
         $this->topUsers = $topUsers ?? collect();
-        
+
         // Reset graph state when component is mounted/remounted
         $this->showingGraph = false;
         $this->chartType = 'clans';
-        
+
         if (Session::has('locale')) {
             App::setLocale(Session::get('locale'));
         }

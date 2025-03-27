@@ -7,18 +7,17 @@
             : ($selectedClan?->nom ?? 'Inconnu') 
     }}">
     
-    <!-- Conteneur avec une clé unique pour Livewire qui permet de rafraîchir correctement le composant -->
-    <div wire:key="leaderboard-switcher-{{ $selectedClanId }}-{{ $refreshKey }}">
-        <!-- Condition pour afficher soit le classement global, soit le classement d'un clan spécifique -->
+    <!-- Use a more specific key pattern for the component -->
+    <div>
         @if($selectedClanId === 'global')
             @livewire('global-leaderboard', 
                 ['topClans' => $topClans, 'topUsers' => $topUsers], 
-                key('global-' . $refreshKey)
+                key('global-leaderboard-' . $refreshKey)
             )
         @else
             @livewire('clan-leaderboard', 
                 ['selectedClanId' => $selectedClanId], 
-                key('clan-' . $selectedClanId . '-' . $refreshKey)
+                key('clan-leaderboard-' . $selectedClanId . '-' . $refreshKey)
             )
         @endif
     </div>
