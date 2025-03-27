@@ -21,7 +21,7 @@ class SuppressionMessageGroup implements ShouldBroadcastNow
     public $idMessage;
     public $idGroupe;
     public $canal;
-    
+
 
     public function __construct($idMessage, $idGroupe, $canal)
     {
@@ -30,9 +30,11 @@ class SuppressionMessageGroup implements ShouldBroadcastNow
         $this->canal = $canal;
     }
 
+
     public function broadcastOn(): array
     {
-        return [new Channel("chat-" . $this->idGroupe) . "-" . $this->canal];
+        \Log::info('Diffusion sur le canal :', ["chat-" . $this->idGroupe . "-" . $this->canal]);
+        return [new Channel("chat-" . $this->idGroupe . "-" . $this->canal)];
     }
 
     public function broadcastAs(): string

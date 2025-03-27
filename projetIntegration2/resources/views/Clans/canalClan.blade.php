@@ -87,7 +87,7 @@
                             class="message {{ $message->idEnvoyer == auth()->id() ? 'own-message' : 'received-message' }}">
                             @if ($message->idEnvoyer == auth()->id())
                             <!-- Bouton de suppression visible uniquement pour l'auteur -->
-                            <button class="delete-btn" data-id="{{ $message->id }}">🗑️</button>
+                            <button class="supprimer-btn" data-id="{{ $message->id }}">🗑️</button>
                             @else
                             <div class="avatar bg-primary text-white rounded-circle p-2">
                                 {{ substr($message->user->email, 0, 2) }}
@@ -533,7 +533,7 @@
                 $("#chat-messages").append(`
         <div class="messageTotal" id="message-${reponse.dernier_id}">
             <div class="message own-message">
-                <button class="delete-btn" data-id="${reponse.dernier_id}">🗑️</button>
+                <button class="supprimer-btn" data-id="${reponse.dernier_id}">🗑️</button>
                 <div class="bubble">
                     <strong>${reponse.email_expediteur}</strong>
                     <span class="text-muted">{{ \Carbon\Carbon::now()->format('H:i') }}</span>
@@ -567,10 +567,10 @@
         // ---------------------------
 
         // Gestion de la suppression des messages
-        $(document).on('click', '.delete-btn', function(e) {
+        $(document).on('click', '.supprimer-btn', function(e) {
             e.preventDefault();
             let messageId = $(this).data('id');
-            //console.log("Suppression du message avec l'ID:", messageId); // Ajout pour le débogage
+            console.log("Suppression du message avec l'ID:", messageId); // Ajout pour le débogage
 
             $.ajax({
                 type: "DELETE",
@@ -579,26 +579,26 @@
                     _token: "{{ csrf_token() }}"
                 }
             }).done(function(res) {
-                //console.log("Réponse de l'API:", res); // Ajout pour le débogage
+                console.log("Réponse de l'API:", res); // Ajout pour le débogage
                 if (res.success) {
                     // Supprime le message du DOM
                     $(`#message-${messageId}`).remove();
-                    //console.log("Message supprimé du DOM:", messageId);
+                    console.log("Message supprimé du DOM:", messageId);
                 } else {
                     alert("Erreur lors de la suppression du message.");
                 }
             }).fail(function(xhr, status, error) {
-                //console.error("Erreur lors de la requête de suppression:", error); // Ajout pour le débogage
+                console.error("Erreur lors de la requête de suppression:", error); // Ajout pour le débogage
                 alert("Erreur lors de la suppression du message.");
             });
         });
 
         // Écouter l'événement de suppression spécifique diffusé par Pusher
         canal.bind('message-supression', function(data) {
-            //console.log("Message supprimé via Pusher:", data); // Affiche l'ID du message supprimé pour le débogage
-            // Supprime le message correspondant du DOM
+            console.log("Message supprimé via Pusher:", data); // Affiche l'ID du message supprimé pour le débogage
+            //Supprime le message correspondant du DOM
             $(`#message-${data.idMessage}`).remove();
-            //console.log("Message supprimé du DOM via Pusher:", data.idMessage);
+            console.log("Message supprimé du DOM via Pusher:", data.idMessage);
         });
     </script>
 
