@@ -783,7 +783,7 @@ class ClanController extends Controller
         $messageId = $message->id;
         $message->delete();
 
-        broadcast(new SuppressionMessageGroup($messageId, $message->idClan, $message->idClan))->toOthers();
+        broadcast(new SuppressionMessageGroup($messageId, $message->idClan, $message->idCanal))->toOthers();
 
         return response()->json(['success' => 'Message supprimé']);
     }

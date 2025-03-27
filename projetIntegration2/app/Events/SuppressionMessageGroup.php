@@ -45,7 +45,7 @@ class SuppressionMessageGroup implements ShouldBroadcastNow
     public function broadcastWith(): array
     {
         return [
-            'idMessage' => $this->idMessage,
+            'idMessage' => $this->idMessage, // ID du message supprimé
         ];
     }
 }

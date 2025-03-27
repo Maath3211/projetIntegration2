@@ -595,8 +595,8 @@
 
         // Écouter l'événement de suppression spécifique diffusé par Pusher
         canal.bind('message-supression', function(data) {
-            console.log("Message supprimé via Pusher:", data); // Affiche l'ID du message supprimé pour le débogage
-            //Supprime le message correspondant du DOM
+            console.log("Message supprimé via Pusher:", data); // Debugging
+            // Supprime le message correspondant du DOM
             $(`#message-${data.idMessage}`).remove();
             console.log("Message supprimé du DOM via Pusher:", data.idMessage);
         });
