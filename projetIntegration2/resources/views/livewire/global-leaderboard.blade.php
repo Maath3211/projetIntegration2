@@ -3,10 +3,11 @@
     @if(!isset($dataLoaded))
     <div class="d-flex justify-content-center p-5">
         <div class="spinner-border text-success" role="status">
-            <span class="sr-only">Loading...</span>
+            <span class="sr-only">Chargement...</span>
         </div>
     </div>
     @else
+    @endif
     @if(!$showingGraph)
     <!-- Contenu du tableau de classement -->
     <div id="topClansContainer" style="scrollbar-width: thin; scrollbar-color: transparent transparent;">
@@ -179,26 +180,25 @@
         </div>
     </div>
     @endif
-    
-    <!-- Styles CSS pour personnaliser l'apparence des barres de défilement -->
-    <style>
-        /* Définit la largeur des barres de défilement pour les conteneurs */
-        #topClansContainer::-webkit-scrollbar,
-        #topUsersContainer::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        /* Masque la barre de défilement par défaut pour une interface plus propre */
-        #topClansContainer::-webkit-scrollbar-thumb,
-        #topUsersContainer::-webkit-scrollbar-thumb {
-            background-color: transparent;
-        }
-        
-        /* Affiche la barre de défilement au survol pour une meilleure expérience utilisateur */
-        #topClansContainer:hover::-webkit-scrollbar-thumb,
-        #topUsersContainer:hover::-webkit-scrollbar-thumb {
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-    </style>
-    @endif
 </div>
+
+<!-- Styles CSS pour personnaliser l'apparence des barres de défilement -->
+<style>
+    /* Définit la largeur des barres de défilement pour les conteneurs */
+    #topClansContainer::-webkit-scrollbar,
+    #topUsersContainer::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    /* Masque la barre de défilement par défaut pour une interface plus propre */
+    #topClansContainer::-webkit-scrollbar-thumb,
+    #topUsersContainer::-webkit-scrollbar-thumb {
+        background-color: transparent;
+    }
+
+    /* Affiche la barre de défilement au survol pour une meilleure expérience utilisateur */
+    #topClansContainer:hover::-webkit-scrollbar-thumb,
+    #topUsersContainer:hover::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+</style>

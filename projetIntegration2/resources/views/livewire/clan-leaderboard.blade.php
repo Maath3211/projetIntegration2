@@ -3,10 +3,11 @@
     @if(!isset($dataLoaded))
     <div class="d-flex justify-content-center p-5">
         <div class="spinner-border text-success" role="status">
-            <span class="sr-only">Loading...</span>
+            <span class="sr-only">Chargement...</span>
         </div>
     </div>
     @else
+    @endif
     @if(!$showingGraph)
     <!-- Début de la section d'affichage du classement des membres -->
     <div id="topMembresContainer" style="scrollbar-width: thin; scrollbar-color: transparent transparent;">
@@ -86,7 +87,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Section pour les améliorations de score les plus importantes -->
     <div id="topAmeliorationContainer" style="scrollbar-width: thin; scrollbar-color: transparent transparent;">
         <!-- En-tête de la section d'amélioration -->
@@ -115,7 +116,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Disposition en grille pour les améliorations -->
         <div class="row mb-0">
             <!-- Colonne pour les positions 1 à 5 des améliorations -->
@@ -169,26 +170,26 @@
         </div>
     </div>
     @endif
-
-    <!-- Styles CSS pour personnaliser l'apparence des barres de défilement -->
-    <style>
-        /* Définit la largeur des barres de défilement */
-        #topMembresContainer::-webkit-scrollbar,
-        #topAmeliorationContainer::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        /* Masque la barre de défilement par défaut */
-        #topMembresContainer::-webkit-scrollbar-thumb,
-        #topAmeliorationContainer::-webkit-scrollbar-thumb {
-            background-color: transparent;
-        }
-
-        /* Affiche la barre de défilement au survol pour une meilleure expérience utilisateur */
-        #topMembresContainer:hover::-webkit-scrollbar-thumb,
-        #topAmeliorationContainer:hover::-webkit-scrollbar-thumb {
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-    </style>
 </div>
 
+
+<!-- Styles CSS pour personnaliser l'apparence des barres de défilement -->
+<style>
+    /* Définit la largeur des barres de défilement */
+    #topMembresContainer::-webkit-scrollbar,
+    #topAmeliorationContainer::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    /* Masque la barre de défilement par défaut */
+    #topMembresContainer::-webkit-scrollbar-thumb,
+    #topAmeliorationContainer::-webkit-scrollbar-thumb {
+        background-color: transparent;
+    }
+
+    /* Affiche la barre de défilement au survol pour une meilleure expérience utilisateur */
+    #topMembresContainer:hover::-webkit-scrollbar-thumb,
+    #topAmeliorationContainer:hover::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+</style>
