@@ -192,12 +192,3 @@
     </style>
 </div>
 </div>
-
-<?php
-public $dataLoaded = false;
-
-public function loadData()
-{
-    $this->dataLoaded = true;
-}
-?>
