@@ -34,7 +34,7 @@
                             <div class="conteneurImage">
                                 <div class="col-md-12 d-flex gap-4 justify-content-center">
                                     <div class="d-flex flex-column align-items-center">
-                                        <div class="texteSurImage">Ajouter ami</div>
+                                        <div class="texteSurImage">{{__('chat.ajouter_ami')}}</div>
                                         <a href="{{ route('amis.index') }}">
                                             <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee">
                                                 <i class="fa-solid fa-user-plus fa-xl"></i>
@@ -43,7 +43,7 @@
                                     </div>
 
                                     <div class="d-flex flex-column align-items-center">
-                                        <div class="texteSurImage">Rejoindre clan</div>
+                                        <div class="texteSurImage">{{__('chat.rejoindre_clan')}}</div>
                                         <a href="{{ route('clans.recherche') }}">
                                             <div class="w-16 h-16 rounded-full overflow-hidden bullePersonnalisee">
                                                 <i class="fa-solid fa-users fa-xl"></i>

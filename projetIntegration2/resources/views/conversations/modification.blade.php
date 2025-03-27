@@ -50,7 +50,7 @@
 <body>
     <div class="container mt-5">
         <h1 class="text-center mb-4">{{ __('messages.modifier_conversation') }}</h1>
-        <h1>Message Clan</h1>
+        <h1>{{__('chat.message_clan')}}</h1>
         <div class="scrollview" style="max-height: 400px; overflow-y: auto;">
             <ul class="list-group">
             @foreach($messages as $message)
@@ -76,7 +76,7 @@
         </div>
 
 
-        <h1>Message Ami</h1>
+        <h1>{{__('chat.message_amis')}}</h1>
         <div class="scrollview" style="max-height: 400px; overflow-y: auto;">
             <ul class="list-group">
             @foreach($messagesAmi as $message)

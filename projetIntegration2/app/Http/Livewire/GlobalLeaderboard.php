@@ -8,74 +8,101 @@ use Illuminate\Support\Facades\Session;
 
 class GlobalLeaderboard extends Component
 {
-    public $topClans;
-    public $topUsers;
-    public $showingGraph = false;
-    public $chartType = 'clans';
-    public $refreshKey = 0; // Add this to force refreshes
+    // Propriétés publiques accessibles dans la vue
+    public $topClans;                  // Liste des meilleurs clans
+    public $topUsers;                  // Liste des meilleurs utilisateurs
+    public $showingGraph = false;      // État d'affichage du graphique (visible ou caché)
+    public $chartType = 'clans';       // Type de graphique à afficher: clans ou utilisateurs
+    public $refreshKey = 0;            // Clé utilisée pour forcer les rafraîchissements de composant
 
+    /**
+     * Définit les événements que ce composant écoute
+     */
     protected function getListeners()
     {
         return [
-            'localeChanged' => 'handleLocaleChanged',
-            'scoreGraphClosed' => 'hideGraph'
+            'localeChanged' => 'handleLocaleChanged',   // Événement de changement de langue
+            'scoreGraphClosed' => 'hideGraph'           // Événement de fermeture du graphique
         ];
     }
 
+    /**
+     * Méthode exécutée lors de l'initialisation du composant
+     * 
+     * @param array|null $topClans Les meilleurs clans à afficher
+     * @param array|null $topUsers Les meilleurs utilisateurs à afficher
+     */
     public function mount($topClans = null, $topUsers = null)
     {
-        // Your existing mount logic
+        // Initialisation des listes de classement
         $this->topClans = $topClans;
         $this->topUsers = $topUsers;
 
-        // Set locale from session
+        // Définit la langue à partir de la session
         if (Session::has('locale')) {
             App::setLocale(Session::get('locale'));
         }
     }
 
+    /**
+     * Gère le changement de langue de l'application
+     * 
+     * @param array|null $params Tableau contenant les paramètres, notamment la langue
+     */
     public function handleLocaleChanged($params = null)
     {
-        // Get locale from params array
+        // Récupère la langue depuis le tableau de paramètres
         $locale = is_array($params) && isset($params['locale']) ? $params['locale'] : null;
 
-        // Update locale if valid
+        // Met à jour la langue si elle est valide
         if ($locale && in_array($locale, ['en', 'fr'])) {
-            Session::put('locale', $locale);
-            App::setLocale($locale);
-            $this->refreshKey = now()->timestamp; // Force refresh
+            Session::put('locale', $locale);                 // Enregistre la langue dans la session
+            App::setLocale($locale);                         // Définit la langue de l'application
+            $this->refreshKey = now()->timestamp;            // Force le rafraîchissement avec une nouvelle clé temporelle
         }
     }
 
+    /**
+     * Affiche le graphique des clans
+     */
     public function showClansGraph()
     {
-        $this->showingGraph = true;
-        $this->chartType = 'clans';
+        $this->showingGraph = true;            // Affiche le graphique
+        $this->chartType = 'clans';            // Définit le type de graphique à "clans"
     }
 
+    /**
+     * Affiche le graphique des utilisateurs
+     */
     public function showUsersGraph()
     {
-        $this->showingGraph = true;
-        $this->chartType = 'users';
+        $this->showingGraph = true;            // Affiche le graphique
+        $this->chartType = 'users';            // Définit le type de graphique à "utilisateurs"
     }
 
+    /**
+     * Cache le graphique
+     */
     public function hideGraph()
     {
-        $this->showingGraph = false;
+        $this->showingGraph = false;           // Cache le graphique
     }
 
+    /**
+     * Méthode de rendu du composant
+     */
     public function render()
     {
-        // Set locale from session before rendering
+        // S'assure que la langue est correctement définie avant le rendu
         if (Session::has('locale')) {
             App::setLocale(Session::get('locale'));
         }
 
-        // Your existing render logic
+        // Retourne la vue avec les données nécessaires
         return view('livewire.global-leaderboard', [
-            'topClans' => $this->topClans,
-            'topUsers' => $this->topUsers,
-            'refreshKey' => $this->refreshKey
+            'topClans' => $this->topClans,         // Liste des meilleurs clans
+            'topUsers' => $this->topUsers,         // Liste des meilleurs utilisateurs
+            'refreshKey' => $this->refreshKey      // Clé de rafraîchissement pour forcer les mises à jour
         ]);
     }
 }

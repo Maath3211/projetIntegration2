@@ -12,12 +12,13 @@ use Carbon\Carbon;
 class GraphiquePersoController extends Controller
 {
     /**
-     * Display the list of saved graphs
+     * Affiche la liste des graphiques sauvegardés
      */
     public function index()
     {
         $user = Auth::user();
         $clans = $user->clans;
+        // Récupère uniquement les graphiques non expirés, triés par date de création (les plus récents d'abord)
         $graphs = GraphSauvegarde::where('user_id', $user->id)
             ->where('date_expiration', '>=', now())
             ->orderBy('created_at', 'desc')
@@ -27,45 +28,48 @@ class GraphiquePersoController extends Controller
     }
 
     /**
-     * Display the form to create a new graph
+     * Affiche le formulaire pour créer un nouveau graphique
      */
     public function create()
     {
         $user = Auth::user();
+        // Récupère les clans auxquels l'utilisateur appartient pour le menu déroulant
         $clans = $user->clans()->get();
 
         return view('graphs.create', compact('clans'));
     }
 
     /**
-     * Generate and store a custom graph
+     * Génère et sauvegarde un graphique personnalisé
      */
     public function store(Request $request)
     {
+        // Validation des données du formulaire
         $request->validate([
             'titre' => 'required|max:255',
             'type' => 'required|in:global,clan',
-            'clan_id' => 'required_if:type,clan|exists:clans,id',
+            'clan_id' => 'required_if:type,clan|exists:clans,id', // clan_id obligatoire si type=clan
             'date_debut' => 'required|date',
-            'date_fin' => 'required|date|after_or_equal:date_debut',
+            'date_fin' => 'required|date|after_or_equal:date_debut', // date_fin doit être après ou égale à date_debut
         ]);
 
         $user = Auth::user();
 
-        // Verify user clan membership if a clan is selected
+        // Vérifie l'appartenance au clan si un clan spécifique est sélectionné
         if ($request->type == 'clan') {
             $isMember = DB::table('clan_users')
                 ->where('user_id', $user->id)
                 ->where('clan_id', $request->clan_id)
                 ->exists();
 
+            // Redirige avec erreur si l'utilisateur n'est pas membre du clan
             if (!$isMember) {
                 return redirect()->back()
                     ->with('error', __('graphs.erreur_membre_clan'));
             }
         }
 
-        // Generate graph data
+        // Génère les données du graphique selon le type et la plage de dates
         $data = $this->generateGraphData(
             $request->type,
             $request->clan_id,
@@ -73,67 +77,73 @@ class GraphiquePersoController extends Controller
             $request->date_fin
         );
 
-        // Save the graph
+        // Sauvegarde le graphique en base de données
         try {
             $savedGraph = GraphSauvegarde::create([
                 'user_id' => $user->id,
                 'type' => $request->type,
-                'clan_id' => $request->type == 'clan' ? $request->clan_id : null,
+                'clan_id' => $request->type == 'clan' ? $request->clan_id : null, // clan_id uniquement si type=clan
                 'titre' => $request->titre,
                 'date_debut' => $request->date_debut,
                 'date_fin' => $request->date_fin,
                 'data' => $data,
-                'date_expiration' => Carbon::now()->addDays(90),
+                'date_expiration' => Carbon::now()->addDays(90), // Expire après 90 jours
             ]);
 
+            // Redirige vers la vue du graphique créé avec message de succès
             return redirect()->route('graphs.show', $savedGraph->id)
                 ->with('success', __('graphs.cree_avec_succes'));
         } catch (\Exception $e) {
+            // En cas d'erreur, retourne au formulaire avec le message d'erreur
             return redirect()->back()
                 ->with('error', __('graphs.erreur_creation') . ': ' . $e->getMessage());
         }
     }
 
     /**
-     * Show a specific saved graph
+     * Affiche un graphique sauvegardé spécifique
      */
     public function show($id)
     {
         try {
+            // Récupération du graphique par son ID
             $graph = GraphSauvegarde::findOrFail($id);
 
-            // Check if user owns this graph
+            // Vérification que l'utilisateur est bien le propriétaire du graphique
             if ($graph->user_id != Auth::id()) {
                 return redirect()->route('graphs.index')
                     ->with('error', __('graphs.non_autorise'));
             }
 
-            // Log for debugging
+            // Journal pour le débogage des données du graphique
             \Log::debug('Graph data:', ['data' => $graph->data]);
 
             $user = Auth::user();
             $clans = $user->clans()->get();
             return view('graphs.show', compact('graph', 'clans'));
         } catch (\Exception $e) {
+            // Redirection vers la liste en cas d'erreur
             return redirect()->route('graphs.index')
                 ->with('error', __('graphs.erreur_affichage') . ': ' . $e->getMessage());
         }
     }
 
     /**
-     * Show the form for editing the graph
+     * Affiche le formulaire d'édition du graphique
      */
     public function edit($id)
     {
         try {
+            // Récupération du graphique par son ID
             $graph = GraphSauvegarde::findOrFail($id);
 
-            // Check if user owns this graph
+            // Vérification que l'utilisateur est bien le propriétaire du graphique
             if ($graph->user_id != Auth::id()) {
                 return redirect()->route('graphs.index')
                     ->with('error', __('graphs.non_autorise'));
             }
 
+            // Récupération des clans de l'utilisateur pour le menu déroulant
             $clans = Auth::user()->clans()->get();
 
             return view('graphs.edit', compact('graph', 'clans'));
@@ -144,10 +154,11 @@ class GraphiquePersoController extends Controller
     }
 
     /**
-     * Update the specified graph
+     * Met à jour le graphique spécifié
      */
     public function update(Request $request, $id)
     {
+        // Validation des données du formulaire
         $request->validate([
             'titre' => 'required|max:255',
             'type' => 'required|in:global,clan',
@@ -157,28 +168,30 @@ class GraphiquePersoController extends Controller
         ]);
 
         try {
+            // Récupération du graphique par son ID
             $graph = GraphSauvegarde::findOrFail($id);
 
-            // Check if user owns this graph
+            // Vérification que l'utilisateur est bien le propriétaire du graphique
             if ($graph->user_id != Auth::id()) {
                 return redirect()->route('graphs.index')
                     ->with('error', __('graphs.non_autorise'));
             }
 
-            // Check if data needs regeneration
+            // Vérifie si les données du graphique doivent être régénérées
+            // (si les dates, le type ou le clan ont changé)
             $regenerateData = $graph->date_debut->format('Y-m-d') != $request->date_debut ||
                 $graph->date_fin->format('Y-m-d') != $request->date_fin ||
                 $graph->type != $request->type ||
                 ($graph->type == 'clan' && $graph->clan_id != $request->clan_id);
 
-            // Update graph properties
+            // Mise à jour des propriétés du graphique
             $graph->titre = $request->titre;
             $graph->type = $request->type;
             $graph->clan_id = $request->type == 'clan' ? $request->clan_id : null;
             $graph->date_debut = $request->date_debut;
             $graph->date_fin = $request->date_fin;
 
-            // Regenerate data if needed
+            // Régénère les données si nécessaire
             if ($regenerateData) {
                 $graph->data = $this->generateGraphData(
                     $request->type,
@@ -188,32 +201,38 @@ class GraphiquePersoController extends Controller
                 );
             }
 
+            // Sauvegarde les modifications
             $graph->save();
 
+            // Redirection vers la vue du graphique mis à jour avec message de succès
             return redirect()->route('graphs.show', $graph->id)
                 ->with('success', __('graphs.modifie_avec_succes'));
         } catch (\Exception $e) {
+            // En cas d'erreur, retourne au formulaire avec le message d'erreur
             return redirect()->back()
                 ->with('error', __('graphs.erreur_modification') . ': ' . $e->getMessage());
         }
     }
 
     /**
-     * Delete a saved graph
+     * Supprime un graphique sauvegardé
      */
     public function destroy($id)
     {
         try {
+            // Récupération du graphique par son ID
             $graph = GraphSauvegarde::findOrFail($id);
 
-            // Check if user owns this graph
+            // Vérification que l'utilisateur est bien le propriétaire du graphique
             if ($graph->user_id != Auth::id()) {
                 return redirect()->route('graphs.index')
                     ->with('error', __('graphs.non_autorise'));
             }
 
+            // Suppression du graphique
             $graph->delete();
 
+            // Redirection vers la liste des graphiques avec message de succès
             return redirect()->route('graphs.index')
                 ->with('success', __('graphs.supprime_avec_succes'));
         } catch (\Exception $e) {
@@ -223,24 +242,24 @@ class GraphiquePersoController extends Controller
     }
 
     /**
-     * Generate the graph data based on type and date range
+     * Génère les données du graphique en fonction du type et de la plage de dates
      */
     private function generateGraphData($type, $clanId, $startDate, $endDate)
     {
-        // Make sure we're working with Carbon instances
+        // S'assure que nous travaillons avec des instances Carbon
         $startDate = $startDate instanceof Carbon ? $startDate : Carbon::parse($startDate);
         $endDate = $endDate instanceof Carbon ? $endDate : Carbon::parse($endDate);
 
-        // Force time to be start/end of day to include all records
+        // Force l'heure au début/fin de journée pour inclure tous les enregistrements
         $startDate = $startDate->startOfDay();
         $endDate = $endDate->endOfDay();
 
-        // Verify we have data in the database for this date range
+        // Vérifie si nous avons des données dans la base pour cette plage de dates
         $scoreCount = DB::table('scores')
             ->whereBetween('date', [$startDate->format('Y-m-d'), $endDate->format('Y-m-d')])
             ->count();
 
-        // If we have no scores, log all available dates for debugging
+        // Si nous n'avons pas de scores, enregistre toutes les dates disponibles pour le débogage
         if ($scoreCount == 0) {
             $allScores = DB::table('scores')
                 ->select('date')
@@ -250,48 +269,55 @@ class GraphiquePersoController extends Controller
                 ->pluck('date');
         }
 
-        // Calculate the number of months between dates
+        // Calcule le nombre de mois entre les dates
         $diffInMonths = $startDate->diffInMonths($endDate) + 1;
 
-        // Rest of your code...
+        // Préparation des tableaux pour les étiquettes et les valeurs
         $labels = [];
         $values = [];
 
-        // If dates are very close, use daily interval
+        // Si les dates sont très proches, utilise un intervalle journalier
         if ($diffInMonths <= 1) {
             $interval = 'daily';
             $current = $startDate->copy();
+            // Parcours jour par jour jusqu'à la date de fin
             while ($current <= $endDate) {
+                // Format "jour mois" pour les étiquettes (ex: "15 Jan")
                 $labels[] = $current->format('d M');
 
-                // Get score for this day
+                // Récupère le score pour ce jour selon le type de graphique
                 if ($type == 'global') {
                     $values[] = $this->getGlobalScoreForDay($current);
                 } else {
                     $values[] = $this->getClanScoreForDay($clanId, $current);
                 }
 
+                // Passe au jour suivant
                 $current = $current->addDay();
             }
         } else {
-            // Monthly intervals for longer periods
+            // Intervalles mensuels pour les périodes plus longues
             $current = $startDate->copy()->startOfMonth();
             while ($current <= $endDate) {
+                // Fin du mois ou date de fin si plus tôt
                 $endOfMonth = min($current->copy()->endOfMonth(), $endDate);
 
+                // Format "mois année" pour les étiquettes (ex: "Jan 2023")
                 $labels[] = $current->format('M Y');
 
-                // Get score for this month
+                // Récupère le score pour ce mois selon le type de graphique
                 if ($type == 'global') {
                     $values[] = $this->getGlobalScoreForPeriod($current, $endOfMonth);
                 } else {
                     $values[] = $this->getClanScoreForPeriod($clanId, $current, $endOfMonth);
                 }
 
+                // Passe au mois suivant
                 $current = $current->addMonth();
             }
         }
 
+        // Retourne les données structurées pour le graphique
         return [
             'labels' => $labels,
             'values' => $values,
@@ -300,36 +326,34 @@ class GraphiquePersoController extends Controller
     }
 
     /**
-     * Get global score data for a specific day
+     * Récupère les données de score global pour un jour spécifique
      */
     private function getGlobalScoreForDay(Carbon $date)
     {
-
-        // Get all scores for this specific date, with debug info
+        // Récupère tous les scores pour cette date spécifique, avec info de débogage
         $scores = DB::table('scores')
             ->whereDate('date', $date->format('Y-m-d'))
             ->get();
 
-        // Return the sum of scores
+        // Retourne la somme des scores ou 0 si aucun score
         return DB::table('scores')
             ->whereDate('date', $date->format('Y-m-d'))
             ->sum('score') ?: 0;
     }
 
     /**
-     * Get clan score data for a specific day
+     * Récupère les données de score d'un clan pour un jour spécifique
      */
     private function getClanScoreForDay($clanId, Carbon $date)
     {
-
-        // Get scores with debug info
+        // Récupère les scores avec info de débogage
         $scores = DB::table('scores')
             ->join('clan_users', 'scores.user_id', '=', 'clan_users.user_id')
             ->where('clan_users.clan_id', $clanId)
             ->whereDate('scores.date', $date->format('Y-m-d'))
             ->get();
 
-
+        // Retourne la somme des scores pour les membres du clan ou 0 si aucun score
         return DB::table('scores')
             ->join('clan_users', 'scores.user_id', '=', 'clan_users.user_id')
             ->where('clan_users.clan_id', $clanId)
@@ -338,20 +362,22 @@ class GraphiquePersoController extends Controller
     }
 
     /**
-     * Get global score data for a period
+     * Récupère les données de score global pour une période
      */
     private function getGlobalScoreForPeriod(Carbon $startDate, Carbon $endDate)
     {
+        // Retourne la somme des scores entre les dates spécifiées ou 0 si aucun score
         return DB::table('scores')
             ->whereBetween('date', [$startDate->format('Y-m-d'), $endDate->format('Y-m-d')])
             ->sum('score') ?: 0;
     }
 
     /**
-     * Get clan score data for a period
+     * Récupère les données de score d'un clan pour une période
      */
     private function getClanScoreForPeriod($clanId, Carbon $startDate, Carbon $endDate)
     {
+        // Retourne la somme des scores des membres du clan entre les dates spécifiées ou 0 si aucun score
         return DB::table('scores')
             ->join('clan_users', 'scores.user_id', '=', 'clan_users.user_id')
             ->where('clan_users.clan_id', $clanId)

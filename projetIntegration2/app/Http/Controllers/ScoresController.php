@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 class ScoresController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Affiche une liste des ressources.
      */
     public function index()
     {
@@ -18,7 +18,7 @@ class ScoresController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Affiche le formulaire pour créer un nouveau score.
      */
     public function createScore()
     {
@@ -26,31 +26,44 @@ class ScoresController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Enregistre un nouveau score dans la base de données.
      */
     public function storeScore(Request $request)
     {
+        // Récupère l'utilisateur connecté
         $utilisateur = Auth::user();
+        // Obtient la date du jour
         $date = date('Y-m-d');
+        // Récupère le score depuis la requête
         $score = $request->input('score');
 
+        // Crée une nouvelle instance de Score
         $scoreEntry = new Score();
         $scoreEntry->user_id = $utilisateur;
         $scoreEntry->score = $score;
         $scoreEntry->date = $date;
+        // Sauvegarde le score dans la base de données
         $scoreEntry->save();
     }
 
+    /**
+     * Obtient et affiche les meilleurs clans et utilisateurs pour le tableau de classement.
+     */
     public function meilleursGroupes()
     {
+        // Récupère l'utilisateur connecté et ses clans
         $utilisateur = Auth::user();
         $clans = $utilisateur->clans;
+        // Définit le clan sélectionné par défaut (vue globale)
         $selectedClanId = 'global';
+        
+        // Récupère tous les scores des utilisateurs
         $userScores = DB::table('scores')
             ->select('user_id', DB::raw('SUM(score) as total_score'))
             ->groupBy('user_id')
             ->get();
 
+        // Obtient les 10 meilleurs utilisateurs triés par score total
         $topUsers = DB::table('users')
             ->join('scores', 'users.id', '=', 'scores.user_id')
             ->select(
@@ -65,30 +78,34 @@ class ScoresController extends Controller
             ->limit(10)
             ->get();
 
+        // Obtient les 10 meilleurs clans triés par score total de leurs membres
         $topClans = DB::table('clan_users as cu')
             ->join(DB::raw('(SELECT user_id, SUM(score) as total_score FROM scores GROUP BY user_id) as su'), 'cu.user_id', '=', 'su.user_id')
-            ->join('clans', 'clans.id', '=', 'cu.clan_id')  // Join the Clan table to get image and name
+            ->join('clans', 'clans.id', '=', 'cu.clan_id')  // Joint la table Clan pour obtenir l'image et le nom
             ->select('cu.clan_id', 'clans.nom as clan_nom', 'clans.image as clan_image', DB::raw('SUM(su.total_score) as clan_total_score'))
             ->groupBy('cu.clan_id', 'clans.nom', 'clans.image')
-            ->orderByDesc('clan_total_score')  // Sort by total score in descending order
-            ->limit(10)  // Get the top 10 clans
+            ->orderByDesc('clan_total_score')  // Trie par score total en ordre décroissant
+            ->limit(10)  // Obtient les 10 meilleurs clans
             ->get();
 
+        // Récupère les clans publics dont l'utilisateur est membre
         $userClans = DB::table('clan_users')
             ->join('clans', 'clans.id', '=', 'clan_users.clan_id')
             ->where('clan_users.user_id', Auth::id())
-            ->where('clans.public', 1) // Only include clans where public is 1
+            ->where('clans.public', 1) // Inclut uniquement les clans où public est 1
             ->select('clans.id as clan_id', 'clans.nom as clan_nom', 'clans.image as clan_image')
             ->get();
 
-
-        return view('leaderboard.topClans', compact('topClans', 'topUsers', 'userClans', 'selectedClanId', 'clans')); // Send the result to a view
+        // Retourne la vue avec les données pour le tableau de classement
+        return view('leaderboard.topClans', compact('topClans', 'topUsers', 'userClans', 'selectedClanId', 'clans'));
     }
 
-
-
+    /**
+     * Exporte les 10 meilleurs utilisateurs en format CSV.
+     */
     public function exportTopUsers()
     {
+        // Obtient les 10 meilleurs utilisateurs triés par score total
         $topUsers = DB::table('users')
             ->join('scores', 'users.id', '=', 'scores.user_id')
             ->select(
@@ -101,39 +118,44 @@ class ScoresController extends Controller
             ->limit(10)
             ->get();
 
+        // Crée un nom de fichier avec la date du jour
         $filename = 'meilleurs_membres_global_' . date('d-m-Y') . '.csv';
 
-        // Create a temporary file handle for our CSV
+        // Crée un descripteur de fichier temporaire pour notre CSV
         $handle = fopen('php://temp', 'r+');
 
-        // Write CSV header
+        // Écrit l'en-tête CSV
         fputcsv($handle, ['Position', 'Prenom', 'Nom', 'Total Score']);
 
-        // Write data rows
+        // Écrit les lignes de données
         $position = 1;
         foreach ($topUsers as $user) {
             fputcsv($handle, [$position, $user->prenom, $user->nom, $user->total_score]);
             $position++;
         }
 
-        // Reset the file pointer to the beginning
+        // Réinitialise le pointeur de fichier au début
         rewind($handle);
 
-        // Get the content
+        // Récupère le contenu
         $content = '';
         while (!feof($handle)) {
             $content .= fread($handle, 8192);
         }
         fclose($handle);
 
-        // Return as a response with appropriate headers
+        // Retourne une réponse avec les en-têtes appropriés
         return response($content)
             ->header('Content-Type', 'text/csv; charset=UTF-8')
             ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
     }
 
+    /**
+     * Exporte les 10 meilleurs clans en format CSV.
+     */
     public function exportTopClans()
     {
+        // Obtient les 10 meilleurs clans triés par score total
         $topClans = DB::table('clan_users as cu')
             ->join(DB::raw('(SELECT user_id, SUM(score) as total_score FROM scores GROUP BY user_id) as su'), 'cu.user_id', '=', 'su.user_id')
             ->join('clans', 'clans.id', '=', 'cu.clan_id')
@@ -143,39 +165,44 @@ class ScoresController extends Controller
             ->limit(10)
             ->get();
 
+        // Crée un nom de fichier avec la date du jour
         $filename = 'meilleurs_clans_global_' . date('d-m-Y') . '.csv';
 
-        // Create a temporary file handle for our CSV
+        // Crée un descripteur de fichier temporaire pour notre CSV
         $handle = fopen('php://temp', 'r+');
 
-        // Write CSV header
+        // Écrit l'en-tête CSV
         fputcsv($handle, ['Position', 'Clan Name', 'Total Score']);
 
-        // Write data rows
+        // Écrit les lignes de données
         $position = 1;
         foreach ($topClans as $clan) {
             fputcsv($handle, [$position, $clan->clan_nom, $clan->clan_total_score]);
             $position++;
         }
 
-        // Reset the file pointer to the beginning
+        // Réinitialise le pointeur de fichier au début
         rewind($handle);
 
-        // Get the content
+        // Récupère le contenu
         $content = '';
         while (!feof($handle)) {
             $content .= fread($handle, 8192);
         }
         fclose($handle);
 
-        // Return as a response with appropriate headers
+        // Retourne une réponse avec les en-têtes appropriés
         return response($content)
             ->header('Content-Type', 'text/csv; charset=UTF-8')
             ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
     }
 
+    /**
+     * Exporte les 10 meilleurs membres d'un clan spécifique en format CSV.
+     */
     public function exportTopMembres($clanId)
     {
+        // Obtient les 10 meilleurs membres du clan spécifié
         $topMembres = DB::table('users')
             ->join('clan_users', 'users.id', '=', 'clan_users.user_id')
             ->join('scores', 'users.id', '=', 'scores.user_id')
@@ -192,43 +219,50 @@ class ScoresController extends Controller
             ->limit(10)
             ->get();
 
+        // Récupère les informations du clan pour le nom du fichier
         $clan = DB::table('clans')->where('id', $clanId)->first();
+        // Crée un slug pour le nom du clan (minuscules, espaces remplacés par des underscores)
         $clanSlug = strtolower(str_replace(' ', '_', $clan->nom));
         $filename = 'meilleurs_membres_' . $clanSlug . '_' . date('d-m-Y') . '.csv';
 
-        // Create a temporary file handle for our CSV
+        // Crée un descripteur de fichier temporaire pour notre CSV
         $handle = fopen('php://temp', 'r+');
 
-        // Write CSV header
+        // Écrit l'en-tête CSV
         fputcsv($handle, ['Position', 'Prenom', 'Nom', 'Total Score']);
 
-        // Write data rows
+        // Écrit les lignes de données
         $position = 1;
         foreach ($topMembres as $membre) {
             fputcsv($handle, [$position, $membre->user_prenom, $membre->user_nom, $membre->user_total_score]);
             $position++;
         }
 
-        // Reset the file pointer to the beginning
+        // Réinitialise le pointeur de fichier au début
         rewind($handle);
 
-        // Get the content
+        // Récupère le contenu
         $content = '';
         while (!feof($handle)) {
             $content .= fread($handle, 8192);
         }
         fclose($handle);
 
-        // Return as a response with appropriate headers
+        // Retourne une réponse avec les en-têtes appropriés
         return response($content)
             ->header('Content-Type', 'text/csv; charset=UTF-8')
             ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
     }
 
+    /**
+     * Exporte les 10 membres avec la meilleure amélioration de score du mois en format CSV.
+     */
     public function exportTopAmelioration($clanId)
     {
+        // Calcule la date d'un mois en arrière
         $oneMonthAgo = now()->subMonth();
 
+        // Obtient les 10 utilisateurs avec la plus grande amélioration de score ce mois-ci
         $topAmelioration = DB::table('users')
             ->join('clan_users', 'users.id', '=', 'clan_users.user_id')
             ->join('scores', 'users.id', '=', 'scores.user_id')
@@ -246,53 +280,61 @@ class ScoresController extends Controller
             ->limit(10)
             ->get();
 
+        // Récupère les informations du clan pour le nom du fichier
         $clan = DB::table('clans')->where('id', $clanId)->first();
         $clanSlug = strtolower(str_replace(' ', '_', $clan->nom));
         $filename = 'meilleurs_ameliorations_' . $clanSlug . '_' . date('d-m-Y') . '.csv';
 
-        // Create a temporary file handle for our CSV
+        // Crée un descripteur de fichier temporaire pour notre CSV
         $handle = fopen('php://temp', 'r+');
 
-        // Write CSV header
+        // Écrit l'en-tête CSV
         fputcsv($handle, ['Position', 'Prenom', 'Nom', 'Improvement Score']);
 
-        // Write data rows
+        // Écrit les lignes de données
         $position = 1;
         foreach ($topAmelioration as $user) {
             fputcsv($handle, [$position, $user->user_prenom, $user->user_nom, $user->score_improvement]);
             $position++;
         }
 
-        // Reset the file pointer to the beginning
+        // Réinitialise le pointeur de fichier au début
         rewind($handle);
 
-        // Get the content
+        // Récupère le contenu
         $content = '';
         while (!feof($handle)) {
             $content .= fread($handle, 8192);
         }
         fclose($handle);
 
-        // Return as a response with appropriate headers
+        // Retourne une réponse avec les en-têtes appropriés
         return response($content)
             ->header('Content-Type', 'text/csv; charset=UTF-8')
             ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
     }
 
+    /**
+     * Méthode de test pour afficher une page HTML statique.
+     */
     public function testChart()
     {
-        // Get the content of static-html-test.blade.php
+        // Récupère le contenu du fichier static-html-test.blade.php
         $content = file_get_contents(resource_path('views/scores/static-html-test.blade.php'));
 
-        // Return as a plain HTML response
+        // Retourne une réponse HTML simple
         return response($content)->header('Content-Type', 'text/html');
     }
 
+    /**
+     * Affiche la page avec le graphique des scores et les tableaux de classement.
+     */
     public function showChart()
     {
-        // Get the same data you'd show on the leaderboard
+        // Récupère les mêmes données que pour le tableau de classement
         $selectedClanId = 'global';
 
+        // Obtient les 10 meilleurs utilisateurs triés par score total
         $topUsers = DB::table('users')
             ->join('scores', 'users.id', '=', 'scores.user_id')
             ->select(
@@ -306,6 +348,7 @@ class ScoresController extends Controller
             ->limit(10)
             ->get();
 
+        // Obtient les 10 meilleurs clans triés par score total
         $topClans = DB::table('clan_users as cu')
             ->join(DB::raw('(SELECT user_id, SUM(score) as total_score FROM scores GROUP BY user_id) as su'), 'cu.user_id', '=', 'su.user_id')
             ->join('clans', 'clans.id', '=', 'cu.clan_id')
@@ -315,38 +358,62 @@ class ScoresController extends Controller
             ->limit(10)
             ->get();
 
-        // Create chart data
+        // Prépare les données pour le graphique
         $months = [];
         $clanScores = [];
         $userScores = [];
 
+        // Génère des données pour les 6 derniers mois
         for ($i = 5; $i >= 0; $i--) {
             $month = date('Y-m', strtotime("-$i months"));
             $months[] = date('M Y', strtotime($month));
 
-            // Use sample data for now - replace with actual queries if needed
-            $clanScores[] = rand(1000, 2000);
-            $userScores[] = rand(700, 1500);
+            $startOfMonth = date('Y-m-01', strtotime($month));
+            $endOfMonth = date('Y-m-t', strtotime($month));
+
+            // Récupère les scores réels des clans pour ce mois
+            $monthClanScore = DB::table('clan_users as cu')
+                ->join('scores', function ($join) use ($startOfMonth, $endOfMonth) {
+                    $join->on('cu.user_id', '=', 'scores.user_id')
+                        ->whereBetween('scores.date', [$startOfMonth, $endOfMonth]);
+                })
+                ->sum('scores.score');
+            
+            // Utilise 0 au lieu de données aléatoires si aucun score n'est trouvé
+            $clanScores[] = $monthClanScore ?: 0;
+
+            // Récupère les scores réels des utilisateurs pour ce mois
+            $monthUserScore = DB::table('scores')
+                ->whereBetween('date', [$startOfMonth, $endOfMonth])
+                ->sum('score');
+            
+            // Utilise 0 au lieu de données aléatoires si aucun score n'est trouvé
+            $userScores[] = $monthUserScore ?: 0;
         }
 
+        // Retourne la vue avec toutes les données nécessaires
         return view('scores.chart-page', compact('months', 'clanScores', 'userScores', 'topClans', 'topUsers'));
     }
 
+    /**
+     * Affiche uniquement le graphique des scores.
+     */
     public function viewScoreGraph()
     {
-        // Generate last 6 months of dates
+        // Génère les dates des 6 derniers mois
         $months = [];
         $clanScores = [];
         $userScores = [];
 
+        // Boucle pour les 6 derniers mois
         for ($i = 5; $i >= 0; $i--) {
             $month = date('Y-m', strtotime("-$i months"));
-            $months[] = date('M Y', strtotime($month)); // Formatted month for display
+            $months[] = date('M Y', strtotime($month)); // Mois formaté pour l'affichage
 
             $startOfMonth = date('Y-m-01', strtotime($month));
             $endOfMonth = date('Y-m-t', strtotime($month));
 
-            // Get clan scores for this month (or use dummy data)
+            // Récupère les scores des clans pour ce mois (ou utilise des données fictives)
             $monthClanScore = DB::table('clan_users as cu')
                 ->join('scores', function ($join) use ($startOfMonth, $endOfMonth) {
                     $join->on('cu.user_id', '=', 'scores.user_id')
@@ -354,21 +421,24 @@ class ScoresController extends Controller
                 })
                 ->sum('scores.score');
 
-            $clanScores[] = $monthClanScore ?: rand(1000, 2000); // Fallback to random data
+            // Utilise 0 au lieu de données aléatoires si aucun score n'est trouvé
+            $clanScores[] = $monthClanScore ?: 0;
 
-            // Get user scores for this month (or use dummy data)
+            // Récupère les scores des utilisateurs pour ce mois (ou utilise des données fictives)
             $monthUserScore = DB::table('scores')
                 ->whereBetween('date', [$startOfMonth, $endOfMonth])
                 ->sum('score');
 
-            $userScores[] = $monthUserScore ?: rand(700, 1500); // Fallback to random data
+            // Utilise 0 au lieu de données aléatoires si aucun score n'est trouvé
+            $userScores[] = $monthUserScore ?: 0;
         }
 
+        // Retourne la vue avec les données du graphique
         return view('scores.graph', compact('months', 'clanScores', 'userScores'));
     }
 
     /**
-     * Display the specified resource.
+     * Affiche la ressource spécifiée.
      */
     public function show(string $id)
     {
@@ -376,7 +446,7 @@ class ScoresController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Affiche le formulaire pour modifier la ressource spécifiée.
      */
     public function edit(string $id)
     {
@@ -384,7 +454,7 @@ class ScoresController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Met à jour la ressource spécifiée dans la base de données.
      */
     public function update(Request $request, string $id)
     {
@@ -392,7 +462,7 @@ class ScoresController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Supprime la ressource spécifiée de la base de données.
      */
     public function destroy(string $id)
     {

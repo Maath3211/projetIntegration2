@@ -21,6 +21,10 @@ return [
     'titre_index' => 'Conversation-Friends/index',
     'nouveau_message' => 'New message',
     'titre_conversation_ami' => 'Friend Conversation',
+    'ajouter_ami' => 'Add Friend',
+    'rejoindre_clan' => 'Join Clan',
+    'message_clan' => 'Clan Message',
+    'message_amis' => 'Friends Message',
 
     // Files
     'erreur_televersement' => 'Error during file upload',

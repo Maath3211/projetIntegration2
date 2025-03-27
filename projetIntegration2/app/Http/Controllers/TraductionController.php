@@ -10,23 +10,26 @@ use Illuminate\Support\Facades\Log;
 class TraductionController extends Controller
 {
     /**
-     * Set the application locale.
+     * Définit la langue de l'application.
      *
      * @param  string  $locale
      * @return \Illuminate\Http\RedirectResponse
      */
     public function setLocale($locale)
     {
-        // Validate that the locale is supported
+        // Vérifie que la langue demandée est supportée par l'application
         if (in_array($locale, ['en', 'fr'])) {
+            // Enregistre la langue choisie dans la session de l'utilisateur
             Session::put('locale', $locale);
+            // Applique immédiatement la nouvelle langue à l'application
             App::setLocale($locale);
 
-            // Optional: Log for debugging
-            Log::info('Session locale now: ' . Session::get('locale'));
-            Log::info('App locale now: ' . App::getLocale());
+            // Facultatif: Journalisation pour le débogage
+            Log::info('Langue de session maintenant: ' . Session::get('locale'));
+            Log::info('Langue de l'application maintenant: ' . App::getLocale());
         }
 
+        // Redirige l'utilisateur vers la page précédente avec la nouvelle langue appliquée
         return redirect()->back();
     }
 }
