@@ -39,12 +39,15 @@ class ClanLeaderboard extends Component
      */
     public function mount($selectedClanId = null)
     {
-        // Définir la langue à partir de la session
         if (Session::has('locale')) {
             App::setLocale(Session::get('locale'));
         }
-
-        // Initialiser le clan sélectionné
+        
+        // Reset graph state when component is mounted/remounted
+        $this->showingGraph = false;
+        $this->chartType = 'members';
+        
+        // Initialize the clan selection
         $this->updateClan($selectedClanId);
     }
 

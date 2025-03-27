@@ -8,19 +8,18 @@
     }}">
     
     <!-- Conteneur avec une clé unique pour Livewire qui permet de rafraîchir correctement le composant -->
-    <div wire:key="leaderboard-{{ $selectedClanId }}-{{ $refreshKey }}">
+    <div wire:key="leaderboard-switcher-{{ $selectedClanId }}-{{ $refreshKey }}">
         <!-- Condition pour afficher soit le classement global, soit le classement d'un clan spécifique -->
         @if($selectedClanId === 'global')
-            <!-- Chargement du composant global-leaderboard avec les données des meilleurs clans et utilisateurs -->
-            <livewire:global-leaderboard
-                :topClans="$topClans"
-                :topUsers="$topUsers"
-                :wire:key="'global-' . $refreshKey" />
+            @livewire('global-leaderboard', 
+                ['topClans' => $topClans, 'topUsers' => $topUsers], 
+                key('global-' . $refreshKey)
+            )
         @else
-            <!-- Chargement du composant clan-leaderboard avec l'ID du clan sélectionné -->
-            <livewire:clan-leaderboard
-                :selectedClanId="$selectedClanId"
-                :wire:key="'clan-' . $selectedClanId . '-' . $refreshKey" />
+            @livewire('clan-leaderboard', 
+                ['selectedClanId' => $selectedClanId], 
+                key('clan-' . $selectedClanId . '-' . $refreshKey)
+            )
         @endif
     </div>
 </div>

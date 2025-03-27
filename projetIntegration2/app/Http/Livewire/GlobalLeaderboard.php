@@ -34,11 +34,13 @@ class GlobalLeaderboard extends Component
      */
     public function mount($topClans = null, $topUsers = null)
     {
-        // Initialisation des listes de classement
-        $this->topClans = $topClans;
-        $this->topUsers = $topUsers;
-
-        // Définit la langue à partir de la session
+        $this->topClans = $topClans ?? collect();
+        $this->topUsers = $topUsers ?? collect();
+        
+        // Reset graph state when component is mounted/remounted
+        $this->showingGraph = false;
+        $this->chartType = 'clans';
+        
         if (Session::has('locale')) {
             App::setLocale(Session::get('locale'));
         }

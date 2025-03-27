@@ -51,7 +51,8 @@ class LeaderboardSwitcher extends Component
         // Ne rafraîchit que si le clan sélectionné a changé
         if ($previousClanId !== $clanId) {
             $this->selectedClanId = $clanId;
-            $this->refreshKey = now()->timestamp;  // Force un rafraîchissement du composant
+            // Utilise une clé de rafraîchissement plus robuste avec l'ID du clan + timestamp
+            $this->refreshKey = $clanId . '-' . now()->timestamp;
 
             // Si la vue globale est sélectionnée, rafraîchit les données globales
             if ($clanId === 'global') {
